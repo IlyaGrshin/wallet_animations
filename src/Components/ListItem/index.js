@@ -26,7 +26,7 @@ function ListItemLeft({ type, src = null, iconType = null }) {
 function ListItemBody({ label, caption }) {
 	return (
 		<div className='body'>
-			<Text className='label' variant="body" weight="regular">
+			<Text className='label' variant='body' weight='regular'>
   				{label}
 			</Text>
 			{caption && (
@@ -44,7 +44,7 @@ function ListItemRight({ label, caption, type }) {
 				<Text className='label' variant='body' weight='regular'>
 					{label}
 				</Text>
-			{type && (
+			{caption && (
 				<Text className='caption' variant='subheadline2' weight='regular'>
 					{caption}
 				</Text>
