@@ -1,0 +1,82 @@
+.ListItem {
+	display: flex;
+	flex-direction: row;
+	color: var(--tg-theme-text-color);
+	cursor: pointer;
+	padding-left: var(--side-padding);
+}
+	
+.ListItem .left {
+	display: flex;
+	align-items: center;
+}
+	
+.ListItem .left {
+	padding: 10px;
+}
+	
+.ListItem .left .image {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-size: contain;
+}
+	
+.ListItem .left .icon {
+	display: flex;
+	width: 40px;
+	height: 40px;
+	background: linear-gradient(156.88deg, #00E7FF 14.96%, #007AFF 85.04%);
+	border-radius: 50%;
+	justify-content: center;
+	align-items: center;
+}
+
+.ListItem .left .icon svg,
+.ListItem .left .icon path {
+	fill: white;
+}
+	
+.ListItem .body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	flex-grow: 1;
+	padding: 10px var(--side-padding) 10px 0;
+	border-bottom: 0.33px solid var(--separator-color);
+}
+	
+.ListItem .right {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 10px 0 10px 8px;
+	padding-right: var(--side-padding);
+	text-align: right;
+	border-bottom: 0.33px solid var(--separator-color);
+	white-space: nowrap;
+}
+	
+.ListItem .label {
+	color: var(--tg-theme-text-color);
+	font-variant-numeric: lining-nums tabular-nums;
+}
+	
+.ListItem .caption {
+	max-height: 18px;
+	color: var(--tg-theme-subtitle-text-color);
+}
+
+.ListItem .right .caption::first-letter {
+	text-transform: capitalize;
+}
+
+.ListItem .right.received .label,
+.ListItem .right.received .caption {
+    color: var(--text-confirm-color);
+}
+
+.ListItem .right.failed .label,
+.ListItem .right.failed .caption {
+    color: var(--tg-theme-destructive-text-color);
+}

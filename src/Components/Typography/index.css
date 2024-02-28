@@ -1,0 +1,39 @@
+.rounded {
+    font-family: ui-rounded, system-ui, sans-serif !important;
+}
+
+.typography--title1 {
+    font-size: 28px;
+    line-height: 34px;
+}
+
+.typography--title3 {
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.typography--body {
+    font-size: 17px;
+    line-height: 22px;
+}
+
+.typography--subheadline2 {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.weight--regular {
+    font-weight: 400;
+}
+
+.weight--medium {
+    font-weight: 500;
+}
+
+.weight--semibold {
+    font-weight: 600;
+}
+
+.weight--bold {
+    font-weight: 700;
+}

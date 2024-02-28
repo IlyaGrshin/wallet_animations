@@ -1,0 +1,4 @@
+.Card .ListItem:last-child .body,
+.Card .ListItem:last-child .right {
+    border-bottom: 0;
+}
