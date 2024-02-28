@@ -1,4 +1,4 @@
-import Typography from '../Typography'
+import Text from '../Text'
 import './index.css'
 
 function ListItemLeft({ type, src = null, iconType = null }) {
@@ -26,38 +26,28 @@ function ListItemLeft({ type, src = null, iconType = null }) {
 function ListItemBody({ label, caption }) {
 	return (
 		<div className='body'>
-			<div className='label'>
-				<Typography variantStyle='body' weight='regular'>
-					{label}
-				</Typography>
-			</div>
+			<Text className='label' variant="body" weight="regular">
+  				{label}
+			</Text>
 			{caption && (
-			<div className='caption'>
-				<Typography variantStyle='subheadline2' weight='regular'>
+				<Text className='caption' variant='subheadline2' weight='regular'>
 					{caption}
-				</Typography>
-			</div>
+				</Text>
 			)}
 		</div>
 	)
 }
 
 function ListItemRight({ label, caption, type }) {
-	// label = (type === TRANSACTION_STATUS.RECEIVED) ? `+${label}` : label
-
 	return (
-		<div className={`right`}>
-			<div className='label'>
-				<Typography variantStyle='body' weight='regular'>
+		<div className='right'>
+				<Text className='label' variant='body' weight='regular'>
 					{label}
-				</Typography>
-			</div>
+				</Text>
 			{type && (
-			<div className='caption'>
-				<Typography variantStyle='subheadline2' weight='regular'>
+				<Text className='caption' variant='subheadline2' weight='regular'>
 					{caption}
-				</Typography>
-			</div>
+				</Text>
 			)}
 		</div>
 	)
