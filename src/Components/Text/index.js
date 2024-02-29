@@ -15,7 +15,7 @@ const Text = ({ as: Component = 'div', variant, weight, rounded = false, childre
 }
 
 Text.propTypes = {
-    variant: PropTypes.oneOf(['title1', 'title3', 'body', 'subheadline2']),
+    variant: PropTypes.oneOf(['title1', 'title3', 'body', 'subheadline2', 'subheadline2 rounded']),
     weight: PropTypes.oneOf(['regular', 'medium', 'semibold', 'bold']),
     rounded: PropTypes.bool
 }
