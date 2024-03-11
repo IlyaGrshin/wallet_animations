@@ -187,6 +187,7 @@ function TransactionList() {
             <SectionHeader title='Transactions history' />
             {txHistory.map((tx, index) => (
                 <ListItem 
+                    leftProps={{ type: 'Icon', icon: null }}
                     bodyProps={{ label: tx.name, caption: tx.date }}
                     rightProps={{ label: tx.value, caption: tx.status }}
                     key={`tx-${index}`}
