@@ -1,0 +1,67 @@
+.balance {
+    display: flex;
+    padding: 32px 0px 20px 0px;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.balance .amount {
+    font-family: ui-rounded, -apple-system, system-ui, sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--tg-theme-text-color);
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+.balance .amount .symbol {
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    padding: 8px 12px;
+}
+
+.buttons .button {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1 0 0;
+    justify-content: center;
+    align-items: center;
+    color: var(--tg-theme-accent-text-color);
+}
+
+.buttons .button svg,
+.buttons .button path {
+    fill: var(--tg-theme-accent-text-color);
+}
+
+.assets {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.assets .asset {
+    background-color: var(--tg-theme-section-bg-color);
+    padding: 2px 0px;
+    border-radius: 14px;
+    border: 0.33px solid var(--tg-theme-secondary-bg-color);
+}
+
+.asset .ListItem .body,
+.asset .ListItem .right {
+    border-bottom: 0;
+}
+
+.transactions {
+    background-color: var(--tg-theme-section-bg-color);
+}
+
+.transactions .ListItem:last-child .body,
+.transactions .ListItem:last-child .right {
+    border-bottom: 0;
+}

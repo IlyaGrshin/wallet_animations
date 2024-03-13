@@ -1,4 +1,4 @@
-.Card .ListItem:last-child .body,
-.Card .ListItem:last-child .right {
+.Cell:last-child .body,
+.Cell:last-child .end {
     border-bottom: 0;
 }

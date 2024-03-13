@@ -1,4 +1,4 @@
-.ListItem {
+.Cell {
 	display: flex;
 	flex-direction: row;
 	color: var(--tg-theme-text-color);
@@ -6,23 +6,23 @@
 	padding-left: var(--side-padding);
 }
 	
-.ListItem .left {
+.Cell .start {
 	display: flex;
 	align-items: center;
 }
 	
-.ListItem .left {
+.Cell .start {
 	padding: 10px 10px 10px 0px;
 }
 	
-.ListItem .left .image {
+.Cell .start .image {
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
 	background-size: contain;
 }
 	
-.ListItem .left .icon {
+.Cell .start .icon {
 	display: flex;
 	width: 40px;
 	height: 40px;
@@ -32,12 +32,12 @@
 	align-items: center;
 }
 
-.ListItem .left .icon svg,
-.ListItem .left .icon path {
+.Cell .start .icon svg,
+.Cell .start .icon path {
 	fill: white;
 }
 	
-.ListItem .body {
+.Cell .body {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -46,7 +46,7 @@
 	border-bottom: 0.33px solid var(--separator-color);
 }
 	
-.ListItem .right {
+.Cell .end {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -57,26 +57,26 @@
 	white-space: nowrap;
 }
 	
-.ListItem .label {
+.Cell .label {
 	color: var(--tg-theme-text-color);
 	font-variant-numeric: lining-nums tabular-nums;
 }
 	
-.ListItem .caption {
+.Cell .caption {
 	max-height: 18px;
 	color: var(--tg-theme-subtitle-text-color);
 }
 
-.ListItem .right .caption::first-letter {
+.Cell .end .caption::first-letter {
 	text-transform: capitalize;
 }
 
-.ListItem .right.received .label,
-.ListItem .right.received .caption {
+.Cell .end.received .label,
+.Cell .end.received .caption {
     color: var(--text-confirm-color);
 }
 
-.ListItem .right.failed .label,
-.ListItem .right.failed .caption {
+.Cell .end.failed .label,
+.Cell .end.failed .caption {
     color: var(--tg-theme-destructive-text-color);
 }

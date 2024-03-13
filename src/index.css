@@ -6,11 +6,27 @@
 	user-select: none;
 }
 
+:root {
+    --tg-theme-text-color: #000000;
+    --tg-theme-secondary-bg-color: #EFEFF4;
+    --tg-theme-subtitle-text-color: #8E8E93;
+    --tg-theme-destructive-text-color: #FF3B30;
+    --tg-theme-section-bg-color: #FFFFFF;
+    --tg-theme-accent-text-color: #007AFF;
+  
+    --separator-color: #C8C7CB;
+    --text-confirm-color: #34C759;
+    --quaternary-fill-background: rgba(116, 116, 128, 0.08);
+  
+    --side-padding: 16px;
+}
+
 body {
  	margin: 0;
 	padding: 0;
 	font-family: -apple-system, system-ui, sans-serif;
 	-webkit-font-smoothing: antialiased;
+	background-color: var(--tg-theme-secondary-bg-color);
 }
 
 body::-webkit-scrollbar, html::-webkit-scrollbar {

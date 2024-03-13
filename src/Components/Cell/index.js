@@ -1,7 +1,17 @@
 import Text from '../Text'
 import './index.css'
 
-function ListItemLeft({ type, src = null, iconType = null }) {
+const Cell = ({ start, children, end, onClick }) => {
+	return (
+		<div className='Cell' onClick={onClick}>
+			<div className='start'>{start}</div>
+			<div className='body'>{children}</div>
+			<div className='end'>{end}</div>
+		</div>
+	)
+}
+
+Cell.Start = ({ type, src = null, iconType = null }) => {
 	let content;
 
 	switch (type) {
@@ -17,15 +27,15 @@ function ListItemLeft({ type, src = null, iconType = null }) {
 	}
 
 	return (
-		<div className='left'>
+		<div>
 			{content}
 		</div>
 	)
 }
 
-function ListItemBody({ label, caption }) {
+Cell.Text = ({ label, caption }) => {
 	return (
-		<div className='body'>
+		<div>
 			<Text className='label' variant='body' weight='regular'>
   				{label}
 			</Text>
@@ -38,9 +48,9 @@ function ListItemBody({ label, caption }) {
 	)
 }
 
-function ListItemRight({ label, caption, type }) {
+Cell.End = ({ label, caption, type }) => {
 	return (
-		<div className='right'>
+		<div>
 				<Text className='label' variant='body' weight='regular'>
 					{label}
 				</Text>
@@ -53,14 +63,4 @@ function ListItemRight({ label, caption, type }) {
 	)
 }
 
-function ListItem({ leftProps, bodyProps, rightProps, onClick }) {
-	return (
-		<div className='ListItem' onClick={onClick}>
-			{leftProps && <ListItemLeft {...leftProps} />}
-			<ListItemBody {...bodyProps} />
-			{rightProps && <ListItemRight {...rightProps} />}
-		</div>
-	)
-}
-
-export default ListItem
+export default Cell
