@@ -4,6 +4,7 @@
 	color: var(--tg-theme-text-color);
 	cursor: pointer;
 	padding-left: var(--side-padding);
+	min-height: 44px;
 }
 	
 .Cell .start {

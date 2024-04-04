@@ -4,11 +4,46 @@ import './index.css'
 const Cell = ({ start, children, end, onClick }) => {
 	return (
 		<div className='Cell' onClick={onClick}>
-			<div className='start'>{start}</div>
+			{start && <div className='start'>{start}</div>}
 			<div className='body'>{children}</div>
-			<div className='end'>{end}</div>
+			{end && <div className='end'>{end}</div>}
 		</div>
 	)
+}
+
+Cell.Part = ({ type, children }) => {
+	switch (type) {
+		case 'Avatar':
+			return <div className='avatar'>{children}</div>
+		case 'Chevron':
+			return <div className='chevron'>{children}</div>
+		case 'Label':
+			return <div className='label'>{children}</div>
+		case 'Label&Chevron':
+			return <div className='label-chevron'>{children}</div>
+		case 'Counter&Chevron':
+			return <div className='counter-chevron'>{children}</div>
+		case 'Label&Icon':
+			return <div className='label-icon'>{children}</div>
+		case 'Dropdown':
+			return <div className='dropdown'>{children}</div>
+		case 'Checkmark':
+			return <div className='checkmark'>{children}</div>
+		case 'Switch':
+			return <div className='switch'>{children}</div>
+		case 'Picker':
+			return <div className='picker'>{children}</div>
+		case 'Icon':
+			return <div className='icon'>{children}</div>
+		case 'SegmentedControl':
+			return <div className='segmented-control'>{children}</div>
+		case 'Checkbox':
+			return <div className='checkbox'>{children}</div>
+		case 'Button':
+			return <div className='button'>{children}</div>
+		default:
+			return <></>
+	}
 }
 
 Cell.Start = ({ type, src = null, iconType = null }) => {
@@ -27,30 +62,32 @@ Cell.Start = ({ type, src = null, iconType = null }) => {
 	}
 
 	return (
-		<div>
+		<>
 			{content}
-		</div>
+		</>
 	)
 }
 
-Cell.Text = ({ label, caption }) => {
+Cell.Text = ({ title, descrption, bold }) => {
+	let weight = bold ? 'medium' : 'regular'
+
 	return (
-		<div>
-			<Text className='label' variant='body' weight='regular'>
-  				{label}
+		<>
+			<Text className='label' variant='body' weight={weight}>
+  				{title}
 			</Text>
-			{caption && (
+			{descrption && (
 				<Text className='caption' variant='subheadline2' weight='regular'>
-					{caption}
+					{descrption}
 				</Text>
 			)}
-		</div>
+		</>
 	)
 }
 
 Cell.End = ({ label, caption, type }) => {
 	return (
-		<div>
+		<>
 				<Text className='label' variant='body' weight='regular'>
 					{label}
 				</Text>
@@ -59,7 +96,7 @@ Cell.End = ({ label, caption, type }) => {
 					{caption}
 				</Text>
 			)}
-		</div>
+		</>
 	)
 }
 
