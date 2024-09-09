@@ -18,8 +18,12 @@
     font-variant-numeric: lining-nums tabular-nums;
 }
 
-.balance .amount .symbol {
+.balance .amount > :first-child {
     color: var(--tg-theme-subtitle-text-color);
+}
+
+.balance .amount .balanceDigit {
+    display: inline-block;
 }
 
 .buttons {
