@@ -68,7 +68,7 @@ Cell.Start = ({ type, src = null, iconType = null }) => {
 	)
 }
 
-Cell.Text = ({ title, descrption, bold }) => {
+Cell.Text = ({ title, descrpition, bold }) => {
 	let weight = bold ? 'medium' : 'regular'
 
 	return (
@@ -76,9 +76,9 @@ Cell.Text = ({ title, descrption, bold }) => {
 			<Text className='label' variant='body' weight={weight}>
   				{title}
 			</Text>
-			{descrption && (
+			{descrpition && (
 				<Text className='caption' variant='subheadline2' weight='regular'>
-					{descrption}
+					{descrpition}
 				</Text>
 			)}
 		</>

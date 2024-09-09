@@ -1,5 +1,8 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion';
+
+import PageTransition from '../../Components/PageTransition';
 
 import Card from '../../Components/Card';
 import Text from '../../Components/Text';
@@ -143,10 +146,12 @@ function Assets() {
                         whileTap={{ scale: 0.98 }}
                     >
                         <Cell 
-                            start={{ type: 'Image', src: asset.image }}
-                            body={{ label: asset.name, caption: asset.coins}}
-                            end={{ label: asset.value }}
-                        />
+                            start={ null }
+                            end={ <Cell.Text title={asset.value} /> }
+                            key={ `tx-${index}` }
+                        >
+                            <Cell.Text title={asset.name} descrpition={asset.coins} bold />
+                        </Cell>
                     </motion.div>
                 ))}
             </Card>
@@ -188,23 +193,32 @@ function TransactionList() {
             {txHistory.map((tx, index) => (
                 <Cell 
                     start={ <Cell.Start type='Icon' /> }
-                    end={ <Cell.Text label={tx.value} caption={tx.status} /> }
+                    end={ <Cell.Text title={tx.value} descrpition={tx.status} /> }
                     key={ `tx-${index}` }
                 >
-                    <Cell.Text label={tx.name} caption={tx.date} />
+                    <Cell.Text title={tx.name} descrpition={tx.date} bold />
                 </Cell>
             ))}
+            <Link to='/'>
+                <Cell>
+                    <Cell.Text
+                        title='Back'
+                    />
+                </Cell>
+            </Link>
         </Card> 
     )
 }
 
 function Wallet() {
     return (
-        <div>
-            <Balance />
-            <ActionButtons />
-            {/* <Assets /> */}
-            <TransactionList />
+        <div className='wallet'>
+            <PageTransition>
+                <Balance />
+                <ActionButtons />
+                <Assets />
+                <TransactionList />
+            </PageTransition>
         </div>
     );
 }
