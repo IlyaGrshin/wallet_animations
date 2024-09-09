@@ -143,7 +143,7 @@ function Assets() {
                         variants={itemVariants}
                         custom={index}
                         transition={{ type: 'spring', stiffness: 420, damping: 28 }}
-                        whileTap={{ scale: 0.98 }}
+                        whileTap={{ scale: 0.99 }}
                     >
                         <Cell 
                             start={ null }
@@ -202,7 +202,7 @@ function TransactionList() {
             <Cell as={Link} to='/'>
                 <Cell.Text
                     type='Accent'
-                    title='Back'
+                    title='Back to UI'
                 />
             </Cell>
         </Card> 

@@ -1,0 +1,23 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 1000;
+    will-change: opacity;
+  }
+  
+  .modal {
+    background: white;
+    padding: 8px 16px;
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    min-height: 65dvh;
+    will-change: transform, opacity;
+  }
+  

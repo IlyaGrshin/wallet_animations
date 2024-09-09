@@ -5,20 +5,23 @@ const PageTransition = ({ children }) => {
   const pageVariants = {
     initial: {
       opacity: 0,
-      scale: 0.98,
+      scale: 1.006,
+      filter: 'blur(2px)'
     },
     in: {
       opacity: 1,
       scale: 1,
+      filter: 'blur(0px)'
     },
     out: {
       opacity: 0,
-      scale: 0.96,
+      scale: 1.01,
+      filter: 'blur(2px)'
     },
   };
 
   const pageTransition = {
-    duration: 0.15,
+    duration: 0.22,
     ease: [0.26, 0.08, 0.25, 1],
   };
 

@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageTransition from "../../Components/PageTransition";
@@ -5,10 +6,13 @@ import PageTransition from "../../Components/PageTransition";
 import Card from "../../Components/Card";
 import Cell from "../../Components/Cell";
 import Switch from "../../Components/Switch";
+import ModalView from '../../Components/ModalView';
 
 import './index.css'
 
-function UI () {
+const UI = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <PageTransition>
             <div className='ui'>
@@ -16,7 +20,7 @@ function UI () {
                     <Cell as={Link} to='wallet'>
                         <Cell.Text
                             type='Accent'
-                            title='Label'
+                            title='Open Wallet UI'
                         />
                     </Cell>
                     <Cell>
@@ -42,8 +46,19 @@ function UI () {
                             title='Wi-Fi'
                         />
                     </Cell>
+                    <Cell
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        <Cell.Text
+                            type='Accent'
+                            title='Open Modal'
+                        />
+                    </Cell>
                 </Card>
             </div>
+            <ModalView isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <p>Это содержимое модального окна.</p>
+            </ModalView>
         </PageTransition>
     )
 }
