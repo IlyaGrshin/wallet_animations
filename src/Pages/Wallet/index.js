@@ -199,13 +199,12 @@ function TransactionList() {
                     <Cell.Text title={tx.name} descrpition={tx.date} bold />
                 </Cell>
             ))}
-            <Link to='/'>
-                <Cell>
-                    <Cell.Text
-                        title='Back'
-                    />
-                </Cell>
-            </Link>
+            <Cell as={Link} to='/'>
+                <Cell.Text
+                    type='Accent'
+                    title='Back'
+                />
+            </Cell>
         </Card> 
     )
 }

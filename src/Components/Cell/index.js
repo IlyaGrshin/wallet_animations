@@ -1,15 +1,16 @@
 import Text from '../Text'
 import './index.css'
 
-const Cell = ({ start, children, end, onClick }) => {
-	return (
-		<div className='Cell' onClick={onClick}>
-			{start && <div className='start'>{start}</div>}
-			<div className='body'>{children}</div>
-			{end && <div className='end'>{end}</div>}
-		</div>
-	)
-}
+const Cell = ({ as: Component = 'div', start, children, end, onClick, ...props }) => {
+    return (
+        <Component className='Cell' onClick={onClick} {...props}>
+            {start && <div className='start'>{start}</div>}
+            <div className='body'>{children}</div>
+            {end && <div className='end'>{end}</div>}
+        </Component>
+    );
+};
+
 
 Cell.Part = ({ type, children }) => {
 	switch (type) {
@@ -68,12 +69,25 @@ Cell.Start = ({ type, src = null, iconType = null }) => {
 	)
 }
 
-Cell.Text = ({ title, descrpition, bold }) => {
+Cell.Text = ({ type, title, descrpition, bold }) => {
+	let name
 	let weight = bold ? 'medium' : 'regular'
+
+	switch (type) {
+		case 'Regular':
+			name = 'label'
+			break
+		case 'Accent':
+			name  = 'label accent'
+			break
+		default:
+			name = 'label'
+			break
+	}
 
 	return (
 		<>
-			<Text className='label' variant='body' weight={weight}>
+			<Text className={name} variant='body' weight={weight}>
   				{title}
 			</Text>
 			{descrpition && (

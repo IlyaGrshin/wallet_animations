@@ -13,13 +13,12 @@ function UI () {
         <PageTransition>
             <div className='ui'>
                 <Card>
-                    <Link to='wallet'>
-                        <Cell>
-                            <Cell.Text
-                                title='Label'
-                            />
-                        </Cell>
-                    </Link>
+                    <Cell as={Link} to='wallet'>
+                        <Cell.Text
+                            type='Accent'
+                            title='Label'
+                        />
+                    </Cell>
                     <Cell>
                         <Cell.Text
                             title='Label'
