@@ -1,48 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-function useNavigationDirection() {
-    const location = useLocation();
-    const [navigationDirection, setNavigationDirection] = useState('forward');
-    const [lastPathname, setLastPathname] = useState(location.pathname);
-  
-    useEffect(() => {
-      // Определяем направление навигации
-      const direction = location.pathname === lastPathname ? 'same' : location.pathname.startsWith(lastPathname) || location.pathname.length > lastPathname.length ? 'forward' : 'backward';
-      setNavigationDirection(direction);
-      setLastPathname(location.pathname);
-    }, [location]);
-  
-    return navigationDirection;
-  }
 
 // PageTransition.js
 const PageTransition = ({ children }) => {
-  const navigationDirection = useNavigationDirection();
-
   const pageVariants = {
     initial: {
       opacity: 0,
-      x: navigationDirection === 'backward' ? -100 : 100,
-      scale: 0.8,
+      scale: 0.98,
     },
     in: {
       opacity: 1,
-      x: 0,
       scale: 1,
     },
     out: {
       opacity: 0,
-      x: navigationDirection === 'forward' ? -100 : 100,
-      scale: 0.8,
+      scale: 0.96,
     },
   };
 
   const pageTransition = {
-    type: 'tween',
-    ease: 'anticipate',
-    duration: 0.5,
+    duration: 0.15,
+    ease: [0.26, 0.08, 0.25, 1],
   };
 
   return (

@@ -142,7 +142,7 @@ function Assets() {
                         key={`asset-${index}`}
                         variants={itemVariants}
                         custom={index}
-                        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                        transition={{ type: 'spring', stiffness: 420, damping: 28 }}
                         whileTap={{ scale: 0.98 }}
                     >
                         <Cell 
