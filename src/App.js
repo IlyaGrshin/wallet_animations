@@ -6,15 +6,16 @@ import './index.css';
 import UI from './Pages/UI';
 import Wallet from './Pages/Wallet';
 
+import WebApp from '@twa-dev/sdk';
+
 function App() {
 	const location = useLocation();
 
     useEffect(() => {
-        const WebApp = window?.Telegram?.WebApp;
-		WebApp?.ready()
-		WebApp?.expand()
-		WebApp?.setBackgroundColor(WebApp.themeParams.secondary_bg_color)
-        WebApp?.setHeaderColor(WebApp.themeParams.secondary_bg_color);
+		WebApp.ready()
+		WebApp.expand()
+		WebApp.setBackgroundColor(WebApp.themeParams.secondary_bg_color)
+        WebApp.setHeaderColor(WebApp.themeParams.secondary_bg_color);
     }, []);
 
     return (

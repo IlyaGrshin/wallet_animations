@@ -130,7 +130,7 @@ function ActionButtons() {
 }
 
 function Assets() {
-    const [expandedAssets, setExpandedAssets] = useState(true); 
+    const [expandedAssets, setExpandedAssets] = useState(false); 
 
     const assets = [
         {
@@ -157,6 +157,18 @@ function Assets() {
             value: '$50.64',
             image: BitcoinLogo,
         },
+        {
+            name: '1 Bitcoin',
+            coins: '0.000011 BTC',
+            value: '$50.64',
+            image: BitcoinLogo,
+        },
+        {
+            name: '2 Bitcoin',
+            coins: '0.000011 BTC',
+            value: '$50.64',
+            image: BitcoinLogo,
+        },
     ];
 
     const toggleAssets = () => {
@@ -173,18 +185,49 @@ function Assets() {
     };
 
     const itemVariants = {
-        collapsed: index => ({
-            zIndex: index === 2 ? 1 : 0,
-            scale: index === 3 ? 0.89 : 1,
-            marginTop: index === 3 ? '-60px' : 0,
-            opacity: index === 3 ? 0.64 : 1
-        }),
+        collapsed: index => {
+            // Показываем только первые два актива в свернутом состоянии
+            if (index < 2) {
+                return {
+                    scale: 1,
+                    opacity: 1,
+                    marginTop: 0,
+                    zIndex: 10 - index,
+                    top: 0
+                };
+            } else if (index === 2) {
+                return {
+                    scale: 0.91,
+                    opacity: 0.9,
+                    marginTop: '-64px',
+                    zIndex: 10 - index,
+                    top: 0
+                };
+            } else if (index === 3) {
+                return {
+                    scale: 0.82,
+                    opacity: 0.8,
+                    marginTop: '-73px',
+                    zIndex: 10 - index,
+                    top: '9px'
+                };
+            } else if (index > 3) {
+                return {
+                    scale: 0.82,
+                    opacity: 0,
+                    marginTop: '-73px',
+                    zIndex: 10 - index,
+                    top: '9px'
+                };
+            }
+        },
         expanded: index => ({
-            zIndex: index === 2 ? 1 : 0,
             scale: 1,
+            opacity: 1,
             marginTop: 0,
-            opacity: 1
-        })
+            zIndex: 10 - index,
+            top: 0
+        }),
     };
 
     return (

@@ -55,10 +55,12 @@
 }
 
 .assets .asset {
+    position: relative;
     background-color: var(--tg-theme-section-bg-color);
     padding: 2px 0px;
     border-radius: 14px;
     border: 0.33px solid var(--tg-theme-secondary-bg-color);
+    top: 0;
 }
 
 .asset .ListItem .body,

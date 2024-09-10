@@ -1922,6 +1922,18 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
+"@twa-dev/sdk@^7.10.1-beta.0":
+  version "7.10.1-beta.0"
+  resolved "https://registry.yarnpkg.com/@twa-dev/sdk/-/sdk-7.10.1-beta.0.tgz#3fc71c8c12f14d9330186d6e9d5c9d213e17d83c"
+  integrity sha512-WbkOk3gvYqmxhBsEjD3s3FBLfbYg8xHzx+ezIwGFwxbyVAW9nll1wzBJM4LFQegme1nqMm+7PajHtBNggQVFbQ==
+  dependencies:
+    "@twa-dev/types" "^7.10.0"
+
+"@twa-dev/types@^7.10.0":
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/@twa-dev/types/-/types-7.10.0.tgz#907f3e4bc082405a3130dee82a66dbf01d6fd33e"
+  integrity sha512-BXHyNLXy+cPbOZ2qQq5ArPKcP4kUfuX3YBSFT0XUxtMNWAzvyMuYAiq59UTfQ8OnELXlfChrAoIT3c2pujBtcQ==
+
 "@types/aria-query@^5.0.1":
   version "5.0.4"
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-5.0.4.tgz#1a31c3d378850d2778dabb6374d036dcba4ba708"
