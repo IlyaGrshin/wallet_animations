@@ -186,7 +186,6 @@ function Assets() {
 
     const itemVariants = {
         collapsed: index => {
-            // Показываем только первые два актива в свернутом состоянии
             if (index < 2) {
                 return {
                     scale: 1,
@@ -199,7 +198,7 @@ function Assets() {
                 return {
                     scale: 0.91,
                     opacity: 0.9,
-                    marginTop: '-64px',
+                    marginTop: '-60px',
                     zIndex: 10 - index,
                     top: 0
                 };
@@ -207,7 +206,7 @@ function Assets() {
                 return {
                     scale: 0.82,
                     opacity: 0.8,
-                    marginTop: '-73px',
+                    marginTop: '-70px',
                     zIndex: 10 - index,
                     top: '9px'
                 };
@@ -215,7 +214,7 @@ function Assets() {
                 return {
                     scale: 0.82,
                     opacity: 0,
-                    marginTop: '-73px',
+                    marginTop: '-70px',
                     zIndex: 10 - index,
                     top: '9px'
                 };
@@ -237,7 +236,7 @@ function Assets() {
             variants={containerVariants}
             onClick={toggleAssets}
         >
-            <Card className={`assets ${expandedAssets ? '' : 'collapsed'}`}>
+            <Card className='assets'>
                 {assets.map((asset, index) => (
                     <motion.div 
                         className='asset' 
@@ -248,7 +247,7 @@ function Assets() {
                         whileTap={{ scale: 0.99 }}
                     >
                         <Cell 
-                            start={ null }
+                            start={ <Cell.Start type='Image' src={asset.image} /> }
                             end={ <Cell.Text title={asset.value} /> }
                             key={ `tx-${index}` }
                         >
