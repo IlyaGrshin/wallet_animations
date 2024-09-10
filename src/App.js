@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import './index.css';
 
@@ -7,15 +7,19 @@ import UI from './Pages/UI';
 import Wallet from './Pages/Wallet';
 
 function App() {
+	const location = useLocation();
+
     useEffect(() => {
         const WebApp = window?.Telegram?.WebApp;
+		WebApp?.ready()
+		WebApp?.expand()
 		WebApp?.setBackgroundColor(WebApp.themeParams.secondary_bg_color)
         WebApp?.setHeaderColor(WebApp.themeParams.secondary_bg_color);
     }, []);
 
     return (
         <AnimatePresence mode='wait' initial={false}>
-            <Routes>
+            <Routes location={location} key={location.pathname}>
                 <Route path='/' element={<UI />} />
                 <Route path='/wallet' element={<Wallet />} />
                 <Route path='*' element={<UI />} />

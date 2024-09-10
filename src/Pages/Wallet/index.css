@@ -8,7 +8,7 @@
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    color: var(--tg-theme-accent-text-color);
+    color: var(--tg-theme-text-color);
 }
 
 .balance .amount {
