@@ -8,6 +8,12 @@
 }
 
 .sectionList .section {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+}
+
+.sectionList .section .Card {
     background-color: white;
     border-radius: 10px;
     display: flex;

@@ -8,7 +8,6 @@ import Card from '../../Components/Card';
 import Text from '../../Components/Text';
 import SectionList from '../../Components/SectionList';
 import Cell from '../../Components/Cell';
-import SectionHeader from '../../Components/SectionHeader';
 
 import './index.css';
 
@@ -249,8 +248,10 @@ function TransactionList() {
 
     return (
         <SectionList>
-            <SectionList.Item>
-                <SectionHeader title='Transactions history' />
+            <SectionList.Item 
+                header="Transaction History"
+                footer="Section Description"
+            >
                 {txHistory.map((tx, index) => (
                     <Cell 
                         start={ <Cell.Start type='Icon' /> }

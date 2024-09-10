@@ -1,4 +1,6 @@
 import './index.css'
+import SectionHeader from '../../Components/SectionHeader'
+import Card from '../../Components/Card'
 
 const SectionList = ({ children }) => {
     return (
@@ -8,11 +10,15 @@ const SectionList = ({ children }) => {
     );
 }
 
-SectionList.Item = ({ children }) => {
+SectionList.Item = ({ children, header, footer }) => {
     return (
-        <div className="section">
-            {children}
-        </div>
+        <>
+            <div className="section">
+                {header && (<SectionHeader title={header} />)}
+                <Card>{children}</Card>
+                {footer && (<SectionHeader type="Footer" title={footer} />)}
+            </div>
+        </>
     )
 }
 
