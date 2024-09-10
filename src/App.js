@@ -6,16 +6,16 @@ import UI from './Pages/UI'
 import Wallet from './Pages/Wallet'
 
 function App() {
-  const location = useLocation();
+  	const location = useLocation();
 
-  return (
-    <AnimatePresence mode='wait' initial={false}>
-      <Routes location={location} key={location.pathname}>
-        <Route path='/' element={<UI />} />
-        <Route path='/wallet' element={<Wallet />} />
-      </Routes>
-    </AnimatePresence>
-  );
+	return (
+    	// <AnimatePresence mode='wait' initial={false}>
+    		<Routes location={location} key={location.pathname}>
+    			<Route path='/' element={<UI />} />
+    			<Route path='/wallet' element={<Wallet />} />
+    		</Routes>
+    	// </AnimatePresence>
+	);
 }
 
 export default App;
