@@ -6,6 +6,7 @@ import PageTransition from '../../Components/PageTransition';
 
 import Card from '../../Components/Card';
 import Text from '../../Components/Text';
+import SectionList from '../../Components/SectionList';
 import Cell from '../../Components/Cell';
 import SectionHeader from '../../Components/SectionHeader';
 
@@ -65,7 +66,7 @@ export function Morph({ children }) {
 }
 
 function Balance() {
-    const [balance, setBalance] = useState('30.06');
+    const [balance, setBalance] = useState('$30.06');
 
     useEffect(() => {
         const updateBalance = () => {
@@ -247,24 +248,28 @@ function TransactionList() {
     ];
 
     return (
-        <Card className='transactions'>
-            <SectionHeader title='Transactions history' />
-            {txHistory.map((tx, index) => (
-                <Cell 
-                    start={ <Cell.Start type='Icon' /> }
-                    end={ <Cell.Text title={tx.value} descrpition={tx.status} /> }
-                    key={ `tx-${index}` }
-                >
-                    <Cell.Text title={tx.name} descrpition={tx.date} bold />
+        <SectionList>
+            <SectionList.Item>
+                <SectionHeader title='Transactions history' />
+                {txHistory.map((tx, index) => (
+                    <Cell 
+                        start={ <Cell.Start type='Icon' /> }
+                        end={ <Cell.Text title={tx.value} descrpition={tx.status} /> }
+                        key={ `tx-${index}` }
+                    >
+                        <Cell.Text title={tx.name} descrpition={tx.date} bold />
+                    </Cell>
+                ))}
+            </SectionList.Item>
+            <SectionList.Item>
+                <Cell as={Link} to='/'>
+                    <Cell.Text
+                        type='Accent'
+                        title='Back to UI'
+                    />
                 </Cell>
-            ))}
-            <Cell as={Link} to='/'>
-                <Cell.Text
-                    type='Accent'
-                    title='Back to UI'
-                />
-            </Cell>
-        </Card> 
+            </SectionList.Item>
+        </SectionList> 
     )
 }
 
