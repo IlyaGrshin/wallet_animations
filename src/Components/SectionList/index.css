@@ -14,7 +14,7 @@
 }
 
 .sectionList .section .Card {
-    background-color: white;
+    background-color: var(--tg-theme-section-bg-color);
     border-radius: 10px;
     display: flex;
     flex-direction: column;

@@ -45,7 +45,7 @@
 	justify-content: center;
 	flex-grow: 1;
 	padding: 10px var(--side-padding) 10px 0;
-	border-bottom: 0.33px solid var(--separator-color);
+	border-bottom: 0.33px solid var(--tg-theme-section-separator_color);
 }
 	
 .Cell .end {
@@ -55,7 +55,7 @@
 	padding: 0 0 0 8px;
 	padding-right: var(--side-padding);
 	text-align: right;
-	border-bottom: 0.33px solid var(--separator-color);
+	border-bottom: 0.33px solid var(--tg-theme-section-separator_color);
 	white-space: nowrap;
 }
 	
