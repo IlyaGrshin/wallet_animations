@@ -18,10 +18,9 @@ div[variant="subheadline2"] {
     line-height: 18px;
 }
 
-div[variant="subheadline2 rounded"] {
-    font-size: 14px;
+div[variant="footnote"] {
+    font-size: 13px;
     line-height: 18px;
-    font-family: ui-rounded, apple-system, system-ui, sans-serif;
 }
 
 div[weight="regular"] {
@@ -38,4 +37,12 @@ div[weight="semibold"] {
 
 div[weight="bold"] {
     font-weight: 700;
+}
+
+div[data-rounded] {
+    font-family: ui-rounded, apple-system, system-ui, sans-serif;
+}
+
+div[data-caps] {
+    text-transform: uppercase;
 }

@@ -1,6 +1,11 @@
-.Section {
+.SectionHeader {
     display: flex;
     gap: 4px;
     justify-content: space-between;
     padding: 24px 16px 4px 16px;
+}
+
+.SectionHeader.Default {
+    padding: 5px 16px;
+    color: var(--tg-theme-section_header_text_color);
 }
