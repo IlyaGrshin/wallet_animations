@@ -233,7 +233,7 @@ function TransactionList() {
             status: 'Sent',
         },
         {
-            name: 'Purchased by Bank Card',
+            name: 'Purchased',
             date: 'July 3 at 11:24',
             value: '100 TON',
             status: 'Received',
