@@ -120,7 +120,7 @@ function ActionButtons() {
                     whileTap={{ scale: 0.90 }}
                 >
                     {button.icon}
-                    <Text variant='subheadline2 rounded' weight='semibold'>
+                    <Text variant='subheadline2' weight='semibold' rounded>
                         {button.name}
                     </Text>
                 </motion.div>
