@@ -15,8 +15,8 @@ function App() {
     useEffect(() => {
 		WebApp.ready()
 		WebApp.expand()
-		WebApp.setBackgroundColor(WebApp.themeParams.secondary_bg_color)
-        WebApp.setHeaderColor(WebApp.themeParams.secondary_bg_color);
+		WebApp.setBackgroundColor('secondary_bg_color')
+        WebApp.setHeaderColor('secondary_bg_color');
     }, []);
 
     return (
