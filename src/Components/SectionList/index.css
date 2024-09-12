@@ -5,6 +5,7 @@
     align-items: flex-start;
     gap: 24px;
     align-self: stretch;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
 }
 
 .sectionList .section {

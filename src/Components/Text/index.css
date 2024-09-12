@@ -23,6 +23,11 @@ div[variant="footnote"] {
     line-height: 18px;
 }
 
+div[variant="caption2"] {
+    font-size: 11px;
+    line-height: 13px;
+}
+
 div[weight="regular"] {
     font-weight: 400;
 }

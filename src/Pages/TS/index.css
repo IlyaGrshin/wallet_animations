@@ -1,0 +1,69 @@
+body {
+    background: var(--tg-theme-secondary-bg-color);
+}
+
+.profile {
+    background: #131314;
+    color: white;
+    z-index: 1;
+}
+
+.profile .data {
+    position: relative;
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    align-self: stretch;
+    text-align: center;
+    z-index: 1;
+}
+
+.profile .avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background-size: contain;
+}
+
+.profile .buttons {
+    position: relative;
+    display: flex;
+    padding: 0px 16px 16px 16px;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+    z-index: 1;
+}
+  
+.profile .buttons .button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 0 0;
+    border-radius: 12px;
+    background: 
+      linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)),
+      rgba(255, 255, 255, 0.03);
+    background-blend-mode: plus-lighter, normal;
+    gap: 8px;
+    padding: 7px 0 8px 0;
+}
+
+.profile .buttons .button .icon {
+    width: 28px;
+    height: 28px;
+    background: white;
+    border-radius: 50%;
+}
+
+.profile .buttons .button .label {
+    color: white;
+}
+
+.placeholder {
+    padding: 40px 28px;
+    color: var(--tg-theme-subtitle-text-color);
+    text-align: center;
+}
