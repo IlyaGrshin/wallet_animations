@@ -13,7 +13,7 @@
   }
   
   .modal {
-    background: white;
+    background: var(--tg-theme-section-bg-color);
     padding: 8px 16px;
     border-radius: 12px 12px 0 0;
     width: 100%;
