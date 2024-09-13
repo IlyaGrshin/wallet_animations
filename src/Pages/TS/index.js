@@ -84,7 +84,7 @@ function Staking() {
         assets.map((asset, index) => (
             <Cell 
                 start={ <Cell.Start type='Icon' /> }
-                end={ <Cell.Text title={asset.value} /> }
+                end={ <Cell.Part type='Chevron' /> }
                 key={ `tx-${index}` }
             >
                 <Cell.Text title={asset.name} descrpition={asset.subtitle} bold />
@@ -142,7 +142,9 @@ function Activity() {
                     <Cell.Text title={item.name} descrpition={item.address} bold />
                 </Cell>
             ))}
-            <Cell>
+            <Cell
+                end={ <Cell.Part type='Chevron' /> }
+            >
                 <Cell.Text title='Show All' />
             </Cell>
         </>
@@ -159,7 +161,10 @@ function FAQ() {
     return (
         <>
             {questions.map((question, index) => (
-                <Cell key={ `tx-${index}` }>
+                <Cell 
+                    end={ <Cell.Part type='Chevron' /> }
+                    key={ `tx-${index}` 
+                }>
                     <Cell.Text title={question} />
                 </Cell>
             ))}

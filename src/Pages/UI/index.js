@@ -7,6 +7,7 @@ import SectionList from '../../Components/SectionList';
 import Cell from "../../Components/Cell";
 import Switch from "../../Components/Switch";
 import ModalView from '../../Components/ModalView';
+import DropdownMenu from '../../Components/DropdownMenu';
 
 const UI = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,6 +52,19 @@ const UI = () => {
                         >
                             <Cell.Text
                                 title='Wi-Fi'
+                            />
+                        </Cell>
+                        <Cell
+                            end={
+                                <Cell.Part type='Dropdown'>
+                                    <DropdownMenu 
+                                        items={['Option 1', 'Option 2', 'Option 3']}
+                                    />
+                                </Cell.Part>
+                            }
+                        >
+                            <Cell.Text
+                                title='Label'
                             />
                         </Cell>
                         <Cell

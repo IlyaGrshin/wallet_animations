@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import PageTransition from '../../Components/PageTransition';
@@ -305,14 +304,6 @@ function TransactionList() {
                         <Cell.Text title={tx.name} descrpition={tx.date} bold />
                     </Cell>
                 ))}
-            </SectionList.Item>
-            <SectionList.Item>
-                <Cell as={Link} to='/'>
-                    <Cell.Text
-                        type='Accent'
-                        title='Back to UI'
-                    />
-                </Cell>
             </SectionList.Item>
         </SectionList> 
     )

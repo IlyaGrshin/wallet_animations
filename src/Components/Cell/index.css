@@ -86,3 +86,22 @@
 .Cell .end.failed .caption {
     color: var(--tg-theme-destructive-text-color);
 }
+
+.Cell .chevron {
+	width: 7px;
+	height: 12px;
+	background-image: url(../../Icons/12/Chevron.svg);
+}
+
+.Cell .dropdown {
+	color: var(--tg-theme-accent-text-color);
+}
+
+.Cell .dropdown::after {
+	content: '';
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	background-image: url(../../Icons/12/Dropdown.svg);
+	margin-left: 5px;
+}

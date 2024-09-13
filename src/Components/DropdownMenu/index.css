@@ -1,0 +1,41 @@
+.DropdownContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.DropdownContainer .selected {
+    padding: 12px 0;
+    height: 100%;
+}
+
+.DropdownMenu {
+    position: absolute; 
+    width: 250px;
+    transform-origin: 100% 0%;
+    background-color: rgba(255, 255, 255, 0.25);
+    background-blend-mode: plus-lighter;
+    box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.20);
+    backdrop-filter: blur(25px);
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.DropdownMenu > .item {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 11px 16px;
+    cursor: pointer;
+    border-bottom: 0.33px solid rgba(60, 60, 67, 0.36);
+}
+
+.DropdownMenu > .item:hover {
+    background-color: rgba(120, 120, 128, 0.12);
+}
+
+/* .DropdownMenu > .item.selected {
+    background-color: rgba(120, 120, 128, 0.12);
+} */
+
+.DropdownMenu > .item:last-child {
+    border-bottom: 0;
+}
