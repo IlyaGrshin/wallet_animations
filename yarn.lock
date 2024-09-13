@@ -1923,9 +1923,9 @@
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
 "@twa-dev/sdk@^7.10.1-beta.0":
-  version "7.10.1-beta.0"
-  resolved "https://registry.yarnpkg.com/@twa-dev/sdk/-/sdk-7.10.1-beta.0.tgz#3fc71c8c12f14d9330186d6e9d5c9d213e17d83c"
-  integrity sha512-WbkOk3gvYqmxhBsEjD3s3FBLfbYg8xHzx+ezIwGFwxbyVAW9nll1wzBJM4LFQegme1nqMm+7PajHtBNggQVFbQ==
+  version "7.10.1"
+  resolved "https://registry.yarnpkg.com/@twa-dev/sdk/-/sdk-7.10.1.tgz#e674d2265132374382888c341d770c789ae412d4"
+  integrity sha512-mY9JaBPspYfLdzoaARVmr0GKXUO3X4hi1vuP+04UUFWST2lB50xGSxExOFz5I3vBaxnrdLregBGiaitvvWaX6w==
   dependencies:
     "@twa-dev/types" "^7.10.0"
 

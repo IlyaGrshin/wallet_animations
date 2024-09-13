@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './index.css';
 
+import WebApp from '@twa-dev/sdk';
+
 function blendColors(color1, color2, alpha2) {
   function hexToRgb(hex) {
       hex = hex.replace('#', '')
@@ -27,24 +29,35 @@ function blendColors(color1, color2, alpha2) {
 const ModalView = ({ isOpen, onClose, children }) => {
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-    const WebApp = window?.Telegram?.WebApp;
-    const headerColor = (WebApp?.themeParams.length > 0) ? WebApp?.themeParams.secondary_bg_color : '#EFEFF4'
-    const headerColorWithOverlay = '#' + blendColors('#000000', headerColor, 50)
 
+    const headerColor = WebApp.themeParams.secondary_bg_color || '#EFEFF4';
+    const headerColorWithOverlay = `#${blendColors('#000000', headerColor, 50)}`;
+  
     if (isOpen) {
-      WebApp?.setHeaderColor(headerColorWithOverlay)
-      WebApp?.MainButton.setText('Done').show().onClick(() => {
-        onClose()
-        WebApp?.setHeaderColor(headerColor);
-        WebApp?.MainButton.hide()
-      });
+      WebApp.setHeaderColor(headerColorWithOverlay);
+      WebApp.BackButton.show();
+      
+      WebApp.MainButton
+        .show()
+        .setText('Done')
+        .onClick(() => {
+          onClose();
+        });
     } else {
-      WebApp?.setHeaderColor(headerColor);
-      WebApp?.MainButton.hide()
+      WebApp.setHeaderColor(headerColor);
+      WebApp.MainButton.hide();
+      WebApp.BackButton.hide();
     }
 
-    return () => { document.body.style.overflow = 'auto'; };
+    WebApp.onEvent('backButtonClicked', () => {
+      onClose();
+    });
+  
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
   }, [isOpen, onClose]);
+  
 
   const overlayAnimation = {
     hidden: { opacity: 0 },
@@ -72,3 +85,4 @@ const ModalView = ({ isOpen, onClose, children }) => {
 };
 
 export default ModalView;
+ 

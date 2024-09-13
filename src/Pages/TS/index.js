@@ -11,6 +11,7 @@ import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 
 import WebApp from '@twa-dev/sdk';
+import { BackButton } from '@twa-dev/sdk/react';
 
 import './index.css';
 
@@ -171,32 +172,38 @@ function FAQ() {
 
 function TONSpace() {
     useEffect(() => {
-        WebApp.setHeaderColor('131314')
+        WebApp.setHeaderColor('#131314')
+        WebApp.onEvent('backButtonClicked', () => {
+            WebApp.setHeaderColor('secondary_bg_color')
+        });
     })
 
     return (
-        <div className="ton-space">
-            <PageTransition>
-                <Profile />
-                <SectionList>
-                    <SectionList.Item header='Assets'> 
-                        <Assets />
-                    </SectionList.Item>
-                    <SectionList.Item>
-                        <Staking />
-                    </SectionList.Item>
-                    <SectionList.Item header='Collectibles'>
-                        <Collectibles />
-                    </SectionList.Item>
-                    <SectionList.Item header='Activity'>
-                        <Activity />
-                    </SectionList.Item>
-                    <SectionList.Item>
-                        <FAQ />
-                    </SectionList.Item>
-                </SectionList>
-            </PageTransition>
-        </div>
+        <>
+            <BackButton />
+            <div className="ton-space">
+                <PageTransition>
+                    <Profile />
+                    <SectionList>
+                        <SectionList.Item header='Assets'> 
+                            <Assets />
+                        </SectionList.Item>
+                        <SectionList.Item>
+                            <Staking />
+                        </SectionList.Item>
+                        <SectionList.Item header='Collectibles'>
+                            <Collectibles />
+                        </SectionList.Item>
+                        <SectionList.Item header='Activity'>
+                            <Activity />
+                        </SectionList.Item>
+                        <SectionList.Item>
+                            <FAQ />
+                        </SectionList.Item>
+                    </SectionList>
+                </PageTransition>
+            </div>
+        </>
     )
 }
 

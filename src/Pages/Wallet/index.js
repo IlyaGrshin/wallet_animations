@@ -21,6 +21,8 @@ import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
 
+import { BackButton } from '@twa-dev/sdk/react';
+
 export function Morph({ children }) {
     function generateKeys(text) {
         const charCount = {};
@@ -318,14 +320,17 @@ function TransactionList() {
 
 function Wallet() {
     return (
-        <div className='wallet'>
-            <PageTransition>
-                <Balance />
-                <ActionButtons />
-                <Assets />
-                <TransactionList />
-            </PageTransition>
-        </div>
+        <>
+            <BackButton />
+            <div className='wallet'>
+                <PageTransition>
+                    <Balance />
+                    <ActionButtons />
+                    <Assets />
+                    <TransactionList />
+                </PageTransition>
+            </div>
+        </>
     );
 }
 

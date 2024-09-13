@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageTransition from "../../Components/PageTransition";
@@ -8,14 +8,8 @@ import Cell from "../../Components/Cell";
 import Switch from "../../Components/Switch";
 import ModalView from '../../Components/ModalView';
 
-import WebApp from '@twa-dev/sdk';
-
 const UI = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    useEffect(() => {
-        WebApp.setHeaderColor('secondary_bg_color')
-    })
 
     return (
         <PageTransition>
