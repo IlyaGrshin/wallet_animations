@@ -136,99 +136,84 @@ function Assets() {
         { name: 'Dollars', coins: '50 TON', value: '$50.00', image: DollarsLogo },
         { name: 'Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
         { name: '1 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
-        { name: '2 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
+    { name: '2 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
     ];
 
     const toggleAssets = () => {
         setExpandedAssets(!expandedAssets);
-    }
-
-    const containerVariants = {
-        expanded: { 
-            padding: '4px 16px 24px 16px',
-        },
-        collapsed: { 
-            padding: '4px 16px 12px 16px',
-        }
     };
 
-    const itemVariants = {
-        collapsed: index => {
-            if (index < 2) {
-                return {
-                    scale: 1,
-                    opacity: 1,
-                    marginTop: 0,
-                    zIndex: 10 - index,
-                    top: 0
-                };
-            } else if (index === 2) {
-                return {
-                    scale: 0.91,
-                    opacity: 0.9,
-                    marginTop: '-60px',
-                    zIndex: 10 - index,
-                    top: 0,
-                    backgroundColor: 'var(--tg-theme-secondary-bg-color)'
-                };
-            } else if (index === 3) {
-                return {
-                    scale: 0.82,
-                    opacity: 0.8,
-                    marginTop: '-70px',
-                    zIndex: 10 - index,
-                    top: '9px',
-                    backgroundColor: 'var(--tg-theme-secondary-bg-color)'
-                };
-            } else if (index > 3) {
-                return {
-                    scale: 0.82,
-                    opacity: 0,
-                    marginTop: '-70px',
-                    zIndex: 10 - index,
-                    top: '9px',
-                    backgroundColor: 'var(--tg-theme-secondary-bg-color)'
-                };
-            }
-        },
-        expanded: index => ({
+    const containerVariants = {
+        expanded: { padding: '4px 16px 24px 16px' },
+        collapsed: { padding: '4px 16px 12px 16px' },
+    };
+
+    const getItemVariant = (index) => {
+        const baseVariant = {
             scale: 1,
             opacity: 1,
             marginTop: 0,
             zIndex: 10 - index,
             top: 0,
-            backgroundColor: 'var(--tg-theme-section-bg-color)'
-        }),
-    };
+            backgroundColor: 'var(--tg-theme-section-bg-color)',
+        };
 
-    const itemVariantInside = {
-        collapsed: index => {
-            if (index > 1) {
-                return {
-                    opacity: 0
-                }
-            }
-        },
-        expanded: index => {
-            if (index > 1) {
-                return {
-                    opacity: 1
-                }
-            }
+        if (expandedAssets) {
+            return baseVariant;
+        }
+
+    switch (index) {
+        case 0:
+        case 1:
+            return baseVariant;
+        case 2:
+            return {
+                ...baseVariant,
+                scale: 0.91,
+                opacity: 0.9,
+                marginTop: '-60px',
+                backgroundColor: 'var(--tg-theme-secondary-bg-color)',
+        };
+        case 3:
+        return {
+                ...baseVariant,
+                scale: 0.82,
+                opacity: 0.8,
+                marginTop: '-70px',
+                top: '9px',
+                backgroundColor: 'var(--tg-theme-secondary-bg-color)',
+            };
+        default:
+            return {
+                ...baseVariant,
+                scale: 0.82,
+                opacity: 0,
+                marginTop: '-70px',
+                top: '9px',
+                backgroundColor: 'var(--tg-theme-secondary-bg-color)',
+            };
         }
     };
 
-    const assetColorFill = {
-        collapsed: index => {
-            if (index === 0 || index === 1) { return { opacity: 0 }}
-            if (index === 2) { return { opacity: 0.72 }}
-            if (index === 3) { return { opacity: 0.32 }}
-            if (index > 3) { return { opacity: 0 }}
-        },
-        expanded: index => {
-            return { opacity: 0 }
+    const getItemVariantInside = (index) => {
+        if (index > 1) {
+            return { opacity: expandedAssets ? 1 : 0 };
         }
-    }
+        return {};
+    };
+
+    const getAssetColorFill = (index) => {
+        if (expandedAssets) {
+            return { opacity: 0 };
+        }
+
+        const opacities = {
+            2: 0.72,
+            3: 0.32,
+        };
+
+        return { opacity: opacities[index] || 0 };
+    };
 
     return (
         <motion.div
@@ -237,46 +222,39 @@ function Assets() {
             variants={containerVariants}
             onClick={toggleAssets}
         >
-            <Card className='assets'>
+            <Card className="assets">
                 {assets.map((asset, index) => (
-                    <motion.div 
-                        className='asset' 
-                        key={`asset-${index}`}
-                        variants={itemVariants}
-                        custom={index}
-                        transition={{ type: 'spring', stiffness: 420, damping: 28 }}
-                        whileTap={{ scale: 0.99 }}
+                <motion.div
+                    className="asset"
+                    key={`asset-${index}`}
+                    animate={getItemVariant(index)}
+                    transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+                    whileTap={{ scale: 0.99 }}
+                >
+                    <motion.div
+                        className="assetColorFill"
+                        animate={getAssetColorFill(index)}
+                        transition={{ ease: 'linear', duration: 0.15 }}
+                    />
+                    <motion.div
+                        animate={getItemVariantInside(index)}
+                        transition={{ ease: 'linear', duration: 0.15 }}
+                        style={{ position: 'relative' }}
                     >
-                        <motion.div 
-                            className='assetColorFill'
-                            variants={assetColorFill}
-                            custom={index}
-                            animate={expandedAssets ? 'expanded' : 'collapsed'}
-                            transition={{ ease: 'linear', duration: 0.15 }}
-                        >
-                        </motion.div>
-                        <motion.div
-                            variants={itemVariantInside}
-                            custom={index}
-                            transition={{ ease: 'linear', duration: 0.15 }}
-                            animate={expandedAssets ? 'expanded' : 'collapsed'}
-                            style={{ 'position': 'relative' }}
-                        >
-                            <Cell 
-                                start={ <Cell.Start type='Image' src={asset.image} /> }
-                                end={ <Cell.Text title={asset.value} /> }
-                                key={ `tx-${index}` }
-                            >
-                                <Cell.Text title={asset.name} descrpition={asset.coins} bold />
-                            </Cell>
-                        </motion.div>
+                    <Cell
+                        start={<Cell.Start type="Image" src={asset.image} />}
+                        end={<Cell.Text title={asset.value} />}
+                        key={`tx-${index}`}
+                    >
+                        <Cell.Text title={asset.name} descrpition={asset.coins} bold />
+                    </Cell>
                     </motion.div>
+                </motion.div>
                 ))}
             </Card>
         </motion.div>
     );
 }
-
 
 function TransactionList() {
     const txHistory = [
