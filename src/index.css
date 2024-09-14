@@ -23,6 +23,12 @@ body[data-color-scheme="light"] {
     --tg-theme-section-separator-color: #C8C7CC;
     --text-confirm-color: #34C759;
     --quaternary-fill-background: rgba(116, 116, 128, 0.08);
+    --separator-non-opaque: rgba(60, 60, 67, 0.36);
+
+    --background-material-regular-color-1: rgba(255, 255, 255, 0.25);
+    --background-material-regular-color-2: rgba(255, 255, 255, 0.6);
+    --background-material-regular-blend-mode-1: plus-lighter;
+    --background-material-regular-blend-mode-2: normal;
 }
 
 /* Для темной темы */
@@ -38,6 +44,12 @@ body[data-color-scheme="dark"] {
     --tg-theme-section-separator-color: #545458;
     --text-confirm-color: #30D158;
     --quaternary-fill-background: rgba(118, 118, 128, 0.18);
+    --separator-non-opaque: rgba(84, 84, 88, 0.65);
+
+    --background-material-regular-color-1: rgba(0, 0, 0, 0.41);
+    --background-material-regular-color-2: rgba(0, 0, 0, 0);
+    --background-material-regular-blend-mode-1: normal;
+    --background-material-regular-blend-mode-2: normal;
 }
 
 
