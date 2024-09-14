@@ -3,107 +3,131 @@
 	flex-direction: row;
 	color: var(--tg-theme-text-color);
 	cursor: pointer;
-	padding-left: var(--side-padding);
-	min-height: 44px;
 	text-decoration: none;
-}
-	
-.Cell .start {
-	display: flex;
-	align-items: center;
-}
-	
-.Cell .start {
-	padding: 10px 10px 10px 0px;
-}
-	
-.Cell .start .image {
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	background-size: contain;
-}
-	
-.Cell .start .icon {
-	display: flex;
-	width: 40px;
-	height: 40px;
-	background: linear-gradient(156.88deg, #00E7FF 14.96%, #007AFF 85.04%);
-	border-radius: 50%;
-	justify-content: center;
-	align-items: center;
-}
 
-.Cell .start .icon svg,
-.Cell .start .icon path {
-	fill: white;
-}
+	.start {
+		display: flex;
+		align-items: center;
+
+		.image {
+			border-radius: 50%;
+			background-size: contain;
+		}
+
+		.icon {
+			display: flex;
+			background: linear-gradient(156.88deg, #00E7FF 14.96%, #007AFF 85.04%);
+			border-radius: 50%;
+			justify-content: center;
+			align-items: center;
+
+			svg, path {
+				fill: white;
+			}
+		}
+	}
+
+	.body {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		flex-grow: 1;
+		border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
+
+		body.ios & {
+			padding: 10px var(--side-padding) 10px 0;
+		}
+
+		body.android & {
+			padding: 9px 12px 9px 0;
+		}
+	}
+
+	.end {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 0 0 0 8px;
+		padding-right: var(--side-padding);
+		text-align: right;
+		border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
+		white-space: nowrap;
+
+		.caption::first-letter {
+			text-transform: capitalize;
+		}
+
+		.chevron {
+			width: 7px;
+			height: 12px;
+			background-color: var(--tg-theme-section-separator-color);
+			mask: url(../../Icons/12/Chevron.svg) no-repeat center;
+		}
 	
-.Cell .body {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	flex-grow: 1;
-	padding: 10px var(--side-padding) 10px 0;
-	border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
-}
+		.dropdown {
+			color: var(--tg-theme-accent-text-color);
+		}
 	
-.Cell .end {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	padding: 0 0 0 8px;
-	padding-right: var(--side-padding);
-	text-align: right;
-	border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
-	white-space: nowrap;
-}
-	
-.Cell .label {
-	color: var(--tg-theme-text-color);
-	font-variant-numeric: lining-nums tabular-nums;
-}
+		.dropdown::after {
+			content: '';
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+			background-color: var(--tg-theme-accent-text-color);
+			mask: url(../../Icons/12/Dropdown.svg) no-repeat center;
+			margin-left: 5px;
+		}
 
-.Cell .label.accent {
-	color: var(--tg-theme-accent-text-color);
-}
-	
-.Cell .caption {
-	max-height: 18px;
-	color: var(--tg-theme-subtitle-text-color);
-}
+		&.received .label,
+		&.received .caption {
+			color: var(--text-confirm-color);
+		}
 
-.Cell .end .caption::first-letter {
-	text-transform: capitalize;
-}
+		&.failed .label,
+		&.failed .caption {
+			color: var(--tg-theme-destructive-text-color);
+		}
+	}
 
-.Cell .end.received .label,
-.Cell .end.received .caption {
-    color: var(--text-confirm-color);
-}
+	.label {
+		color: var(--tg-theme-text-color);
+		font-variant-numeric: lining-nums tabular-nums;
 
-.Cell .end.failed .label,
-.Cell .end.failed .caption {
-    color: var(--tg-theme-destructive-text-color);
-}
+		&.accent {
+			color: var(--tg-theme-accent-text-color);
+		}
+	}
 
-.Cell .chevron {
-	width: 7px;
-	height: 12px;
-	background-color: var(--tg-theme-section-separator-color);
-    mask: url(../../Icons/12/Chevron.svg) no-repeat center;
-}
+	.caption {
+		max-height: 18px;
+		color: var(--tg-theme-subtitle-text-color);
+	}
 
-.Cell .dropdown {
-	color: var(--tg-theme-accent-text-color);
-}
+	body.ios & {
+		padding-left: var(--side-padding);
+		min-height: 44px;
 
-.Cell .dropdown::after {
-	content: '';
-	display: inline-block;
-	width: 12px;
-	height: 12px;
-	background-color: var(--tg-theme-accent-text-color);
-	mask: url(../../Icons/12/Dropdown.svg) no-repeat center;
-	margin-left: 5px;
+		.start {
+			padding: 10px 10px 10px 0px;
+
+			.icon, .image {
+				width: 40px;
+				height: 40px;
+			}
+		}
+	}
+
+	body.android & {
+		padding-left: var(--side-padding);
+		min-height: 50px;
+
+		.start {
+			padding: 7px 11px 7px 0px;
+
+			.icon, .image {
+				width: 42px;
+				height: 42px;
+			}
+		}
+	}
 }

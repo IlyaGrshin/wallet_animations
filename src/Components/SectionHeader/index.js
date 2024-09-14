@@ -5,7 +5,7 @@ function SectionHeader({ type, title, value }) {
 	switch (type) {
 		case 'Headline':
 			return (
-				<div className="SectionHeader">
+				<div className="SectionHeader Headline">
 					<Text variant='title3' weight='bold'>
 						{title}
 					</Text>
@@ -18,7 +18,7 @@ function SectionHeader({ type, title, value }) {
 			)
 		case 'Footer':
 			return (
-				<div className="SectionHeader Default">
+				<div className="SectionHeader Footer">
 					<Text variant='footnote'>
 						{title}
 					</Text>

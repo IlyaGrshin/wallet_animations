@@ -133,7 +133,7 @@ function Assets() {
     const assets = [
         { name: 'TON Space', coins: '0 TON', value: '$0.00', image: TonSpaceLogo },
         { name: 'Toncoin', coins: '100 TON', value: '$150.00', image: ToncoinLogo },
-        { name: 'Dollars', coins: '50 TON', value: '$50.00', image: DollarsLogo },
+        { name: 'Dollars', coins: '50 USDT', value: '$50.00', image: DollarsLogo },
         { name: 'Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
         { name: '1 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
     { name: '2 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
@@ -216,43 +216,44 @@ function Assets() {
     };
 
     return (
-        <motion.div
-            initial={false}
-            animate={expandedAssets ? 'expanded' : 'collapsed'}
-            variants={containerVariants}
-            onClick={toggleAssets}
-        >
-            <Card className="assets">
-                {assets.map((asset, index) => (
-                <motion.div
-                    className="asset"
-                    key={`asset-${index}`}
-                    animate={getItemVariant(index)}
-                    transition={{ type: 'spring', stiffness: 420, damping: 28 }}
-                    whileTap={{ scale: 0.99 }}
-                >
+        <AnimatePresence initial={false}>
+            <motion.div
+                animate={expandedAssets ? 'expanded' : 'collapsed'}
+                variants={containerVariants}
+                onClick={toggleAssets}
+            >
+                <Card className="assets">
+                    {assets.map((asset, index) => (
                     <motion.div
-                        className="assetColorFill"
-                        animate={getAssetColorFill(index)}
-                        transition={{ ease: 'linear', duration: 0.15 }}
-                    />
-                    <motion.div
-                        animate={getItemVariantInside(index)}
-                        transition={{ ease: 'linear', duration: 0.15 }}
-                        style={{ position: 'relative' }}
+                        className="asset"
+                        key={`asset-${index}`}
+                        animate={getItemVariant(index)}
+                        transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+                        whileTap={{ scale: 0.99 }}
                     >
-                    <Cell
-                        start={<Cell.Start type="Image" src={asset.image} />}
-                        end={<Cell.Text title={asset.value} />}
-                        key={`tx-${index}`}
-                    >
-                        <Cell.Text title={asset.name} description={asset.coins} bold />
-                    </Cell>
+                        <motion.div
+                            className="assetColorFill"
+                            animate={getAssetColorFill(index)}
+                            transition={{ ease: 'linear', duration: 0.15 }}
+                        />
+                        <motion.div
+                            animate={getItemVariantInside(index)}
+                            transition={{ ease: 'linear', duration: 0.15 }}
+                            style={{ position: 'relative' }}
+                        >
+                        <Cell
+                            start={<Cell.Start type="Image" src={asset.image} />}
+                            end={<Cell.Text title={asset.value} />}
+                            key={`tx-${index}`}
+                        >
+                            <Cell.Text title={asset.name} description={asset.coins} bold />
+                        </Cell>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
-                ))}
-            </Card>
-        </motion.div>
+                    ))}
+                </Card>
+            </motion.div>
+        </AnimatePresence>
     );
 }
 

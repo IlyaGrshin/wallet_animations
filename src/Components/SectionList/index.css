@@ -1,23 +1,40 @@
 .sectionList { 
     display: flex;
-    padding: 16px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
     align-self: stretch;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
-}
 
-.sectionList .section {
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
-}
+    .section {
+        display: flex;
+        flex-direction: column;
+        align-self: stretch;
 
-.sectionList .section .Card {
-    background-color: var(--tg-theme-section-bg-color);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
+        .Card {
+            background-color: var(--tg-theme-section-bg-color);
+            display: flex;
+            flex-direction: column;
+            align-self: stretch;
+        }
+    }
+
+    body.ios & {
+        padding: 16px;
+        gap: 24px;
+
+        .section .Card {
+            border-radius: 10px;
+        }
+    }
+
+    body.android & {
+        padding: 0px;
+        gap: 12px;
+
+
+        .section .Card {
+            border-radius: 0px;
+            box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
+        }
+    }
 }

@@ -2,10 +2,21 @@
     display: flex;
     gap: 4px;
     justify-content: space-between;
-    padding: 24px 16px 4px 16px;
-}
-
-.SectionHeader.Default {
     padding: 5px 16px;
-    color: var(--tg-theme-section_header_text_color);
+    color: var(--tg-theme-section-header-text-color);
+
+    &.Headline {
+        padding: 24px 16px 4px 16px;
+        color: var(--tg-theme-text-color);
+    }
+
+    body.android & {
+        padding: 19px 20px 3px;
+        background-color: var(--tg-theme-section-bg-color);
+
+        &.Footer {
+            padding: 12px 20px;
+            background-color: transparent;
+        }
+    }
 }

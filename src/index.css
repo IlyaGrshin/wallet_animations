@@ -7,7 +7,13 @@
 }
 
 :root {
-    --side-padding: 16px;
+    .ios {
+        --side-padding: 16px;
+    }
+
+    .android {
+        --side-padding: 20px;
+    }
 }
 
 :root {
@@ -18,7 +24,7 @@
     --tg-theme-destructive-text-color: #FF3B30;
     --tg-theme-section-bg-color: #FFFFFF;
     --tg-theme-accent-text-color: #007AFF;
-    --tg-theme-section_header_text_color: #6D6D72;
+    --tg-theme-section-header-text-color: #6D6D72;
     --tg-theme-section-separator-color: #C8C7CC;
     --text-confirm-color: #34C759;
     --quaternary-fill-background: rgba(116, 116, 128, 0.08);
@@ -39,7 +45,7 @@
         --tg-theme-destructive-text-color: #FF3B30;
         --tg-theme-section-bg-color: #FFFFFF;
         --tg-theme-accent-text-color: #007AFF;
-        --tg-theme-section_header_text_color: #6D6D72;
+        --tg-theme-section-header-text-color: #6D6D72;
         --tg-theme-section-separator-color: #C8C7CC;
         --text-confirm-color: #34C759;
         --quaternary-fill-background: rgba(116, 116, 128, 0.08);
@@ -61,7 +67,7 @@
         --tg-theme-destructive-text-color: #EB5545;
         --tg-theme-section-bg-color: #2C2C2E;
         --tg-theme-accent-text-color: #3E88F7;
-        --tg-theme-section_header_text_color: #8D8E93;
+        --tg-theme-section-header-text-color: #8D8E93;
         --tg-theme-section-separator-color: #545458;
         --text-confirm-color: #30D158;
         --quaternary-fill-background: rgba(118, 118, 128, 0.18);
@@ -78,9 +84,16 @@
 body {
  	margin: 0;
 	padding: 0;
-	font-family: -apple-system, system-ui, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	background-color: var(--tg-theme-secondary-bg-color);
+
+    &.ios {
+        font-family: -apple-system, system-ui, sans-serif;
+    }
+
+    &.android {
+        font-family: Roboto, system-ui, sans-serif;
+    }
 }
 
 body::-webkit-scrollbar, html::-webkit-scrollbar {
