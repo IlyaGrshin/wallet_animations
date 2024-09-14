@@ -24,24 +24,19 @@ const ThemeProvider = ({ children }) => {
       document.body.setAttribute('data-color-scheme', systemColorScheme);
     };
 
-    // Инициализация темы при загрузке: приоритет у Telegram
     updateThemeFromTelegram();
 
-    // Если Telegram не задает тему, проверяем системную тему
     if (!document.body.getAttribute('data-color-scheme')) {
       updateThemeFromSystem();
     }
 
-    // Подписка на события изменения темы Telegram
     WebApp.onEvent('themeChanged', () => {
       updateThemeFromTelegram();
     });
 
-    // Подписка на события изменения системной темы
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     mediaQuery.addEventListener('change', handleSystemThemeChange);
 
-    // Очистка обработчиков событий при размонтировании компонента
     return () => {
       WebApp.offEvent('themeChanged', updateThemeFromTelegram);
       mediaQuery.removeEventListener('change', handleSystemThemeChange);
