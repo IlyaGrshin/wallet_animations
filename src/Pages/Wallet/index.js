@@ -22,7 +22,7 @@ import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
 
 import { BackButton } from '@twa-dev/sdk/react';
 
-export function Morph({ children }) {
+function Morph({ children }) {
     function generateKeys(text) {
         const charCount = {};
         return text.split("").map((char, index) => {
@@ -70,15 +70,12 @@ function Balance() {
 
     useEffect(() => {
         const updateBalance = () => {
-            // Генерация случайного баланса в пределах тысячи
             const randomBalance = '$' + (Math.random() * 2000).toFixed(2);
             setBalance(randomBalance);
         };
 
-        // Обновляем баланс каждую секунду
         const interval = setInterval(updateBalance, 1000);
 
-        // Очищаем интервал при размонтировании компонента
         return () => clearInterval(interval);
     }, []);
 
@@ -86,7 +83,7 @@ function Balance() {
         <Card className='balance'>
             <Text variant='body' weight='regular'>Total Balance</Text>
             <div className='amount'>
-                <Morph>{balance}</Morph>
+                {<Morph>{balance}</Morph>}
             </div>
         </Card>
     );
@@ -134,42 +131,12 @@ function Assets() {
     const [expandedAssets, setExpandedAssets] = useState(false); 
 
     const assets = [
-        {
-            name: 'TON Space',
-            coins: '0 TON',
-            value: '$0.00', 
-            image: TonSpaceLogo,
-        },
-        {
-            name: 'Toncoin',
-            coins: '100 TON',
-            value: '$150.00',
-            image: ToncoinLogo,
-        },
-        {
-            name: 'Dollars',
-            coins: '50 TON',
-            value: '$50.00',
-            image: DollarsLogo,
-        },
-        {
-            name: 'Bitcoin',
-            coins: '0.000011 BTC',
-            value: '$50.64',
-            image: BitcoinLogo,
-        },
-        {
-            name: '1 Bitcoin',
-            coins: '0.000011 BTC',
-            value: '$50.64',
-            image: BitcoinLogo,
-        },
-        {
-            name: '2 Bitcoin',
-            coins: '0.000011 BTC',
-            value: '$50.64',
-            image: BitcoinLogo,
-        },
+        { name: 'TON Space', coins: '0 TON', value: '$0.00', image: TonSpaceLogo },
+        { name: 'Toncoin', coins: '100 TON', value: '$150.00', image: ToncoinLogo },
+        { name: 'Dollars', coins: '50 TON', value: '$50.00', image: DollarsLogo },
+        { name: 'Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
+        { name: '1 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
+        { name: '2 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
     ];
 
     const toggleAssets = () => {
@@ -201,7 +168,8 @@ function Assets() {
                     opacity: 0.9,
                     marginTop: '-60px',
                     zIndex: 10 - index,
-                    top: 0
+                    top: 0,
+                    backgroundColor: 'var(--tg-theme-secondary-bg-color)'
                 };
             } else if (index === 3) {
                 return {
@@ -209,7 +177,8 @@ function Assets() {
                     opacity: 0.8,
                     marginTop: '-70px',
                     zIndex: 10 - index,
-                    top: '9px'
+                    top: '9px',
+                    backgroundColor: 'var(--tg-theme-secondary-bg-color)'
                 };
             } else if (index > 3) {
                 return {
@@ -217,7 +186,8 @@ function Assets() {
                     opacity: 0,
                     marginTop: '-70px',
                     zIndex: 10 - index,
-                    top: '9px'
+                    top: '9px',
+                    backgroundColor: 'var(--tg-theme-secondary-bg-color)'
                 };
             }
         },
@@ -226,9 +196,39 @@ function Assets() {
             opacity: 1,
             marginTop: 0,
             zIndex: 10 - index,
-            top: 0
+            top: 0,
+            backgroundColor: 'var(--tg-theme-section-bg-color)'
         }),
     };
+
+    const itemVariantInside = {
+        collapsed: index => {
+            if (index > 1) {
+                return {
+                    opacity: 0
+                }
+            }
+        },
+        expanded: index => {
+            if (index > 1) {
+                return {
+                    opacity: 1
+                }
+            }
+        }
+    };
+
+    const assetColorFill = {
+        collapsed: index => {
+            if (index === 0 || index === 1) { return { opacity: 0 }}
+            if (index === 2) { return { opacity: 0.72 }}
+            if (index === 3) { return { opacity: 0.32 }}
+            if (index > 3) { return { opacity: 0 }}
+        },
+        expanded: index => {
+            return { opacity: 0 }
+        }
+    }
 
     return (
         <motion.div
@@ -247,19 +247,36 @@ function Assets() {
                         transition={{ type: 'spring', stiffness: 420, damping: 28 }}
                         whileTap={{ scale: 0.99 }}
                     >
-                        <Cell 
-                            start={ <Cell.Start type='Image' src={asset.image} /> }
-                            end={ <Cell.Text title={asset.value} /> }
-                            key={ `tx-${index}` }
+                        <motion.div 
+                            className='assetColorFill'
+                            variants={assetColorFill}
+                            custom={index}
+                            animate={expandedAssets ? 'expanded' : 'collapsed'}
+                            transition={{ ease: 'linear', duration: 0.15 }}
                         >
-                            <Cell.Text title={asset.name} descrpition={asset.coins} bold />
-                        </Cell>
+                        </motion.div>
+                        <motion.div
+                            variants={itemVariantInside}
+                            custom={index}
+                            transition={{ ease: 'linear', duration: 0.15 }}
+                            animate={expandedAssets ? 'expanded' : 'collapsed'}
+                            style={{ 'position': 'relative' }}
+                        >
+                            <Cell 
+                                start={ <Cell.Start type='Image' src={asset.image} /> }
+                                end={ <Cell.Text title={asset.value} /> }
+                                key={ `tx-${index}` }
+                            >
+                                <Cell.Text title={asset.name} descrpition={asset.coins} bold />
+                            </Cell>
+                        </motion.div>
                     </motion.div>
                 ))}
             </Card>
         </motion.div>
-    )
+    );
 }
+
 
 function TransactionList() {
     const txHistory = [
