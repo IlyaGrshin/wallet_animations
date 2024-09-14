@@ -66,7 +66,7 @@ function Assets() {
                 end={ <Cell.Text title={asset.value} /> }
                 key={ `tx-${index}` }
             >
-                <Cell.Text title={asset.name} descrpition={asset.price} bold />
+                <Cell.Text title={asset.name} description={asset.price} bold />
             </Cell>
         ))
     );
@@ -87,7 +87,7 @@ function Staking() {
                 end={ <Cell.Part type='Chevron' /> }
                 key={ `tx-${index}` }
             >
-                <Cell.Text title={asset.name} descrpition={asset.subtitle} bold />
+                <Cell.Text title={asset.name} description={asset.subtitle} bold />
             </Cell>
         ))
     );
@@ -136,10 +136,10 @@ function Activity() {
             {items.map((item, index) => (
                 <Cell 
                     start={ <Cell.Start type='Icon' /> }
-                    end={ <Cell.Text title={item.amount} descrpition={item.time} /> }
+                    end={ <Cell.Text title={item.amount} description={item.time} /> }
                     key={ `tx-${index}` }
                 >
-                    <Cell.Text title={item.name} descrpition={item.address} bold />
+                    <Cell.Text title={item.name} description={item.address} bold />
                 </Cell>
             ))}
             <Cell

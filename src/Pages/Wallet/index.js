@@ -246,7 +246,7 @@ function Assets() {
                         end={<Cell.Text title={asset.value} />}
                         key={`tx-${index}`}
                     >
-                        <Cell.Text title={asset.name} descrpition={asset.coins} bold />
+                        <Cell.Text title={asset.name} description={asset.coins} bold />
                     </Cell>
                     </motion.div>
                 </motion.div>
@@ -293,10 +293,10 @@ function TransactionList() {
                 {txHistory.map((tx, index) => (
                     <Cell 
                         start={ <Cell.Start type='Icon' /> }
-                        end={ <Cell.Text title={tx.value} descrpition={tx.status} /> }
+                        end={ <Cell.Text title={tx.value} description={tx.status} /> }
                         key={ `tx-${index}` }
                     >
-                        <Cell.Text title={tx.name} descrpition={tx.date} bold />
+                        <Cell.Text title={tx.name} description={tx.date} bold />
                     </Cell>
                 ))}
             </SectionList.Item>
