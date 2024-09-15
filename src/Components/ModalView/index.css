@@ -10,9 +10,9 @@
     align-items: flex-end;
     z-index: 1000;
     will-change: opacity;
-  }
+}
   
-  .modal {
+.modal {
     background: var(--tg-theme-section-bg-color);
     color: var(--tg-theme-text-color);
     padding: 8px 16px;
@@ -20,5 +20,5 @@
     width: 100%;
     min-height: 65dvh;
     will-change: transform, opacity;
-  }
+}
   
