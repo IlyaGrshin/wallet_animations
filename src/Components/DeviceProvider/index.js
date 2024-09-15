@@ -21,7 +21,7 @@ export const android = platform[telegramPlatform] === 'android';
 
 function DeviceProvider() {
     useEffect(() => {
-        const platformClass = platform[telegramPlatform] || 'android';
+        const platformClass = platform[telegramPlatform] || 'apple';
         document.body.setAttribute('class', platformClass);
     }, []);
 

@@ -13,10 +13,6 @@
         transform: translateX(0%);
     }
 
-    &[data-state="false"]::after {
-        transform: translateX(-5%);
-    }
-
     &[data-state="true"]::after {
         transform: translateX(75%);
     }
@@ -30,7 +26,11 @@
             width: 27px;
             height: 27px;
             filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.10));
-            border: 2px solid var(--tg-theme-secondary-bg-color);
+            border: 0;
+        }
+
+        &[data-state="false"]::after {
+            transform: translateX(0%);
         }
 
         &[data-state="true"]::after {
@@ -52,6 +52,10 @@
             height: 16px;
             filter: 0;
             border: 2px solid var(--tg-theme-section-separator-color);
+        }
+
+        &[data-state="false"]::after {
+            transform: translateX(-5%);
         }
 
         &[data-state="true"]::after {
