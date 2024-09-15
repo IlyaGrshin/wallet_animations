@@ -102,9 +102,9 @@ Cell.Text = ({ type, title, description, bold }) => {
 Cell.End = ({ label, caption, type }) => {
 	return (
 		<>
-				<Text className='label' variant='body' weight='regular'>
-					{label}
-				</Text>
+			<Text className='label' variant='body' weight='regular'>
+				{label}
+			</Text>
 			{caption && (
 				<Text className='caption' variant='subheadline2' weight='regular'>
 					{caption}
