@@ -34,7 +34,7 @@
 		flex-grow: 1;
 		border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
 
-		body.ios & {
+		body.apple & {
 			padding: 10px var(--side-padding) 10px 0;
 		}
 
@@ -103,7 +103,7 @@
 		color: var(--tg-theme-subtitle-text-color);
 	}
 
-	body.ios & {
+	body.apple & {
 		padding-left: var(--side-padding);
 		min-height: 44px;
 

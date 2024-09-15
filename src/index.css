@@ -7,7 +7,7 @@
 }
 
 :root {
-    .ios {
+    .apple {
         --side-padding: 16px;
     }
 
@@ -87,7 +87,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	background-color: var(--tg-theme-secondary-bg-color);
 
-    &.ios {
+    &.apple {
         font-family: -apple-system, system-ui, sans-serif;
     }
 

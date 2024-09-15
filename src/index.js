@@ -5,10 +5,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ThemeProvider from './Components/ThemeProvider';
+import DeviceProvider from './Components/DeviceProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
+        <DeviceProvider />
         <ThemeProvider>
             <Router basename='/'>
                 <App />

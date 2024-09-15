@@ -18,7 +18,7 @@
         }
     }
 
-    body.ios & {
+    body.apple & {
         padding: 16px;
         gap: 24px;
 
