@@ -1,43 +1,60 @@
 .DropdownContainer {
     position: relative;
     display: inline-block;
-}
 
-.DropdownContainer .selected {
-    padding: 12px 0;
-    height: 100%;
+    .selected {
+        padding: 12px 0;
+        height: 100%;
+    }
 }
 
 .DropdownMenu {
     position: absolute; 
     width: 250px;
     transform-origin: 100% 0%;
-    background-color: var(--background-material-regular-color-1);
-    background-blend-mode: var(--background-material-regular-blend-mode-1);
-    box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.20);
-    backdrop-filter: blur(25px);
-    border-radius: 12px;
     overflow: hidden;
     z-index: 1000;
-}
 
-.DropdownMenu > .item {
-    background-color: var(--background-material-regular-color-2);
-    background-blend-mode: var(--background-material-regular-blend-mode-2);
-    padding: 11px 16px;
-    cursor: pointer;
-    border-bottom: 0.33px solid var(--separator-non-opaque);
-    color: var(--tg-theme-text-color);
-}
+    .item {
+        cursor: pointer;
+        color: var(--tg-theme-text-color);
 
-.DropdownMenu > .item:hover {
-    background-color: rgba(120, 120, 128, 0.12);
-}
+        &:hover {
+            background-color: rgba(120, 120, 128, 0.12);
+        }
 
-/* .DropdownMenu > .item.selected {
-    background-color: rgba(120, 120, 128, 0.12);
-} */
+        /* &.selected {
+            background-color: rgba(120, 120, 128, 0.12);
+        } */
 
-.DropdownMenu > .item:last-child {
-    border-bottom: 0;
+        &:last-child {
+            border-bottom: 0;
+        }
+    }
+
+    body.apple & {
+        background-color: var(--background-material-regular-color-1);
+        background-blend-mode: var(--background-material-regular-blend-mode-1);
+        box-shadow: 0px 0px 32px 0px rgba(0, 0, 0, 0.20);
+        backdrop-filter: blur(25px);
+        border-radius: 12px;
+        
+        .item { 
+            background-color: var(--background-material-regular-color-2);
+            background-blend-mode: var(--background-material-regular-blend-mode-2);
+            border-bottom: 0.33px solid var(--separator-non-opaque);
+            padding: 11px 16px;
+        }
+    }
+
+    body.android & {
+        background-color: var(--tg-theme-section-bg-color);
+        box-shadow: 0px 0.33px 1px 0.5px rgba(0, 0, 0, 0.12);
+        border-radius: 8px;
+
+        .item {
+            border-bottom: 0;
+            padding: 10px 16px;
+        }
+    }
 }

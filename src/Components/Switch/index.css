@@ -1,28 +1,65 @@
 .Switch {
     display: flex;
-    width: 51px;
-    padding: 2px;
-    background-color: var(--tg-theme-secondary-bg-color);
     border-radius: 16px;
     justify-content: flex-start;
+    align-items: center;
     transition: all ease 250ms;
-}
 
-.Switch::after {
-    transition: all ease 250ms;
-    content: '';
-    width: 27px;
-    height: 27px;
-    background-color: white;
-    border-radius: 50%;
-    transform: translateX(0%);
-    filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.10));
-}
+    &::after {
+        transition: all ease 250ms;
+        content: '';
+        background-color: white;
+        border-radius: 50%;
+        transform: translateX(0%);
+    }
 
-.Switch[data-state="true"] {
-    background-color: #34C759;
-}
+    &[data-state="false"]::after {
+        transform: translateX(-5%);
+    }
 
-.Switch[data-state="true"]::after {
-    transform: translateX(75%);
+    &[data-state="true"]::after {
+        transform: translateX(75%);
+    }
+
+    body.apple & {
+        width: 51px;
+        padding: 2px;
+        background-color: var(--tg-theme-secondary-bg-color);
+
+        &::after {
+            width: 27px;
+            height: 27px;
+            filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.10));
+            border: 2px solid var(--tg-theme-secondary-bg-color);
+        }
+
+        &[data-state="true"]::after {
+            border-color: var(--tg-theme-accent-text-color);
+        }
+
+        &[data-state="true"] {
+            background-color: var(--text-confirm-color);
+        }
+    }
+
+    body.android & {
+        width: 32px;
+        height: 14px;
+        background-color: var(--tg-theme-section-separator-color);
+
+        &::after {
+            width: 16px;
+            height: 16px;
+            filter: 0;
+            border: 2px solid var(--tg-theme-section-separator-color);
+        }
+
+        &[data-state="true"]::after {
+            border-color: var(--tg-theme-button-color);
+        }
+
+        &[data-state="true"] {
+            background-color: var(--tg-theme-button-color);
+        }
+    }
 }

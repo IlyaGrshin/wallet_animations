@@ -143,11 +143,6 @@ function Assets() {
         setExpandedAssets(!expandedAssets);
     };
 
-    const containerVariants = {
-        expanded: { padding: '4px 16px 24px 16px' },
-        collapsed: { padding: '4px 16px 12px 16px' },
-    };
-
     const getItemVariant = (index) => {
         const baseVariant = {
             scale: 1,
@@ -219,7 +214,7 @@ function Assets() {
         <AnimatePresence initial={false}>
             <motion.div
                 animate={expandedAssets ? 'expanded' : 'collapsed'}
-                variants={containerVariants}
+                className={expandedAssets ? 'expanded' : 'collapsed'}
                 onClick={toggleAssets}
             >
                 <Card className="assets">

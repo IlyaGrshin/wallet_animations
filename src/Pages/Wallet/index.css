@@ -4,86 +4,139 @@
 
 .balance {
     display: flex;
-    padding: 32px 0px 20px 0px;
+    padding: 32px 0 20px 0;
     flex-direction: column;
     align-items: center;
     gap: 2px;
     color: var(--tg-theme-text-color);
-}
 
-.balance .amount {
-    font-family: ui-rounded, -apple-system, system-ui, sans-serif;
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--tg-theme-text-color);
-    font-variant-numeric: lining-nums tabular-nums;
-}
+    .amount {
+        font-family: ui-rounded, -apple-system, system-ui, sans-serif;
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--tg-theme-text-color);
+        font-variant-numeric: lining-nums tabular-nums;
 
-.balance .amount > :first-child {
-    color: var(--tg-theme-subtitle-text-color);
-}
+        :first-child {
+            color: var(--tg-theme-subtitle-text-color);
+        }
 
-.balance .amount .balanceDigit {
-    display: inline-block;
+        .balanceDigit {
+            display: inline-block;
+        }
+    }
+
+    body.android & {
+        background-color: var(--tg-theme-section-bg-color);
+        padding: 28px 0 24px 0;
+
+        .amount {
+            font-family: 'Roboto', system-ui, sans-serif;
+            font-size: 44px;
+            font-weight: 500;
+        }
+    }
 }
 
 .buttons {
     display: flex;
     flex-direction: row;
     padding: 8px 12px;
+
+    .button {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1 0 0;
+        justify-content: center;
+        align-items: center;
+        color: var(--tg-theme-accent-text-color);
+    }
+
+    svg, path {
+        fill: var(--tg-theme-accent-text-color);
+    }
+
+    body.android & {
+        background-color: var(--tg-theme-section-bg-color);
+        box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
+        padding: 0 8px 8px;
+    }
 }
 
-.buttons .button {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1 0 0;
-    justify-content: center;
-    align-items: center;
-    color: var(--tg-theme-accent-text-color);
+.collapsed {
+    body.apple & {
+        padding: 4px 16px 12px 16px;
+    }
+
+    body.android & {
+        padding: 0;
+        padding-bottom: 38px;
+    }
 }
 
-.buttons .button svg,
-.buttons .button path {
-    fill: var(--tg-theme-accent-text-color);
+.expanded {
+    body.apple & {
+        padding: 4px 16px 24px 16px;
+    }
+
+    body.android & {
+        padding: 0;
+    }
 }
 
 .assets {
     display: flex;
     flex-direction: column;
     gap: 6px;
-}
 
-.assets .asset {
-    position: relative;
-    background-color: var(--tg-theme-section-bg-color);
-    padding: 2px 0px;
-    border-radius: 14px;
-    border: 0.33px solid var(--tg-theme-secondary-bg-color);
-    top: 0;
-    overflow: hidden;
-    z-index: 2;
-}
+    .asset {
+        position: relative;
+        background-color: var(--tg-theme-section-bg-color);
+        padding: 2px 0px;
+        border-radius: 14px;
+        border: 0.33px solid var(--tg-theme-secondary-bg-color);
+        top: 0;
+        overflow: hidden;
+        z-index: 2;
+    }
 
-.asset .ListItem .body,
-.asset .ListItem .right {
-    border-bottom: 0;
-}
+    .ListItem .body,
+    .ListItem .right {
+        border-bottom: 0;
+    }
 
-.assets .asset .assetColorFill {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    background-color: var(--tg-theme-section-bg-color);
-    z-index: 0;
+    .assetColorFill {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        background-color: var(--tg-theme-section-bg-color);
+        z-index: 0;
+    }
+
+    body.android & {
+        gap: 0;
+        margin: 12px 0;
+
+        .asset {
+            border-radius: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        .ListItem .body,
+        .ListItem .right {
+            border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
+        }
+    }
 }
 
 .transactions {
     background-color: var(--tg-theme-section-bg-color);
-}
 
-.transactions .ListItem:last-child .body,
-.transactions .ListItem:last-child .right {
-    border-bottom: 0;
+    .ListItem:last-child .body,
+    .ListItem:last-child .right {
+        border-bottom: 0;
+    }
 }
