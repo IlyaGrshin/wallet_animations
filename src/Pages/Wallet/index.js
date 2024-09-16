@@ -7,6 +7,7 @@ import Card from '../../Components/Card';
 import Text from '../../Components/Text';
 import SectionList from '../../Components/SectionList';
 import Cell from '../../Components/Cell';
+import { apple } from '../../Components/DeviceProvider'
 
 import './index.css';
 
@@ -86,6 +87,10 @@ function Balance() {
                     variant: 'body',
                     weight: 'regular'
                 }}
+                material={{
+                    variant: 'body1',
+                    weight: 'regular'
+                }}
             >
                 Total Balance
             </Text>
@@ -131,6 +136,10 @@ function ActionButtons() {
                             weight: 'semibold',
                             rounded: true
                         }} 
+                        material={{
+                            variant: 'subtitle2',
+                            weight: 'medium'
+                        }}
                     >
                         {button.name}
                     </Text>
@@ -170,37 +179,44 @@ function Assets() {
             return baseVariant;
         }
 
-    switch (index) {
-        case 0:
-        case 1:
-            return baseVariant;
-        case 2:
-            return {
-                ...baseVariant,
-                scale: 0.91,
-                opacity: 0.9,
-                marginTop: '-60px',
-                backgroundColor: 'var(--tg-theme-secondary-bg-color)',
-        };
-        case 3:
-        return {
-                ...baseVariant,
-                scale: 0.82,
-                opacity: 0.8,
-                marginTop: '-70px',
-                top: '9px',
-                backgroundColor: 'var(--tg-theme-secondary-bg-color)',
+
+        const scaleValueDefault = apple ? 0.82 : 1
+        const scaleValueArray = apple
+            ? [1, 1, 0.91, 0.82]
+            : [1, 1, 1, 1]
+
+
+        switch (index) {
+            case 0:
+            case 1:
+                return baseVariant;
+            case 2:
+                return {
+                    ...baseVariant,
+                    scale: scaleValueArray[index],
+                    opacity: 0.9,
+                    marginTop: '-60px',
+                    backgroundColor: 'var(--tg-theme-secondary-bg-color)',
             };
-        default:
+            case 3:
             return {
-                ...baseVariant,
-                scale: 0.82,
-                opacity: 0,
-                marginTop: '-70px',
-                top: '9px',
-                backgroundColor: 'var(--tg-theme-secondary-bg-color)',
-            };
-        }
+                    ...baseVariant,
+                    scale: scaleValueArray[index],
+                    opacity: 0.8,
+                    marginTop: '-70px',
+                    top: '9px',
+                    backgroundColor: 'var(--tg-theme-secondary-bg-color)',
+                };
+            default:
+                return {
+                    ...baseVariant,
+                    scale: scaleValueDefault,
+                    opacity: 0,
+                    marginTop: '-70px',
+                    top: '9px',
+                    backgroundColor: 'var(--tg-theme-secondary-bg-color)',
+                };
+            }
     };
 
     const getItemVariantInside = (index) => {
@@ -223,6 +239,14 @@ function Assets() {
         return { opacity: opacities[index] || 0 };
     };
 
+    const springValue = apple
+        ? { type: 'spring', stiffness: 420, damping: 28 }
+        : { type: 'spring', stiffness: 800, damping: 60, mass: 1 }
+
+    const tapValue = apple
+        ? { scale: 0.99 }
+        : { scale: 1 }
+
     return (
         <AnimatePresence initial={false}>
             <motion.div
@@ -236,8 +260,8 @@ function Assets() {
                         className="asset"
                         key={`asset-${index}`}
                         animate={getItemVariant(index)}
-                        transition={{ type: 'spring', stiffness: 420, damping: 28 }}
-                        whileTap={{ scale: 0.99 }}
+                        transition={springValue}
+                        whileTap={tapValue}
                     >
                         <motion.div
                             className="assetColorFill"

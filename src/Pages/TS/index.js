@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 import PageTransition from "../../Components/PageTransition"
 
@@ -25,6 +26,9 @@ function Profile() {
                         apple={{
                             variant: 'body'
                         }}
+                        material={{
+                            variant: 'body1'
+                        }}
                         className='label'
                     >
                         Your TON Space
@@ -35,6 +39,9 @@ function Profile() {
                             weight: 'bold',
                             rounded: true
                         }}
+                        material={{
+                            variant: 'headline5'
+                        }}
                         className='amount'
                     >
                         $350.57
@@ -42,10 +49,17 @@ function Profile() {
                 </div>
             </div>
             <div className="buttons">
-                <div className='button'>
+                <motion.div 
+                    className='button'
+                    whileTap={{ scale: 0.97 }}
+                >
                     <div className='icon'></div>
                     <Text 
                         apple={{
+                            variant: 'caption2',
+                            weight: 'medium'
+                        }}
+                        material={{
                             variant: 'caption2',
                             weight: 'medium'
                         }}
@@ -53,11 +67,18 @@ function Profile() {
                     >
                         Send
                     </Text>
-                </div>
-                <div className='button'>
+                </motion.div>
+                <motion.div 
+                    className='button'
+                    whileTap={{ scale: 0.97 }}
+                >
                     <div className='icon'></div>
                     <Text 
                         apple={{
+                            variant: 'caption2',
+                            weight: 'medium'
+                        }}
+                        material={{
                             variant: 'caption2',
                             weight: 'medium'
                         }}
@@ -65,11 +86,18 @@ function Profile() {
                     >
                         Deposit
                     </Text>
-                </div>
-                <div className='button'>
+                </motion.div>
+                <motion.div 
+                    className='button'
+                    whileTap={{ scale: 0.97 }}
+                >
                     <div className='icon'></div>
                     <Text 
                         apple={{
+                            variant: 'caption2',
+                            weight: 'medium'
+                        }}
+                        material={{
                             variant: 'caption2',
                             weight: 'medium'
                         }}
@@ -77,7 +105,7 @@ function Profile() {
                     >
                         Swap
                     </Text>
-                </div>
+                </motion.div>
             </div>
         </div>
     )
@@ -139,6 +167,9 @@ function Collectibles() {
             <Text 
                 apple={{
                     variant: 'body'
+                }}
+                material={{
+                    variant: 'body1'
                 }}
             >
                 As you get collectibles, they will appear here.

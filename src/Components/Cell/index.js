@@ -92,6 +92,10 @@ Cell.Text = ({ type, title, description, bold }) => {
 					variant: 'body',
 					weight: weight
 				}}
+				material={{
+					variant: 'body1',
+					weight: weight
+				}}
 				className={name} 
 			>
   				{title}
@@ -100,6 +104,10 @@ Cell.Text = ({ type, title, description, bold }) => {
 				<Text 
 					apple={{
 						variant: 'subheadline2',
+						weight: 'regular'
+					}}
+					material={{
+						variant: 'subtitle2',
 						weight: 'regular'
 					}}
 					className='caption' 
@@ -119,6 +127,10 @@ Cell.End = ({ label, caption, type }) => {
 					variant: 'body', 
 					weight: 'regular'
 				}}
+				material={{
+					variant: 'body1',
+					weight: 'regular'
+				}}
 				className='label' 
 			>
 				{label}
@@ -127,6 +139,10 @@ Cell.End = ({ label, caption, type }) => {
 				<Text 
 					apple={{
 						variant: 'subheadline2',
+						weight: 'regular'
+					}}
+					material={{
+						variant: 'subtitle2',
 						weight: 'regular'
 					}}
 					className='caption' 

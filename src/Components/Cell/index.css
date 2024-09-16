@@ -32,14 +32,6 @@
 		justify-content: center;
 		flex-grow: 1;
 		border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
-
-		body.apple & {
-			padding: 10px var(--side-padding) 10px 0;
-		}
-
-		body.material & {
-			padding: 9px 12px 9px 0;
-		}
 	}
 
 	.end {
@@ -109,6 +101,10 @@
 			}
 		}
 
+		.body {
+			padding: 10px var(--side-padding) 10px 0;
+		}
+
 		.end {
 			.dropdown::after {
 				content: '';
@@ -138,6 +134,11 @@
 				height: 42px;
 				margin-left: -6px;
 			}
+		}
+
+		.body {
+			padding: 9px 12px 9px 0;
+			gap: 2px;
 		}
 	}
 }

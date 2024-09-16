@@ -71,7 +71,15 @@
 
     body.material & {
         padding: 0;
-        padding-bottom: 38px;
+        padding-bottom: 46px;
+
+
+        .asset:nth-child(2) {
+            .Cell:last-child .body,
+            .Cell:last-child .end {
+                border-bottom: 0;
+            }
+        }
     }
 }
 
@@ -125,9 +133,16 @@
             border: 0;
         }
 
-        .ListItem .body,
-        .ListItem .right {
+        .Cell:last-child .body,
+        .Cell:last-child .end {
             border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
+        }
+
+        .asset:last-child {
+            .Cell:last-child .body,
+            .Cell:last-child .end {
+                border-bottom: 0;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion'; // Импортируем фреймер
+import { motion, AnimatePresence } from 'framer-motion';
+import Text from '../Text'
 
 import './index.css';
 
@@ -81,7 +82,19 @@ const DropdownMenu = ({ items }) => {
                                     onClick={() => handleSelectItem(item)}
                                     className={item === selectedItem ? 'item selected' : 'item'}
                                 >
-                                    {item}
+                                    <Text
+                                        apple={{
+                                            variant: 'body'
+                                        }}
+                                        material={{
+                                            variant: 'body1'
+                                        }}
+                                        style={{
+                                            padding: '2px 0'
+                                        }}
+                                    >
+                                        {item}
+                                    </Text>
                                 </div>
                             ))}
                         </motion.div>,

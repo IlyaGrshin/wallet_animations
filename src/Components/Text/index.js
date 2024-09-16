@@ -38,8 +38,8 @@ Text.propTypes = {
         caps: PropTypes.bool,
     }),
     material: PropTypes.shape({
-        variant: PropTypes.string,
-        weight: PropTypes.string,
+        variant: PropTypes.oneOf(['headline5', 'headline6', 'body1', 'subtitle1', 'button1', 'subtitle2']),
+        weight: PropTypes.oneOf(['regular', 'medium']),
         caps: PropTypes.bool,
     }),
     as: PropTypes.elementType

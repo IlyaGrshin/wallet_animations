@@ -11,6 +11,9 @@ function SectionHeader({ type, title, value }) {
 							variant: 'title3',
 							weight: 'bold'
 						}}
+						material={{
+							variant: 'headline6'
+						}}
 					>
 						{title}
 					</Text>
@@ -19,6 +22,10 @@ function SectionHeader({ type, title, value }) {
 							apple={{
 								variant: 'title3',
 								weight: 'bold'
+							}}
+							material={{
+								variant: 'body1',
+								weight: 'regular'
 							}}
 						>
 							{value}
@@ -32,7 +39,10 @@ function SectionHeader({ type, title, value }) {
 					<Text 
 						apple={{
 							variant: 'footnote'
-							}}
+						}}
+						material={{
+							variant: 'subtitle2'
+						}}
 						>
 						{title}
 					</Text>
@@ -46,6 +56,9 @@ function SectionHeader({ type, title, value }) {
 							variant: 'footnote',
 							caps: true
 						}} 
+						material={{
+							variant: 'button1'
+						}}
 					>
 						{title}
 					</Text>
@@ -53,6 +66,10 @@ function SectionHeader({ type, title, value }) {
 						<Text 
 							apple={{
 								variant: 'footnote'
+							}}
+							material={{
+								variant: 'subtitle1',
+								weight: 'regular'
 							}}
 						>
 							{value}
