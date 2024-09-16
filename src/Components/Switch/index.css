@@ -42,7 +42,7 @@
         }
     }
 
-    body.android & {
+    body.material & {
         width: 32px;
         height: 14px;
         background-color: var(--tg-theme-section-separator-color);

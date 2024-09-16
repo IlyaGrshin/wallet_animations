@@ -10,7 +10,7 @@
         color: var(--tg-theme-text-color);
     }
 
-    body.android & {
+    body.material & {
         padding: 19px 20px 3px;
         background-color: var(--tg-theme-section-bg-color);
 

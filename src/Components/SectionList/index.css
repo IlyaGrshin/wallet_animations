@@ -27,7 +27,7 @@
         }
     }
 
-    body.android & {
+    body.material & {
         padding: 0px;
         gap: 12px;
 

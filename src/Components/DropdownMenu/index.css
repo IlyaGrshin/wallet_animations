@@ -47,7 +47,7 @@
         }
     }
 
-    body.android & {
+    body.material & {
         background-color: var(--tg-theme-section-bg-color);
         box-shadow: 0px 0.33px 1px 0.5px rgba(0, 0, 0, 0.12);
         border-radius: 8px;

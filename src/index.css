@@ -11,7 +11,7 @@
         --side-padding: 16px;
     }
 
-    .android {
+    .material {
         --side-padding: 20px;
     }
 }
@@ -94,7 +94,7 @@ body {
         font-family: -apple-system, system-ui, sans-serif;
     }
 
-    &.android {
+    &.material {
         font-family: Roboto, system-ui, sans-serif;
     }
 }
