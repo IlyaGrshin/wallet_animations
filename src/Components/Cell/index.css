@@ -140,5 +140,9 @@
 			padding: 9px 12px 9px 0;
 			gap: 2px;
 		}
+
+		.end {
+			gap: 2px;
+		}
 	}
 }
