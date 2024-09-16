@@ -40,7 +40,6 @@ Text.propTypes = {
     material: PropTypes.shape({
         variant: PropTypes.string,
         weight: PropTypes.string,
-        rounded: PropTypes.bool,
         caps: PropTypes.bool,
     }),
     as: PropTypes.elementType
