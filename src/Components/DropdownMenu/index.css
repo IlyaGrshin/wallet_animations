@@ -26,10 +26,6 @@
         /* &.selected {
             background-color: rgba(120, 120, 128, 0.12);
         } */
-
-        &:last-child {
-            border-bottom: 0;
-        }
     }
 
     body.apple & {
@@ -44,6 +40,10 @@
             background-blend-mode: var(--background-material-regular-blend-mode-2);
             border-bottom: 0.33px solid var(--separator-non-opaque);
             padding: 11px 16px;
+
+            &:last-child {
+                border-bottom: 0;
+            }
         }
     }
 

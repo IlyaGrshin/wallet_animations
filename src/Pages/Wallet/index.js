@@ -44,7 +44,7 @@ function Morph({ children }) {
                 <motion.span
                     key={key}
                     layoutId={key}
-                    className='balanceDigit'
+                    style={{ display: 'inline-block' }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -159,7 +159,7 @@ function Assets() {
         { name: 'Dollars', coins: '50 USDT', value: '$50.00', image: DollarsLogo },
         { name: 'Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
         { name: '1 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
-    { name: '2 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
+        { name: '2 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
     ];
 
     const toggleAssets = () => {
