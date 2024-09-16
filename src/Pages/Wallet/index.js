@@ -91,6 +91,7 @@ function Balance() {
                     variant: 'body1',
                     weight: 'regular'
                 }}
+                className='label'
             >
                 Total Balance
             </Text>

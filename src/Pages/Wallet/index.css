@@ -10,6 +10,16 @@
     gap: 2px;
     color: var(--tg-theme-text-color);
 
+    .label {
+        body.apple & {
+            color: var(--tg-theme-text-color);
+        }
+
+        body.material & {
+            color: var(--tg-theme-subtitle-text-color);
+        }
+    }
+
     .amount {
         font-family: ui-rounded, -apple-system, system-ui, sans-serif;
         font-size: 48px;
@@ -57,10 +67,22 @@
         fill: var(--tg-theme-accent-text-color);
     }
 
+    body.apple & {
+        svg, path {
+            width: 36px;
+            height: 36px;
+        }
+    }
+
     body.material & {
         background-color: var(--tg-theme-section-bg-color);
         box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
         padding: 0 8px 8px;
+
+        svg, path {
+            width: 32px;
+            height: 32px;
+        }
     }
 }
 
@@ -71,13 +93,13 @@
 
     body.material & {
         padding: 0;
-        padding-bottom: 46px;
+        padding-bottom: 44px;
 
 
         .asset:nth-child(2) {
             .Cell:last-child .body,
             .Cell:last-child .end {
-                border-bottom: 0;
+                border-bottom: 0.33px solid transparent;
             }
         }
     }
