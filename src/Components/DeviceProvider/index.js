@@ -15,13 +15,14 @@ let platform = {
 
 
 let telegramPlatform = WebApp.platform
+let basePlatform = 'apple'
 
-export const ios = platform[telegramPlatform] === 'apple';
-export const material = platform[telegramPlatform] === 'material';
+export const apple = (platform[telegramPlatform] || basePlatform) === 'apple';
+export const material = (platform[telegramPlatform] || basePlatform) === 'material';
 
 function DeviceProvider() {
     useEffect(() => {
-        const platformClass = platform[telegramPlatform] || 'apple';
+        const platformClass = platform[telegramPlatform] || basePlatform;
         document.body.setAttribute('class', platformClass);
     }, []);
 

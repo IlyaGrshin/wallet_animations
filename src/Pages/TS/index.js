@@ -21,22 +21,62 @@ function Profile() {
             <div className='data'>
                 <div className='avatar' style={{ backgroundImage: `url(${Avatar})` }}></div>
                 <div className='balances'>
-                    <Text className='label' variant='body'>Your TON Space</Text>
-                    <Text className='amount' variant='title1' weight='bold' rounded>$350.57</Text>
+                    <Text 
+                        apple={{
+                            variant: 'body'
+                        }}
+                        className='label'
+                    >
+                        Your TON Space
+                    </Text>
+                    <Text 
+                        apple={{
+                            variant: 'title1',
+                            weight: 'bold',
+                            rounded: true
+                        }}
+                        className='amount'
+                    >
+                        $350.57
+                    </Text>
                 </div>
             </div>
             <div className="buttons">
                 <div className='button'>
                     <div className='icon'></div>
-                    <Text className='label' variant='caption2' weight='medium'>Send</Text>
+                    <Text 
+                        apple={{
+                            variant: 'caption2',
+                            weight: 'medium'
+                        }}
+                        className='label'
+                    >
+                        Send
+                    </Text>
                 </div>
                 <div className='button'>
                     <div className='icon'></div>
-                    <Text className='label' variant='caption2' weight='medium'>Deposit</Text>
+                    <Text 
+                        apple={{
+                            variant: 'caption2',
+                            weight: 'medium'
+                        }}
+                        className='label'
+                    >
+                        Deposit
+                    </Text>
                 </div>
                 <div className='button'>
                     <div className='icon'></div>
-                    <Text className='label' variant='caption2' weight='medium'>Swap</Text>
+                    <Text 
+                        apple={{
+                            variant: 'caption2',
+                            weight: 'medium'
+                        }}
+                        className='label'
+                    >
+                        Swap
+                    </Text>
                 </div>
             </div>
         </div>
@@ -96,7 +136,11 @@ function Staking() {
 function Collectibles() {
     return (
         <div className='placeholder'>
-            <Text variant='body'>
+            <Text 
+                apple={{
+                    variant: 'body'
+                }}
+            >
                 As you get collectibles, they will appear here.
             </Text>
         </div>

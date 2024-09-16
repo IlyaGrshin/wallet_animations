@@ -87,11 +87,23 @@ Cell.Text = ({ type, title, description, bold }) => {
 
 	return (
 		<>
-			<Text className={name} variant='body' weight={weight}>
+			<Text 
+				apple={{
+					variant: 'body',
+					weight: weight
+				}}
+				className={name} 
+			>
   				{title}
 			</Text>
 			{description && (
-				<Text className='caption' variant='subheadline2' weight='regular'>
+				<Text 
+					apple={{
+						variant: 'subheadline2',
+						weight: 'regular'
+					}}
+					className='caption' 
+				>
 					{description}
 				</Text>
 			)}
@@ -102,11 +114,23 @@ Cell.Text = ({ type, title, description, bold }) => {
 Cell.End = ({ label, caption, type }) => {
 	return (
 		<>
-			<Text className='label' variant='body' weight='regular'>
+			<Text 
+				apple={{
+					variant: 'body', 
+					weight: 'regular'
+				}}
+				className='label' 
+			>
 				{label}
 			</Text>
 			{caption && (
-				<Text className='caption' variant='subheadline2' weight='regular'>
+				<Text 
+					apple={{
+						variant: 'subheadline2',
+						weight: 'regular'
+					}}
+					className='caption' 
+				>
 					{caption}
 				</Text>
 			)}

@@ -1,12 +1,26 @@
 import PropTypes from 'prop-types'
 import './index.css'
+import { apple } from '../DeviceProvider'
 
-const Text = ({ as: Component = 'div', variant, weight, caps = false, rounded = false, children, ...props }) => {
+const Text = ({ 
+        as: Component = 'div', 
+        apple: appleProps,
+        material: materialProps,
+        variant, 
+        weight, 
+        caps = false, 
+        rounded = false, 
+        children, 
+        ...props 
+    }) => {
+
+    const platformProps = apple ? appleProps : materialProps
+
     const dynamicProps = {
-        ...(variant && { variant }),
-        ...(weight && { weight }),
-        ...(rounded && { 'data-rounded': true }),
-        ...(caps && { 'data-caps': true }),
+        ...(platformProps?.variant && { variant: platformProps.variant }),
+        ...(platformProps?.weight && { weight: platformProps.weight }),
+        ...(platformProps.rounded && { 'data-rounded': true }),
+        ...(platformProps.caps && { 'data-caps': true }),
     };
 
     return (
@@ -17,10 +31,19 @@ const Text = ({ as: Component = 'div', variant, weight, caps = false, rounded = 
 }
 
 Text.propTypes = {
-    variant: PropTypes.oneOf(['title1', 'title3', 'body', 'subheadline2', 'footnote', 'caption2']),
-    weight: PropTypes.oneOf(['regular', 'medium', 'semibold', 'bold']),
-    rounded: PropTypes.bool,
-    uppercase: PropTypes.bool
+    apple: PropTypes.shape({
+        variant: PropTypes.oneOf(['title1', 'title3', 'body', 'subheadline2', 'footnote', 'caption2']),
+        weight: PropTypes.oneOf(['regular', 'medium', 'semibold', 'bold']),
+        rounded: PropTypes.bool,
+        caps: PropTypes.bool,
+    }),
+    material: PropTypes.shape({
+        variant: PropTypes.string,
+        weight: PropTypes.string,
+        rounded: PropTypes.bool,
+        caps: PropTypes.bool,
+    }),
+    as: PropTypes.elementType
 }
 
 export default Text

@@ -81,7 +81,14 @@ function Balance() {
 
     return (
         <Card className='balance'>
-            <Text variant='body' weight='regular'>Total Balance</Text>
+            <Text 
+                apple={{
+                    variant: 'body',
+                    weight: 'regular'
+                }}
+            >
+                Total Balance
+            </Text>
             <div className='amount'>
                 {<Morph>{balance}</Morph>}
             </div>
@@ -118,7 +125,13 @@ function ActionButtons() {
                     whileTap={{ scale: 0.90 }}
                 >
                     {button.icon}
-                    <Text variant='subheadline2' weight='semibold' rounded>
+                    <Text 
+                        apple={{
+                            variant: 'subheadline2',
+                            weight: 'semibold',
+                            rounded: true
+                        }} 
+                    >
                         {button.name}
                     </Text>
                 </motion.div>

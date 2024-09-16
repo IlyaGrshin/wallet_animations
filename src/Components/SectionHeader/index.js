@@ -6,11 +6,21 @@ function SectionHeader({ type, title, value }) {
 		case 'Headline':
 			return (
 				<div className="SectionHeader Headline">
-					<Text variant='title3' weight='bold'>
+					<Text 
+						apple={{
+							variant: 'title3',
+							weight: 'bold'
+						}}
+					>
 						{title}
 					</Text>
 					{value && (
-						<Text variant='title3' weight='bold'>
+						<Text 
+							apple={{
+								variant: 'title3',
+								weight: 'bold'
+							}}
+						>
 							{value}
 						</Text>
 					)}
@@ -19,7 +29,11 @@ function SectionHeader({ type, title, value }) {
 		case 'Footer':
 			return (
 				<div className="SectionHeader Footer">
-					<Text variant='footnote'>
+					<Text 
+						apple={{
+							variant: 'footnote'
+							}}
+						>
 						{title}
 					</Text>
 				</div>
@@ -27,11 +41,20 @@ function SectionHeader({ type, title, value }) {
 		default:
 			return (
 				<div className="SectionHeader Default">
-					<Text variant='footnote' caps>
+					<Text 
+						apple={{
+							variant: 'footnote',
+							caps: true
+						}} 
+					>
 						{title}
 					</Text>
 					{value && (
-						<Text variant='footnote'>
+						<Text 
+							apple={{
+								variant: 'footnote'
+							}}
+						>
 							{value}
 						</Text>
 					)}
