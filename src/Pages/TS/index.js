@@ -7,6 +7,10 @@ import Text from "../../Components/Text"
 import Cell from "../../Components/Cell"
 import SectionList from "../../Components/SectionList"
 
+import { ReactComponent as ArrowUpCircleFill } from '../../Icons/28/Arrow Up Circle Fill.svg'
+import { ReactComponent as ArrowLiftAndRightCircleFill28 } from '../../Icons/28/Arrow Left & Right Circle Fill.svg';
+import { ReactComponent as PlusCircleFill28 } from '../../Icons/28/Plus Circle Fill.svg'
+
 import Avatar from '../../Icons/Avatars/IlyaG.png';
 import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
@@ -53,7 +57,7 @@ function Profile() {
                     className='button'
                     whileTap={{ scale: 0.97 }}
                 >
-                    <div className='icon'></div>
+                    <ArrowUpCircleFill />
                     <Text 
                         apple={{
                             variant: 'caption2',
@@ -72,7 +76,7 @@ function Profile() {
                     className='button'
                     whileTap={{ scale: 0.97 }}
                 >
-                    <div className='icon'></div>
+                    <PlusCircleFill28 />
                     <Text 
                         apple={{
                             variant: 'caption2',
@@ -91,7 +95,7 @@ function Profile() {
                     className='button'
                     whileTap={{ scale: 0.97 }}
                 >
-                    <div className='icon'></div>
+                    <ArrowLiftAndRightCircleFill28 />
                     <Text 
                         apple={{
                             variant: 'caption2',

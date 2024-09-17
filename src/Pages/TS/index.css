@@ -46,14 +46,16 @@ body {
               linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)),
               rgba(255, 255, 255, 0.03);
             background-blend-mode: plus-lighter, normal;
-            gap: 8px;
+            gap: 2px;
             padding: 7px 0 8px 0;
 
-            .icon {
+            svg {
                 width: 28px;
                 height: 28px;
-                background: white;
-                border-radius: 50%;
+
+                path {
+                    fill: white;
+                }
             }
             
             .label {
