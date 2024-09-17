@@ -17,6 +17,7 @@
         &.Footer {
             padding: 12px 20px;
             background-color: transparent;
+            color: var(--tg-theme-subtitle-text-color);
         }
     }
 }

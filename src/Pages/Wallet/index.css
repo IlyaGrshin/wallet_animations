@@ -93,6 +93,8 @@
 
 
         .asset:nth-child(2) {
+            box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
+
             .Cell:last-child .body,
             .Cell:last-child .end {
                 border-bottom: 0.33px solid transparent;
@@ -157,6 +159,8 @@
         }
 
         .asset:last-child {
+            box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
+
             .Cell:last-child .body,
             .Cell:last-child .end {
                 border-bottom: 0;
