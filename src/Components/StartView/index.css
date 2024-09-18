@@ -1,0 +1,16 @@
+.StartView {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+
+    body.apple & {
+        padding: 44px 32px;
+    }
+
+    body.material & {
+        padding: 44px 24px;
+    }
+}

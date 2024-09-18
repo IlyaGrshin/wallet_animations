@@ -6,6 +6,7 @@ import './index.css';
 import UI from './Pages/UI';
 import Wallet from './Pages/Wallet';
 import TONSpace from './Pages/TS';
+import Onboarding from './Pages/Onboarding';
 
 import WebApp from '@twa-dev/sdk';
 
@@ -25,6 +26,7 @@ function App() {
                 <Route path='/' element={<UI />} />
                 <Route path='wallet' element={<Wallet />} />
                 <Route path='tonspace' element={<TONSpace />} />
+                <Route path='onboarding' element={<Onboarding />} />
                 <Route path='*' element={<UI />} />
             </Routes>
         </AnimatePresence>

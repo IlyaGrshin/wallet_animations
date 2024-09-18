@@ -1,0 +1,63 @@
+:root {
+    --cover-height: min(37vh, 269px);
+}
+
+.OnboardingPage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background: #131314;
+
+    .cover {
+        flex: 0 0 auto;
+        height: min(37vh, 269px);
+        background-color: #131314;
+        overflow: visible;
+        display: flex;
+        justify-content: center;
+        position: relative;
+    
+        .image {
+            height: var(--cover-height);
+            aspect-ratio: 1 / 1;
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            margin-top: calc(var(--cover-height) * 0.12);
+    
+            &.coin {
+                background-image: url(../../Images/Coin\ Image.png);
+            }
+    
+            &.disk {
+                background-image: url(../../Images/Disk\ Image.png);
+            }
+    
+            &.planet {
+                background-image: url(../../Images/Death\ Planet\ Image.png);
+            }
+        }
+    }
+
+    .content {
+        position: relative;
+        flex: 1 1 auto;
+        height: 100%;
+        min-height: calc(100vh - 269px);
+        background-color: var(--tg-theme-section-bg-color);
+        color: var(--tg-theme-text-color);
+    }
+}
+
+.BottomButtons {
+    position: absolute;
+    display: inline;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 40px;
+    padding-bottom: max(env(safe-area-inset-bottom), 8px);
+}

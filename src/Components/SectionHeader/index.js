@@ -1,11 +1,11 @@
 import Text from '../Text'
 import './index.css'
 
-function SectionHeader({ type, title, value }) {
+function SectionHeader({ type, title, value, ...props }) {
 	switch (type) {
 		case 'Headline':
 			return (
-				<div className="SectionHeader Headline">
+				<div className="SectionHeader Headline" {...props}>
 					<Text 
 						apple={{
 							variant: 'title3',
@@ -35,7 +35,7 @@ function SectionHeader({ type, title, value }) {
 			)
 		case 'Footer':
 			return (
-				<div className="SectionHeader Footer">
+				<div className="SectionHeader Footer" {...props}>
 					<Text 
 						apple={{
 							variant: 'footnote'
@@ -50,7 +50,7 @@ function SectionHeader({ type, title, value }) {
 			)
 		default:
 			return (
-				<div className="SectionHeader Default">
+				<div className="SectionHeader Default" {...props}>
 					<Text 
 						apple={{
 							variant: 'footnote',

@@ -21,6 +21,7 @@
     --tg-theme-text-color: #000000;
     --tg-theme-secondary-bg-color: #EFEFF4;
     --tg-theme-button-color: #007AFF;
+    --tg-theme-button-text-color: #FFFFFF;
     --tg-theme-subtitle-text-color: #8E8E93;
     --tg-theme-destructive-text-color: #FF3B30;
     --tg-theme-section-bg-color: #FFFFFF;
@@ -43,6 +44,7 @@
         --tg-theme-text-color: #000000;
         --tg-theme-secondary-bg-color: #EFEFF4;
         --tg-theme-button-color: #007AFF;
+        --tg-theme-button-text-color: #FFFFFF;
         --tg-theme-subtitle-text-color: #8E8E93;
         --tg-theme-destructive-text-color: #FF3B30;
         --tg-theme-section-bg-color: #FFFFFF;
@@ -66,6 +68,7 @@
         --tg-theme-text-color: #FFFFFF;
         --tg-theme-secondary-bg-color: #1C1C1D;
         --tg-theme-button-color: #3E88F7;
+        --tg-theme-button-text-color: #FFFFFF;
         --tg-theme-subtitle-text-color: #98989E;
         --tg-theme-destructive-text-color: #EB5545;
         --tg-theme-section-bg-color: #2C2C2E;

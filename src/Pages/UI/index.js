@@ -22,6 +22,9 @@ const UI = () => {
                     <Cell as={Link} to='tonspace'>
                         <Cell.Text type='Accent' title='Open TON Space' />
                     </Cell>
+                    <Cell as={Link} to='onboarding'>
+                        <Cell.Text type='Accent' title='Open Onboarding' />
+                    </Cell>
                 </SectionList.Item>
                 <SectionList.Item>
                     <Cell>

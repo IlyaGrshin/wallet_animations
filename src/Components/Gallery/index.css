@@ -1,0 +1,20 @@
+.gallery-container {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    width: 100vw;
+    height: 100vh;
+    scroll-behavior: smooth;
+}
+  
+.gallery-container::-webkit-scrollbar {
+    display: none;
+}
+  
+.gallery-page {
+    flex: none;
+    scroll-snap-align: start;
+    width: 100vw;
+    height: 100dvh;
+}
+  
