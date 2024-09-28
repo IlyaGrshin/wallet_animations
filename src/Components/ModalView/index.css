@@ -27,12 +27,12 @@
     border-radius: 12px 12px 0 0;
     width: 100%;
     min-height: 65dvh;
-    will-change: transform, opacity;
+    will-change: transform;
     overflow: hidden;
 
     &.animation {
         transform: translateY(100vh);
-        transition-duration: 500ms;
+        transition-duration: 550ms;
         transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 
         &.open {

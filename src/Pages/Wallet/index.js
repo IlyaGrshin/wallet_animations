@@ -440,7 +440,7 @@ function Assets() {
     };
 
     const springValue = apple
-        ? { type: 'spring', stiffness: 420, damping: 28 }
+        ? { type: 'spring', stiffness: 640, damping: 40 }
         : { type: 'spring', stiffness: 800, damping: 60, mass: 1 }
 
     return (
