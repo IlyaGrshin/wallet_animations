@@ -10,6 +10,15 @@
     align-items: flex-end;
     z-index: 1000;
     will-change: opacity;
+
+    &.animation {
+        background-color: rgba(0, 0, 0, 0.0);
+        transition: background-color 200ms linear;
+
+        &.open {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+    }
 }
   
 .modal {
@@ -19,5 +28,15 @@
     width: 100%;
     min-height: 65dvh;
     will-change: transform, opacity;
+
+    &.animation {
+        transform: translateY(100vh);
+        transition-duration: 500ms;
+        transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+
+        &.open {
+            transform: translateY(0);
+        }
+    }
 }
   

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './index.css';
 
@@ -26,7 +26,21 @@ function blendColors(color1, color2, alpha2) {
     return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 }
 
-const ModalView = ({ isOpen, onClose, children, ...props }) => {
+const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...props }) => {
+    const [shouldRender, setShouldRender] = useState(false);
+    const [animate, setAnimate] = useState(false);
+
+    useEffect(() => {
+        if (isOpen) {
+            setShouldRender(true);
+            setTimeout(() => {
+                setAnimate(true);
+            }, 10);
+        } else {
+            setAnimate(false);
+        }
+    }, [isOpen]);
+
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'auto';
 
@@ -48,27 +62,53 @@ const ModalView = ({ isOpen, onClose, children, ...props }) => {
             WebApp.MainButton.hide();
             WebApp.BackButton.hide();
         }
-            WebApp.onEvent('backButtonClicked', () => {
+
+        WebApp.onEvent('backButtonClicked', () => {
             onClose();
         });
-    
+
         return () => {
             document.body.style.overflow = 'auto';
         };
     }, [isOpen, onClose]);
-  
 
     const overlayAnimation = {
         hidden: { opacity: 0 },
         visible: { opacity: 1, transition: { duration: 0.2, ease: 'linear' } },
         exit: { opacity: 0, transition: { duration: 0.2, ease: 'linear' } },
     };
-
+    
     const modalAnimation = {
         hidden: { transform: 'translateY(100dvh)' },
         visible: { transform: 'translateY(0dvh)', transition: { type: 'spring', damping: 30, stiffness: 250 } },
         exit: { transform: 'translateY(100dvh)', transition: { duration: 0.2, ease: 'linear' } },
     };
+
+    const onAnimationEnd = (e) => {
+        if (e.target === e.currentTarget && !animate) {
+            setShouldRender(false);
+        }
+    };
+
+    if (useCssAnimation) {
+        return (
+            shouldRender && (
+                <div
+                    className={`overlay animation ${animate ? 'open' : ''}`}
+                    onClick={onClose}
+                    onTransitionEnd={onAnimationEnd}
+                >
+                    <div
+                        className={`modal animation ${animate ? 'open' : ''}`}
+                        onClick={(e) => e.stopPropagation()}
+                        {...props}
+                    >
+                        {children}
+                    </div>
+                </div>
+            )
+        );
+    }
 
     return (
         <AnimatePresence>
@@ -84,4 +124,3 @@ const ModalView = ({ isOpen, onClose, children, ...props }) => {
 };
 
 export default ModalView;
- 

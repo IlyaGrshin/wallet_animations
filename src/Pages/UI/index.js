@@ -8,6 +8,11 @@ import Cell from "../../Components/Cell";
 import Switch from "../../Components/Switch";
 import ModalView from '../../Components/ModalView';
 import DropdownMenu from '../../Components/DropdownMenu';
+import PanelHeader from '../../Components/PanelHeader';
+
+import ToncoinLogo from '../../Icons/Avatars/TON.png';
+import DollarsLogo from '../../Icons/Avatars/Dollars.png';
+import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
 
 const UI = () => {
     const [isModalOpen, setIsModalOpen] = useState({
@@ -73,6 +78,11 @@ const UI = () => {
                     >
                         <Cell.Text type='Accent' title='Open Modal' />
                     </Cell>
+                    <Cell
+                        onClick={() => openModal('modal2')}
+                    >
+                        <Cell.Text type='Accent' title='Open Modal (CSS)' />
+                    </Cell>
                 </SectionList.Item>
             </SectionList>
             <ModalView 
@@ -81,11 +91,76 @@ const UI = () => {
                 onClose={() => closeModal('modal1')} 
                 style={{ 'backgroundColor': 'var(--tg-theme-secondary-bg-color)' }}
             >
+                <PanelHeader>Modal (Framer)</PanelHeader>
                 <SectionList>
                     <SectionList.Item>
-                        <Cell><Cell.Text title='Item 1' /></Cell>
-                        <Cell><Cell.Text title='Item 2' /></Cell>
-                        <Cell><Cell.Text title='Item 3' /></Cell>
+                        <Cell
+                            start={<Cell.Start type="Image" src={ToncoinLogo} />}
+                        >
+                            <Cell.Text 
+                                title='Toncoin' 
+                                description='100 TON'
+                                bold
+                            />
+                        </Cell>
+                        <Cell
+                            start={<Cell.Start type="Image" src={DollarsLogo} />}
+                        >
+                            <Cell.Text 
+                                title='Dollars' 
+                                description='100 USDT'
+                                bold
+                            />
+                        </Cell>
+                        <Cell
+                            start={<Cell.Start type="Image" src={BitcoinLogo} />}
+                        >
+                            <Cell.Text 
+                                title='Bitcoin' 
+                                description='0.000001 BTC'
+                                bold
+                            />
+                        </Cell>
+                    </SectionList.Item>
+                </SectionList>
+            </ModalView>
+            <ModalView 
+                key='modal2'
+                isOpen={isModalOpen.modal2} 
+                onClose={() => closeModal('modal2')} 
+                style={{ 'backgroundColor': 'var(--tg-theme-secondary-bg-color)' }}
+                useCssAnimation={true}
+            >
+                <PanelHeader>Modal (CSS)</PanelHeader>
+                <SectionList>
+                    <SectionList.Item>
+                        <Cell
+                            start={<Cell.Start type="Image" src={ToncoinLogo} />}
+                        >
+                            <Cell.Text 
+                                title='Toncoin' 
+                                description='100 TON'
+                                bold
+                            />
+                        </Cell>
+                        <Cell
+                            start={<Cell.Start type="Image" src={DollarsLogo} />}
+                        >
+                            <Cell.Text 
+                                title='Dollars' 
+                                description='100 USDT'
+                                bold
+                            />
+                        </Cell>
+                        <Cell
+                            start={<Cell.Start type="Image" src={BitcoinLogo} />}
+                        >
+                            <Cell.Text 
+                                title='Bitcoin' 
+                                description='0.000001 BTC'
+                                bold
+                            />
+                        </Cell>
                     </SectionList.Item>
                 </SectionList>
             </ModalView>
