@@ -40,8 +40,7 @@ const PanelHeader = ({ children }) => {
                         weight: 'semibold'
                     }}
                     material={{
-                        variant: 'body1',
-                        weight: 'medium'
+                        variant: 'headline6',
                     }}
                 >
                     {children}

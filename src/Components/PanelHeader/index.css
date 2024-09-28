@@ -1,11 +1,6 @@
 .PanelHeader {
     position: relative;
     display: flex;
-    height: 44px;
-
-    &.modal-height {
-        height: 56px;
-    }
 
     .body {
         display: flex;
@@ -30,6 +25,7 @@
             justify-content: flex-end;
             color: var(--tg-theme-accent-text-color);
         }
+
     }
 
     .middle {
@@ -39,5 +35,32 @@
         height: 100%;
         align-items: center;
         justify-content: center;
+    }
+
+    body.apple & {
+        height: 44px;
+
+        &.modal-height {
+            height: 56px;
+        }
+    }
+
+    body.material & {
+        height: 56px;
+        background-color: var(--tg-theme-section-bg-color);
+
+        &.modal-height {
+            height: 60px;
+            padding-top: 6px;
+        }
+
+        .left, .right {
+            display: none;
+        }
+
+        .middle {
+            padding: 0 var(--side-padding);
+            justify-content: left;
+        }
     }
 }
