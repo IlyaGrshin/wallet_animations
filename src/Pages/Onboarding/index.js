@@ -3,6 +3,7 @@ import Gallery from '../../Components/Gallery'
 import Text from '../../Components/Text'
 import SectionHeader from '../../Components/SectionHeader'
 import StartView from '../../Components/StartView'
+import PageTransition from '../../Components/PageTransition'
 
 import WebApp from '@twa-dev/sdk'
 import { BackButton } from '@twa-dev/sdk/react'
@@ -50,7 +51,7 @@ const Page3 = () => {
             </div>
             <div className='content'>
                 <StartView 
-                    title='Your Gateway to TONp'
+                    title='Your Gateway to TON'
                     description='Access decentralized applications with your TON Space'    
                 />
             </div>
@@ -74,7 +75,7 @@ const Onboarding = () => {
     })
 
     return (
-        <>
+        <PageTransition>
             <BackButton />
             <Gallery
                 onPageChange={handlePageChange}
@@ -88,7 +89,7 @@ const Onboarding = () => {
                 <Button variant='tinted' label='Add Existing Wallet' isFill />
                 <SectionHeader type="Footer" title="By continuing you agree to Terms of Service and User Agreement." style={{ 'textAlign': 'center' }} />
             </div>
-        </>
+        </PageTransition>
     );
 };
 
