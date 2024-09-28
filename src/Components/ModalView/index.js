@@ -26,7 +26,7 @@ function blendColors(color1, color2, alpha2) {
     return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 }
 
-const ModalView = ({ isOpen, onClose, children }) => {
+const ModalView = ({ isOpen, onClose, children, ...props }) => {
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'auto';
 
@@ -74,7 +74,7 @@ const ModalView = ({ isOpen, onClose, children }) => {
         <AnimatePresence>
             {isOpen && (
                 <motion.div className='overlay' variants={overlayAnimation} initial='hidden' animate='visible' exit='exit' onClick={onClose}>
-                    <motion.div className='modal' variants={modalAnimation} initial='hidden' animate='visible' exit='exit' onClick={(e) => e.stopPropagation()}>
+                    <motion.div className='modal' variants={modalAnimation} initial='hidden' animate='visible' exit='exit' onClick={(e) => e.stopPropagation()} {...props}>
                         {children}
                     </motion.div>
                 </motion.div>

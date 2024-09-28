@@ -15,7 +15,6 @@
 .modal {
     background: var(--tg-theme-section-bg-color);
     color: var(--tg-theme-text-color);
-    padding: 8px 16px;
     border-radius: 12px 12px 0 0;
     width: 100%;
     min-height: 65dvh;

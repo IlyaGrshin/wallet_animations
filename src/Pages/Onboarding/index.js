@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Gallery from '../../Components/Gallery'
-import Text from '../../Components/Text'
 import SectionHeader from '../../Components/SectionHeader'
 import StartView from '../../Components/StartView'
 import PageTransition from '../../Components/PageTransition'
@@ -60,6 +59,7 @@ const Page3 = () => {
 }
 
 const Onboarding = () => {
+    // eslint-disable-next-line no-unused-vars
     const [currentPage, setCurrentPage] = useState(0);
 
     const handlePageChange = (page) => {

@@ -10,7 +10,24 @@ import ModalView from '../../Components/ModalView';
 import DropdownMenu from '../../Components/DropdownMenu';
 
 const UI = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState({
+        'modal1': false,
+        'modal2': false
+    });
+
+    const openModal = (ID) => {
+        setIsModalOpen((prevState) => ({
+            ...prevState,
+            [ID]: true,
+        }));
+    };
+
+    const closeModal = (ID) => {
+        setIsModalOpen((prevState) => ({
+            ...prevState,
+            [ID]: false,
+        }));
+    };
 
     return (
         <PageTransition>
@@ -52,14 +69,25 @@ const UI = () => {
                         <Cell.Text title='Label' />
                     </Cell>
                     <Cell
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={() => openModal('modal1')}
                     >
                         <Cell.Text type='Accent' title='Open Modal' />
                     </Cell>
                 </SectionList.Item>
             </SectionList>
-            <ModalView isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <p>Это содержимое модального окна.</p>
+            <ModalView 
+                key='modal1'
+                isOpen={isModalOpen.modal1} 
+                onClose={() => closeModal('modal1')} 
+                style={{ 'backgroundColor': 'var(--tg-theme-secondary-bg-color)' }}
+            >
+                <SectionList>
+                    <SectionList.Item>
+                        <Cell><Cell.Text title='Item 1' /></Cell>
+                        <Cell><Cell.Text title='Item 2' /></Cell>
+                        <Cell><Cell.Text title='Item 3' /></Cell>
+                    </SectionList.Item>
+                </SectionList>
             </ModalView>
         </PageTransition>
     )
