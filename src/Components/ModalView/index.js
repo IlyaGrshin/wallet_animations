@@ -40,8 +40,6 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
         const headerColor = WebApp.themeParams.secondary_bg_color || '#EFEFF4';
         const headerColorWithOverlay = `#${blendColors('#000000', headerColor, 0.5)}`;
 
-        console.log('headerColor', headerColorWithOverlay)
-    
         if (useCssAnimation) {
             if (isOpen) {
                 WebApp.disableVerticalSwipes()
@@ -117,7 +115,7 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
             {isOpen && (
                 <>
                     <BackButton onClick={onClose} />
-                    <motion.div className='overlay' variants={overlayAnimation} initial='hidden' animate='visible' exit='exit' onClick={onClose}>
+                    <motion.div className='overlayFramer' variants={overlayAnimation} initial='hidden' animate='visible' exit='exit' onClick={onClose}>
                         <motion.div className='modal' variants={modalAnimation} initial='hidden' animate='visible' exit='exit' onClick={(e) => e.stopPropagation()} {...props}>
                             {children}
                         </motion.div>
