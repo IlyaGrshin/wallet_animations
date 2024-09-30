@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './index.css';
 
 import WebApp from '@twa-dev/sdk';
+import { BackButton, MainButton } from '@twa-dev/sdk/react';
 
 function blendColors(color1, color2, alpha2) {
     function hexToRgb(hex) {
@@ -31,47 +32,43 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
     const [animate, setAnimate] = useState(false);
 
     useEffect(() => {
-        if (isOpen) {
-            setShouldRender(true);
-            setTimeout(() => {
-                setAnimate(true);
-            }, 10);
-        } else {
-            setAnimate(false);
-        }
-    }, [isOpen]);
-
-    useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-
+    
         const headerColor = WebApp.themeParams.secondary_bg_color || '#EFEFF4';
         const headerColorWithOverlay = `#${blendColors('#000000', headerColor, 50)}`;
+
+        console.log('Telegram API', WebApp.themeParams.secondary_bg_color)
+        console.log('headerColor var', headerColor)
+        console.log('blendColor var', headerColorWithOverlay)
     
-        if (isOpen) {
-            WebApp.setHeaderColor(headerColorWithOverlay);
-            WebApp.BackButton.show();
-            
-            WebApp.MainButton
-                .show()
-                .setText('Done')
-                .onClick(() => {
-                onClose();
-            });
+        if (useCssAnimation) {
+            if (isOpen) {
+                WebApp.disableVerticalSwipes()
+                setShouldRender(true)
+                setTimeout(() => {
+                    setAnimate(true)
+                    WebApp.setHeaderColor(headerColorWithOverlay)
+                }, 10);
+            } else {
+                WebApp.enableVerticalSwipes()
+                WebApp.BackButton.hide()
+                WebApp.MainButton.hide()
+                WebApp.setHeaderColor(headerColor)
+                setAnimate(false);
+            }
         } else {
-            WebApp.setHeaderColor(headerColor);
-            WebApp.MainButton.hide();
-            WebApp.BackButton.hide();
+            if (isOpen) {
+                WebApp.setHeaderColor(headerColorWithOverlay)
+                WebApp.disableVerticalSwipes()
+            } else {
+                WebApp.enableVerticalSwipes()
+                WebApp.BackButton.hide()
+                WebApp.MainButton.hide()
+                WebApp.setHeaderColor(headerColor)
+            }
         }
-
-        WebApp.onEvent('backButtonClicked', () => {
-            onClose();
-        });
-
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
-    }, [isOpen, onClose]);
-
+    }, [isOpen, useCssAnimation]);    
+    
     const overlayAnimation = {
         hidden: { opacity: 0 },
         visible: { opacity: 1, transition: { duration: 0.2, ease: 'linear' } },
@@ -93,19 +90,23 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
     if (useCssAnimation) {
         return (
             shouldRender && (
-                <div
-                    className={`overlay animation ${animate ? 'open' : ''}`}
-                    onClick={onClose}
-                    onTransitionEnd={onAnimationEnd}
-                >
+                <>
+                    <BackButton onClick={onClose} />
                     <div
-                        className={`modal animation ${animate ? 'open' : ''}`}
-                        onClick={(e) => e.stopPropagation()}
-                        {...props}
+                        className={`overlay animation ${animate ? 'open' : ''}`}
+                        onClick={onClose}
+                        onTransitionEnd={onAnimationEnd}
                     >
-                        {children}
+                        <div
+                            className={`modal animation ${animate ? 'open' : ''}`}
+                            onClick={(e) => e.stopPropagation()}
+                            {...props}
+                        >
+                            {children}
+                        </div>
                     </div>
-                </div>
+                    <MainButton text='Done' onClick={onClose} />
+                </>
             )
         );
     }
@@ -113,11 +114,15 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
     return (
         <AnimatePresence>
             {isOpen && (
-                <motion.div className='overlay' variants={overlayAnimation} initial='hidden' animate='visible' exit='exit' onClick={onClose}>
-                    <motion.div className='modal' variants={modalAnimation} initial='hidden' animate='visible' exit='exit' onClick={(e) => e.stopPropagation()} {...props}>
-                        {children}
+                <>
+                    <BackButton onClick={onClose} />
+                    <motion.div className='overlay' variants={overlayAnimation} initial='hidden' animate='visible' exit='exit' onClick={onClose}>
+                        <motion.div className='modal' variants={modalAnimation} initial='hidden' animate='visible' exit='exit' onClick={(e) => e.stopPropagation()} {...props}>
+                            {children}
+                        </motion.div>
                     </motion.div>
-                </motion.div>
+                    <MainButton text='Done' onClick={onClose} />
+                </>
             )}
         </AnimatePresence>
     );
