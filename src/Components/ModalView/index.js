@@ -83,10 +83,6 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
     
         const headerColor = WebApp.themeParams.secondary_bg_color || '#EFEFF4';
         const headerColorWithOverlay = `#${blendColors('#000000', headerColor, 50)}`;
-
-        console.log('Telegram API', WebApp.themeParams.secondary_bg_color)
-        console.log('headerColor var', headerColor)
-        console.log('blendColor var', headerColorWithOverlay)
     
         if (useCssAnimation) {
             if (isOpen) {
