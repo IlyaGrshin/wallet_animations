@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 import PageTransition from "../../Components/PageTransition"
@@ -291,4 +291,4 @@ function TONSpace() {
     )
 }
 
-export default TONSpace
+export default React.memo(TONSpace);

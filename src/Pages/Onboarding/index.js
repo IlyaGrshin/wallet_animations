@@ -93,4 +93,4 @@ const Onboarding = () => {
     );
 };
 
-export default Onboarding;
+export default React.memo(Onboarding);
