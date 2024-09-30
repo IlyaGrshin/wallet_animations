@@ -17,7 +17,6 @@ function blendColors(color1, color2, alpha) {
 
     const [r1, g1, b1] = hexToRgb(color1);
     const [r2, g2, b2] = hexToRgb(color2);
-
     const r = Math.round(r1 * (1 - alpha) + r2 * alpha);
     const g = Math.round(g1 * (1 - alpha) + g2 * alpha);
     const b = Math.round(b1 * (1 - alpha) + b2 * alpha);
@@ -38,7 +37,7 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
         document.body.style.overflow = isOpen ? 'hidden' : 'auto';
     
         const headerColor = WebApp.themeParams.secondary_bg_color || '#EFEFF4';
-        const headerColorWithOverlay = `#${blendColors('#000000', headerColor, 0.5)}`;
+        const headerColorWithOverlay = `#${blendColors(headerColor, '#000000', 0.5)}`;
 
         if (useCssAnimation) {
             if (isOpen) {
