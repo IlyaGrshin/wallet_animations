@@ -6,8 +6,9 @@ import WebApp from '@twa-dev/sdk';
 import { BackButton, MainButton } from '@twa-dev/sdk/react';
 
 function blendColors(color1, color2, alpha2) {
+    // Функция для преобразования HEX в RGB
     function hexToRgb(hex) {
-        hex = hex.replace('#', '')
+        hex = hex.replace('#', '');
         return [
             parseInt(hex.slice(0, 2), 16),
             parseInt(hex.slice(2, 4), 16),
@@ -15,16 +16,62 @@ function blendColors(color1, color2, alpha2) {
         ];
     }
 
+    // Преобразование sRGB в линейное пространство
+    function sRGBToLinear(c) {
+        c = c / 255;
+        if (c <= 0.04045) {
+            return c / 12.92;
+        } else {
+            return Math.pow((c + 0.055) / 1.055, 2.4);
+        }
+    }
+
+    // Преобразование из линейного пространства в sRGB
+    function linearToSRGB(c) {
+        if (c <= 0.0031308) {
+            return c * 12.92;
+        } else {
+            return 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+        }
+    }
+
     const [r1, g1, b1] = hexToRgb(color1);
     const [r2, g2, b2] = hexToRgb(color2);
 
     alpha2 = alpha2 / 100;
 
-    const r = Math.round(r2 * alpha2 + r1 * (1 - alpha2));
-    const g = Math.round(g2 * alpha2 + g1 * (1 - alpha2));
-    const b = Math.round(b2 * alpha2 + b1 * (1 - alpha2));
+    // Преобразуем исходные цвета в линейное пространство
+    const lr1 = sRGBToLinear(r1);
+    const lg1 = sRGBToLinear(g1);
+    const lb1 = sRGBToLinear(b1);
 
-    return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+    const lr2 = sRGBToLinear(r2);
+    const lg2 = sRGBToLinear(g2);
+    const lb2 = sRGBToLinear(b2);
+
+    // Выполняем смешивание в линейном пространстве
+    const lr = lr2 * alpha2 + lr1 * (1 - alpha2);
+    const lg = lg2 * alpha2 + lg1 * (1 - alpha2);
+    const lb = lb2 * alpha2 + lb1 * (1 - alpha2);
+
+    // Преобразуем результат обратно в sRGB
+    const r = Math.round(linearToSRGB(lr) * 255);
+    const g = Math.round(linearToSRGB(lg) * 255);
+    const b = Math.round(linearToSRGB(lb) * 255);
+
+    // Убеждаемся, что значения находятся в диапазоне [0, 255]
+    const rClamped = Math.min(255, Math.max(0, r));
+    const gClamped = Math.min(255, Math.max(0, g));
+    const bClamped = Math.min(255, Math.max(0, b));
+
+    // Преобразуем RGB обратно в HEX
+    return (
+        '#' +
+        ((1 << 24) + (rClamped << 16) + (gClamped << 8) + bClamped)
+            .toString(16)
+            .slice(1)
+            .toUpperCase()
+    );
 }
 
 const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...props }) => {
