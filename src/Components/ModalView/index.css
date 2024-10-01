@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100dvh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -39,7 +39,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100dvh;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
@@ -53,7 +53,7 @@
     color: var(--tg-theme-text-color);
     border-radius: 12px 12px 0 0;
     width: 100%;
-    min-height: 65dvh;
+    min-height: 65vh;
     will-change: transform;
     overflow: hidden;
 
