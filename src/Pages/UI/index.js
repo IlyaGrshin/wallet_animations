@@ -39,13 +39,16 @@ const UI = () => {
              <SectionList>
                 <SectionList.Item>
                     <Cell as={Link} to='wallet'>
-                        <Cell.Text type='Accent' title='Open Wallet UI' />
+                        <Cell.Text type='Accent' title='Wallet UI' />
                     </Cell>
                     <Cell as={Link} to='tonspace'>
-                        <Cell.Text type='Accent' title='Open TON Space' />
+                        <Cell.Text type='Accent' title='TON Space' />
                     </Cell>
                     <Cell as={Link} to='onboarding'>
-                        <Cell.Text type='Accent' title='Open Onboarding' />
+                        <Cell.Text type='Accent' title='Onboarding' />
+                    </Cell>
+                    <Cell as={Link} to='textpage'>
+                        <Cell.Text type='Accent' title='Text Page' />
                     </Cell>
                 </SectionList.Item>
                 <SectionList.Item>

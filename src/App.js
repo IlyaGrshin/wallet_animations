@@ -9,6 +9,7 @@ import TONSpace from './Pages/TS';
 import Onboarding from './Pages/Onboarding';
 
 import WebApp from '@twa-dev/sdk';
+import TextPage from './Pages/TextPage';
 
 function App() {
 	const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
                 <Route path='wallet' element={<Wallet />} />
                 <Route path='tonspace' element={<TONSpace />} />
                 <Route path='onboarding' element={<Onboarding />} />
+                <Route path='textpage' element={<TextPage />} />
                 <Route path='*' element={<UI />} />
             </Routes>
         </AnimatePresence>
