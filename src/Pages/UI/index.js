@@ -9,6 +9,7 @@ import Switch from "../../Components/Switch";
 import ModalView from '../../Components/ModalView';
 import DropdownMenu from '../../Components/DropdownMenu';
 import PanelHeader from '../../Components/PanelHeader';
+import SegmentedControl from '../../Components/SegmentedControl';
 
 import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
@@ -16,6 +17,10 @@ import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
 import { MainButton } from '@twa-dev/sdk/react';
 
 const UI = () => {
+    const handleSegmentChange = (index) => {
+        console.log('Выбранный сегмент: ', index);
+    };
+
     const [isModalOpen, setIsModalOpen] = useState({
         'modal1': false,
         'modal2': false
@@ -38,6 +43,12 @@ const UI = () => {
     return (
         <PageTransition>
              <SectionList>
+                {/* <SectionList.Item> */}
+                    <SegmentedControl
+                        segments={['Label 1', 'Label 2', 'Label 3']}
+                        onChange={handleSegmentChange}
+                    />
+                {/* </SectionList.Item> */}
                 <SectionList.Item>
                     <Cell as={Link} to='wallet'>
                         <Cell.Text type='Accent' title='Wallet UI' />
