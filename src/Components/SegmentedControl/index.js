@@ -3,7 +3,7 @@ import Text from '../Text'
 
 import './index.css';
 
-const SegmentedControl = ({ segments, onChange, defaultIndex = 0 }) => {
+const SegmentedControl = ({ segments, onChange, defaultIndex = 0, colorScheme = 'light' }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex);
 
     const handleSegmentClick = (index) => {
@@ -12,7 +12,7 @@ const SegmentedControl = ({ segments, onChange, defaultIndex = 0 }) => {
     };
 
     return (
-        <div className='segmentedControl'>
+        <div className='segmentedControl' data-color-scheme={colorScheme}>
         {segments.map((segment, index) => (
             <button
                 key={index}

@@ -1,3 +1,9 @@
+.segmentedControl[data-color-scheme="dark"] {
+    --quaternary-fill-background: rgba(118, 118, 128, 0.18);
+    --segmented_control_active_background: #636366;
+    --tg-theme-text-color: #FFFFFF;
+}
+
 .segmentedControl {
     position: relative;
     width: 100%;

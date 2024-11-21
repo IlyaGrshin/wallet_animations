@@ -50,6 +50,9 @@ const UI = () => {
                     />
                 {/* </SectionList.Item> */}
                 <SectionList.Item>
+                    <Cell as={Link} to='newnavigation'>
+                        <Cell.Text type='Accent' title='New Navigation' />
+                    </Cell>
                     <Cell as={Link} to='wallet'>
                         <Cell.Text type='Accent' title='Wallet UI' />
                     </Cell>
