@@ -1,6 +1,12 @@
 import { motion } from 'framer-motion';
 import { apple } from '../DeviceProvider'
 
+export let pageTransitionDuration = 0.2
+
+if (typeof window !== 'undefined') {
+    window.pageTransitionDuration = pageTransitionDuration;
+}
+
 const blurValue = apple ? 'blur(2px)' : 'blur(0px)'
 
 const PageTransition = ({ children }) => {
@@ -23,8 +29,12 @@ const PageTransition = ({ children }) => {
     };
 
     const pageTransition = {
-        duration: 0.22,
-        ease: [0.26, 0.08, 0.25, 1],
+        get duration() {
+            return window.pageTransitionDuration || 0.2;
+        },
+        // ease: [0.26, 0.08, 0.25, 1],
+        ease: 'linear',
+        delay: 0,
     };
 
     return (
