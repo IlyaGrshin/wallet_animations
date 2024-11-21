@@ -93,7 +93,7 @@ function Balance() {
                 }}
                 className='label'
             >
-                Total Balance
+                Wallet Balance
             </Text>
             <div className='amount'>
                 {<Morph>{balance}</Morph>}
@@ -133,9 +133,8 @@ function ActionButtons() {
                     {button.icon}
                     <Text 
                         apple={{
-                            variant: 'subheadline2',
-                            weight: 'semibold',
-                            rounded: true
+                            variant: 'caption2',
+                            weight: 'medium'
                         }} 
                         material={{
                             variant: 'subtitle2',
@@ -165,7 +164,7 @@ function AnimatedCell({ expandedAssets, index }) {
             },
         },
         {
-            src: DollarsLogo,
+            src: BitcoinLogo,
             zIndex: 1,
             variants: {
                 collapsed: { scale: 0.6, opacity: 1, top: '6px', left: '6px' },
@@ -350,10 +349,10 @@ function Assets() {
     const [expandedAssets, setExpandedAssets] = useState(false); 
 
     const assets = [
-        { name: 'TON Space', coins: '0 TON', value: '$0.00', image: TonSpaceLogo },
+        { name: 'Dollars', coins: '50 USDT', value: '$50.00', image: DollarsLogo },
         { isAnimated: true },
         // { name: 'Toncoin', coins: '100 TON', value: '$150.00', image: ToncoinLogo },
-        { name: 'Dollars', coins: '50 USDT', value: '$50.00', image: DollarsLogo },
+        // { name: 'Dollars', coins: '50 USDT', value: '$50.00', image: DollarsLogo },
         { name: 'Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
         { name: '1 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
         { name: '2 Bitcoin', coins: '0.000011 BTC', value: '$50.64', image: BitcoinLogo },
@@ -548,7 +547,7 @@ function TransactionList() {
 function Wallet() {
     return (
         <>
-            <BackButton />
+            {/* <BackButton /> */}
             <div className='wallet'>
                 <PageTransition>
                     <Balance />

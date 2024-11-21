@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Text from '../Text'
 
 import './index.css';
+import { use } from "framer-motion/client";
 
-const SegmentedControl = ({ segments, onChange, defaultIndex = 0, colorScheme = 'light' }) => {
+const SegmentedControl = ({ segments, onChange, defaultIndex = 0, colorScheme = 'light', type, ...props}) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex);
 
     const handleSegmentClick = (index) => {
@@ -11,8 +12,17 @@ const SegmentedControl = ({ segments, onChange, defaultIndex = 0, colorScheme = 
         if (onChange) onChange(index);
     };
 
+    const controlType = useMemo(() => {
+        switch (type) {
+            case 'mainPage':
+                return 'segmentedControl mainPage'
+            default:
+                return 'segmentedControl'
+        }
+    }, [type]);
+
     return (
-        <div className='segmentedControl' data-color-scheme={colorScheme}>
+        <div className={controlType} data-color-scheme={colorScheme} {...props}>
         {segments.map((segment, index) => (
             <button
                 key={index}
@@ -33,13 +43,15 @@ const SegmentedControl = ({ segments, onChange, defaultIndex = 0, colorScheme = 
                 </Text>
             </button>
         ))}
-        <div
-            className='activeIndicator'
-            style={{
-                width: `calc(${100 / segments.length}% - 4px)`,
-                left: `calc(${100 / segments.length * activeIndex}% + 2px)`,
-            }}
-        />
+            <div
+                className='activeIndicator'
+                style={{
+                    width: `calc(${100 / segments.length}% - 4px)`,
+                    left: `calc(${100 / segments.length * activeIndex}%)`,
+                    marginLeft: '2px',
+                    marginRight: '2px',
+                }}
+            />
         </div>
     );
 };

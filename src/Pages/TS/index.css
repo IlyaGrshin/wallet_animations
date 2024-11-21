@@ -10,13 +10,25 @@ body {
     .data {
         position: relative;
         display: flex;
-        padding: 16px;
+        padding: 72px 0 48px;
         flex-direction: column;
         align-items: center;
         gap: 12px;
         align-self: stretch;
         text-align: center;
         z-index: 1;
+
+        .amount {
+            font-family: ui-rounded, -apple-system, system-ui, sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: #FFF;
+            font-variant-numeric: lining-nums tabular-nums;
+    
+            :first-child {
+                color: #98989E;
+            }
+        }
     }
     
     .avatar {

@@ -1,0 +1,41 @@
+.bounds[data-color-scheme="dark"] {
+    --quaternary-fill-background: rgba(118, 118, 128, 0.18);
+    --tg-theme-text-color: #FFFFFF;
+}
+
+.navPanel {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    z-index: 1;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 14px;
+}
+
+.bounds {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background-color: var(--quaternary-fill-background);
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+
+    .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background-size: contain;
+    }
+
+    svg, path {
+        fill: var(--tg-theme-text-color);
+        transition: fill 0.2s ease;
+    }
+
+    &.transparent {
+        background-color: transparent;
+    }
+}

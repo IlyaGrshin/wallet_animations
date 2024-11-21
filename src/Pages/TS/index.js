@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import PageTransition from "../../Components/PageTransition"
 
@@ -11,7 +11,6 @@ import { ReactComponent as ArrowUpCircleFill } from '../../Icons/28/Arrow Up Cir
 import { ReactComponent as ArrowLiftAndRightCircleFill28 } from '../../Icons/28/Arrow Left & Right Circle Fill.svg';
 import { ReactComponent as PlusCircleFill28 } from '../../Icons/28/Plus Circle Fill.svg'
 
-import Avatar from '../../Icons/Avatars/IlyaG.png';
 import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 
@@ -20,36 +19,84 @@ import { BackButton } from '@twa-dev/sdk/react';
 
 import './index.css';
 
+function Morph({ children }) {
+    function generateKeys(text) {
+        const charCount = {};
+        return text.split("").map((char, index) => {
+            if (!charCount[char]) {
+                charCount[char] = 0;
+            }
+            const key = `${char}-${charCount[char]}-${index}`;
+            charCount[char]++;
+            return { char, key };
+        });
+    }
+
+    const textToDisplay = generateKeys(children);
+
+    return (
+        <AnimatePresence mode='popLayout' initial={false}>
+            {textToDisplay.map(({ char, key }) => (
+                <motion.span
+                    key={key}
+                    layoutId={key}
+                    style={{ display: 'inline-block' }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                        duration: 0.25,
+                        type: 'spring',
+                        bounce: 0,
+                        opacity: {
+                            duration: 0.35,
+                            type: 'spring',
+                            bounce: 0,
+                        },
+                    }}
+                >
+                    {char === " " ? "\u00A0" : char}
+                </motion.span>
+            ))}
+        </AnimatePresence>
+    );
+}
+
 function Profile() {
+    const [balance, setBalance] = useState('$261.69');
+
+    useEffect(() => {
+        const updateBalance = () => {
+            const randomBalance = '$' + (Math.random() * 2000).toFixed(2);
+            setBalance(randomBalance);
+        };
+
+        const interval = setInterval(updateBalance, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div className='profile'>
             <div className='data'>
-                <div className='avatar' style={{ backgroundImage: `url(${Avatar})` }}></div>
+                {/* <div className='avatar' style={{ backgroundImage: `url(${Avatar})` }}></div> */}
                 <div className='balances'>
                     <Text 
                         apple={{
-                            variant: 'body'
+                            variant: 'body',
+                            weight: 'regular'
                         }}
                         material={{
-                            variant: 'body1'
+                            variant: 'body1',
+                            weight: 'regular'
                         }}
                         className='label'
                     >
-                        Your TON Space
+                        TON Space Balance
                     </Text>
-                    <Text 
-                        apple={{
-                            variant: 'title1',
-                            weight: 'bold',
-                            rounded: true
-                        }}
-                        material={{
-                            variant: 'headline5'
-                        }}
-                        className='amount'
-                    >
-                        $350.57
-                    </Text>
+                    <div className='amount'>
+                        {<Morph>{balance}</Morph>}
+                    </div>
                 </div>
             </div>
             <div className="buttons">
@@ -264,7 +311,7 @@ function TONSpace() {
 
     return (
         <>
-            <BackButton />
+            {/* <BackButton /> */}
             <div className="ton-space">
                 <PageTransition>
                     <Profile />

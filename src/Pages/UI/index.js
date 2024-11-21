@@ -18,7 +18,7 @@ import { MainButton } from '@twa-dev/sdk/react';
 
 const UI = () => {
     const handleSegmentChange = (index) => {
-        console.log('Выбранный сегмент: ', index);
+        // console.log('Выбранный сегмент: ', index);
     };
 
     const [isModalOpen, setIsModalOpen] = useState({
@@ -50,17 +50,25 @@ const UI = () => {
                     />
                 {/* </SectionList.Item> */}
                 <SectionList.Item>
-                    <Cell as={Link} to='newnavigation'>
-                        <Cell.Text type='Accent' title='New Navigation' />
+                    <Cell 
+                        as={Link} 
+                        to='newnavigation'
+                        end={ <Cell.Part type='Chevron' /> }
+                    >
+                        <Cell.Text title='Navigation Update' />
                     </Cell>
-                    <Cell as={Link} to='wallet'>
+                    {/* <Cell as={Link} to='wallet'>
                         <Cell.Text type='Accent' title='Wallet UI' />
                     </Cell>
                     <Cell as={Link} to='tonspace'>
                         <Cell.Text type='Accent' title='TON Space' />
-                    </Cell>
-                    <Cell as={Link} to='onboarding'>
-                        <Cell.Text type='Accent' title='Onboarding' />
+                    </Cell> */}
+                    <Cell 
+                        as={Link} 
+                        to='onboarding'
+                        end={ <Cell.Part type='Chevron' /> }
+                    >
+                        <Cell.Text title='Onboarding' />
                     </Cell>
                     {/* <Cell as={Link} to='textpage'>
                         <Cell.Text type='Accent' title='Text Page' />
