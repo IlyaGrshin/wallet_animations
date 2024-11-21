@@ -13,6 +13,7 @@ import PanelHeader from '../../Components/PanelHeader';
 import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
+import { MainButton } from '@twa-dev/sdk/react';
 
 const UI = () => {
     const [isModalOpen, setIsModalOpen] = useState({
@@ -47,9 +48,9 @@ const UI = () => {
                     <Cell as={Link} to='onboarding'>
                         <Cell.Text type='Accent' title='Onboarding' />
                     </Cell>
-                    <Cell as={Link} to='textpage'>
+                    {/* <Cell as={Link} to='textpage'>
                         <Cell.Text type='Accent' title='Text Page' />
-                    </Cell>
+                    </Cell> */}
                 </SectionList.Item>
                 <SectionList.Item>
                     <Cell>
@@ -126,6 +127,7 @@ const UI = () => {
                         </Cell>
                     </SectionList.Item>
                 </SectionList>
+                <MainButton text='Confirm' onClick={() => closeModal('modal1')} />
             </ModalView>
             <ModalView 
                 key='modal2'
@@ -166,6 +168,7 @@ const UI = () => {
                         </Cell>
                     </SectionList.Item>
                 </SectionList>
+                <MainButton text='Confirm' onClick={() => closeModal('modal2')} />
             </ModalView>
         </PageTransition>
     )

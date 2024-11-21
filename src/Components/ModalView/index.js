@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './index.css';
 
 import WebApp from '@twa-dev/sdk';
-import { BackButton, MainButton } from '@twa-dev/sdk/react';
+import { BackButton } from '@twa-dev/sdk/react';
 
 function blendColors(color1, color2, alpha) {
     function hexToRgb(hex) {
@@ -103,7 +103,6 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
                             {children}
                         </div>
                     </div>
-                    <MainButton text='Done' onClick={onClose} />
                 </>
             )
         );
@@ -119,7 +118,6 @@ const ModalView = ({ isOpen, onClose, useCssAnimation = false, children, ...prop
                             {children}
                         </motion.div>
                     </motion.div>
-                    <MainButton text='Done' onClick={onClose} />
                 </>
             )}
         </AnimatePresence>
