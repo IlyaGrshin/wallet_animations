@@ -16,12 +16,9 @@ import { ReactComponent as ArrowLiftAndRightCircleFill28 } from '../../Icons/28/
 import { ReactComponent as PlusCircleFill28 } from '../../Icons/28/Plus Circle Fill.svg'
 import { ReactComponent as CreditCardFill28 } from '../../Icons/28/Credit Card Fill.svg'
 
-import TonSpaceLogo from '../../Icons/Avatars/IlyaG.png';
 import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
-
-import { BackButton } from '@twa-dev/sdk/react';
 
 function Morph({ children }) {
     function generateKeys(text) {

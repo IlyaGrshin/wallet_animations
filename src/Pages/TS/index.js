@@ -15,7 +15,6 @@ import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 
 import WebApp from '@twa-dev/sdk';
-import { BackButton } from '@twa-dev/sdk/react';
 
 import './index.css';
 

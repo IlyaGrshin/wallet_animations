@@ -10,7 +10,6 @@ import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
 
-import WebApp from '@twa-dev/sdk';
 import { BackButton, MainButton } from '@twa-dev/sdk/react'
 
 const TextPage = () => {
