@@ -10,7 +10,7 @@ body {
     .data {
         position: relative;
         display: flex;
-        padding: 92px 0 31px;
+        padding: 72px 0 48px;
         flex-direction: column;
         align-items: center;
         gap: 12px;
