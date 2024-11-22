@@ -33,7 +33,7 @@
     
         body.material & {
             background-color: var(--tg-theme-section-bg-color);
-            padding: 28px 0 24px 0;
+            padding: 92px 0 31px;
     
             .amount {
                 font-family: 'Roboto', system-ui, sans-serif;
@@ -92,7 +92,7 @@
     
         body.material & {
             padding: 0;
-            padding-bottom: 44px;
+            padding-bottom: 32px;
     
     
             .asset:nth-child(2) {

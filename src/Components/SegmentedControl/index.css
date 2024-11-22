@@ -57,4 +57,18 @@
             box-shadow: none;
         }
     }
+
+    body.material & {
+        border-radius: 18px;
+
+        .segment {
+            padding: 8px 0;
+        }
+
+        .activeIndicator {
+            border-radius: 16px;
+            border: 0;
+            box-shadow: none;
+        }
+    }
 }

@@ -2,7 +2,6 @@ import React, { useState, useMemo } from "react";
 import Text from '../Text'
 
 import './index.css';
-import { use } from "framer-motion/client";
 
 const SegmentedControl = ({ segments, onChange, defaultIndex = 0, colorScheme = 'light', type, ...props}) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex);
@@ -35,8 +34,8 @@ const SegmentedControl = ({ segments, onChange, defaultIndex = 0, colorScheme = 
                         weight: 'semibold'
                     }}
                     material={{
-                        variant: 'subtitle1',
-                        weight: 'regular'
+                        variant: 'subtitle2',
+                        weight: 'medium'
                     }}
                 >
                     {segment}

@@ -182,7 +182,7 @@ function AnimatedCell({ expandedAssets, index }) {
             },
         },
         {
-            src: DollarsLogo,
+            src: BitcoinLogo,
             zIndex: 1,
             variants: {
                 collapsed: { scale: 0.6, opacity: 1, top: '6px', left: '12px' },
