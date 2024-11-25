@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 
 import Wallet from '../../Pages/Wallet';
 import TONSpace from '../../Pages/TS';
@@ -13,25 +13,40 @@ import { BackButton } from '@twa-dev/sdk/react';
 import DefaultAvatar from '../../Icons/Avatars/IlyaG.png'
 import PageTransition from '../../Components/PageTransition';
 
-let Avatar
-
-try {
-    const initData = new URLSearchParams(WebApp.initData)
-    const userData = initData.get('user')
-
-    if (initData) {
-        Avatar = JSON.parse(userData).photo_url
-    } else {
-        Avatar = DefaultAvatar
-    }
-} catch (error) {
+const useAvatarUrl = () => {
+  try {
+    const initData = new URLSearchParams(WebApp.initData);
+    const userData = initData.get('user');
+    
+    return initData ? JSON.parse(userData).photo_url : DefaultAvatar;
+  } catch (error) {
     console.error('Error parsing initData or userData:', error);
-    Avatar = DefaultAvatar;
-}
+    return DefaultAvatar;
+  }
+};
+
+const useSegmentNavigation = () => {
+  const [activeSegment, setActiveSegment] = useState(0);
+  const [view, setView] = useState('wallet');
+
+  const handleSegmentChange = (index) => {
+    if (index === 1) {
+      setView('tonspace');
+    } else if (index === 0) {
+      WebApp.setHeaderColor('secondary_bg_color');
+      setView('wallet');
+    }
+
+    WebApp.HapticFeedback.selectionChanged();
+    setActiveSegment(index);
+  };
+
+  return { activeSegment, view, handleSegmentChange };
+};
 
 function NewNavigation () {
-    const [activeSegment, setActiveSegment] = useState(0);
-    const [view, setView] = useState('wallet');
+    const { activeSegment, view, handleSegmentChange } = useSegmentNavigation();
+    const avatarUrl = useAvatarUrl();
 
     const content = useMemo(() => {
         switch(view) {
@@ -44,25 +59,13 @@ function NewNavigation () {
         }
     }, [view]);
 
-    const handleSegmentChange = (index) => {
-        if (index === 1) {
-            setView('tonspace')
-        } else if (index === 0) {
-            WebApp.setHeaderColor('secondary_bg_color');
-            setView('wallet')
-        }
-
-        WebApp.HapticFeedback.selectionChanged()
-        setActiveSegment(index)
-    };
-
     return (
         <>
             <BackButton />
             <PageTransition>
                 <div className="navPanel">
                     <div className="bounds transparent">
-                        <div className='avatar' style={{ backgroundImage: `url(${Avatar})` }}></div>
+                        <div className='avatar' style={{ backgroundImage: `url(${avatarUrl})` }}></div>
                     </div>
                     <SegmentedControl
                         segments={['Wallet', 'TON Space']}
