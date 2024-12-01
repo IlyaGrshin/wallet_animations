@@ -92,6 +92,7 @@ function NewNavigation () {
                             // ease: [0.26, 0.08, 0.25, 1],
                             ease: 'linear'
                         }}
+                        className='pageView'
                     >
                         {content}
                     </motion.div>

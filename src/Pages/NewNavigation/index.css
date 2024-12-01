@@ -43,3 +43,7 @@
         background-color: transparent;
     }
 }
+
+.pageView {
+    will-change: transform, opacity;
+}
