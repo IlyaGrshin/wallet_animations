@@ -19,7 +19,7 @@
             }
         }
     
-        .amount {
+        .amount span {
             font-family: ui-rounded, -apple-system, system-ui, sans-serif;
             font-size: 48px;
             font-weight: 700;

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 import PageTransition from "../../Components/PageTransition"
 
 import Text from "../../Components/Text"
 import Cell from "../../Components/Cell"
 import SectionList from "../../Components/SectionList"
+import Morph from '../../Components/Morph';
+import { Spoiler } from 'spoiled';
 
 import { ReactComponent as ArrowUpCircleFill } from '../../Icons/28/Arrow Up Circle Fill.svg'
 import { ReactComponent as ArrowLiftAndRightCircleFill28 } from '../../Icons/28/Arrow Left & Right Circle Fill.svg';
@@ -18,62 +20,22 @@ import WebApp from '@twa-dev/sdk';
 
 import './index.css';
 
-function Morph({ children }) {
-    function generateKeys(text) {
-        const charCount = {};
-        return text.split("").map((char, index) => {
-            if (!charCount[char]) {
-                charCount[char] = 0;
-            }
-            const key = `${char}-${charCount[char]}-${index}`;
-            charCount[char]++;
-            return { char, key };
-        });
-    }
-
-    const textToDisplay = generateKeys(children);
-
-    return (
-        <AnimatePresence mode='popLayout' initial={false}>
-            {textToDisplay.map(({ char, key }) => (
-                <motion.span
-                    key={key}
-                    layoutId={key}
-                    style={{ display: 'inline-block' }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                        duration: 0.25,
-                        type: 'spring',
-                        bounce: 0,
-                        opacity: {
-                            duration: 0.35,
-                            type: 'spring',
-                            bounce: 0,
-                        },
-                    }}
-                >
-                    {char === " " ? "\u00A0" : char}
-                </motion.span>
-            ))}
-        </AnimatePresence>
-    );
-}
-
 function Profile() {
     const [balance, setBalance] = useState('$261.69');
+    const [hidden, setHidden] = useState(false);
 
     useEffect(() => {
         const updateBalance = () => {
-            const randomBalance = '$' + (Math.random() * 2000).toFixed(2);
-            setBalance(randomBalance);
+            if (!hidden) {
+                const randomBalance = '$' + (Math.random() * 2000).toFixed(2);
+                setBalance(randomBalance);
+            }
         };
 
         const interval = setInterval(updateBalance, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [hidden]);
 
     return (
         <div className='profile'>
@@ -93,9 +55,11 @@ function Profile() {
                     >
                         TON Space Balance
                     </Text>
-                    <div className='amount'>
-                        {<Morph>{balance}</Morph>}
-                    </div>
+                    <Spoiler className='amount' hidden={hidden} onClick={() => setHidden((s) => !s)}>
+                        <Morph>
+                            {balance}
+                        </Morph>
+                    </Spoiler>
                 </div>
             </div>
             <div className="buttons">

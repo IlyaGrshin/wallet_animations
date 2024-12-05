@@ -8,6 +8,8 @@ import Text from '../../Components/Text';
 import SectionList from '../../Components/SectionList';
 import Cell from '../../Components/Cell';
 import { apple } from '../../Components/DeviceProvider'
+import Morph from '../../Components/Morph'
+import { Spoiler } from 'spoiled';
 
 import './index.css';
 
@@ -20,62 +22,22 @@ import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
 
-function Morph({ children }) {
-    function generateKeys(text) {
-        const charCount = {};
-        return text.split("").map((char, index) => {
-            if (!charCount[char]) {
-                charCount[char] = 0;
-            }
-            const key = `${char}-${charCount[char]}-${index}`;
-            charCount[char]++;
-            return { char, key };
-        });
-    }
-
-    const textToDisplay = generateKeys(children);
-
-    return (
-        <AnimatePresence mode='popLayout' initial={false}>
-            {textToDisplay.map(({ char, key }) => (
-                <motion.span
-                    key={key}
-                    layoutId={key}
-                    style={{ display: 'inline-block' }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                        duration: 0.25,
-                        type: 'spring',
-                        bounce: 0,
-                        opacity: {
-                            duration: 0.35,
-                            type: 'spring',
-                            bounce: 0,
-                        },
-                    }}
-                >
-                    {char === " " ? "\u00A0" : char}
-                </motion.span>
-            ))}
-        </AnimatePresence>
-    );
-}
-
 function Balance() {
     const [balance, setBalance] = useState('$30.06');
+    const [hidden, setHidden] = useState(false);
 
     useEffect(() => {
         const updateBalance = () => {
-            const randomBalance = '$' + (Math.random() * 2000).toFixed(2);
-            setBalance(randomBalance);
+            if (!hidden) {
+                const randomBalance = '$' + (Math.random() * 2000).toFixed(2);
+                setBalance(randomBalance);
+            }
         };
 
         const interval = setInterval(updateBalance, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [hidden]);
 
     return (
         <Card className='balance'>
@@ -92,9 +54,11 @@ function Balance() {
             >
                 Wallet Balance
             </Text>
-            <div className='amount'>
-                {<Morph>{balance}</Morph>}
-            </div>
+            <Spoiler className='amount' hidden={hidden} onClick={() => setHidden((s) => !s)}>
+                <Morph>
+                    {balance}
+                </Morph>
+            </Spoiler>
         </Card>
     );
 }
