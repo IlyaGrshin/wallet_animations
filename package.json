@@ -11,7 +11,7 @@
     "motion": "^11.11.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.0.2",
+    "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
     "spoiled": "^0.3.2",
     "web-vitals": "^4.2.3"
