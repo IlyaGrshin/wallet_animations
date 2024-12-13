@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 import Wallet from '../../Pages/Wallet';
@@ -11,7 +11,6 @@ import { ReactComponent as QRCodeIcon } from '../../Icons/28/QR Code.svg'
 import './index.css';
 import { BackButton } from '@twa-dev/sdk/react';
 import DefaultAvatar from '../../Icons/Avatars/IlyaG.png'
-import PageTransition from '../../Components/PageTransition';
 
 const useAvatarUrl = () => {
   try {
@@ -29,11 +28,17 @@ const useSegmentNavigation = () => {
   const [activeSegment, setActiveSegment] = useState(0);
   const [view, setView] = useState('wallet');
 
+  useEffect(() => {
+    WebApp.onEvent('backButtonClicked', () => {
+        WebApp.setHeaderColor('secondary_bg_color')
+        WebApp.setBackgroundColor('secondary_bg_color')
+    });
+  }, [])
+
   const handleSegmentChange = (index) => {
     if (index === 1) {
       setView('tonspace');
     } else if (index === 0) {
-      WebApp.setHeaderColor('secondary_bg_color');
       setView('wallet');
     }
 
@@ -62,7 +67,6 @@ function NewNavigation () {
     return (
         <>
             <BackButton />
-            <PageTransition>
                 <div className="navPanel">
                     <div className="bounds transparent">
                         <div className='avatar' style={{ backgroundImage: `url(${avatarUrl})` }}></div>
@@ -88,16 +92,14 @@ function NewNavigation () {
                         exit={{ opacity: 0, scale: 1.01 }}
                         key={view}
                         transition={{
-                            duration: 0.2,
-                            // ease: [0.26, 0.08, 0.25, 1],
-                            ease: 'linear'
+                            duration: 0.25,
+                            ease: [0.26, 0.08, 0.25, 1],
                         }}
                         className='pageView'
                     >
                         {content}
                     </motion.div>
                 </AnimatePresence>
-            </PageTransition>
         </>
     )
 }

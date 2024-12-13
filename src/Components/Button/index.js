@@ -11,7 +11,7 @@ const hexToRgb = (hex) => {
     return `${r}, ${g}, ${b}`;
 };
 
-const Button = ({ type, variant, label, isShine = false, isFill = false }) => {
+const Button = ({ type, variant, label, isShine = false, isFill = false, ...props }) => {
     useEffect(() => {
         const root = document.documentElement;
         const hexColor = getComputedStyle(root).getPropertyValue('--tg-theme-button-color').trim();
@@ -25,7 +25,7 @@ const Button = ({ type, variant, label, isShine = false, isFill = false }) => {
     };
 
     return (
-        <div className={`button ${variant}`} {...dynamicProps}>
+        <div className={`button ${variant}`} {...dynamicProps} {...props}>
             <Text
                 apple={{
                     variant: 'body',

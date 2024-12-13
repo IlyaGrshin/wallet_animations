@@ -1,9 +1,4 @@
-body {
-    background: var(--tg-theme-secondary-bg-color);
-}
-
 .profile {
-    background: #131314;
     color: white;
     z-index: 1;
 

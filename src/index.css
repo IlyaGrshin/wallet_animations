@@ -94,7 +94,6 @@ body {
  	margin: 0;
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
-	background-color: var(--tg-theme-secondary-bg-color);
 
     &.apple {
         font-family: -apple-system, system-ui, sans-serif;

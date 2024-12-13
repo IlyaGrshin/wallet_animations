@@ -70,6 +70,13 @@ const UI = () => {
                     >
                         <Cell.Text title='Onboarding' />
                     </Cell>
+                    <Cell 
+                        as={Link} 
+                        to='colorchanging'
+                        end={ <Cell.Part type='Chevron' /> }
+                    >
+                        <Cell.Text title='Background Tests' />
+                    </Cell>
                     {/* <Cell as={Link} to='textpage'>
                         <Cell.Text type='Accent' title='Text Page' />
                     </Cell> */}

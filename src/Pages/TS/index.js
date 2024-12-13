@@ -267,9 +267,7 @@ function FAQ() {
 function TONSpace() {
     useEffect(() => {
         WebApp.setHeaderColor('#131314')
-        WebApp.onEvent('backButtonClicked', () => {
-            WebApp.setHeaderColor('secondary_bg_color')
-        });
+        WebApp.setBackgroundColor('#131314')
     })
 
     return (

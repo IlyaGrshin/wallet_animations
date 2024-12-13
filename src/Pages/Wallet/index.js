@@ -22,6 +22,8 @@ import ToncoinLogo from '../../Icons/Avatars/TON.png';
 import DollarsLogo from '../../Icons/Avatars/Dollars.png';
 import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
 
+import WebApp from '@twa-dev/sdk';
+
 function Balance() {
     const [balance, setBalance] = useState('$30.06');
     const [hidden, setHidden] = useState(false);
@@ -506,6 +508,11 @@ function TransactionList() {
 }
 
 function Wallet() {
+    useEffect(() => {
+        WebApp.setHeaderColor('secondary_bg_color')
+        WebApp.setBackgroundColor('secondary_bg_color')
+    })
+
     return (
         <>
             {/* <BackButton /> */}

@@ -4,6 +4,7 @@
     align-items: flex-start;
     align-self: stretch;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    background-color: var(--tg-theme-secondary-bg-color);
 
     .section {
         display: flex;

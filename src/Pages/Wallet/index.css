@@ -1,6 +1,4 @@
 .wallet {
-    background-color: var(--tg-theme-secondary-bg-color) !important;
-
     .balance {
         display: flex;
         padding: 72px 0 48px 0;
@@ -88,6 +86,7 @@
     .collapsed {
         body.apple & {
             padding: 0px 16px 12px 16px;
+            background-color: var(--tg-theme-secondary-bg-color);
         }
     
         body.material & {
@@ -109,6 +108,7 @@
     .expanded {
         body.apple & {
             padding: 0px 16px 24px 16px;
+            background-color: var(--tg-theme-secondary-bg-color);
         }
     
         body.material & {
