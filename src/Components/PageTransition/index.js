@@ -32,8 +32,7 @@ const PageTransition = ({ children }) => {
         get duration() {
             return window.pageTransitionDuration || 0.2;
         },
-        // ease: [0.26, 0.08, 0.25, 1],
-        ease: 'linear',
+        ease: [0.26, 0.08, 0.25, 1],
         delay: 0,
     };
 

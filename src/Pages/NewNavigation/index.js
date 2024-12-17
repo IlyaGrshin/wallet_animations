@@ -92,8 +92,8 @@ function NewNavigation () {
                         exit={{ opacity: 0, scale: 1.01 }}
                         key={view}
                         transition={{
-                            duration: 0.25,
-                            ease: [0.26, 0.08, 0.25, 1],
+                            duration: 0.2,
+                            ease: 'easeOut',
                         }}
                         className='pageView'
                     >
