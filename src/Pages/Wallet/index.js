@@ -18,8 +18,8 @@ import { ReactComponent as ArrowLiftAndRightCircleFill28 } from '../../Icons/28/
 import { ReactComponent as PlusCircleFill28 } from '../../Icons/28/Plus Circle Fill.svg'
 import { ReactComponent as CreditCardFill28 } from '../../Icons/28/Credit Card Fill.svg'
 
-import DollarsLogo from '../../Icons/Avatars/Dollars.png'
-import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png'
+import DollarsLogo from '../../Icons/Avatars/Dollars.svg'
+import BitcoinLogo from '../../Icons/Avatars/Bitcoin.svg'
 import ToncoinLogo from '../../Icons/Avatars/Toncoin.svg'
 import NotcoinLogo from '../../Icons/Avatars/Notcoin.svg'
 import MajorLogo from '../../Icons/Avatars/Major.svg'
@@ -144,14 +144,14 @@ function AnimatedCellMoreButton({ onClick, state }) {
     ]
     : [
         {
-            src: ToncoinLogo,
+            src: HamsterLogo,
             variants: {
                 collapsed: { scale: 0.6, top: '-6px', left: 0 },
                 expanded: { scale: 1, top: 0, left: '6px' },
             },
         },
         {
-            src: BitcoinLogo,
+            src: NotcoinLogo,
             variants: {
                 collapsed: { scale: 0.6, opacity: 1, top: '6px', left: '12px' },
                 expanded: { scale: 0, opacity: 0, top: 0, left: '18px' },
