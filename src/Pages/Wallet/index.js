@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react';
 
 import PageTransition from '../../Components/PageTransition';
 
+import { apple } from '../../Components/DeviceProvider'
 import Card from '../../Components/Card';
 import Text from '../../Components/Text';
 import SectionList from '../../Components/SectionList';
@@ -114,6 +115,138 @@ function ActionButtons() {
                 </motion.div>
             ))}
          </Card>
+    )
+}
+
+function AnimatedCellMoreButton({ onClick, state }) {
+    const transition = { ease: [0.26, 0.08, 0.25, 1], duration: 0.2 };
+
+    const jettonsSize = apple
+    ? { position: 'relative', width: '40px', height: '40px' }
+    : { position: 'relative', width: '42px', height: '42px', marginLeft: '-6px' }
+
+    const jettonsMotion = apple
+    ? [
+        {
+            src: HamsterLogo,
+            variants: {
+                collapsed: { scale: 0.6, top: '-6px', left: '-6px' },
+                expanded: { scale: 1, opacity: 0, top: 0, left: 0 },
+            },
+        },
+        {
+            src: NotcoinLogo,
+            variants: {
+                collapsed: { scale: 0.6, opacity: 1, top: '6px', left: '6px' },
+                expanded: { scale: 0, opacity: 0, top: 0, left: 0 },
+            },
+        },
+    ]
+    : [
+        {
+            src: ToncoinLogo,
+            variants: {
+                collapsed: { scale: 0.6, top: '-6px', left: 0 },
+                expanded: { scale: 1, top: 0, left: '6px' },
+            },
+        },
+        {
+            src: BitcoinLogo,
+            variants: {
+                collapsed: { scale: 0.6, opacity: 1, top: '6px', left: '12px' },
+                expanded: { scale: 0, opacity: 0, top: 0, left: '18px' },
+            },
+        },
+    ];
+
+    const HiddenEyeMotion = apple
+    ? {
+        variants: {
+            collapsed: { scale: 0.6, opacity: 0, top: '-6px', left: '-6px' },
+            expanded: { scale: 1, opacity: 1, top: 0, left: 0 },
+        },
+    }
+    : {
+        variants: {
+            collapsed: { scale: 0.6, opacity: 0, top: '-6px', left: 0 },
+            expanded: { scale: 1, opacity: 1, top: 0, left: '6px' },
+        },
+    }
+
+    const variants = {
+        'TextMoreAssets': {
+            collapsed: { opacity: 1, top: 'calc(50% - 11px)' },
+            expanded: { opacity: 0, top: 'calc(50% - 20px)' },
+        },
+        'TextHideLowBalances': {
+            collapsed: { opacity: 0, top: 'calc(50% - 20px)' },
+            expanded: { opacity: 1, top: 'calc(50% - 11px)' },
+        }
+    }
+
+    return (
+        <motion.div
+            onClick={onClick}
+        >
+            <div className='Cell'>
+                <div className='start'>
+                    <div 
+                        className='assetIcon'
+                        style={jettonsSize}
+                    >
+                        <motion.div
+                                className='image' 
+                                variants={HiddenEyeMotion.variants}
+                                transition={transition}
+                                animate={state ? 'expanded' : 'collapsed'}
+                                style={{ backgroundImage: `url(${HiddenEye})`, position: 'absolute', zIndex: 3 }}
+                                key={`stack-asset-3`}
+                        ></motion.div>
+                        {jettonsMotion.map((jetton, index) => (
+                            <motion.div
+                                className='image' 
+                                variants={jetton.variants}
+                                transition={transition}
+                                animate={state ? 'expanded' : 'collapsed'}
+                                style={{ backgroundImage: `url(${jetton.src})`, position: 'absolute', zIndex: 2 - index }}
+                                key={`stack-asset-${index}`}
+                            ></motion.div>
+                        ))}
+                    </div>
+                </div>
+                <div 
+                    className='body'
+                    style={{ position: 'relative' }}
+                >
+                    <motion.div
+                        variants={variants.TextMoreAssets}
+                        transition={transition}
+                        animate={state ? 'expanded' : 'collapsed'}
+                        style={{ transformOrigin: '0% 50%', position: 'absolute' }}
+                    >
+                        <Text 
+                            apple={{ variant: 'body', weight: 'medium' }}
+                            material={{ variant: 'body1', weight: 'medium' }}
+                        >
+                            More Assets
+                        </Text>
+                    </motion.div>
+                    <motion.div
+                        variants={variants.TextHideLowBalances}
+                        transition={transition}
+                        animate={state ? 'expanded' : 'collapsed'}
+                        style={{ transformOrigin: '0% 50%', position: 'absolute' }}
+                    >
+                        <Text 
+                            apple={{ variant: 'body', weight: 'medium' }}
+                            material={{ variant: 'body1', weight: 'medium' }}
+                        >
+                            Hide Low Balances
+                        </Text>
+                    </motion.div>
+                </div>
+            </div>
+        </motion.div>
     )
 }
 
@@ -241,7 +374,7 @@ function Assets() {
                                 initial={{ height: 0, opacity: 0, scale: 0.97 }}
                                 animate={{ height: 'auto', opacity: 1, scale: 1 }}
                                 exit={{ height: 0, opacity: 0, scale: 0.97 }}
-                                transition={{ duration: 0.2, ease: [0.26, 0.08, 0.25, 1] }}
+                                transition={{ duration: 0.25, ease: [0.26, 0.08, 0.25, 1] }}
                                 className='smallAssets'
                             >
                                 {smallAssets.map((asset, index) => (
@@ -261,15 +394,13 @@ function Assets() {
                             </motion.div>
                         )}
                     </AnimatePresence>
-                    <Cell
-                        start={<Cell.Start type='Image' src={HiddenEye} />}
-                        onClick={() => setShowSmallAssets((s) => !s)}
-                    >
-                        {!showSmallAssets 
-                            ? <Cell.Text title='Show More' bold />
-                            : <Cell.Text title='Hide Low Balances' bold />
-                        }
-                    </Cell>
+                    <AnimatedCellMoreButton
+                        state={showSmallAssets}
+                        onClick={() => setShowSmallAssets((s) => {
+                            WebApp.HapticFeedback.selectionChanged();
+                            return !s;
+                        })}
+                    />
                 </>
             )}
         </SectionList.Item>
