@@ -40,7 +40,6 @@ function Profile() {
     return (
         <div className='profile'>
             <div className='data'>
-                {/* <div className='avatar' style={{ backgroundImage: `url(${Avatar})` }}></div> */}
                 <div className='balances'>
                     <Text 
                         apple={{
@@ -272,7 +271,6 @@ function TONSpace() {
 
     return (
         <>
-            {/* <BackButton /> */}
             <div className="ton-space">
                 <PageTransition>
                     <Profile />

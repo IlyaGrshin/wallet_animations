@@ -43,12 +43,10 @@ const UI = () => {
     return (
         <PageTransition>
              <SectionList>
-                {/* <SectionList.Item> */}
-                    <SegmentedControl
-                        segments={['Label 1', 'Label 2', 'Label 3']}
-                        onChange={handleSegmentChange}
-                    />
-                {/* </SectionList.Item> */}
+                <SegmentedControl
+                    segments={['Label 1', 'Label 2', 'Label 3']}
+                    onChange={handleSegmentChange}
+                />
                 <SectionList.Item>
                     <Cell 
                         as={Link} 
@@ -57,12 +55,6 @@ const UI = () => {
                     >
                         <Cell.Text title='Navigation Update' />
                     </Cell>
-                    {/* <Cell as={Link} to='wallet'>
-                        <Cell.Text type='Accent' title='Wallet UI' />
-                    </Cell>
-                    <Cell as={Link} to='tonspace'>
-                        <Cell.Text type='Accent' title='TON Space' />
-                    </Cell> */}
                     <Cell 
                         as={Link} 
                         to='onboarding'
