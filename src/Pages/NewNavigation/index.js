@@ -19,7 +19,7 @@ const useAvatarUrl = () => {
     
     return initData ? JSON.parse(userData).photo_url : DefaultAvatar;
   } catch (error) {
-    console.error('Error parsing initData or userData:', error);
+    // sconsole.error('Error parsing initData or userData:', error);
     return DefaultAvatar;
   }
 };
