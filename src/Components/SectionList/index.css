@@ -1,4 +1,4 @@
-.sectionList { 
+section.list { 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -6,7 +6,7 @@
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
     background-color: var(--tg-theme-secondary-bg-color);
 
-    .section {
+    section {
         display: flex;
         flex-direction: column;
         align-self: stretch;
@@ -23,7 +23,7 @@
         padding: 16px;
         gap: 24px;
 
-        .section .Card {
+        section .Card {
             border-radius: 10px;
         }
     }
@@ -32,8 +32,7 @@
         padding: 0px;
         gap: 12px;
 
-
-        .section .Card {
+        section .Card {
             border-radius: 0px;
             box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
         }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { AnimatePresence, motion } from 'motion/react';
 
 import PageTransition from '../../Components/PageTransition';
 
@@ -9,7 +9,6 @@ import SectionList from '../../Components/SectionList';
 import Cell from '../../Components/Cell';
 import Morph from '../../Components/Morph'
 import { Spoiler } from 'spoiled';
-import Stacks from '../../Components/Stacks';
 
 import './index.css';
 
@@ -17,6 +16,16 @@ import { ReactComponent as ArrowUpCircleFill } from '../../Icons/28/Arrow Up Cir
 import { ReactComponent as ArrowLiftAndRightCircleFill28 } from '../../Icons/28/Arrow Left & Right Circle Fill.svg';
 import { ReactComponent as PlusCircleFill28 } from '../../Icons/28/Plus Circle Fill.svg'
 import { ReactComponent as CreditCardFill28 } from '../../Icons/28/Credit Card Fill.svg'
+
+import DollarsLogo from '../../Icons/Avatars/Dollars.png'
+import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png'
+import ToncoinLogo from '../../Icons/Avatars/Toncoin.svg'
+import NotcoinLogo from '../../Icons/Avatars/Notcoin.svg'
+import MajorLogo from '../../Icons/Avatars/Major.svg'
+import HamsterLogo from '../../Icons/Avatars/Hamster.svg'
+import XEmpireLogo from '../../Icons/Avatars/XEmpire.svg'
+import CatizenLogo from '../../Icons/Avatars/Catizen.svg'
+import HiddenEye from '../../Icons/Avatars/HiddenEyeIcon.svg'
 
 import WebApp from '@twa-dev/sdk';
 
@@ -108,6 +117,165 @@ function ActionButtons() {
     )
 }
 
+function Assets() {
+    const [showSmallAssets, setShowSmallAssets] = useState(false);
+
+    const formatNumbers = (number) => {
+        return Number(number.toFixed(2));
+    }
+
+    const assets = [
+        {
+            id: 0,
+            name: 'Dollars',
+            image: DollarsLogo,
+            ticker: 'USDT',
+            value: '25',
+            rate: '1.00',
+            delta: '+0%',
+        },
+        {
+            id: 1,
+            name: 'Toncoin',
+            image: ToncoinLogo,
+            ticker: 'TON',
+            value: '5.061',
+            rate: '5.26',
+            delta: '-3.61%',
+        },
+        {
+            id: 2,
+            name: 'Bitcoin',
+            image: BitcoinLogo,
+            ticker: 'BTC',
+            value: '0',
+            rate: '97614.03',
+            delta: '-3.53%',
+        },
+        {
+            id: 3,
+            name: 'Notcoin',
+            image: NotcoinLogo,
+            ticker: 'NOT',
+            value: '0.00633',
+            rate: '0.000523',
+            delta: '-10.66%',
+        },
+        {
+            id: 4,
+            name: 'Major',
+            image: MajorLogo,
+            ticker: 'MAJOR',
+            value: '5',
+            rate: '0.582',
+            delta: '-7.56%',
+        },
+        {
+            id: 5,
+            name: 'Hamster Kombar',
+            image: HamsterLogo,
+            ticker: 'HMSTR',
+            value: '52.182',
+            rate: '0.00255',
+            delta: '-9.95%',
+        },
+        {
+            id: 6,
+            name: 'X Empire',
+            image: XEmpireLogo,
+            ticker: 'X',
+            value: '0',
+            rate: '0.0001573',
+            delta: '-11.5%',
+        },
+        {
+            id: 7,
+            name: 'Catizen',
+            image: CatizenLogo,
+            ticker: 'CATI',
+            value: '0',
+            rate: '0.374',
+            delta: '-7.15%',
+        }
+
+    ];
+
+    const priorityAssets = assets.filter(asset => asset.id === 0 || asset.id === 1);
+    const otherAssets = assets.filter(asset => asset.id !== 0 && asset.id !== 1);
+
+    const largeAssets = [
+        ...priorityAssets,
+        ...otherAssets
+        .filter(asset => asset.rate * asset.value >= 1)
+        .sort((a, b) => b.rate * b.value - a.rate * a.value),
+    ];
+
+    const smallAssets = [
+        ...otherAssets
+        .filter(asset => asset.rate * asset.value < 1)
+        .sort((a, b) => b.rate * b.value - a.rate * a.value),
+    ];
+
+    return (
+        <SectionList.Item>
+            {largeAssets.map((asset, index) => (
+                <Cell 
+                    start={<Cell.Start type='Image' src={asset.image} />}
+                    end={
+                        <Cell.Text 
+                            title={`$${formatNumbers(asset.rate * asset.value)}`} 
+                            description={`${asset.value} ${asset.ticker}`} 
+                        />
+                    }
+                    key={`asset-${index}`}
+                >
+                    <Cell.Text title={asset.name} description={`$${asset.rate}`} bold />
+                </Cell>
+            ))}
+    
+            {smallAssets.length > 0 && (
+                <>
+                    <AnimatePresence>
+                        {showSmallAssets && (
+                            <motion.div
+                                initial={{ height: 0, opacity: 0, scale: 0.97 }}
+                                animate={{ height: 'auto', opacity: 1, scale: 1 }}
+                                exit={{ height: 0, opacity: 0, scale: 0.97 }}
+                                transition={{ duration: 0.2, ease: [0.26, 0.08, 0.25, 1] }}
+                                className='smallAssets'
+                            >
+                                {smallAssets.map((asset, index) => (
+                                    <Cell 
+                                        start={<Cell.Start type='Image' src={asset.image} />}
+                                        end={
+                                            <Cell.Text 
+                                                title={`$${formatNumbers(asset.rate * asset.value)}`} 
+                                                description={`${asset.value} ${asset.ticker}`} 
+                                            />
+                                        }
+                                        key={`asset-${index}`}
+                                    >
+                                        <Cell.Text title={asset.name} description={`$${asset.rate}`} bold />
+                                    </Cell>
+                                ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                    <Cell
+                        start={<Cell.Start type='Image' src={HiddenEye} />}
+                        onClick={() => setShowSmallAssets((s) => !s)}
+                    >
+                        {!showSmallAssets 
+                            ? <Cell.Text title='Show More' bold />
+                            : <Cell.Text title='Hide Low Balances' bold />
+                        }
+                    </Cell>
+                </>
+            )}
+        </SectionList.Item>
+    );    
+}
+
 function TransactionList() {
     const txHistory = [
         {
@@ -137,7 +305,6 @@ function TransactionList() {
     ];
 
     return (
-        <SectionList>
             <SectionList.Item 
                 header="Transaction History"
                 footer="Section Description"
@@ -152,7 +319,6 @@ function TransactionList() {
                     </Cell>
                 ))}
             </SectionList.Item>
-        </SectionList> 
     )
 }
 
@@ -164,13 +330,14 @@ function Wallet() {
 
     return (
         <>
-            {/* <BackButton /> */}
             <div className='wallet'>
                 <PageTransition>
                     <Balance />
                     <ActionButtons />
-                    <Stacks />
-                    <TransactionList />
+                    <SectionList>
+                        <Assets />
+                        <TransactionList />
+                    </SectionList>
                 </PageTransition>
             </div>
         </>

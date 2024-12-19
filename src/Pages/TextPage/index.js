@@ -6,9 +6,9 @@ import PageTransition from '../../Components/PageTransition'
 import ModalView from '../../Components/ModalView'
 import PanelHeader from '../../Components/PanelHeader'
 
-import ToncoinLogo from '../../Icons/Avatars/TON.png';
-import DollarsLogo from '../../Icons/Avatars/Dollars.png';
-import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
+import ToncoinLogo from '../../Icons/Avatars/Toncoin.svg';
+import DollarsLogo from '../../Icons/Avatars/Dollars.svg';
+import BitcoinLogo from '../../Icons/Avatars/Bitcoin.svg';
 
 import { BackButton, MainButton } from '@twa-dev/sdk/react'
 

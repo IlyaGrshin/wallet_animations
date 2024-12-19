@@ -4,21 +4,19 @@ import Card from '../../Components/Card'
 
 const SectionList = ({ children }) => {
     return (
-        <div className="sectionList">
+        <section className="list">
             {children}
-        </div>
+        </section>
     );
 }
 
 SectionList.Item = ({ children, header, footer }) => {
     return (
-        <>
-            <div className="section">
-                {header && (<SectionHeader title={header} />)}
-                <Card>{children}</Card>
-                {footer && (<SectionHeader type="Footer" title={footer} />)}
-            </div>
-        </>
+        <section>
+            {header && (<SectionHeader title={header} />)}
+            <Card>{children}</Card>
+            {footer && (<SectionHeader type="Footer" title={footer} />)}
+        </section>
     )
 }
 

@@ -86,9 +86,18 @@
     .transactions {
         background-color: var(--tg-theme-section-bg-color);
     
-        .ListItem:last-child .body,
-        .ListItem:last-child .right {
+        .Cell:last-child .body,
+        .Cell:last-child .right {
             border-bottom: 0;
+        }
+    }
+
+    .smallAssets {
+        overflow: hidden;
+
+        .Cell:last-child .body,
+        .Cell:last-child .end {
+            border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
         }
     }
 }

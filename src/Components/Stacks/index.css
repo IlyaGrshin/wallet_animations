@@ -47,8 +47,8 @@
             z-index: 2;
         }
     
-        .ListItem .body,
-        .ListItem .right {
+        .Cell .body,
+        .Cell .right {
             border-bottom: 0;
         }
     

@@ -13,8 +13,8 @@ import { ReactComponent as ArrowUpCircleFill } from '../../Icons/28/Arrow Up Cir
 import { ReactComponent as ArrowLiftAndRightCircleFill28 } from '../../Icons/28/Arrow Left & Right Circle Fill.svg';
 import { ReactComponent as PlusCircleFill28 } from '../../Icons/28/Plus Circle Fill.svg'
 
-import ToncoinLogo from '../../Icons/Avatars/TON.png';
-import DollarsLogo from '../../Icons/Avatars/Dollars.png';
+import ToncoinLogo from '../../Icons/Avatars/Toncoin.svg';
+import DollarsLogo from '../../Icons/Avatars/Dollars.svg';
 
 import WebApp from '@twa-dev/sdk';
 

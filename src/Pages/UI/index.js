@@ -11,9 +11,9 @@ import DropdownMenu from '../../Components/DropdownMenu';
 import PanelHeader from '../../Components/PanelHeader';
 import SegmentedControl from '../../Components/SegmentedControl';
 
-import ToncoinLogo from '../../Icons/Avatars/TON.png';
-import DollarsLogo from '../../Icons/Avatars/Dollars.png';
-import BitcoinLogo from '../../Icons/Avatars/Bitcoin.png';
+import ToncoinLogo from '../../Icons/Avatars/Toncoin.svg';
+import DollarsLogo from '../../Icons/Avatars/Dollars.svg';
+import BitcoinLogo from '../../Icons/Avatars/Bitcoin.svg';
 import { MainButton } from '@twa-dev/sdk/react';
 
 const UI = () => {
