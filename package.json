@@ -4,18 +4,17 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@babel/runtime": "^7.26.0",
     "@twa-dev/sdk": "^8.0.1",
-    "motion": "^11.11.17",
+    "motion": "^11.15.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.28.0",
-    "react-scripts": "5.0.1",
-    "spoiled": "^0.3.2"
+    "spoiled": "^0.3.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject",
+    "start": "webpack serve --config webpack.config.js",
+    "build": "webpack --config webpack.config.js --mode production",
     "deploy": "./deploy.sh",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
   },
@@ -41,11 +40,27 @@
     "@babel/core": "^7.26.0",
     "@babel/eslint-parser": "^7.25.9",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/plugin-transform-runtime": "^7.25.9",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.3",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+    "@svgr/webpack": "^8.1.0",
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.3",
+    "file-loader": "^6.2.0",
     "globals": "^15.14.0",
-    "prettier": "^3.4.2"
+    "html-webpack-plugin": "^5.6.3",
+    "prettier": "^3.4.2",
+    "react-refresh": "^0.16.0",
+    "sass": "^1.83.0",
+    "sass-loader": "^16.0.4",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
   }
 }
