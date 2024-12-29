@@ -18,12 +18,14 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "./deploy.sh",
-    "lint": "eslint ."
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
   },
   "eslintConfig": {
     "extends": [
+      "eslint:recommended",
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "prettier"
     ]
   },
   "browserslist": {
@@ -40,13 +42,11 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@eslint/js": "^9.17.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",
     "prettier": "3.4.2",
     "web-vitals": "^4.2.4"
