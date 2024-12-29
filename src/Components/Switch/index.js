@@ -1,19 +1,14 @@
-import { useState } from 'react';
-import './index.css'
+import { useState } from "react"
+import "./index.css"
 
-function Switch () {
+function Switch() {
     const [state, setState] = useState(false)
 
-    const toggleSwitch = () => setState(!state);
+    const toggleSwitch = () => setState(!state)
 
     return (
-        <div 
-            className='Switch' 
-            onClick={toggleSwitch} 
-            data-state={state}
-        >
-        </div>
+        <div className="Switch" onClick={toggleSwitch} data-state={state}></div>
     )
 }
 
-export default Switch;
+export default Switch

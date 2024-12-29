@@ -1,8 +1,8 @@
-import './index.css'
+import "./index.css"
 
-function Card ({ children, ...props }) {
+function Card({ children, ...props }) {
     return (
-        <div className='Card' {...props}>
+        <div className="Card" {...props}>
             {children}
         </div>
     )

@@ -1,46 +1,46 @@
-import Text from '../Text'
+import Text from "../Text"
 
-import './index.css'
+import "./index.css"
 
 const PanelHeader = ({ children }) => {
     return (
-        <div className='PanelHeader modal-height'>
-            <div className='body'>
-                <div className='left'>
+        <div className="PanelHeader modal-height">
+            <div className="body">
+                <div className="left">
                     <Text
                         apple={{
-                            variant: 'body'
+                            variant: "body",
                         }}
                         material={{
-                            variant: 'body1'
+                            variant: "body1",
                         }}
                     >
                         Close
                     </Text>
                 </div>
-                <div className='right'>
+                <div className="right">
                     <Text
                         apple={{
-                            variant: 'body',
-                            weight: 'semibold'
+                            variant: "body",
+                            weight: "semibold",
                         }}
                         material={{
-                            variant: 'body1',
-                            weight: 'medium'
+                            variant: "body1",
+                            weight: "medium",
                         }}
                     >
                         Done
                     </Text>
                 </div>
             </div>
-            <div className='middle'>
+            <div className="middle">
                 <Text
                     apple={{
-                        variant: 'body',
-                        weight: 'semibold'
+                        variant: "body",
+                        weight: "semibold",
                     }}
                     material={{
-                        variant: 'headline6',
+                        variant: "headline6",
                     }}
                 >
                     {children}
@@ -48,6 +48,6 @@ const PanelHeader = ({ children }) => {
             </div>
         </div>
     )
-} 
+}
 
 export default PanelHeader
