@@ -52,14 +52,14 @@
 
 @keyframes wave {
     0% {
-        transform: translate(-100%)
+        transform: translate(-100%);
     }
 
     50% {
-        transform: translate(100%)
+        transform: translate(100%);
     }
 
     to {
-        transform: translate(100%)
+        transform: translate(100%);
     }
 }
