@@ -20,6 +20,7 @@
 
     &[data-shine="true"]::before {
         content: '';
+        will-change: transform;
         position: absolute;
         top: 0;
         width: 150%;
