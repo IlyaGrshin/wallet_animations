@@ -4,24 +4,21 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.1",
-    "@testing-library/user-event": "^14.5.2",
     "@twa-dev/sdk": "^8.0.1",
     "motion": "^11.11.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
-    "spoiled": "^0.3.2",
-    "web-vitals": "^4.2.3"
+    "spoiled": "^0.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "./deploy.sh"
+    "deploy": "./deploy.sh",
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [
@@ -43,6 +40,15 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-react": "^7.26.3"
+    "@eslint/js": "^9.17.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.3",
+    "globals": "^15.14.0",
+    "prettier": "3.4.2",
+    "web-vitals": "^4.2.4"
   }
 }
