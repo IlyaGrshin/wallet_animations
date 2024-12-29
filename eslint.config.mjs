@@ -30,6 +30,7 @@ export default [
       ...reactPlugin.configs.recommended.rules, // Рекомендованные правила React
       'react/jsx-uses-vars': 'error', // Поддержка используемых переменных
       'prettier/prettier': 'error', // Интеграция Prettier
+      'react/react-in-jsx-scope': 'off', // Отключение правила
     },
   },
 ];
