@@ -11,9 +11,9 @@ export default [
       sourceType: 'module', // Используем модули
       parser: babelParser, // Используем Babel Parser
       parserOptions: {
-        requireConfigFile: false, // Не требуется файл конфигурации Babel
+        requireConfigFile: true, // Включение поддержки .babelrc
         babelOptions: {
-          presets: ['@babel/preset-react'], // Поддержка JSX
+          rootMode: 'upward', // Поддержка корневого файла Babel (если проект монорепозиторий)
         },
       },
     },
