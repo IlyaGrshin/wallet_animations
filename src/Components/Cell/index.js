@@ -119,7 +119,7 @@ Cell.Text = ({ type, title, description, bold }) => {
 	)
 }
 
-Cell.End = ({ label, caption, type }) => {
+Cell.End = ({ label, caption }) => {
 	return (
 		<>
 			<Text 

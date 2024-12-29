@@ -28,7 +28,6 @@ const Gallery = ({ children, onPageChange, onScrollProgress }) => {
     return () => {
       container.removeEventListener('scroll', handleScroll);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

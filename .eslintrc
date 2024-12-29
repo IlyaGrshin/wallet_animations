@@ -1,5 +1,6 @@
 {
   "extends": ["eslint:recommended", "prettier"],
+  "plugins": ["react"],
   "env": {
     "node": true,
     "browser": true,
@@ -11,6 +12,14 @@
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
+    }
+  },
+  "rules": {
+    "react/jsx-uses-vars": "error"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
     }
   }
 }

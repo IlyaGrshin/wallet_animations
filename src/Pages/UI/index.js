@@ -17,7 +17,7 @@ import BitcoinLogo from '../../Icons/Avatars/Bitcoin.svg';
 import { MainButton } from '@twa-dev/sdk/react';
 
 const UI = () => {
-    const handleSegmentChange = (index) => {
+    const handleSegmentChange = () => {
         // console.log('Выбранный сегмент: ', index);
     };
 

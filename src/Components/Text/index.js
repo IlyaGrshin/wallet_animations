@@ -6,10 +6,6 @@ const Text = ({
         as: Component = 'div', 
         apple: appleProps,
         material: materialProps,
-        variant, 
-        weight, 
-        caps = false, 
-        rounded = false, 
         children, 
         ...props 
     }) => {

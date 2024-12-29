@@ -11,7 +11,7 @@ const hexToRgb = (hex) => {
     return `${r}, ${g}, ${b}`;
 };
 
-const Button = ({ type, variant, label, isShine = false, isFill = false, ...props }) => {
+const Button = ({ variant, label, isShine = false, isFill = false, ...props }) => {
     useEffect(() => {
         const root = document.documentElement;
         const hexColor = getComputedStyle(root).getPropertyValue('--tg-theme-button-color').trim();
