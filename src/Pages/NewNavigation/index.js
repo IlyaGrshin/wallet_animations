@@ -1,16 +1,16 @@
-import React, { useState, useMemo, useEffect } from "react"
+import React, { useState, useMemo, useEffect, Suspense } from "react"
 import { motion, AnimatePresence } from "motion/react"
 
-import Wallet from "../../Pages/Wallet"
-import TONSpace from "../../Pages/TS"
-import SegmentedControl from "../../Components/SegmentedControl"
-
-import WebApp from "@twa-dev/sdk"
-import { ReactComponent as QRCodeIcon } from "../../Icons/28/QR Code.svg"
-
 import "./index.css"
+import WebApp from "@twa-dev/sdk"
+
+import SegmentedControl from "../../Components/SegmentedControl"
+import { ReactComponent as QRCodeIcon } from "../../Icons/28/QR Code.svg"
 import { BackButton } from "@twa-dev/sdk/react"
 import DefaultAvatar from "../../Icons/Avatars/IlyaG.png"
+
+const Wallet = React.lazy(() => import("../../Pages/Wallet"))
+const TONSpace = React.lazy(() => import("../../Pages/TS"))
 
 const useAvatarUrl = () => {
     try {
@@ -19,7 +19,7 @@ const useAvatarUrl = () => {
 
         return initData ? JSON.parse(userData).photo_url : DefaultAvatar
     } catch (error) {
-        // sconsole.error('Error parsing initData or userData:', error);
+        // console.error('Error parsing initData or userData:', error);
         return DefaultAvatar
     }
 }
@@ -56,9 +56,17 @@ function NewNavigation() {
     const content = useMemo(() => {
         switch (view) {
             case "wallet":
-                return <Wallet />
+                return (
+                    <Suspense>
+                        <Wallet />
+                    </Suspense>
+                )
             case "tonspace":
-                return <TONSpace />
+                return (
+                    <Suspense>
+                        <TONSpace />
+                    </Suspense>
+                )
             default:
                 return <Wallet />
         }

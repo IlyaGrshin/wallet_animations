@@ -68,8 +68,10 @@ const Onboarding = () => {
 
     useEffect(() => {
         WebApp.setHeaderColor("#131314")
+        WebApp.disableVerticalSwipes()
         WebApp.onEvent("backButtonClicked", () => {
             WebApp.setHeaderColor("secondary_bg_color")
+            WebApp.enableVerticalSwipes()
         })
     })
 
