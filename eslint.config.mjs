@@ -31,6 +31,8 @@ export default [
       'react/jsx-uses-vars': 'error', // Поддержка используемых переменных
       'prettier/prettier': 'error', // Интеграция Prettier
       'react/react-in-jsx-scope': 'off', // Отключение правила
+      'react/prop-types': 'off', // Отключение правила
+      'react/display-name': 'off', // Отключение правила
     },
   },
 ];
