@@ -8,11 +8,11 @@
         color: var(--tg-theme-text-color);
     
         .label {
-            body.apple & {
+            :global(body.apple) & {
                 color: var(--tg-theme-text-color);
             }
     
-            body.material & {
+            :global(body.material) & {
                 color: var(--tg-theme-subtitle-text-color);
             }
         }
@@ -29,7 +29,7 @@
             }
         }
     
-        body.material & {
+        :global(body.material) & {
             background-color: var(--tg-theme-section-bg-color);
             padding: 92px 0 31px;
     
@@ -47,31 +47,14 @@
         padding: 0 16px 16px;
         gap: 8px;
     
-        .button {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            flex: 1 0 0;
-            justify-content: center;
-            align-items: center;
-            color: var(--tg-theme-accent-text-color);
-            padding: 7px 0 8px;
-            background-color: var(--tg-theme-section-bg-color);
-            border-radius: 12px;
-        }
-    
-        svg, path {
-            fill: var(--tg-theme-accent-text-color);
-        }
-    
-        body.apple & {
+        :global(body.apple) & {
             svg, path {
                 width: 28px;
                 height: 28px;
             }
         }
     
-        body.material & {
+        :global(body.material) & {
             background-color: var(--tg-theme-section-bg-color);
             box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
             padding: 0 8px 8px;

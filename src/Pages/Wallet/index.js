@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
+import * as styles from "./Wallet.module.scss"
+
 import PageTransition from "../../Components/PageTransition"
 
 import { apple } from "../../Components/DeviceProvider"
@@ -10,8 +12,8 @@ import SectionList from "../../Components/SectionList"
 import Cell from "../../Components/Cell"
 import Morph from "../../Components/Morph"
 import { Spoiler } from "spoiled"
+import { MultilineButton } from "../../Components/Button"
 
-import "./index.css"
 import { getAssetIcon } from "../../Components/AssetsMap"
 import assets from "./data/assets.json"
 import txHistory from "./data/transactions.json"
@@ -43,7 +45,7 @@ function Balance() {
     }, [hidden])
 
     return (
-        <Card className="balance">
+        <Card className={styles.balance}>
             <Text
                 apple={{
                     variant: "body",
@@ -53,12 +55,12 @@ function Balance() {
                     variant: "body1",
                     weight: "regular",
                 }}
-                className="label"
+                className={styles.label}
             >
                 Wallet Balance
             </Text>
             <Spoiler
-                className="amount"
+                className={styles.amount}
                 hidden={hidden}
                 onClick={() => setHidden((s) => !s)}
             >
@@ -89,28 +91,14 @@ function ActionButtons() {
     ]
 
     return (
-        // перевезти на MultineLine Button
-        <Card className="buttons">
+        <Card className={styles.buttons}>
             {buttons.map((button, index) => (
-                <motion.div
-                    className="button"
-                    key={`button-${index}`}
-                    whileTap={{ scale: 0.9 }}
-                >
-                    {button.icon}
-                    <Text
-                        apple={{
-                            variant: "caption2",
-                            weight: "medium",
-                        }}
-                        material={{
-                            variant: "subtitle2",
-                            weight: "medium",
-                        }}
-                    >
-                        {button.name}
-                    </Text>
-                </motion.div>
+                <MultilineButton
+                    variant="plain"
+                    icon={button.icon}
+                    label={button.name}
+                    key={index}
+                />
             ))}
         </Card>
     )
@@ -345,7 +333,7 @@ function Assets() {
                                     duration: 0.25,
                                     ease: [0.26, 0.08, 0.25, 1],
                                 }}
-                                className="smallAssets"
+                                className={styles.smallAssets}
                             >
                                 {smallAssets.map((asset, index) => (
                                     <Cell
@@ -415,7 +403,7 @@ function Wallet() {
 
     return (
         <>
-            <div className="wallet">
+            <div className={styles.wallet}>
                 <PageTransition>
                     <Balance />
                     <ActionButtons />

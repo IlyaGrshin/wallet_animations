@@ -16,7 +16,9 @@ import { ReactComponent as PlusCircleFill28 } from "../../Icons/28/Plus Circle F
 
 import WebApp from "@twa-dev/sdk"
 
-import "./index.css"
+import * as styles from "./TS.module.scss"
+import * as ButtonStyles from "../../Components/Button/MultilineButton/MultilineButton.module.scss"
+
 import assets from "./data/assets.json"
 import activityItems from "./data/activity.json"
 
@@ -38,46 +40,47 @@ function Profile() {
     }, [hidden])
 
     return (
-        <div className="profile">
-            <div className="data">
-                <div className="balances">
-                    <Text
-                        apple={{
-                            variant: "body",
-                            weight: "regular",
-                        }}
-                        material={{
-                            variant: "body1",
-                            weight: "regular",
-                        }}
-                        className="label"
-                    >
-                        TON Space Balance
-                    </Text>
-                    <Spoiler
-                        className="amount"
-                        hidden={hidden}
-                        onClick={() => setHidden((s) => !s)}
-                    >
-                        <Morph>{balance}</Morph>
-                    </Spoiler>
-                </div>
+        <div className={styles.profile}>
+            <div className={styles.data}>
+                <Text
+                    apple={{
+                        variant: "body",
+                        weight: "regular",
+                    }}
+                    material={{
+                        variant: "body1",
+                        weight: "regular",
+                    }}
+                    className={styles.label}
+                >
+                    TON Space Balance
+                </Text>
+                <Spoiler
+                    className={styles.amount}
+                    hidden={hidden}
+                    onClick={() => setHidden((s) => !s)}
+                >
+                    <Morph>{balance}</Morph>
+                </Spoiler>
             </div>
-            <div className="buttons">
+            <div className={styles.buttons}>
                 <MultilineButton
                     variant="plain"
                     icon={<ArrowUpCircleFill />}
                     label="Send"
+                    className={`${ButtonStyles.button} ${styles.overlayButton}`}
                 />
                 <MultilineButton
                     variant="plain"
                     icon={<PlusCircleFill28 />}
                     label="Deposit"
+                    className={`${ButtonStyles.button} ${styles.overlayButton}`}
                 />
                 <MultilineButton
                     variant="plain"
                     icon={<ArrowLiftAndRightCircleFill28 />}
                     label="Swap"
+                    className={`${ButtonStyles.button} ${styles.overlayButton}`}
                 />
             </div>
         </div>
@@ -117,7 +120,7 @@ function Staking() {
 
 function Collectibles() {
     return (
-        <div className="placeholder">
+        <div className={styles.placeholder}>
             <Text
                 apple={{
                     variant: "body",

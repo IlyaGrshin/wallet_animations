@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import PropTypes from "prop-types"
 import Text from "../../Text"
 
-import * as styles from "./index.module.scss"
+import * as styles from "./RegularButton.module.scss"
 
 const hexToRgb = (hex) => {
     let r = parseInt(hex.slice(1, 3), 16)

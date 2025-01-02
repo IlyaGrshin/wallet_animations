@@ -8,7 +8,7 @@
         padding: 72px 0 48px;
         flex-direction: column;
         align-items: center;
-        gap: 12px;
+        gap: 2px;
         align-self: stretch;
         text-align: center;
         z-index: 1;
@@ -25,7 +25,7 @@
             }
         }
 
-        body.material & {
+        :global(body.material) & {
             padding: 92px 0 31px;
 
             .amount {
@@ -53,27 +53,14 @@
         align-self: stretch;
         z-index: 1;
 
-        /* TODO: почистить стили */
-        .button {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1 0 0;
-            border-radius: 12px;
+        .overlayButton {
             background: 
               linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)),
               rgba(255, 255, 255, 0.03);
             background-blend-mode: plus-lighter, normal;
-            gap: 2px;
-            padding: 7px 0 8px 0;
 
-            svg {
-                width: 28px;
-                height: 28px;
-
-                path {
-                    fill: white;
-                }
+            svg, path {
+                fill: white;
             }
             
             .label {

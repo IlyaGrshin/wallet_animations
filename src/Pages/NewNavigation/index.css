@@ -36,7 +36,6 @@
 
     svg, path {
         fill: var(--tg-theme-text-color);
-        transition: fill 0.2s ease;
     }
 
     &.transparent {

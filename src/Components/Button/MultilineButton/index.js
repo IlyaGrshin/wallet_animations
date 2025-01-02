@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 
 import Text from "../../Text"
-import * as styles from "./index.module.scss"
+import * as styles from "./MultilineButton.module.scss"
 
 export function MultilineButton({ variant, icon, label, style, ...props }) {
     return (
