@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { AnimatePresence, motion } from "motion/react"
+import { animate } from "motion"
 
 import * as styles from "./Wallet.module.scss"
 
@@ -265,7 +266,26 @@ function AnimatedCellMoreButton({ onClick, state }) {
 }
 
 function Assets() {
+    const AssetsRef = React.useRef(null)
     const [showSmallAssets, setShowSmallAssets] = useState(false)
+    const [scrolledToSection, setScrolledToSection] = useState(false)
+
+    const scrollToSection = useCallback(() => {
+        const currentPosition = window.scrollY
+        const targetPosition = scrolledToSection
+            ? 0
+            : AssetsRef.current?.offsetTop - 16 || 0
+
+        animate(currentPosition, targetPosition, {
+            duration: 0.25,
+            ease: [0.26, 0.08, 0.25, 1],
+            onUpdate: (value) => {
+                window.scrollTo(0, value)
+            },
+        })
+
+        setScrolledToSection(!scrolledToSection)
+    }, [scrolledToSection])
 
     const formatNumbers = (number) => {
         return Number(number.toFixed(2))
@@ -292,7 +312,7 @@ function Assets() {
     ]
 
     return (
-        <SectionList.Item>
+        <SectionList.Item ref={AssetsRef}>
             {largeAssets.map((asset, index) => (
                 <Cell
                     start={
@@ -365,6 +385,7 @@ function Assets() {
                         state={showSmallAssets}
                         onClick={() =>
                             setShowSmallAssets((s) => {
+                                scrollToSection()
                                 WebApp.HapticFeedback.selectionChanged()
                                 return !s
                             })
