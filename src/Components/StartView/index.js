@@ -4,7 +4,7 @@ import * as styles from "./StartView.module.scss"
 
 const StartView = ({ title, description }) => {
     return (
-        <div className={styles.StartView}>
+        <div className={styles.root}>
             <Text
                 apple={{
                     variant: "title1",

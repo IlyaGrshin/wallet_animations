@@ -21,9 +21,9 @@ const SegmentedControl = ({
     const controlType = useMemo(() => {
         switch (type) {
             case "mainPage":
-                return `${styles.segmentedControl} ${styles.mainPage}}`
+                return `${styles.root} ${styles.mainPage}}`
             default:
-                return `${styles.segmentedControl}`
+                return `${styles.root}`
         }
     }, [type])
 

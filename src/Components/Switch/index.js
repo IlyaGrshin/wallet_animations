@@ -8,7 +8,7 @@ function Switch() {
 
     return (
         <div
-            className={styles.Switch}
+            className={styles.root}
             onClick={toggleSwitch}
             data-state={state}
         ></div>
