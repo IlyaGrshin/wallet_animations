@@ -222,6 +222,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
                                 zIndex: 3,
                             }}
                             key={`stack-asset-3`}
+                            initial={false}
                         ></motion.div>
                         {jettonsMotion.map((jetton, index) => (
                             <motion.div
@@ -235,6 +236,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
                                     zIndex: 2 - index,
                                 }}
                                 key={`stack-asset-${index}`}
+                                initial={false}
                             ></motion.div>
                         ))}
                     </div>

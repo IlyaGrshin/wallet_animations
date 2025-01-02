@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, Suspense } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 
 import "./index.css"
@@ -8,6 +8,7 @@ import SegmentedControl from "../../Components/SegmentedControl"
 import { ReactComponent as QRCodeIcon } from "../../Icons/28/QR Code.svg"
 import { BackButton } from "@twa-dev/sdk/react"
 import DefaultAvatar from "../../Icons/Avatars/IlyaG.png"
+import TonSpaceSkeleton from "../TS Skeleton"
 
 const Wallet = React.lazy(() => import("../../Pages/Wallet"))
 const TONSpace = React.lazy(() => import("../../Pages/TS"))
@@ -57,15 +58,15 @@ function NewNavigation() {
         switch (view) {
             case "wallet":
                 return (
-                    <Suspense>
-                        <Wallet />
-                    </Suspense>
+                    // <Suspense>
+                    <Wallet />
+                    // </Suspense>
                 )
             case "tonspace":
                 return (
-                    <Suspense>
-                        <TONSpace />
-                    </Suspense>
+                    // <Suspense fallback={<TonSpaceSkeleton />}>
+                    <TONSpace />
+                    // </Suspense>
                 )
             default:
                 return <Wallet />
