@@ -1,5 +1,5 @@
 import { useState } from "react"
-import "./index.css"
+import * as styles from "./index.module.scss"
 
 function Switch() {
     const [state, setState] = useState(false)
@@ -7,7 +7,11 @@ function Switch() {
     const toggleSwitch = () => setState(!state)
 
     return (
-        <div className="Switch" onClick={toggleSwitch} data-state={state}></div>
+        <div
+            className={styles.Switch}
+            onClick={toggleSwitch}
+            data-state={state}
+        ></div>
     )
 }
 
