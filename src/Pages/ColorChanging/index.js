@@ -10,15 +10,25 @@ function ColorChanging() {
     const [isSecondaryColor, setIsSecondaryColor] = React.useState(true)
 
     const switchColors = () => {
-        if (isSecondaryColor) {
-            WebApp.setHeaderColor("#131314")
-            WebApp.setBackgroundColor("#131314")
+        if (WebApp.initData) {
+            if (isSecondaryColor) {
+                WebApp.setHeaderColor("#131314")
+                WebApp.setBackgroundColor("#131314")
+            } else {
+                WebApp.setHeaderColor("secondary_bg_color")
+                WebApp.setBackgroundColor("secondary_bg_color")
+            }
+            setIsSecondaryColor(!isSecondaryColor)
+            WebApp.HapticFeedback.impactOccurred("light")
         } else {
-            WebApp.setHeaderColor("secondary_bg_color")
-            WebApp.setBackgroundColor("secondary_bg_color")
+            if (isSecondaryColor) {
+                document.body.style.backgroundColor = "#131314"
+            } else {
+                document.body.style.backgroundColor =
+                    "var(--tg-theme-secondary-bg-color)"
+            }
+            setIsSecondaryColor(!isSecondaryColor)
         }
-        setIsSecondaryColor(!isSecondaryColor)
-        WebApp.HapticFeedback.impactOccurred("light")
     }
 
     return (

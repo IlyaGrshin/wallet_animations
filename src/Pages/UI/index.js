@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
 import PageTransition from "../../Components/PageTransition"
@@ -12,6 +12,7 @@ import PanelHeader from "../../Components/PanelHeader"
 import SegmentedControl from "../../Components/SegmentedControl"
 import { getAssetIcon } from "../../Components/AssetsMap"
 
+import WebApp from "@twa-dev/sdk"
 import { MainButton } from "@twa-dev/sdk/react"
 
 const UI = () => {
@@ -37,6 +38,18 @@ const UI = () => {
             [ID]: false,
         }))
     }
+
+    useEffect(() => {
+        if (WebApp.initData) {
+            WebApp.ready()
+            WebApp.expand()
+            WebApp.setBackgroundColor("secondary_bg_color")
+            WebApp.setHeaderColor("secondary_bg_color")
+        } else {
+            document.body.style.backgroundColor =
+                "var(--tg-theme-secondary-bg-color)"
+        }
+    }, [])
 
     return (
         <PageTransition>

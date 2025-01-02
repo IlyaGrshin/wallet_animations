@@ -397,8 +397,13 @@ function TransactionList() {
 
 function Wallet() {
     useEffect(() => {
-        WebApp.setHeaderColor("secondary_bg_color")
-        WebApp.setBackgroundColor("secondary_bg_color")
+        if (WebApp.initData) {
+            WebApp.setHeaderColor("secondary_bg_color")
+            WebApp.setBackgroundColor("secondary_bg_color")
+        } else {
+            document.body.style.backgroundColor =
+                "var(--tg-theme-secondary-bg-color)"
+        }
     })
 
     return (

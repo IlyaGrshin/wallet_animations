@@ -30,11 +30,16 @@ const useSegmentNavigation = () => {
     const [view, setView] = useState("wallet")
 
     useEffect(() => {
-        WebApp.onEvent("backButtonClicked", () => {
-            WebApp.setHeaderColor("secondary_bg_color")
-            WebApp.setBackgroundColor("secondary_bg_color")
-        })
-    }, [])
+        if (WebApp.initData) {
+            WebApp.onEvent("backButtonClicked", () => {
+                WebApp.setHeaderColor("secondary_bg_color")
+                WebApp.setBackgroundColor("secondary_bg_color")
+            })
+        } else {
+            document.body.style.backgroundColor =
+                "var(--tg-theme-secondary-bg-color)"
+        }
+    })
 
     const handleSegmentChange = (index) => {
         if (index === 1) {

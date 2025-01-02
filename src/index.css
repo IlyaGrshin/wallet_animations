@@ -103,6 +103,8 @@ body {
  	margin: 0;
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
+    will-change: background-color;
+    transition: background-color 200ms ease;
 
     &.apple {
         font-family: -apple-system, system-ui, sans-serif;

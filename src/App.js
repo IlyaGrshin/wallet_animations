@@ -1,4 +1,3 @@
-import { useEffect } from "react"
 import { Routes, Route, useLocation } from "react-router-dom"
 import { AnimatePresence } from "motion/react"
 import "./index.css"
@@ -10,18 +9,10 @@ import Onboarding from "./Pages/Onboarding"
 import NewNavigation from "./Pages/NewNavigation"
 import ColorChanging from "./Pages/ColorChanging"
 
-import WebApp from "@twa-dev/sdk"
 import TextPage from "./Pages/TextPage"
 
 function App() {
     const location = useLocation()
-
-    useEffect(() => {
-        WebApp.ready()
-        WebApp.expand()
-        WebApp.setBackgroundColor("secondary_bg_color")
-        WebApp.setHeaderColor("secondary_bg_color")
-    }, [])
 
     return (
         <AnimatePresence mode="wait" initial={false}>
