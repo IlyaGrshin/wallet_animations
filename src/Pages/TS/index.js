@@ -8,17 +8,17 @@ import Cell from "../../Components/Cell"
 import SectionList from "../../Components/SectionList"
 import Morph from "../../Components/Morph"
 import { Spoiler } from "spoiled"
+import { getAssetIcon } from "../../Components/AssetsMap"
 
 import { ReactComponent as ArrowUpCircleFill } from "../../Icons/28/Arrow Up Circle Fill.svg"
 import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../Icons/28/Arrow Left & Right Circle Fill.svg"
 import { ReactComponent as PlusCircleFill28 } from "../../Icons/28/Plus Circle Fill.svg"
 
-import ToncoinLogo from "../../Icons/Avatars/Toncoin.svg"
-import DollarsLogo from "../../Icons/Avatars/Dollars.svg"
-
 import WebApp from "@twa-dev/sdk"
 
 import "./index.css"
+import assets from "./data/assets.json"
+import activityItems from "./data/activity.json"
 
 function Profile() {
     const [balance, setBalance] = useState("$261.69")
@@ -118,24 +118,9 @@ function Profile() {
 }
 
 function Assets() {
-    const assets = [
-        {
-            name: "Toncoin",
-            price: "$7.70",
-            value: "$0.00",
-            image: ToncoinLogo,
-        },
-        {
-            name: "USD Tether",
-            price: "$1.00",
-            value: "$0.00",
-            image: DollarsLogo,
-        },
-    ]
-
     return assets.map((asset, index) => (
         <Cell
-            start={<Cell.Start type="Image" src={asset.image} />}
+            start={<Cell.Start type="Image" src={getAssetIcon(asset.ticker)} />}
             end={<Cell.Text title={asset.value} />}
             key={`tx-${index}`}
         >
@@ -181,36 +166,9 @@ function Collectibles() {
 }
 
 function Activity() {
-    const items = [
-        {
-            name: "Sent",
-            address: "to UQDs...1Koh",
-            amount: "1 TON",
-            time: "Today",
-        },
-        {
-            name: "Received",
-            address: "from UQDs...1Koh",
-            amount: "+1 TON",
-            time: "Yesterday",
-        },
-        {
-            name: "Sent",
-            address: "to saint.ton",
-            amount: "1 TON",
-            time: "Feb 29",
-        },
-        {
-            name: "Received",
-            address: "from andrew.ton",
-            amount: "+1 TON",
-            time: "Feb 29",
-        },
-    ]
-
     return (
         <>
-            {items.map((item, index) => (
+            {activityItems.map((item, index) => (
                 <Cell
                     start={<Cell.Start type="Icon" />}
                     end={

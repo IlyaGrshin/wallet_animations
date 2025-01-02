@@ -12,20 +12,15 @@ import Morph from "../../Components/Morph"
 import { Spoiler } from "spoiled"
 
 import "./index.css"
+import { getAssetIcon } from "../../Components/AssetsMap"
+import assets from "./data/assets.json"
+import txHistory from "./data/transactions.json"
 
 import { ReactComponent as ArrowUpCircleFill } from "../../Icons/28/Arrow Up Circle Fill.svg"
 import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../Icons/28/Arrow Left & Right Circle Fill.svg"
 import { ReactComponent as PlusCircleFill28 } from "../../Icons/28/Plus Circle Fill.svg"
 import { ReactComponent as CreditCardFill28 } from "../../Icons/28/Credit Card Fill.svg"
 
-import DollarsLogo from "../../Icons/Avatars/Dollars.svg"
-import BitcoinLogo from "../../Icons/Avatars/Bitcoin.svg"
-import ToncoinLogo from "../../Icons/Avatars/Toncoin.svg"
-import NotcoinLogo from "../../Icons/Avatars/Notcoin.svg"
-import MajorLogo from "../../Icons/Avatars/Major.svg"
-import HamsterLogo from "../../Icons/Avatars/Hamster.webp"
-import XEmpireLogo from "../../Icons/Avatars/XEmpire.svg"
-import CatizenLogo from "../../Icons/Avatars/Catizen.webp"
 import HiddenEye from "../../Icons/Avatars/HiddenEyeIcon.svg"
 
 import WebApp from "@twa-dev/sdk"
@@ -135,14 +130,14 @@ function AnimatedCellMoreButton({ onClick, state }) {
     const jettonsMotion = apple
         ? [
               {
-                  src: HamsterLogo,
+                  src: getAssetIcon("HMSTR"),
                   variants: {
                       collapsed: { scale: 0.6, top: "-6px", left: "-6px" },
                       expanded: { scale: 1, opacity: 0, top: 0, left: 0 },
                   },
               },
               {
-                  src: NotcoinLogo,
+                  src: getAssetIcon("NOT"),
                   variants: {
                       collapsed: {
                           scale: 0.6,
@@ -156,14 +151,14 @@ function AnimatedCellMoreButton({ onClick, state }) {
           ]
         : [
               {
-                  src: HamsterLogo,
+                  src: getAssetIcon("HMSTR"),
                   variants: {
                       collapsed: { scale: 0.6, top: "-6px", left: 0 },
                       expanded: { scale: 1, top: 0, left: "6px" },
                   },
               },
               {
-                  src: NotcoinLogo,
+                  src: getAssetIcon("NOT"),
                   variants: {
                       collapsed: {
                           scale: 0.6,
@@ -287,81 +282,6 @@ function Assets() {
         return Number(number.toFixed(2))
     }
 
-    const assets = [
-        {
-            id: 0,
-            name: "Dollars",
-            image: DollarsLogo,
-            ticker: "USDT",
-            value: "25",
-            rate: "1.00",
-            delta: "+0%",
-        },
-        {
-            id: 1,
-            name: "Toncoin",
-            image: ToncoinLogo,
-            ticker: "TON",
-            value: "5.061",
-            rate: "5.26",
-            delta: "-3.61%",
-        },
-        {
-            id: 2,
-            name: "Bitcoin",
-            image: BitcoinLogo,
-            ticker: "BTC",
-            value: "0",
-            rate: "97614.03",
-            delta: "-3.53%",
-        },
-        {
-            id: 3,
-            name: "Notcoin",
-            image: NotcoinLogo,
-            ticker: "NOT",
-            value: "0.00633",
-            rate: "0.000523",
-            delta: "-10.66%",
-        },
-        {
-            id: 4,
-            name: "Major",
-            image: MajorLogo,
-            ticker: "MAJOR",
-            value: "5",
-            rate: "0.582",
-            delta: "-7.56%",
-        },
-        {
-            id: 5,
-            name: "Hamster Kombar",
-            image: HamsterLogo,
-            ticker: "HMSTR",
-            value: "52.182",
-            rate: "0.00255",
-            delta: "-9.95%",
-        },
-        {
-            id: 6,
-            name: "X Empire",
-            image: XEmpireLogo,
-            ticker: "X",
-            value: "0",
-            rate: "0.0001573",
-            delta: "-11.5%",
-        },
-        {
-            id: 7,
-            name: "Catizen",
-            image: CatizenLogo,
-            ticker: "CATI",
-            value: "0",
-            rate: "0.374",
-            delta: "-7.15%",
-        },
-    ]
-
     const priorityAssets = assets.filter(
         (asset) => asset.id === 0 || asset.id === 1
     )
@@ -386,7 +306,12 @@ function Assets() {
         <SectionList.Item>
             {largeAssets.map((asset, index) => (
                 <Cell
-                    start={<Cell.Start type="Image" src={asset.image} />}
+                    start={
+                        <Cell.Start
+                            type="Image"
+                            src={getAssetIcon(asset.ticker)}
+                        />
+                    }
                     end={
                         <Cell.Text
                             title={`$${formatNumbers(asset.rate * asset.value)}`}
@@ -426,7 +351,7 @@ function Assets() {
                                         start={
                                             <Cell.Start
                                                 type="Image"
-                                                src={asset.image}
+                                                src={getAssetIcon(asset.ticker)}
                                             />
                                         }
                                         end={
@@ -463,33 +388,6 @@ function Assets() {
 }
 
 function TransactionList() {
-    const txHistory = [
-        {
-            name: "Alicia Torreaux",
-            date: "July 3 at 11:24",
-            value: "+200 TON",
-            status: "Received",
-        },
-        {
-            name: "Bob",
-            date: "July 3 at 11:24",
-            value: "25 TON",
-            status: "Sent",
-        },
-        {
-            name: "Purchased",
-            date: "July 3 at 11:24",
-            value: "100 TON",
-            status: "Received",
-        },
-        {
-            name: "Ilya G",
-            date: "July 3 at 11:24",
-            value: "5 TON",
-            status: "Sent",
-        },
-    ]
-
     return (
         <SectionList.Item
             header="Transaction History"
