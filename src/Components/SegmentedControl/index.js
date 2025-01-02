@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react"
 import Text from "../Text"
 
-import "./index.css"
+import * as styles from "./SegmentedControl.module.scss"
 
 const SegmentedControl = ({
     segments,
@@ -21,9 +21,9 @@ const SegmentedControl = ({
     const controlType = useMemo(() => {
         switch (type) {
             case "mainPage":
-                return "segmentedControl mainPage"
+                return `${styles.segmentedControl} ${styles.mainPage}}`
             default:
-                return "segmentedControl"
+                return `${styles.segmentedControl}`
         }
     }, [type])
 
@@ -32,7 +32,7 @@ const SegmentedControl = ({
             {segments.map((segment, index) => (
                 <button
                     key={index}
-                    className={`segment ${index === activeIndex ? "active" : ""}`}
+                    className={`${styles.segment} ${index === activeIndex ? styles.active : ""}`}
                     onClick={() => handleSegmentClick(index)}
                 >
                     <Text
@@ -50,7 +50,7 @@ const SegmentedControl = ({
                 </button>
             ))}
             <div
-                className="activeIndicator"
+                className={styles.activeIndicator}
                 style={{
                     width: `calc(${100 / segments.length}% - 4px)`,
                     left: `calc(${(100 / segments.length) * activeIndex}%)`,
