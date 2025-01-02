@@ -29,9 +29,12 @@
     --tg-theme-section-header-text-color: #6D6D72;
     --tg-theme-section-separator-color: #C8C7CC;
     --text-confirm-color: #34C759;
+    --tertiary-fill-background: rgba(116, 116, 128, 0.12);
     --quaternary-fill-background: rgba(116, 116, 128, 0.08);
     --separator-non-opaque: rgba(60, 60, 67, 0.36);
     --segmented_control_active_background: #FFFFFF;
+    --button-disabled-color: #E9E8E8;
+    --text-disabled-color: #BABABA;
 
     --background-material-regular-color-1: rgba(255, 255, 255, 0.25);
     --background-material-regular-color-2: rgba(255, 255, 255, 0.6);
@@ -53,9 +56,12 @@
         --tg-theme-section-header-text-color: #6D6D72;
         --tg-theme-section-separator-color: #C8C7CC;
         --text-confirm-color: #34C759;
+        --tertiary-fill-background: rgba(116, 116, 128, 0.12);
         --quaternary-fill-background: rgba(116, 116, 128, 0.08);
         --separator-non-opaque: rgba(60, 60, 67, 0.36);
         --segmented_control_active_background: #FFFFFF;
+        --button-disabled-color: #E9E8E8;
+        --text-disabled-color: #BABABA;
 
         --background-material-regular-color-1: rgba(255, 255, 255, 0.25);
         --background-material-regular-color-2: rgba(255, 255, 255, 0.6);
@@ -78,9 +84,12 @@
         --tg-theme-section-header-text-color: #8D8E93;
         --tg-theme-section-separator-color: #545458;
         --text-confirm-color: #30D158;
+        --tertiary-fill-background: rgba(116, 116, 128, 0.24);
         --quaternary-fill-background: rgba(118, 118, 128, 0.18);
         --separator-non-opaque: rgba(84, 84, 88, 0.65);
         --segmented_control_active_background: #636366;
+        --button-disabled-color: #3C3C3E;
+        --text-disabled-color: #606060;
 
         --background-material-regular-color-1: rgba(0, 0, 0, 0.41);
         --background-material-regular-color-2: rgba(0, 0, 0, 0);

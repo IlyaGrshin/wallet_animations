@@ -1,0 +1,69 @@
+.button {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1 0 0;
+    justify-content: center;
+    align-items: center;
+    padding: 7px 0 8px;
+    border-radius: 12px;
+
+    &.filled {
+        background-color: var(--tg-theme-button-color);
+        color: var(--tg-theme-button-text-color);
+
+        svg, path {
+            fill: var(--tg-theme-button-text-color);
+        }
+    }
+
+    &.tinted {
+        background-color: rgba(var(--secondary-button-color), 0.1);
+        color: var(--tg-theme-accent-text-color);
+
+        svg, path {
+            fill: var(--tg-theme-accent-text-color);
+        }
+    }
+
+    &.plain {
+        background-color: var(--tg-theme-section-bg-color);
+        color: var(--tg-theme-accent-text-color);
+
+        svg, path {
+            fill: var(--tg-theme-accent-text-color);
+        }
+    }
+
+    &.gray {
+        background-color: var(--tertiary-fill-background);
+        color: var(--tg-theme-text-color);
+
+        svg, path {
+            fill: var(--tg-theme-text-color);
+        }
+    }
+
+    &.disabled {
+        background-color: var(--button-disabled-color);
+        color: var(--text-disabled-color);
+
+        svg, path {
+            fill: var(--text-disabled-color);
+        }
+    }
+    
+    :global(body.apple) & {
+        svg, path {
+            width: 28px;
+            height: 28px;
+        }
+    }
+    
+    :global(body.material) & {
+        svg, path {
+            width: 32px;
+            height: 32px;
+        }
+    }
+}

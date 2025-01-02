@@ -10,10 +10,8 @@ import ModalView from "../../Components/ModalView"
 import DropdownMenu from "../../Components/DropdownMenu"
 import PanelHeader from "../../Components/PanelHeader"
 import SegmentedControl from "../../Components/SegmentedControl"
+import { getAssetIcon } from "../../Components/AssetsMap"
 
-import ToncoinLogo from "../../Icons/Avatars/Toncoin.svg"
-import DollarsLogo from "../../Icons/Avatars/Dollars.svg"
-import BitcoinLogo from "../../Icons/Avatars/Bitcoin.svg"
 import { MainButton } from "@twa-dev/sdk/react"
 
 const UI = () => {
@@ -121,7 +119,10 @@ const UI = () => {
                     <SectionList.Item>
                         <Cell
                             start={
-                                <Cell.Start type="Image" src={ToncoinLogo} />
+                                <Cell.Start
+                                    type="Image"
+                                    src={getAssetIcon("TON")}
+                                />
                             }
                         >
                             <Cell.Text
@@ -132,7 +133,10 @@ const UI = () => {
                         </Cell>
                         <Cell
                             start={
-                                <Cell.Start type="Image" src={DollarsLogo} />
+                                <Cell.Start
+                                    type="Image"
+                                    src={getAssetIcon("USDT")}
+                                />
                             }
                         >
                             <Cell.Text
@@ -143,7 +147,10 @@ const UI = () => {
                         </Cell>
                         <Cell
                             start={
-                                <Cell.Start type="Image" src={BitcoinLogo} />
+                                <Cell.Start
+                                    type="Image"
+                                    src={getAssetIcon("BTC")}
+                                />
                             }
                         >
                             <Cell.Text
@@ -173,7 +180,10 @@ const UI = () => {
                     <SectionList.Item>
                         <Cell
                             start={
-                                <Cell.Start type="Image" src={ToncoinLogo} />
+                                <Cell.Start
+                                    type="Image"
+                                    src={getAssetIcon("TON")}
+                                />
                             }
                         >
                             <Cell.Text
@@ -184,7 +194,10 @@ const UI = () => {
                         </Cell>
                         <Cell
                             start={
-                                <Cell.Start type="Image" src={DollarsLogo} />
+                                <Cell.Start
+                                    type="Image"
+                                    src={getAssetIcon("USDT")}
+                                />
                             }
                         >
                             <Cell.Text
@@ -195,7 +208,10 @@ const UI = () => {
                         </Cell>
                         <Cell
                             start={
-                                <Cell.Start type="Image" src={BitcoinLogo} />
+                                <Cell.Start
+                                    type="Image"
+                                    src={getAssetIcon("BTC")}
+                                />
                             }
                         >
                             <Cell.Text

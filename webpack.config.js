@@ -38,6 +38,28 @@ module.exports = {
 			use: ['style-loader', 'css-loader', 'sass-loader'],
 		},
 		{
+			test: /\.module\.scss$/,
+			use: [
+				'style-loader',
+				{
+					loader: 'css-loader',
+					options: {
+						modules: {
+							localIdentName: isDevelopment
+							? '[name]__[local]__[hash:base64:5]'
+							: '[hash:base64:5]', 
+						},
+					},
+				},
+				'sass-loader',
+			],
+		},
+		{
+			test: /\.scss$/, 
+			exclude: /\.module\.scss$/, 
+			use: ['style-loader', 'css-loader', 'sass-loader'],
+		},
+		{
 			test: /\.svg$/,
 			issuer: /\.[jt]sx?$/,
 				use: [

@@ -14,6 +14,21 @@
         color: var(--tg-theme-accent-text-color);
     }
 
+    &.plain {
+        background-color: var(--tg-theme-section-bg-color);
+        color: var(--tg-theme-accent-text-color);
+    }
+
+    &.gray {
+        background-color: var(--tertiary-fill-background);
+        color: var(--tg-theme-text-color);
+    }
+
+    &.disabled {
+        background-color: var(--button-disabled-color);
+        color: var(--text-disabled-color);
+    }
+
     &[data-fill="true"] {
         width: 100%;
     }
@@ -39,12 +54,12 @@
         pointer-events: none;
     }
 
-    body.apple & {
+    :global(body.apple) & {
         padding: 14px 16px;
         border-radius: 10px;
     }
 
-    body.material & {
+    :global(body.material) & {
         padding: 12px 16px;
         border-radius: 8px;
     }

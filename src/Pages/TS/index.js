@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { motion } from "motion/react"
 
 import PageTransition from "../../Components/PageTransition"
 
@@ -9,6 +8,7 @@ import SectionList from "../../Components/SectionList"
 import Morph from "../../Components/Morph"
 import { Spoiler } from "spoiled"
 import { getAssetIcon } from "../../Components/AssetsMap"
+import { MultilineButton } from "../../Components/Button"
 
 import { ReactComponent as ArrowUpCircleFill } from "../../Icons/28/Arrow Up Circle Fill.svg"
 import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../Icons/28/Arrow Left & Right Circle Fill.svg"
@@ -64,54 +64,21 @@ function Profile() {
                 </div>
             </div>
             <div className="buttons">
-                <motion.div className="button" whileTap={{ scale: 0.97 }}>
-                    <ArrowUpCircleFill />
-                    <Text
-                        apple={{
-                            variant: "caption2",
-                            weight: "medium",
-                        }}
-                        material={{
-                            variant: "caption2",
-                            weight: "medium",
-                        }}
-                        className="label"
-                    >
-                        Send
-                    </Text>
-                </motion.div>
-                <motion.div className="button" whileTap={{ scale: 0.97 }}>
-                    <PlusCircleFill28 />
-                    <Text
-                        apple={{
-                            variant: "caption2",
-                            weight: "medium",
-                        }}
-                        material={{
-                            variant: "caption2",
-                            weight: "medium",
-                        }}
-                        className="label"
-                    >
-                        Deposit
-                    </Text>
-                </motion.div>
-                <motion.div className="button" whileTap={{ scale: 0.97 }}>
-                    <ArrowLiftAndRightCircleFill28 />
-                    <Text
-                        apple={{
-                            variant: "caption2",
-                            weight: "medium",
-                        }}
-                        material={{
-                            variant: "caption2",
-                            weight: "medium",
-                        }}
-                        className="label"
-                    >
-                        Swap
-                    </Text>
-                </motion.div>
+                <MultilineButton
+                    variant="plain"
+                    icon={<ArrowUpCircleFill />}
+                    label="Send"
+                />
+                <MultilineButton
+                    variant="plain"
+                    icon={<PlusCircleFill28 />}
+                    label="Deposit"
+                />
+                <MultilineButton
+                    variant="plain"
+                    icon={<ArrowLiftAndRightCircleFill28 />}
+                    label="Swap"
+                />
             </div>
         </div>
     )

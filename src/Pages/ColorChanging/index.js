@@ -1,5 +1,7 @@
 import React from "react"
-import Button from "../../Components/Button"
+
+import { RegularButton } from "../../Components/Button"
+
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 import PageTransition from "../../Components/PageTransition"
@@ -31,7 +33,7 @@ function ColorChanging() {
                         height: "100vh",
                     }}
                 >
-                    <Button
+                    <RegularButton
                         variant="filled"
                         label="Change Color"
                         onClick={switchColors}

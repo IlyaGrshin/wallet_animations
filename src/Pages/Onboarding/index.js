@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react"
+
 import Gallery from "../../Components/Gallery"
 import SectionHeader from "../../Components/SectionHeader"
 import StartView from "../../Components/StartView"
 import PageTransition from "../../Components/PageTransition"
+import { RegularButton } from "../../Components/Button"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 
 import "./index.css"
-import Button from "../../Components/Button"
 
 const Page1 = () => {
     return (
@@ -84,13 +85,17 @@ const Onboarding = () => {
                 <Page3 />
             </Gallery>
             <div className="BottomButtons">
-                <Button
+                <RegularButton
                     variant="filled"
                     label="Start exploring TON"
                     isFill
                     isShine
                 />
-                <Button variant="tinted" label="Add Existing Wallet" isFill />
+                <RegularButton
+                    variant="tinted"
+                    label="Add Existing Wallet"
+                    isFill
+                />
                 <SectionHeader
                     type="Footer"
                     title="By continuing you agree to Terms of Service and User Agreement."

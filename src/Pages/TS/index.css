@@ -53,6 +53,7 @@
         align-self: stretch;
         z-index: 1;
 
+        /* TODO: почистить стили */
         .button {
             display: flex;
             flex-direction: column;
