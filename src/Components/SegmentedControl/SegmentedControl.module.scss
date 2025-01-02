@@ -59,7 +59,7 @@
         }
     }
 
-    body.material & {
+    :global(body.material) & {
         border-radius: 18px;
 
         .segment {
