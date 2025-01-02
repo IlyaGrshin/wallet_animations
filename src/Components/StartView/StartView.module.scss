@@ -6,11 +6,11 @@
     gap: 12px;
     text-align: center;
 
-    body.apple & {
+    :global(body.apple) & {
         padding: 44px 32px;
     }
 
-    body.material & {
+    :global(body.material) & {
         padding: 44px 24px;
     }
 }

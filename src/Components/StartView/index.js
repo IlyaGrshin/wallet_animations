@@ -1,10 +1,10 @@
 import Text from "../Text"
 
-import "./index.css"
+import * as styles from "./StartView.module.scss"
 
 const StartView = ({ title, description }) => {
     return (
-        <div className="StartView">
+        <div className={styles.StartView}>
             <Text
                 apple={{
                     variant: "title1",
