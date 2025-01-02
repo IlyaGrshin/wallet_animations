@@ -92,7 +92,7 @@ function NewNavigation() {
                     segments={["Wallet", "TON Space"]}
                     onChange={handleSegmentChange}
                     colorScheme={activeSegment === 1 ? "dark" : "light"}
-                    type="mainPage"
+                    type="circled"
                     style={{ width: "200px" }}
                 />
                 <div

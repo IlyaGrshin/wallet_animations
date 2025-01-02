@@ -20,8 +20,8 @@ const SegmentedControl = ({
 
     const controlType = useMemo(() => {
         switch (type) {
-            case "mainPage":
-                return `${styles.root} ${styles.mainPage}}`
+            case "circled":
+                return `${styles.root} ${styles.circled}`
             default:
                 return `${styles.root}`
         }
