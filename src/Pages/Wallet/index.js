@@ -274,13 +274,16 @@ function Assets() {
         const currentPosition = window.scrollY
         const targetPosition = scrolledToSection
             ? 0
-            : AssetsRef.current?.offsetTop - 16 || 0
+            : (AssetsRef.current?.offsetTop || 0) - 8
 
         animate(currentPosition, targetPosition, {
             duration: 0.25,
             ease: [0.26, 0.08, 0.25, 1],
             onUpdate: (value) => {
-                window.scrollTo(0, value)
+                const adjustedValue = scrolledToSection
+                    ? value
+                    : Math.max(value - 8, 0)
+                window.scrollTo(0, adjustedValue)
             },
         })
 
