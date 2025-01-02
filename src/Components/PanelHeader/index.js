@@ -1,12 +1,12 @@
 import Text from "../Text"
 
-import "./index.css"
+import * as styles from "./PanelHeader.module.scss"
 
 const PanelHeader = ({ children }) => {
     return (
-        <div className="PanelHeader modal-height">
-            <div className="body">
-                <div className="left">
+        <div className={`${styles.root} ${styles.modalHeight}`}>
+            <div className={styles.body}>
+                <div className={styles.left}>
                     <Text
                         apple={{
                             variant: "body",
@@ -18,7 +18,7 @@ const PanelHeader = ({ children }) => {
                         Close
                     </Text>
                 </div>
-                <div className="right">
+                <div className={styles.right}>
                     <Text
                         apple={{
                             variant: "body",
@@ -33,7 +33,7 @@ const PanelHeader = ({ children }) => {
                     </Text>
                 </div>
             </div>
-            <div className="middle">
+            <div className={styles.middle}>
                 <Text
                     apple={{
                         variant: "body",
