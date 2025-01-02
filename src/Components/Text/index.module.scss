@@ -1,4 +1,4 @@
-body.apple {
+:global(body.apple) {
     & [variant="title1"]{
         font-size: 28px;
         line-height: 34px;
@@ -50,7 +50,7 @@ body.apple {
     }
 }
 
-body.material {
+:global(body.material) {
     & [variant="headline5"] {
         font-size: 24px;
         line-height: 28px;
