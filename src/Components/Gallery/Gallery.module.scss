@@ -1,4 +1,4 @@
-.gallery-container {
+.root {
     display: flex;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
@@ -7,11 +7,11 @@
     scroll-behavior: smooth;
 }
   
-.gallery-container::-webkit-scrollbar {
+.root::-webkit-scrollbar {
     display: none;
 }
   
-.gallery-page {
+.page {
     flex: none;
     scroll-snap-align: start;
     width: 100vw;
