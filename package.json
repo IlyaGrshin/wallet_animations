@@ -13,8 +13,8 @@
     "spoiled": "^0.3.3"
   },
   "scripts": {
-    "start": "webpack serve --config webpack.config.js",
-    "build": "webpack --config webpack.config.js --mode production",
+    "start": "NODE_ENV=development webpack serve --config webpack.config.js",
+    "build": "NODE_ENV=production webpack --config webpack.config.js",
     "deploy": "./deploy.sh",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
   },
@@ -60,6 +60,7 @@
     "sass-loader": "^16.0.4",
     "style-loader": "^4.0.0",
     "webpack": "^5.97.1",
+    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.0"
   }

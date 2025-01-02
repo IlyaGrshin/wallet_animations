@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -98,6 +99,11 @@ module.exports = {
 			favicon: './public/favicon.ico',
 		}),
 		isDevelopment && new ReactRefreshWebpackPlugin(),
+		!isDevelopment && new BundleAnalyzerPlugin({
+			analyzerMode: 'static',
+			openAnalyzer: false, 
+			reportFilename: 'bundle-report.html',
+		}),
 	].filter(Boolean),
 	optimization: {
 		splitChunks: {
