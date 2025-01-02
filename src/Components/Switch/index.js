@@ -1,5 +1,5 @@
 import { useState } from "react"
-import * as styles from "./index.module.scss"
+import * as styles from "./Switch.module.scss"
 
 function Switch() {
     const [state, setState] = useState(false)

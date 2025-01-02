@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import * as styles from "./index.module.scss"
+import * as styles from "./Text.module.scss"
 import { apple } from "../DeviceProvider"
 
 const Text = ({
