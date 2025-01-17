@@ -1,7 +1,6 @@
-// TODO: Use CSS Modules
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
-import "./index.css"
+import * as styles from "./ModalView.module.scss"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -102,12 +101,12 @@ const ModalView = ({
                 <>
                     <BackButton onClick={onClose} />
                     <div
-                        className={`overlay animation ${animate ? "open" : ""}`}
+                        className={`${styles.overlay} ${styles.animation} ${animate ? `${styles.open}` : ""}`}
                         onClick={onClose}
                         onTransitionEnd={onAnimationEnd}
                     >
                         <div
-                            className={`modal animation ${animate ? "open" : ""}`}
+                            className={`${styles.root} ${styles.animation} ${animate ? `${styles.open}` : ""}`}
                             onClick={(e) => e.stopPropagation()}
                             {...props}
                         >
@@ -125,7 +124,7 @@ const ModalView = ({
                 <>
                     <BackButton onClick={onClose} />
                     <motion.div
-                        className="overlayFramer"
+                        className={styles.overlayFramer}
                         variants={overlayAnimation}
                         initial="hidden"
                         animate="visible"
@@ -133,7 +132,7 @@ const ModalView = ({
                         onClick={onClose}
                     >
                         <motion.div
-                            className="modal"
+                            className={styles.root}
                             variants={modalAnimation}
                             initial="hidden"
                             animate="visible"
