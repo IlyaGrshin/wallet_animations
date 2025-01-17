@@ -2,7 +2,7 @@
     --cover-height: min(37vh, 269px);
 }
 
-.OnboardingPage {
+.root {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -52,6 +52,7 @@
 }
 
 .BottomButtons {
+    width: 100%;
     position: absolute;
     display: inline;
     bottom: 0;

@@ -9,15 +9,15 @@ import { RegularButton } from "../../Components/Button"
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 
-import "./index.css"
+import * as styles from "./Onboarding.module.scss"
 
 const Page1 = () => {
     return (
-        <div className="OnboardingPage">
-            <div className="cover">
-                <div className="image coin"></div>
+        <div className={styles.root}>
+            <div className={styles.cover}>
+                <div className={`${styles.image} ${styles.coin}`}></div>
             </div>
-            <div className="content">
+            <div className={styles.content}>
                 <StartView
                     title="Your TON Space"
                     description="Get access to all the features of TON blockchain directly in Telegram"
@@ -29,11 +29,11 @@ const Page1 = () => {
 
 const Page2 = () => {
     return (
-        <div className="OnboardingPage">
-            <div className="cover">
-                <div className="image disk"></div>
+        <div className={styles.root}>
+            <div className={styles.cover}>
+                <div className={`${styles.image} ${styles.disk}`}></div>
             </div>
-            <div className="content">
+            <div className={styles.content}>
                 <StartView
                     title="Secure Ownership"
                     description="You have complete control of the Toncoin, collectibles, and jettons in your TON Space"
@@ -45,11 +45,11 @@ const Page2 = () => {
 
 const Page3 = () => {
     return (
-        <div className="OnboardingPage">
-            <div className="cover">
-                <div className="image planet"></div>
+        <div className={styles.root}>
+            <div className={styles.cover}>
+                <div className={`${styles.image} ${styles.planet}`}></div>
             </div>
-            <div className="content">
+            <div className={styles.content}>
                 <StartView
                     title="Your Gateway to TON"
                     description="Access decentralized applications with your TON Space"
@@ -84,7 +84,7 @@ const Onboarding = () => {
                 <Page2 />
                 <Page3 />
             </Gallery>
-            <div className="BottomButtons">
+            <div className={styles.BottomButtons}>
                 <RegularButton
                     variant="filled"
                     label="Start exploring TON"
