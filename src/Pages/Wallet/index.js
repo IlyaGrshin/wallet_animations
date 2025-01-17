@@ -268,27 +268,6 @@ function AnimatedCellMoreButton({ onClick, state }) {
 function Assets() {
     const AssetsRef = React.useRef(null)
     const [showSmallAssets, setShowSmallAssets] = useState(false)
-    const [scrolledToSection, setScrolledToSection] = useState(false)
-
-    const scrollToSection = useCallback(() => {
-        const currentPosition = window.scrollY
-        const targetPosition = scrolledToSection
-            ? 0
-            : (AssetsRef.current?.offsetTop || 0) - 8
-
-        animate(currentPosition, targetPosition, {
-            duration: 0.25,
-            ease: [0.26, 0.08, 0.25, 1],
-            onUpdate: (value) => {
-                const adjustedValue = scrolledToSection
-                    ? value
-                    : Math.max(value - 8, 0)
-                window.scrollTo(0, adjustedValue)
-            },
-        })
-
-        setScrolledToSection(!scrolledToSection)
-    }, [scrolledToSection])
 
     const formatNumbers = (number) => {
         return Number(number.toFixed(2))
@@ -388,7 +367,6 @@ function Assets() {
                         state={showSmallAssets}
                         onClick={() =>
                             setShowSmallAssets((s) => {
-                                scrollToSection()
                                 WebApp.HapticFeedback.selectionChanged()
                                 return !s
                             })
