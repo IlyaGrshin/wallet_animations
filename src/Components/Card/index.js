@@ -1,8 +1,8 @@
-import "./index.css"
+import * as styles from "./Card.module.scss"
 
 function Card({ children, ...props }) {
     return (
-        <div className="Card" {...props}>
+        <div className={styles.root} {...props}>
             {children}
         </div>
     )

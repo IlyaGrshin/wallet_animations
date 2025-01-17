@@ -1,3 +1,7 @@
+:root {
+    --cell-separator-height: 0.33px;
+}
+
 .Cell {
 	display: flex;
 	flex-direction: row;
@@ -31,7 +35,7 @@
 		flex-direction: column;
 		justify-content: center;
 		flex-grow: 1;
-		border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
+		border-bottom: var(--cell-separator-height) solid var(--tg-theme-section-separator-color);
 	}
 
 	.end {
@@ -41,7 +45,7 @@
 		padding: 0 0 0 8px;
 		padding-right: var(--side-padding);
 		text-align: right;
-		border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
+		border-bottom: var(--cell-separator-height) solid var(--tg-theme-section-separator-color);
 		white-space: nowrap;
 
 		.caption::first-letter {

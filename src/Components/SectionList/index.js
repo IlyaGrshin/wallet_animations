@@ -1,11 +1,9 @@
-// TODO: Use CSS Modules
-import "./index.css"
+import * as styles from "./SectionList.module.scss"
 import SectionHeader from "../../Components/SectionHeader"
-import Card from "../../Components/Card"
 
 const SectionList = ({ children, ...props }) => {
     return (
-        <section className="list" {...props}>
+        <section className={styles.root} {...props}>
             {children}
         </section>
     )
@@ -15,7 +13,7 @@ SectionList.Item = ({ children, header, footer, ...props }) => {
     return (
         <section {...props}>
             {header && <SectionHeader title={header} />}
-            <Card>{children}</Card>
+            <div className={styles.container}>{children}</div>
             {footer && <SectionHeader type="Footer" title={footer} />}
         </section>
     )
