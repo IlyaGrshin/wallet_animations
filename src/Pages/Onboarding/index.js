@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 
 import Gallery from "../../Components/Gallery"
 import SectionHeader from "../../Components/SectionHeader"
@@ -11,78 +11,71 @@ import { BackButton } from "@twa-dev/sdk/react"
 
 import * as styles from "./Onboarding.module.scss"
 
-const Page1 = () => {
-    return (
-        <div className={styles.root}>
-            <div className={styles.cover}>
-                <div className={`${styles.image} ${styles.coin}`}></div>
-            </div>
-            <div className={styles.content}>
-                <StartView
-                    title="Your TON Space"
-                    description="Get access to all the features of TON blockchain directly in Telegram"
-                />
-            </div>
-        </div>
-    )
-}
+const pages = [
+    {
+        imageClass: styles.coin,
+        title: "Your TON Space",
+        description:
+            "Get access to all the features of TON blockchain directly in Telegram",
+    },
+    {
+        imageClass: styles.disk,
+        title: "Secure Ownership",
+        description:
+            "You have complete control of the Toncoin, collectibles, and jettons in your TON Space",
+    },
+    {
+        imageClass: styles.planet,
+        title: "Your Gateway to TON",
+        description: "Access decentralized applications with your TON Space",
+    },
+]
 
-const Page2 = () => {
-    return (
-        <div className={styles.root}>
-            <div className={styles.cover}>
-                <div className={`${styles.image} ${styles.disk}`}></div>
-            </div>
-            <div className={styles.content}>
-                <StartView
-                    title="Secure Ownership"
-                    description="You have complete control of the Toncoin, collectibles, and jettons in your TON Space"
-                />
-            </div>
+const Page = ({ imageClass, title, description }) => (
+    <div className={styles.root}>
+        <div className={styles.cover}>
+            <div className={`${styles.image} ${imageClass}`}></div>
         </div>
-    )
-}
-
-const Page3 = () => {
-    return (
-        <div className={styles.root}>
-            <div className={styles.cover}>
-                <div className={`${styles.image} ${styles.planet}`}></div>
-            </div>
-            <div className={styles.content}>
-                <StartView
-                    title="Your Gateway to TON"
-                    description="Access decentralized applications with your TON Space"
-                />
-            </div>
+        <div className={styles.content}>
+            <StartView title={title} description={description} />
         </div>
-    )
-}
+    </div>
+)
 
 const Onboarding = () => {
     const [, setCurrentPage] = useState(0)
 
-    const handlePageChange = (page) => {
+    const handlePageChange = useCallback((page) => {
         setCurrentPage(page)
-        // console.log('Текущая страница:', page);
-    }
+    }, [])
 
     useEffect(() => {
         WebApp.setHeaderColor("#131314")
         WebApp.disableVerticalSwipes()
-        WebApp.onEvent("backButtonClicked", () => {
+        const handleBackButton = () => {
             WebApp.setHeaderColor("secondary_bg_color")
             WebApp.enableVerticalSwipes()
-        })
-    })
+        }
+
+        WebApp.onEvent("backButtonClicked", handleBackButton)
+
+        return () => {
+            WebApp.offEvent("backButtonClicked", handleBackButton)
+        }
+    }, [])
 
     return (
         <PageTransition>
             <BackButton />
             <Gallery onPageChange={handlePageChange}>
-                <Page1 />
-                <Page2 />
-                <Page3 />
+                {pages.map(({ imageClass, title, description }, index) => (
+                    <Page
+                        key={index}
+                        imageClass={imageClass}
+                        title={title}
+                        description={description}
+                    />
+                ))}
             </Gallery>
             <div className={styles.BottomButtons}>
                 <RegularButton
