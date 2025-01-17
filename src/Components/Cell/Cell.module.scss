@@ -2,7 +2,7 @@
     --cell-separator-height: 0.33px;
 }
 
-.Cell {
+.root {
 	display: flex;
 	flex-direction: row;
 	color: var(--tg-theme-text-color);
@@ -88,7 +88,7 @@
 		color: var(--tg-theme-subtitle-text-color);
 	}
 
-	body.apple & {
+	:global(body.apple) & {
 		padding-left: var(--side-padding);
 		min-height: 44px;
 
@@ -122,7 +122,7 @@
 		}
 	}
 
-	body.material & {
+	:global(body.material) & {
 		padding-left: var(--side-padding);
 		min-height: 50px;
 

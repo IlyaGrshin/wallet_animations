@@ -1,6 +1,5 @@
-// TODO: Use CSS Modules
 import Text from "../Text"
-import "./index.css"
+import * as styles from "./Cell.module.scss"
 
 const Cell = ({
     as: Component = "div",
@@ -11,44 +10,44 @@ const Cell = ({
     ...props
 }) => {
     return (
-        <Component className="Cell" onClick={onClick} {...props}>
-            {start && <div className="start">{start}</div>}
-            <div className="body">{children}</div>
-            {end && <div className="end">{end}</div>}
+        <Component className={styles.root} onClick={onClick} {...props}>
+            {start && <div className={styles.start}>{start}</div>}
+            <div className={styles.body}>{children}</div>
+            {end && <div className={styles.end}>{end}</div>}
         </Component>
     )
 }
 
 Cell.Part = ({ type, children }) => {
     switch (type) {
-        case "Avatar":
-            return <div className="avatar">{children}</div>
+        // case "Avatar":
+        //     return <div className={styles.avatar}>{children}</div>
         case "Chevron":
-            return <div className="chevron">{children}</div>
+            return <div className={styles.chevron}>{children}</div>
         case "Label":
-            return <div className="label">{children}</div>
-        case "Label&Chevron":
-            return <div className="label-chevron">{children}</div>
-        case "Counter&Chevron":
-            return <div className="counter-chevron">{children}</div>
-        case "Label&Icon":
-            return <div className="label-icon">{children}</div>
+            return <div className={styles.label}>{children}</div>
+        // case "Label&Chevron":
+        //     return <div className={styles.labelChevron}>{children}</div>
+        // case "Counter&Chevron":
+        //     return <div className={styles.counterChevron}>{children}</div>
+        // case "Label&Icon":
+        //     return <div className={styles.labelIcon}>{children}</div>
         case "Dropdown":
-            return <div className="dropdown">{children}</div>
-        case "Checkmark":
-            return <div className="checkmark">{children}</div>
-        case "Switch":
-            return <div className="switch">{children}</div>
-        case "Picker":
-            return <div className="picker">{children}</div>
+            return <div className={styles.dropdown}>{children}</div>
+        // case "Checkmark":
+        //     return <div className={styles.checkmark}>{children}</div>
+        // case "Switch":
+        //     return <div className={styles.switch}>{children}</div>
+        // case "Picker":
+        //     return <div className={styles.picker}>{children}</div>
         case "Icon":
-            return <div className="icon">{children}</div>
-        case "SegmentedControl":
-            return <div className="segmented-control">{children}</div>
-        case "Checkbox":
-            return <div className="checkbox">{children}</div>
-        case "Button":
-            return <div className="button">{children}</div>
+            return <div className={styles.icon}>{children}</div>
+        // case "SegmentedControl":
+        //     return <div className={styles.segmentedControl}>{children}</div>
+        // case "Checkbox":
+        //     return <div className={styles.checkbox}>{children}</div>
+        // case "Button":
+        //     return <div className={styles.button}>{children}</div>
         default:
             return <></>
     }
@@ -61,13 +60,13 @@ Cell.Start = ({ type, src = null, iconType = null }) => {
         case "Image":
             content = (
                 <div
-                    className="image"
+                    className={styles.image}
                     style={{ backgroundImage: `url(${src})` }}
                 ></div>
             )
             break
         case "Icon":
-            content = <div className="icon">{iconType}</div>
+            content = <div className={styles.icon}>{iconType}</div>
             break
         default:
             content = null
@@ -83,13 +82,13 @@ Cell.Text = ({ type, title, description, bold }) => {
 
     switch (type) {
         case "Regular":
-            name = "label"
+            name = `${styles.label}`
             break
         case "Accent":
-            name = "label accent"
+            name = `${styles.label} ${styles.accent}`
             break
         default:
-            name = "label"
+            name = `${styles.label}`
             break
     }
 
@@ -118,7 +117,7 @@ Cell.Text = ({ type, title, description, bold }) => {
                         variant: "subtitle2",
                         weight: "regular",
                     }}
-                    className="caption"
+                    className={styles.caption}
                 >
                     {description}
                 </Text>
@@ -139,7 +138,7 @@ Cell.End = ({ label, caption }) => {
                     variant: "body1",
                     weight: "regular",
                 }}
-                className="label"
+                className={styles.label}
             >
                 {label}
             </Text>
@@ -153,7 +152,7 @@ Cell.End = ({ label, caption }) => {
                         variant: "subtitle2",
                         weight: "regular",
                     }}
-                    className="caption"
+                    className={styles.caption}
                 >
                     {caption}
                 </Text>
