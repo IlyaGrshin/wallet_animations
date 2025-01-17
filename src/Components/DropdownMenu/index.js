@@ -1,10 +1,9 @@
-// TODO: Use CSS Modules
 import React, { useState, useRef, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "motion/react"
 import Text from "../Text"
 
-import "./index.css"
+import * as styles from "./DropdownMenu.module.scss"
 
 const DropdownMenu = ({ items }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -66,9 +65,9 @@ const DropdownMenu = ({ items }) => {
 
     return (
         <AnimatePresence>
-            <div className="DropdownContainer">
+            <div className={styles.container}>
                 <div
-                    className="selected"
+                    className={styles.selected}
                     onClick={toggleDropdown}
                     ref={buttonRef}
                 >
@@ -78,7 +77,7 @@ const DropdownMenu = ({ items }) => {
                     createPortal(
                         <motion.div
                             ref={dropdownRef}
-                            className="DropdownMenu"
+                            className={styles.root}
                             initial="hidden"
                             animate="visible"
                             exit="exit"
@@ -94,8 +93,8 @@ const DropdownMenu = ({ items }) => {
                                     onClick={() => handleSelectItem(item)}
                                     className={
                                         item === selectedItem
-                                            ? "item selected"
-                                            : "item"
+                                            ? `${styles.item} ${styles.selected}`
+                                            : `${styles.item}`
                                     }
                                 >
                                     <Text
