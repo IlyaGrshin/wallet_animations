@@ -5,6 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@babel/runtime": "^7.26.0",
+    "@number-flow/react": "^0.5.5",
     "@twa-dev/sdk": "^8.0.1",
     "motion": "^11.15.0",
     "react": "^19.0.0",

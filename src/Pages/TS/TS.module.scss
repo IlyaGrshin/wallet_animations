@@ -1,3 +1,7 @@
+:root {
+    --number-flow-mask-height: 0.05em;
+}
+
 .profile {
     color: white;
     z-index: 1;
@@ -20,8 +24,8 @@
             color: #FFF;
             font-variant-numeric: lining-nums tabular-nums;
     
-            :first-child {
-                color: #98989E;
+            number-flow-react::part(prefix) {
+                color: var(--tg-theme-subtitle-text-color);
             }
         }
 

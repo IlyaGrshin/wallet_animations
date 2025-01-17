@@ -9,7 +9,7 @@ import { apple } from "../../Components/DeviceProvider"
 import Text from "../../Components/Text"
 import SectionList from "../../Components/SectionList"
 import Cell from "../../Components/Cell"
-import Morph from "../../Components/Morph"
+import NumberFlow from "@number-flow/react"
 import { Spoiler } from "spoiled"
 import { MultilineButton } from "../../Components/Button"
 
@@ -27,13 +27,13 @@ import HiddenEye from "../../Icons/Avatars/HiddenEyeIcon.svg"
 import WebApp from "@twa-dev/sdk"
 
 function Balance() {
-    const [balance, setBalance] = useState("$30.06")
+    const [balance, setBalance] = useState("30.06")
     const [hidden, setHidden] = useState(false)
 
     useEffect(() => {
         const updateBalance = () => {
             if (!hidden) {
-                const randomBalance = "$" + (Math.random() * 2000).toFixed(2)
+                const randomBalance = (Math.random() * 2000).toFixed(2)
                 setBalance(randomBalance)
             }
         }
@@ -63,7 +63,7 @@ function Balance() {
                 hidden={hidden}
                 onClick={() => setHidden((s) => !s)}
             >
-                <Morph>{balance}</Morph>
+                <NumberFlow value={balance} prefix="$" />
             </Spoiler>
         </div>
     )

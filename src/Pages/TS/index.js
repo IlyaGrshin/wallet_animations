@@ -5,7 +5,7 @@ import PageTransition from "../../Components/PageTransition"
 import Text from "../../Components/Text"
 import Cell from "../../Components/Cell"
 import SectionList from "../../Components/SectionList"
-import Morph from "../../Components/Morph"
+import NumberFlow from "@number-flow/react"
 import { Spoiler } from "spoiled"
 import { getAssetIcon } from "../../Components/AssetsMap"
 import { MultilineButton } from "../../Components/Button"
@@ -23,13 +23,13 @@ import assets from "./data/assets.json"
 import activityItems from "./data/activity.json"
 
 function Profile() {
-    const [balance, setBalance] = useState("$261.69")
+    const [balance, setBalance] = useState("261.69")
     const [hidden, setHidden] = useState(false)
 
     useEffect(() => {
         const updateBalance = () => {
             if (!hidden) {
-                const randomBalance = "$" + (Math.random() * 2000).toFixed(2)
+                const randomBalance = (Math.random() * 2000).toFixed(2)
                 setBalance(randomBalance)
             }
         }
@@ -60,7 +60,7 @@ function Profile() {
                     hidden={hidden}
                     onClick={() => setHidden((s) => !s)}
                 >
-                    <Morph>{balance}</Morph>
+                    <NumberFlow value={balance} prefix="$" />
                 </Spoiler>
             </div>
             <div className={styles.buttons}>

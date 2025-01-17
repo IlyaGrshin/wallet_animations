@@ -1,3 +1,7 @@
+:root {
+    --number-flow-mask-height: 0.05em;
+}
+
 .wallet {
     .balance {
         display: flex;
@@ -24,7 +28,7 @@
             color: var(--tg-theme-text-color);
             font-variant-numeric: lining-nums tabular-nums;
     
-            :first-child {
+            number-flow-react::part(prefix) {
                 color: var(--tg-theme-subtitle-text-color);
             }
         }
