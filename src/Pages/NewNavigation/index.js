@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 
-import "./index.css"
+import * as styles from "./NewNav.module.scss"
 import WebApp from "@twa-dev/sdk"
 
 import SegmentedControl from "../../Components/SegmentedControl"
@@ -81,10 +81,10 @@ function NewNavigation() {
     return (
         <>
             <BackButton />
-            <div className="navPanel">
-                <div className="bounds transparent">
+            <div className={styles.navPanel}>
+                <div className={`${styles.bounds} ${styles.transparent}`}>
                     <div
-                        className="avatar"
+                        className={styles.avatar}
                         style={{ backgroundImage: `url(${avatarUrl})` }}
                     ></div>
                 </div>
@@ -96,7 +96,7 @@ function NewNavigation() {
                     style={{ width: "200px" }}
                 />
                 <div
-                    className="bounds"
+                    className={styles.bounds}
                     data-color-scheme={activeSegment === 1 ? "dark" : "light"}
                 >
                     <QRCodeIcon />
@@ -112,7 +112,7 @@ function NewNavigation() {
                         duration: 0.2,
                         ease: "easeOut",
                     }}
-                    className="pageView"
+                    className={styles.pageView}
                 >
                     {content}
                 </motion.div>
