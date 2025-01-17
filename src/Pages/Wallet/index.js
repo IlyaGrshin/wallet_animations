@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react"
 import { AnimatePresence, motion } from "motion/react"
-import { animate } from "motion"
 
 import * as styles from "./Wallet.module.scss"
 
 import PageTransition from "../../Components/PageTransition"
 
 import { apple } from "../../Components/DeviceProvider"
-import Card from "../../Components/Card"
 import Text from "../../Components/Text"
 import SectionList from "../../Components/SectionList"
 import Cell from "../../Components/Cell"
@@ -46,7 +44,7 @@ function Balance() {
     }, [hidden])
 
     return (
-        <Card className={styles.balance}>
+        <div className={styles.balance}>
             <Text
                 apple={{
                     variant: "body",
@@ -67,7 +65,7 @@ function Balance() {
             >
                 <Morph>{balance}</Morph>
             </Spoiler>
-        </Card>
+        </div>
     )
 }
 
@@ -92,7 +90,7 @@ function ActionButtons() {
     ]
 
     return (
-        <Card className={styles.buttons}>
+        <div className={styles.buttons}>
             {buttons.map((button, index) => (
                 <MultilineButton
                     variant="plain"
@@ -101,7 +99,7 @@ function ActionButtons() {
                     key={index}
                 />
             ))}
-        </Card>
+        </div>
     )
 }
 
