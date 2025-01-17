@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 import * as styles from "./Wallet.module.scss"
+import * as cellStyles from "../../Components/Cell/Cell.module.scss"
 
 import PageTransition from "../../Components/PageTransition"
 
@@ -191,11 +192,11 @@ function AnimatedCellMoreButton({ onClick, state }) {
 
     return (
         <motion.div onClick={onClick}>
-            <div className="Cell">
-                <div className="start">
+            <div className={cellStyles.root}>
+                <div className={cellStyles.start}>
                     <div className="assetIcon" style={jettonsSize}>
                         <motion.div
-                            className="image"
+                            className={cellStyles.image}
                             variants={HiddenEyeMotion.variants}
                             transition={transition}
                             animate={state ? "expanded" : "collapsed"}
@@ -209,7 +210,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
                         ></motion.div>
                         {jettonsMotion.map((jetton, index) => (
                             <motion.div
-                                className="image"
+                                className={cellStyles.image}
                                 variants={jetton.variants}
                                 transition={transition}
                                 animate={state ? "expanded" : "collapsed"}
@@ -224,7 +225,10 @@ function AnimatedCellMoreButton({ onClick, state }) {
                         ))}
                     </div>
                 </div>
-                <div className="body" style={{ position: "relative" }}>
+                <div
+                    className={cellStyles.body}
+                    style={{ position: "relative" }}
+                >
                     <motion.div
                         variants={variants.TextMoreAssets}
                         transition={transition}
