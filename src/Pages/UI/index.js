@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, Suspense } from "react"
 import { Link } from "react-router-dom"
 
 import PageTransition from "../../Components/PageTransition"
-
 import SectionList from "../../Components/SectionList"
 import Cell from "../../Components/Cell"
 import Switch from "../../Components/Switch"
-import ModalView from "../../Components/ModalView"
 import DropdownMenu from "../../Components/DropdownMenu"
-import PanelHeader from "../../Components/PanelHeader"
 import SegmentedControl from "../../Components/SegmentedControl"
-import { getAssetIcon } from "../../Components/AssetsMap"
-
 import WebApp from "@twa-dev/sdk"
-import { MainButton } from "@twa-dev/sdk/react"
+
+const Modals = React.lazy(() => import("../Modals"))
 
 const UI = () => {
     const handleSegmentChange = () => {
@@ -80,9 +76,6 @@ const UI = () => {
                     >
                         <Cell.Text title="Background Tests" />
                     </Cell>
-                    {/* <Cell as={Link} to='textpage'>
-                        <Cell.Text type='Accent' title='Text Page' />
-                    </Cell> */}
                 </SectionList.Item>
                 <SectionList.Item>
                     <Cell>
@@ -119,127 +112,9 @@ const UI = () => {
                     </Cell>
                 </SectionList.Item>
             </SectionList>
-            <ModalView
-                key="modal1"
-                isOpen={isModalOpen.modal1}
-                onClose={() => closeModal("modal1")}
-                style={{
-                    backgroundColor: "var(--tg-theme-secondary-bg-color)",
-                }}
-            >
-                <PanelHeader>Modal (Framer)</PanelHeader>
-                <SectionList>
-                    <SectionList.Item>
-                        <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={getAssetIcon("TON")}
-                                />
-                            }
-                        >
-                            <Cell.Text
-                                title="Toncoin"
-                                description="100 TON"
-                                bold
-                            />
-                        </Cell>
-                        <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={getAssetIcon("USDT")}
-                                />
-                            }
-                        >
-                            <Cell.Text
-                                title="Dollars"
-                                description="100 USDT"
-                                bold
-                            />
-                        </Cell>
-                        <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={getAssetIcon("BTC")}
-                                />
-                            }
-                        >
-                            <Cell.Text
-                                title="Bitcoin"
-                                description="0.000001 BTC"
-                                bold
-                            />
-                        </Cell>
-                    </SectionList.Item>
-                </SectionList>
-                <MainButton
-                    text="Confirm"
-                    onClick={() => closeModal("modal1")}
-                />
-            </ModalView>
-            <ModalView
-                key="modal2"
-                isOpen={isModalOpen.modal2}
-                onClose={() => closeModal("modal2")}
-                style={{
-                    backgroundColor: "var(--tg-theme-secondary-bg-color)",
-                }}
-                useCssAnimation={true}
-            >
-                <PanelHeader>Modal (CSS)</PanelHeader>
-                <SectionList>
-                    <SectionList.Item>
-                        <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={getAssetIcon("TON")}
-                                />
-                            }
-                        >
-                            <Cell.Text
-                                title="Toncoin"
-                                description="100 TON"
-                                bold
-                            />
-                        </Cell>
-                        <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={getAssetIcon("USDT")}
-                                />
-                            }
-                        >
-                            <Cell.Text
-                                title="Dollars"
-                                description="100 USDT"
-                                bold
-                            />
-                        </Cell>
-                        <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={getAssetIcon("BTC")}
-                                />
-                            }
-                        >
-                            <Cell.Text
-                                title="Bitcoin"
-                                description="0.000001 BTC"
-                                bold
-                            />
-                        </Cell>
-                    </SectionList.Item>
-                </SectionList>
-                <MainButton
-                    text="Confirm"
-                    onClick={() => closeModal("modal2")}
-                />
-            </ModalView>
+            <Suspense>
+                <Modals isModalOpen={isModalOpen} closeModal={closeModal} />
+            </Suspense>
         </PageTransition>
     )
 }
