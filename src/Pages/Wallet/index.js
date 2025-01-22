@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 import * as styles from "./Wallet.module.scss"
@@ -10,7 +10,7 @@ import { apple } from "../../Components/DeviceProvider"
 import Text from "../../Components/Text"
 import SectionList from "../../Components/SectionList"
 import Cell from "../../Components/Cell"
-import NumberFlow from "@number-flow/react"
+import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
 import { MultilineButton } from "../../Components/Button"
 
@@ -24,7 +24,6 @@ import { ReactComponent as PlusCircleFill28 } from "../../Icons/28/Plus Circle F
 import { ReactComponent as CreditCardFill28 } from "../../Icons/28/Credit Card Fill.svg"
 
 import HiddenEye from "../../Icons/Avatars/HiddenEyeIcon.svg"
-
 import WebApp from "@twa-dev/sdk"
 
 function Balance() {
@@ -64,7 +63,19 @@ function Balance() {
                 hidden={hidden}
                 onClick={() => setHidden((s) => !s)}
             >
-                <NumberFlow value={balance} prefix="$" />
+                <NumberFlow
+                    value={balance}
+                    prefix="$"
+                    willChange
+                    plugins={[continuous]}
+                    spinTiming={{
+                        duration: 850,
+                        easing: "linear(0, 0.0013 0.5%, 0.0062 1.11%, 0.0233 2.21%, 0.0518 3.42%, 0.0951 4.82%, 0.1855 7.23%, 0.4176 12.76%, 0.525 15.47%, 0.6247, 0.7105 21.1%, 0.7844, 0.8439 26.92%, 0.8695 28.43%, 0.8934, 0.9139, 0.9314, 0.9463 34.86%, 0.9595 36.57%, 0.9709 38.37%, 0.9805 40.28%, 0.9884 42.29%, 0.9948 44.5%, 1.003 49.42%, 1.0057 53.34%, 1.0063 58.16%, 1.0014 80.77%, 1.0001 99.95%)",
+                    }}
+                    opacityTiming={{
+                        duration: 200,
+                    }}
+                />
             </Spoiler>
         </div>
     )
