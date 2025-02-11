@@ -7,11 +7,11 @@
     "@babel/runtime": "^7.26.0",
     "@number-flow/react": "^0.5.5",
     "@twa-dev/sdk": "^8.0.1",
-    "motion": "^11.15.0",
+    "motion": "^12.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.28.0",
-    "spoiled": "^0.3.3"
+    "spoiled": "^0.4.0"
   },
   "scripts": {
     "start": "NODE_ENV=development webpack serve --config webpack.config.js",
