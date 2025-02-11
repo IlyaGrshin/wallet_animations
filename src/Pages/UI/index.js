@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from "react"
-import { Link } from "react-router-dom"
+import { Link } from "wouter"
 
 import PageTransition from "../../Components/PageTransition"
 import SectionList from "../../Components/SectionList"

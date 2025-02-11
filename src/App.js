@@ -1,5 +1,6 @@
-import React, { Suspense } from "react"
-import { Routes, Route, useLocation } from "react-router-dom"
+import React, { use, useEffect } from "react"
+import { Router, Route, Switch } from "wouter"
+import { useHashLocation } from "wouter/use-hash-location"
 import { AnimatePresence } from "motion/react"
 import "./index.css"
 
@@ -9,25 +10,26 @@ import TONSpace from "./Pages/TS"
 import Onboarding from "./Pages/Onboarding"
 import NewNavigation from "./Pages/NewNavigation"
 import ColorChanging from "./Pages/ColorChanging"
-
 import TextPage from "./Pages/TextPage"
 
 function App() {
-    const location = useLocation()
+    const [location] = useHashLocation()
 
     return (
-        <AnimatePresence mode="wait" initial={false}>
-            <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<UI />} />
-                <Route path="wallet" element={<Wallet />} />
-                <Route path="tonspace" element={<TONSpace />} />
-                <Route path="onboarding" element={<Onboarding />} />
-                <Route path="textpage" element={<TextPage />} />
-                <Route path="newnavigation" element={<NewNavigation />} />
-                <Route path="colorchanging" element={<ColorChanging />} />
-                <Route path="*" element={<UI />} />
-            </Routes>
-        </AnimatePresence>
+        <Router hook={useHashLocation}>
+            <AnimatePresence mode="wait" initial={false}>
+                <Switch key={location}>
+                    <Route path="/" component={UI} />
+                    <Route path="/wallet" component={Wallet} />
+                    <Route path="/tonspace" component={TONSpace} />
+                    <Route path="/onboarding" component={Onboarding} />
+                    <Route path="/textpage" component={TextPage} />
+                    <Route path="/newnavigation" component={NewNavigation} />
+                    <Route path="/colorchanging" component={ColorChanging} />
+                    <Route path="*" component={UI} />
+                </Switch>
+            </AnimatePresence>
+        </Router>
     )
 }
 
