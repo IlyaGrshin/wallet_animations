@@ -76,6 +76,13 @@ const UI = () => {
                     >
                         <Cell.Text title="Background Tests" />
                     </Cell>
+                    <Cell
+                        as={Link}
+                        to="tabbar"
+                        end={<Cell.Part type="Chevron" />}
+                    >
+                        <Cell.Text title="Tab Bar" />
+                    </Cell>
                 </SectionList.Item>
                 <SectionList.Item>
                     <Cell>

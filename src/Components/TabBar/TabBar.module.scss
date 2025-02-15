@@ -1,0 +1,41 @@
+.root {
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+    border-top: 0.33px solid var(--separator-non-opaque);
+    background: var(--tg-theme-bottom-bar-bg-color);
+    padding-bottom: env(safe-area-inset-bottom);
+
+    .tab {
+        display: flex;
+        padding: 2px 0px 1px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2px;
+        flex: 1 0 0;
+        text-decoration: none;
+        color: var(--tg-theme-text-color);
+        font-size: 10px;
+        line-height: 12px;
+        font-weight: 500;
+        opacity: 0.4;
+        
+        .icon {
+            height: 32px;
+        }
+
+        svg, path {
+            fill: var(--tg-theme-text-color);
+        }
+    }
+
+    .tab.active {
+        color: var(--tg-theme-accent-text-color);
+        opacity: 1;
+
+        svg, path {
+            fill: var(--tg-theme-accent-text-color)
+        }
+    }
+}

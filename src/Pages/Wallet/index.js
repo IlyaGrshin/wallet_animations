@@ -260,6 +260,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
                         variants={variants.TextHideLowBalances}
                         transition={transition}
                         animate={state ? "expanded" : "collapsed"}
+                        initial={false}
                         style={{
                             transformOrigin: "0% 50%",
                             position: "absolute",
@@ -334,7 +335,7 @@ function Assets() {
 
             {smallAssets.length > 0 && (
                 <>
-                    <AnimatePresence>
+                    <AnimatePresence inherit={false}>
                         {showSmallAssets && (
                             <motion.div
                                 initial={{ height: 0, opacity: 0, scale: 0.97 }}

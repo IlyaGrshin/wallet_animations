@@ -1,0 +1,6 @@
+.view {
+    display: block;
+    height: calc(-49.5px - env(safe-area-inset-bottom) + 100vh);
+    overflow-y: auto;
+    overflow-x: hidden;
+}

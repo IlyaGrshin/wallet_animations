@@ -11,6 +11,7 @@ import Onboarding from "./Pages/Onboarding"
 import NewNavigation from "./Pages/NewNavigation"
 import ColorChanging from "./Pages/ColorChanging"
 import TextPage from "./Pages/TextPage"
+import TabBar from "./Pages/TabBar"
 
 function App() {
     const [location] = useHashLocation()
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/textpage" component={TextPage} />
                     <Route path="/newnavigation" component={NewNavigation} />
                     <Route path="/colorchanging" component={ColorChanging} />
+                    <Route path="/tabbar" component={TabBar} />
                     <Route path="*" component={UI} />
                 </Switch>
             </AnimatePresence>
