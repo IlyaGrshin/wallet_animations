@@ -10,7 +10,6 @@
     "motion": "^12.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^6.28.0",
     "spoiled": "^0.4.0",
     "wouter": "^3.5.1"
   },
