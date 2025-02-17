@@ -76,12 +76,14 @@ const Picker = ({ items, onPickerIndex }) => {
 
                         const radius = itemHeight * 3
 
-                        const itemDegree =
+                        const itemDegree = Math.min(
                             radius -
-                            Math.sqrt(
-                                Math.pow(radius, 2) -
-                                    Math.pow(itemCoordinate, 2)
-                            )
+                                Math.sqrt(
+                                    Math.pow(radius, 2) -
+                                        Math.pow(itemCoordinate, 2)
+                                ),
+                            90
+                        )
 
                         return (
                             <li

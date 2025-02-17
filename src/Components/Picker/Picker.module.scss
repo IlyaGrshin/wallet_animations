@@ -36,12 +36,14 @@
 	}
 	&:before {
 		top: 0;
-		background: linear-gradient(rgba(white, .8), rgba(white, .5)); // todo: section-bg-color
+		background-color: var(--tg-theme-section-bg-color);
+        mask-image: linear-gradient(to bottom, rgba(black, 0.9), rgba(black, 0.5));
 	}
 	&:after {
 		bottom: 0;
 		background: white;
-        background: linear-gradient(rgba(white, .5), rgba(white, .8)); // todo: section-bg-color
+        background-color: var(--tg-theme-section-bg-color);
+        mask-image: linear-gradient(to bottom, rgba(black, 0.5), rgba(black, 0.9));
     }
 
     ul {
@@ -50,7 +52,6 @@
         scroll-snap-type: y mandatory;
         padding: 100px 0;
         margin: 0;
-        perspective: 1000px;
         transform-style: preserve-3d;
 
         &::-webkit-scrollbar {
