@@ -11,8 +11,6 @@ import TONSpace from "../TS"
 import UI from "../UI"
 
 import { ReactComponent as WalletIcon } from "../../Icons/TabBar/Wallet.svg"
-import { ReactComponent as DiscoverIcon } from "../../Icons/TabBar/Magnify.svg"
-import { ReactComponent as HistoryIcon } from "../../Icons/TabBar/Clock.svg"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
