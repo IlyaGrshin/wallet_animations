@@ -12,6 +12,7 @@ import NewNavigation from "./Pages/NewNavigation"
 import ColorChanging from "./Pages/ColorChanging"
 import TextPage from "./Pages/TextPage"
 import TabBar from "./Pages/TabBar"
+import Picker from "./Pages/Picker"
 
 function App() {
     const [location] = useHashLocation()
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/newnavigation" component={NewNavigation} />
                     <Route path="/colorchanging" component={ColorChanging} />
                     <Route path="/tabbar" component={TabBar} />
+                    <Route path="/picker" component={Picker} />
                     <Route path="*" component={UI} />
                 </Switch>
             </AnimatePresence>

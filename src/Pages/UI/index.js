@@ -83,6 +83,13 @@ const UI = () => {
                     >
                         <Cell.Text title="Tab Bar" />
                     </Cell>
+                    <Cell
+                        as={Link}
+                        to="picker"
+                        end={<Cell.Part type="Chevron" />}
+                    >
+                        <Cell.Text title="Picker" />
+                    </Cell>
                 </SectionList.Item>
                 <SectionList.Item>
                     <Cell>

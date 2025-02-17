@@ -38,8 +38,23 @@ Cell.Part = ({ type, children }) => {
         //     return <div className={styles.checkmark}>{children}</div>
         // case "Switch":
         //     return <div className={styles.switch}>{children}</div>
-        // case "Picker":
-        //     return <div className={styles.picker}>{children}</div>
+        case "Picker":
+            return (
+                <div className={styles.picker}>
+                    <Text
+                        apple={{
+                            variant: "body",
+                            weight: "regular",
+                        }}
+                        material={{
+                            variant: "body1",
+                            weight: "regular",
+                        }}
+                    >
+                        {children}
+                    </Text>
+                </div>
+            )
         case "Icon":
             return <div className={styles.icon}>{children}</div>
         // case "SegmentedControl":
