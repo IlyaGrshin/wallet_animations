@@ -1,7 +1,6 @@
 import React, { use, useEffect } from "react"
 import { Router, Route, Switch } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
-import { AnimatePresence } from "motion/react"
 import "./index.css"
 
 import UI from "./Pages/UI"
@@ -19,20 +18,18 @@ function App() {
 
     return (
         <Router hook={useHashLocation}>
-            <AnimatePresence mode="wait" initial={false}>
-                <Switch key={location}>
-                    <Route path="/" component={UI} />
-                    <Route path="/wallet" component={Wallet} />
-                    <Route path="/tonspace" component={TONSpace} />
-                    <Route path="/onboarding" component={Onboarding} />
-                    <Route path="/textpage" component={TextPage} />
-                    <Route path="/newnavigation" component={NewNavigation} />
-                    <Route path="/colorchanging" component={ColorChanging} />
-                    <Route path="/tabbar" component={TabBar} />
-                    <Route path="/picker" component={Picker} />
-                    <Route path="*" component={UI} />
-                </Switch>
-            </AnimatePresence>
+            <Switch key={location}>
+                <Route path="/" component={UI} />
+                <Route path="/wallet" component={Wallet} />
+                <Route path="/tonspace" component={TONSpace} />
+                <Route path="/onboarding" component={Onboarding} />
+                <Route path="/textpage" component={TextPage} />
+                <Route path="/newnavigation" component={NewNavigation} />
+                <Route path="/colorchanging" component={ColorChanging} />
+                <Route path="/tabbar" component={TabBar} />
+                <Route path="/picker" component={Picker} />
+                <Route path="*" component={UI} />
+            </Switch>
         </Router>
     )
 }

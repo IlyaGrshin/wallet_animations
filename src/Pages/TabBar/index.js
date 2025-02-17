@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 
+import PageTransition from "../../Components/PageTransition"
 import TabBar from "../../Components/Tabbar"
 
 import * as styles from "./TabBarPage.module.scss"
@@ -61,7 +62,7 @@ const TabBarPage = () => {
     }, [])
 
     return (
-        <>
+        <PageTransition>
             <BackButton />
             <AnimatePresence
                 mode="popLayout"
@@ -105,7 +106,7 @@ const TabBarPage = () => {
             </AnimatePresence>
 
             <TabBar tabs={tabs} onChange={handleTabChange} />
-        </>
+        </PageTransition>
     )
 }
 
