@@ -7,7 +7,7 @@ import Cell from "../../components/Cell"
 import SectionList from "../../components/SectionList"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
-import { getAssetIcon } from "../../components/AssetsMap"
+import { useAssetIcon } from "../../utlis/AssetsMap"
 import { MultilineButton } from "../../components/Button"
 
 import { ReactComponent as ArrowUpCircleFill } from "../../icons/28/Arrow Up Circle Fill.svg"
@@ -102,7 +102,7 @@ function Profile() {
 function Assets() {
     return assets.map((asset, index) => (
         <Cell
-            start={<Cell.Start type="Image" src={getAssetIcon(asset.ticker)} />}
+            start={<Cell.Start type="Image" src={useAssetIcon(asset.ticker)} />}
             end={<Cell.Text title={asset.value} />}
             key={`tx-${index}`}
         >

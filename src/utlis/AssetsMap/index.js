@@ -18,4 +18,4 @@ const AssetsMap = {
     CATI: CatizenLogo,
 }
 
-export const getAssetIcon = (ticker) => AssetsMap[ticker] || null
+export const useAssetIcon = (ticker) => AssetsMap[ticker] || null

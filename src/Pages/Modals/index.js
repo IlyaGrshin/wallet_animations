@@ -5,7 +5,7 @@ import PanelHeader from "../../components/PanelHeader"
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cell"
 
-import { getAssetIcon } from "../../components/AssetsMap"
+import { useAssetIcon } from "../../utlis/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"
 
 const Modals = ({ isModalOpen, closeModal }) => {
@@ -26,7 +26,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                             start={
                                 <Cell.Start
                                     type="Image"
-                                    src={getAssetIcon("TON")}
+                                    src={useAssetIcon("TON")}
                                 />
                             }
                         >
@@ -40,7 +40,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                             start={
                                 <Cell.Start
                                     type="Image"
-                                    src={getAssetIcon("USDT")}
+                                    src={useAssetIcon("USDT")}
                                 />
                             }
                         >
@@ -54,7 +54,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                             start={
                                 <Cell.Start
                                     type="Image"
-                                    src={getAssetIcon("BTC")}
+                                    src={useAssetIcon("BTC")}
                                 />
                             }
                         >
@@ -87,7 +87,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                             start={
                                 <Cell.Start
                                     type="Image"
-                                    src={getAssetIcon("TON")}
+                                    src={useAssetIcon("TON")}
                                 />
                             }
                         >
@@ -101,7 +101,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                             start={
                                 <Cell.Start
                                     type="Image"
-                                    src={getAssetIcon("USDT")}
+                                    src={useAssetIcon("USDT")}
                                 />
                             }
                         >
@@ -115,7 +115,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                             start={
                                 <Cell.Start
                                     type="Image"
-                                    src={getAssetIcon("BTC")}
+                                    src={useAssetIcon("BTC")}
                                 />
                             }
                         >

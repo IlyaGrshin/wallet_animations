@@ -14,7 +14,7 @@ import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
 import { MultilineButton } from "../../components/Button"
 
-import { getAssetIcon } from "../../components/AssetsMap"
+import { useAssetIcon } from "../../utlis/AssetsMap"
 import assets from "./data/assets.json"
 import txHistory from "./data/transactions.json"
 
@@ -130,14 +130,14 @@ function AnimatedCellMoreButton({ onClick, state }) {
     const jettonsMotion = useApple
         ? [
               {
-                  src: getAssetIcon("HMSTR"),
+                  src: useAssetIcon("HMSTR"),
                   variants: {
                       collapsed: { scale: 0.6, top: "-6px", left: "-6px" },
                       expanded: { scale: 1, opacity: 0, top: 0, left: 0 },
                   },
               },
               {
-                  src: getAssetIcon("NOT"),
+                  src: useAssetIcon("NOT"),
                   variants: {
                       collapsed: {
                           scale: 0.6,
@@ -151,14 +151,14 @@ function AnimatedCellMoreButton({ onClick, state }) {
           ]
         : [
               {
-                  src: getAssetIcon("HMSTR"),
+                  src: useAssetIcon("HMSTR"),
                   variants: {
                       collapsed: { scale: 0.6, top: "-6px", left: 0 },
                       expanded: { scale: 1, top: 0, left: "6px" },
                   },
               },
               {
-                  src: getAssetIcon("NOT"),
+                  src: useAssetIcon("NOT"),
                   variants: {
                       collapsed: {
                           scale: 0.6,
@@ -314,7 +314,7 @@ function Assets() {
                     start={
                         <Cell.Start
                             type="Image"
-                            src={getAssetIcon(asset.ticker)}
+                            src={useAssetIcon(asset.ticker)}
                         />
                     }
                     end={
@@ -356,7 +356,7 @@ function Assets() {
                                         start={
                                             <Cell.Start
                                                 type="Image"
-                                                src={getAssetIcon(asset.ticker)}
+                                                src={useAssetIcon(asset.ticker)}
                                             />
                                         }
                                         end={
