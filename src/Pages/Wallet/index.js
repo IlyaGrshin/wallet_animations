@@ -396,7 +396,7 @@ function TransactionList() {
     return (
         <SectionList.Item
             header="Transaction History"
-            footer="Section Description"
+            description="Section Description"
         >
             {txHistory.map((tx, index) => (
                 <Cell

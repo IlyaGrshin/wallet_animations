@@ -9,12 +9,12 @@ const SectionList = ({ children, ...props }) => {
     )
 }
 
-SectionList.Item = ({ children, header, footer, ...props }) => {
+SectionList.Item = ({ children, header, description, ...props }) => {
     return (
         <section {...props}>
             {header && <SectionHeader title={header} />}
             <div className={styles.container}>{children}</div>
-            {footer && <SectionHeader type="Footer" title={footer} />}
+            {description && <SectionHeader type="Footer" title={description} />}
         </section>
     )
 }
