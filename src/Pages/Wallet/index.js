@@ -2,28 +2,28 @@ import React, { useState, useEffect } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 import * as styles from "./Wallet.module.scss"
-import * as cellStyles from "../../Components/Cell/Cell.module.scss"
+import * as cellStyles from "../../components/Cell/Cell.module.scss"
 
-import PageTransition from "../../Components/PageTransition"
+import PageTransition from "../../components/PageTransition"
 
-import { apple } from "../../Components/DeviceProvider"
-import Text from "../../Components/Text"
-import SectionList from "../../Components/SectionList"
-import Cell from "../../Components/Cell"
+import { apple } from "../../components/DeviceProvider"
+import Text from "../../components/Text"
+import SectionList from "../../components/SectionList"
+import Cell from "../../components/Cell"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
-import { MultilineButton } from "../../Components/Button"
+import { MultilineButton } from "../../components/Button"
 
-import { getAssetIcon } from "../../Components/AssetsMap"
+import { getAssetIcon } from "../../components/AssetsMap"
 import assets from "./data/assets.json"
 import txHistory from "./data/transactions.json"
 
-import { ReactComponent as ArrowUpCircleFill } from "../../Icons/28/Arrow Up Circle Fill.svg"
-import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../Icons/28/Arrow Left & Right Circle Fill.svg"
-import { ReactComponent as PlusCircleFill28 } from "../../Icons/28/Plus Circle Fill.svg"
-import { ReactComponent as CreditCardFill28 } from "../../Icons/28/Credit Card Fill.svg"
+import { ReactComponent as ArrowUpCircleFill } from "../../icons/28/Arrow Up Circle Fill.svg"
+import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../icons/28/Arrow Left & Right Circle Fill.svg"
+import { ReactComponent as PlusCircleFill28 } from "../../icons/28/Plus Circle Fill.svg"
+import { ReactComponent as CreditCardFill28 } from "../../icons/28/Credit Card Fill.svg"
 
-import HiddenEye from "../../Icons/Avatars/HiddenEyeIcon.svg"
+import HiddenEye from "../../icons/Avatars/HiddenEyeIcon.svg"
 import WebApp from "@twa-dev/sdk"
 
 function Balance() {

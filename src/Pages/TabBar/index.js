@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 
-import PageTransition from "../../Components/PageTransition"
-import TabBar from "../../Components/Tabbar"
+import PageTransition from "../../components/PageTransition"
+import TabBar from "../../components/Tabbar"
 
 import * as styles from "./TabBarPage.module.scss"
 
@@ -10,7 +10,7 @@ import Wallet from "../Wallet"
 import TONSpace from "../TS"
 import UI from "../UI"
 
-import { ReactComponent as WalletIcon } from "../../Icons/TabBar/Wallet.svg"
+import { ReactComponent as WalletIcon } from "../../icons/TabBar/Wallet.svg"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"

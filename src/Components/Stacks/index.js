@@ -9,9 +9,9 @@ import Card from "../Card"
 import Cell from "../Cell"
 import Text from "../Text"
 
-import DollarsLogo from "../../Icons/Avatars/Dollars.png"
-import BitcoinLogo from "../../Icons/Avatars/Bitcoin.png"
-import ToncoinLogo from "../../Icons/Avatars/TON.png"
+import DollarsLogo from "../../icons/Avatars/Dollars.png"
+import BitcoinLogo from "../../icons/Avatars/Bitcoin.png"
+import ToncoinLogo from "../../icons/Avatars/TON.png"
 
 function AnimatedCell({ expandedAssets, index }) {
     const transition = { ease: [0.26, 0.08, 0.25, 1], duration: 0.2 }

@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from "react"
 
-import SectionList from "../../Components/SectionList"
-import Cell from "../../Components/Cell"
-import PageTransition from "../../Components/PageTransition"
-import ModalView from "../../Components/ModalView"
-import PanelHeader from "../../Components/PanelHeader"
+import SectionList from "../../components/SectionList"
+import Cell from "../../components/Cell"
+import PageTransition from "../../components/PageTransition"
+import ModalView from "../../components/ModalView"
+import PanelHeader from "../../components/PanelHeader"
 
-import ToncoinLogo from "../../Icons/Avatars/Toncoin.svg"
-import DollarsLogo from "../../Icons/Avatars/Dollars.svg"
-import BitcoinLogo from "../../Icons/Avatars/Bitcoin.svg"
+import ToncoinLogo from "../../icons/Avatars/Toncoin.svg"
+import DollarsLogo from "../../icons/Avatars/Dollars.svg"
+import BitcoinLogo from "../../icons/Avatars/Bitcoin.svg"
 
 import { BackButton, MainButton } from "@twa-dev/sdk/react"
 

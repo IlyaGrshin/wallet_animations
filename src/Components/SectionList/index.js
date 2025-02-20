@@ -1,5 +1,5 @@
 import * as styles from "./SectionList.module.scss"
-import SectionHeader from "../../Components/SectionHeader"
+import SectionHeader from "../../components/SectionHeader"
 
 const SectionList = ({ children, ...props }) => {
     return (

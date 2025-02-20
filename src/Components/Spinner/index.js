@@ -1,7 +1,7 @@
 import { apple } from "../DeviceProvider"
 
-import { ReactComponent as SpinnerAppleIcon } from "../../Images/spinner_apple.svg"
-import { ReactComponent as SpinnerIcon } from "../../Images/spinner.svg"
+import { ReactComponent as SpinnerAppleIcon } from "../../images/spinner_apple.svg"
+import { ReactComponent as SpinnerIcon } from "../../images/spinner.svg"
 
 import * as styles from "./Spinner.module.scss"
 

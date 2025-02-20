@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Suspense } from "react"
 import { Link } from "wouter"
 
-import PageTransition from "../../Components/PageTransition"
-import SectionList from "../../Components/SectionList"
-import Cell from "../../Components/Cell"
-import Switch from "../../Components/Switch"
-import DropdownMenu from "../../Components/DropdownMenu"
-import SegmentedControl from "../../Components/SegmentedControl"
+import PageTransition from "../../components/PageTransition"
+import SectionList from "../../components/SectionList"
+import Cell from "../../components/Cell"
+import Switch from "../../components/Switch"
+import DropdownMenu from "../../components/DropdownMenu"
+import SegmentedControl from "../../components/SegmentedControl"
 import WebApp from "@twa-dev/sdk"
 
 const Modals = React.lazy(() => import("../Modals"))

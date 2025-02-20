@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import "./index.css"
 import WebApp from "@twa-dev/sdk"
-import PageTransition from "../../Components/PageTransition"
+import PageTransition from "../../components/PageTransition"
 
 function TonSpaceSkeleton() {
     useEffect(() => {

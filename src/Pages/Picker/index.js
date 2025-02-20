@@ -2,10 +2,10 @@ import { useCallback, useState } from "react"
 
 import * as styles from "./PickerPage.module.scss"
 
-import SectionList from "../../Components/SectionList"
-import Picker from "../../Components/Picker"
-import Cell from "../../Components/Cell"
-import PageTransition from "../../Components/PageTransition"
+import SectionList from "../../components/SectionList"
+import Picker from "../../components/Picker"
+import Cell from "../../components/Cell"
+import PageTransition from "../../components/PageTransition"
 
 const PickerPage = () => {
     const [pickerIndex, setPickerValue] = useState(0)

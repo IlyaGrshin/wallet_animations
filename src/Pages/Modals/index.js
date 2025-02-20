@@ -1,11 +1,11 @@
 import React from "react"
 
-import ModalView from "../../Components/ModalView"
-import PanelHeader from "../../Components/PanelHeader"
-import SectionList from "../../Components/SectionList"
-import Cell from "../../Components/Cell"
+import ModalView from "../../components/ModalView"
+import PanelHeader from "../../components/PanelHeader"
+import SectionList from "../../components/SectionList"
+import Cell from "../../components/Cell"
 
-import { getAssetIcon } from "../../Components/AssetsMap"
+import { getAssetIcon } from "../../components/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"
 
 const Modals = ({ isModalOpen, closeModal }) => {
