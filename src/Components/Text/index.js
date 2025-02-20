@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import * as styles from "./Text.module.scss"
-import { apple } from "../DeviceProvider"
+import { useApple } from "../../hooks/DeviceProvider"
 
 const Text = ({
     as: Component = "div",
@@ -9,7 +9,7 @@ const Text = ({
     children,
     ...props
 }) => {
-    const platformProps = apple ? appleProps : materialProps
+    const platformProps = useApple ? appleProps : materialProps
 
     const dynamicProps = {
         ...(platformProps?.variant && { variant: platformProps.variant }),

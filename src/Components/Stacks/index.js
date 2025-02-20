@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react"
 
 import "./index.css"
 
-import { apple } from "../DeviceProvider"
+import { useApple } from "../../hooks/DeviceProvider"
 import Card from "../Card"
 import Cell from "../Cell"
 import Text from "../Text"
@@ -16,7 +16,7 @@ import ToncoinLogo from "../../icons/avatars/TON.png"
 function AnimatedCell({ expandedAssets, index }) {
     const transition = { ease: [0.26, 0.08, 0.25, 1], duration: 0.2 }
 
-    const logos = apple
+    const logos = useApple
         ? [
               {
                   src: ToncoinLogo,
@@ -64,7 +64,7 @@ function AnimatedCell({ expandedAssets, index }) {
               },
           ]
 
-    const logosStyle = apple
+    const logosStyle = useApple
         ? { position: "relative", width: "40px", height: "40px" }
         : {
               position: "relative",
@@ -73,7 +73,7 @@ function AnimatedCell({ expandedAssets, index }) {
               marginLeft: "-6px",
           }
 
-    const animatedVariants = apple
+    const animatedVariants = useApple
         ? {
               moreAssets: {
                   collapsed: { opacity: 1, top: "calc(50% - 11px)" },
@@ -324,8 +324,8 @@ function Stacks() {
             return baseVariant
         }
 
-        const scaleValueDefault = apple ? 0.82 : 1
-        const scaleValueArray = apple ? [1, 1, 0.91, 0.82] : [1, 1, 1, 1]
+        const scaleValueDefault = useApple ? 0.82 : 1
+        const scaleValueArray = useApple ? [1, 1, 0.91, 0.82] : [1, 1, 1, 1]
 
         switch (index) {
             case 0:
@@ -382,7 +382,7 @@ function Stacks() {
         return { opacity: opacities[index] || 0 }
     }
 
-    const springValue = apple
+    const springValue = useApple
         ? { type: "spring", stiffness: 640, damping: 40 }
         : { type: "spring", stiffness: 800, damping: 60, mass: 1 }
 

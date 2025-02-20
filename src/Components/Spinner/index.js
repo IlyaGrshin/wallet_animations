@@ -1,4 +1,4 @@
-import { apple } from "../DeviceProvider"
+import { useApple } from "../../hooks/DeviceProvider"
 
 import { ReactComponent as SpinnerAppleIcon } from "../../images/spinner_apple.svg"
 import { ReactComponent as SpinnerIcon } from "../../images/spinner.svg"
@@ -6,7 +6,7 @@ import { ReactComponent as SpinnerIcon } from "../../images/spinner.svg"
 import * as styles from "./Spinner.module.scss"
 
 const Spinner = (props) => {
-    const Icon = apple ? SpinnerAppleIcon : SpinnerIcon
+    const Icon = useApple ? SpinnerAppleIcon : SpinnerIcon
 
     const combinedClassName = [styles.spinner, props.className]
         .filter(Boolean)

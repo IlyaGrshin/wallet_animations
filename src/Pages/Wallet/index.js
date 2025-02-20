@@ -6,7 +6,7 @@ import * as cellStyles from "../../components/Cell/Cell.module.scss"
 
 import PageTransition from "../../components/PageTransition"
 
-import { apple } from "../../components/DeviceProvider"
+import { useApple } from "../../hooks/DeviceProvider"
 import Text from "../../components/Text"
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cell"
@@ -118,7 +118,7 @@ function ActionButtons() {
 function AnimatedCellMoreButton({ onClick, state }) {
     const transition = { ease: [0.26, 0.08, 0.25, 1], duration: 0.2 }
 
-    const jettonsSize = apple
+    const jettonsSize = useApple
         ? { position: "relative", width: "40px", height: "40px" }
         : {
               position: "relative",
@@ -127,7 +127,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
               marginLeft: "-6px",
           }
 
-    const jettonsMotion = apple
+    const jettonsMotion = useApple
         ? [
               {
                   src: getAssetIcon("HMSTR"),
@@ -171,7 +171,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
               },
           ]
 
-    const HiddenEyeMotion = apple
+    const HiddenEyeMotion = useApple
         ? {
               variants: {
                   collapsed: {
