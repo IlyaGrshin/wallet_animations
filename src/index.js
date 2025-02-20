@@ -2,8 +2,8 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import "./index.css"
 import App from "./App"
-import AppearanceProvider from "./components/AppearanceProvider"
-import DeviceProvider from "./components/DeviceProvider"
+import AppearanceProvider from "./hooks/AppearanceProvider"
+import DeviceProvider from "./hooks/DeviceProvider"
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(
