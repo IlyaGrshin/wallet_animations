@@ -7,7 +7,7 @@ import WebApp from "@twa-dev/sdk"
 import SegmentedControl from "../../components/SegmentedControl"
 import { ReactComponent as QRCodeIcon } from "../../icons/28/QR Code.svg"
 import { BackButton } from "@twa-dev/sdk/react"
-import DefaultAvatar from "../../icons/Avatars/IlyaG.png"
+import DefaultAvatar from "../../icons/avatars/IlyaG.png"
 import TonSpaceSkeleton from "../TS Skeleton"
 import PageTransition from "../../components/PageTransition"
 

@@ -1,11 +1,11 @@
-import DollarsLogo from "../../Icons/Avatars/Dollars.svg"
-import BitcoinLogo from "../../Icons/Avatars/Bitcoin.svg"
-import ToncoinLogo from "../../Icons/Avatars/Toncoin.svg"
-import NotcoinLogo from "../../Icons/Avatars/Notcoin.svg"
-import MajorLogo from "../../Icons/Avatars/Major.svg"
-import HamsterLogo from "../../Icons/Avatars/Hamster.webp"
-import XEmpireLogo from "../../Icons/Avatars/XEmpire.svg"
-import CatizenLogo from "../../Icons/Avatars/Catizen.webp"
+import DollarsLogo from "../../icons/avatars/Dollars.svg"
+import BitcoinLogo from "../../icons/avatars/Bitcoin.svg"
+import ToncoinLogo from "../../icons/avatars/Toncoin.svg"
+import NotcoinLogo from "../../icons/avatars/Notcoin.svg"
+import MajorLogo from "../../icons/avatars/Major.svg"
+import HamsterLogo from "../../icons/avatars/Hamster.webp"
+import XEmpireLogo from "../../icons/avatars/XEmpire.svg"
+import CatizenLogo from "../../icons/avatars/Catizen.webp"
 
 const AssetsMap = {
     USDT: DollarsLogo,

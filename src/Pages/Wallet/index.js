@@ -23,7 +23,7 @@ import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../icons/28/
 import { ReactComponent as PlusCircleFill28 } from "../../icons/28/Plus Circle Fill.svg"
 import { ReactComponent as CreditCardFill28 } from "../../icons/28/Credit Card Fill.svg"
 
-import HiddenEye from "../../icons/Avatars/HiddenEyeIcon.svg"
+import HiddenEye from "../../icons/avatars/HiddenEyeIcon.svg"
 import WebApp from "@twa-dev/sdk"
 
 function Balance() {

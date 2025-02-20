@@ -10,7 +10,7 @@ import Wallet from "../Wallet"
 import TONSpace from "../TS"
 import UI from "../UI"
 
-import { ReactComponent as WalletIcon } from "../../icons/TabBar/Wallet.svg"
+import { ReactComponent as WalletIcon } from "../../icons/tabbar/Wallet.svg"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
