@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { Router, Route, Switch } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
 import "./index.css"
@@ -16,42 +16,35 @@ import Picker from "./pages/Picker"
 
 const useTransitionHashLocation = () => {
     const [location, setLocation] = useHashLocation()
-    const [isPending, setIsPending] = useState(false)
+    const [isPending, setPending] = React.useState(false)
 
     const navigate = (to) => {
+        if (location === to) return
+
         if (!document.startViewTransition) {
             setLocation(to)
             return
         }
 
-        if (location === to) return
-        setIsPending(true)
+        setPending(true)
 
         try {
-            const transition = document.startViewTransition(async () => {
+            const transition = document.startViewTransition(() => {
                 setLocation(to)
-            })
-
-            transition.ready.catch((error) => {
-                if (error.name !== "AbortError") {
-                    console.warn("View transition ready error:", error)
-                }
+                return new Promise((resolve) => setTimeout(resolve, 0))
             })
 
             transition.finished
-                .then(() => {
-                    setIsPending(false)
-                })
-                .catch((error) => {
-                    if (error.name !== "AbortError") {
-                        console.warn("View transition finished error:", error)
-                    }
-                    setIsPending(false)
-                })
+                .catch(
+                    (error) =>
+                        error.name !== "AbortError" &&
+                        console.warn("View transition error:", error)
+                )
+                .finally(() => setPending(false))
         } catch (error) {
             console.warn("Failed to start view transition:", error)
             setLocation(to)
-            setIsPending(false)
+            setPending(false)
         }
     }
 
@@ -63,24 +56,36 @@ function App() {
     const isApple = useApple
 
     useEffect(() => {
-        const blurValue = isApple ? "2px" : "0px"
-        document.documentElement.style.setProperty("--blur-value", blurValue)
+        document.documentElement.style.setProperty(
+            "--blur-value",
+            isApple ? "2px" : "0px"
+        )
     }, [isApple])
+
+    const routes = [
+        { path: "/", component: UI },
+        { path: "/wallet", component: Wallet },
+        { path: "/tonspace", component: TONSpace },
+        { path: "/onboarding", component: Onboarding },
+        { path: "/textpage", component: TextPage },
+        { path: "/newnavigation", component: NewNavigation },
+        { path: "/colorchanging", component: ColorChanging },
+        { path: "/tabbar", component: TabBar },
+        { path: "/picker", component: Picker },
+        { path: "*", component: UI },
+    ]
 
     return (
         <Router hook={useTransitionHashLocation}>
             <div className="page-container">
                 <Switch key={location}>
-                    <Route path="/" component={UI} />
-                    <Route path="/wallet" component={Wallet} />
-                    <Route path="/tonspace" component={TONSpace} />
-                    <Route path="/onboarding" component={Onboarding} />
-                    <Route path="/textpage" component={TextPage} />
-                    <Route path="/newnavigation" component={NewNavigation} />
-                    <Route path="/colorchanging" component={ColorChanging} />
-                    <Route path="/tabbar" component={TabBar} />
-                    <Route path="/picker" component={Picker} />
-                    <Route path="*" component={UI} />
+                    {routes.map((route) => (
+                        <Route
+                            key={route.path}
+                            path={route.path}
+                            component={route.component}
+                        />
+                    ))}
                 </Switch>
             </div>
         </Router>
