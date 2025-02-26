@@ -1,0 +1,48 @@
+.page-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+  
+::view-transition-old(root) {
+    animation: var(--transition-duration) var(--transition-easing) both fade-out,
+               var(--transition-duration) var(--transition-easing) both scale-out,
+               var(--transition-duration) var(--transition-easing) both blur-in;
+    filter: blur(var(--blur-value));
+}
+  
+::view-transition-new(root) {
+    animation: var(--transition-duration) var(--transition-easing) both fade-in,
+               var(--transition-duration) var(--transition-easing) both scale-in,
+               var(--transition-duration) var(--transition-easing) both blur-out;
+}
+  
+@keyframes blur-in {
+    from { filter: blur(0px); }
+    to { filter: blur(var(--blur-value)); }
+}
+  
+@keyframes blur-out {
+    from { filter: blur(var(--blur-value)); }
+    to { filter: blur(0px); }
+}
+  
+@keyframes scale-in {
+    from { transform: scale(var(--scale-initial)); }
+    to { transform: scale(1); }
+}
+  
+@keyframes scale-out {
+    from { transform: scale(1); }
+    to { transform: scale(var(--scale-out)); }
+}
+  
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+  
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

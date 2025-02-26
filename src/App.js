@@ -1,8 +1,8 @@
 import React, { useEffect } from "react"
 import { Router, Route, Switch } from "wouter"
-import { useHashLocation } from "wouter/use-hash-location"
+import { useTransitionHashLocation } from "./hooks/useTransitionHashLocation"
+
 import "./index.css"
-import { useApple } from "./hooks/DeviceProvider"
 
 import UI from "./pages/UI"
 import Wallet from "./pages/Wallet"
@@ -14,53 +14,8 @@ import TextPage from "./pages/TextPage"
 import TabBar from "./pages/TabBar"
 import Picker from "./pages/Picker"
 
-const useTransitionHashLocation = () => {
-    const [location, setLocation] = useHashLocation()
-    const [isPending, setPending] = React.useState(false)
-
-    const navigate = (to) => {
-        if (location === to) return
-
-        if (!document.startViewTransition) {
-            setLocation(to)
-            return
-        }
-
-        setPending(true)
-
-        try {
-            const transition = document.startViewTransition(() => {
-                setLocation(to)
-                return new Promise((resolve) => setTimeout(resolve, 0))
-            })
-
-            transition.finished
-                .catch(
-                    (error) =>
-                        error.name !== "AbortError" &&
-                        console.warn("View transition error:", error)
-                )
-                .finally(() => setPending(false))
-        } catch (error) {
-            console.warn("Failed to start view transition:", error)
-            setLocation(to)
-            setPending(false)
-        }
-    }
-
-    return [location, navigate, isPending, setLocation]
-}
-
 function App() {
     const [location] = useTransitionHashLocation()
-    const isApple = useApple
-
-    useEffect(() => {
-        document.documentElement.style.setProperty(
-            "--blur-value",
-            isApple ? "2px" : "0px"
-        )
-    }, [isApple])
 
     const routes = [
         { path: "/", component: UI },
