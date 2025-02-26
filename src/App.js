@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import { Router, Route, Switch } from "wouter"
 import { useTransitionHashLocation } from "./hooks/useTransitionHashLocation"
 
