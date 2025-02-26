@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Suspense } from "react"
 import { Link } from "wouter"
 
-import PageTransition from "../../components/PageTransition"
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cell"
 import Switch from "../../components/Switch"
@@ -48,7 +47,7 @@ const UI = () => {
     }, [])
 
     return (
-        <PageTransition>
+        <>
             <SectionList>
                 <SegmentedControl
                     segments={["Label 1", "Label 2", "Label 3"]}
@@ -129,7 +128,7 @@ const UI = () => {
             <Suspense>
                 <Modals isModalOpen={isModalOpen} closeModal={closeModal} />
             </Suspense>
-        </PageTransition>
+        </>
     )
 }
 

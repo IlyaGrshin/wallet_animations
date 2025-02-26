@@ -2,7 +2,6 @@ import { useEffect } from "react"
 
 import "./index.css"
 import WebApp from "@twa-dev/sdk"
-import PageTransition from "../../components/PageTransition"
 
 function TonSpaceSkeleton() {
     useEffect(() => {
@@ -15,10 +14,10 @@ function TonSpaceSkeleton() {
     })
 
     return (
-        <PageTransition>
+        <>
             <div className="ts_skeleton_balance"></div>
             <div className="ts_skeleton_content"></div>
-        </PageTransition>
+        </>
     )
 }
 

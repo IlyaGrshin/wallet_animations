@@ -9,17 +9,6 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
         if (onChange) onChange(index)
     }
 
-    useEffect(() => {
-        ;(function () {
-            const originalDispatch = EventTarget.prototype.dispatchEvent
-
-            EventTarget.prototype.dispatchEvent = function (event) {
-                console.log("postEvent detected:", event.type, event)
-                return originalDispatch.call(this, event)
-            }
-        })()
-    }, [])
-
     return (
         <div className={styles.root}>
             {tabs.map((tab, index) => (

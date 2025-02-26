@@ -209,26 +209,24 @@ function TONSpace() {
     return (
         <>
             <div className="ton-space">
-                <PageTransition>
-                    <Profile />
-                    <SectionList>
-                        <SectionList.Item header="Assets">
-                            <Assets />
-                        </SectionList.Item>
-                        <SectionList.Item>
-                            <Staking />
-                        </SectionList.Item>
-                        <SectionList.Item header="Collectibles">
-                            <Collectibles />
-                        </SectionList.Item>
-                        <SectionList.Item header="Activity">
-                            <Activity />
-                        </SectionList.Item>
-                        <SectionList.Item>
-                            <FAQ />
-                        </SectionList.Item>
-                    </SectionList>
-                </PageTransition>
+                <Profile />
+                <SectionList>
+                    <SectionList.Item header="Assets">
+                        <Assets />
+                    </SectionList.Item>
+                    <SectionList.Item>
+                        <Staking />
+                    </SectionList.Item>
+                    <SectionList.Item header="Collectibles">
+                        <Collectibles />
+                    </SectionList.Item>
+                    <SectionList.Item header="Activity">
+                        <Activity />
+                    </SectionList.Item>
+                    <SectionList.Item>
+                        <FAQ />
+                    </SectionList.Item>
+                </SectionList>
             </div>
         </>
     )

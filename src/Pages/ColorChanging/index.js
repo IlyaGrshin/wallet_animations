@@ -4,7 +4,6 @@ import { RegularButton } from "../../components/Button"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
-import PageTransition from "../../components/PageTransition"
 
 function ColorChanging() {
     const [isSecondaryColor, setIsSecondaryColor] = React.useState(true)
@@ -34,22 +33,20 @@ function ColorChanging() {
     return (
         <>
             <BackButton />
-            <PageTransition>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: "100vh",
-                    }}
-                >
-                    <RegularButton
-                        variant="filled"
-                        label="Change Color"
-                        onClick={switchColors}
-                    />
-                </div>
-            </PageTransition>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100vh",
+                }}
+            >
+                <RegularButton
+                    variant="filled"
+                    label="Change Color"
+                    onClick={switchColors}
+                />
+            </div>
         </>
     )
 }
