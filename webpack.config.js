@@ -108,6 +108,12 @@ module.exports = {
 	optimization: {
 		splitChunks: {
 			chunks: 'all',
+			cacheGroups: {
+				vendors: {
+					test: /[\\/]node_modules[\\/]/,
+					priority: -10
+				}
+			}
 		},
 		runtimeChunk: {
 			name: 'runtime',

@@ -26,6 +26,7 @@
             background-position: center;
             z-index: 1;
             margin-top: calc(var(--cover-height) * 0.12);
+            will-change: transform;
     
             &.coin {
                 background-image: url(../../images/Coin\ Image.webp);
