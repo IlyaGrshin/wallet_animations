@@ -1,6 +1,7 @@
-import React, { use, useEffect } from "react"
+import React from "react"
 import { Router, Route, Switch } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
+
 import "./index.css"
 
 import UI from "./pages/UI"
@@ -16,19 +17,29 @@ import Picker from "./pages/Picker"
 function App() {
     const [location] = useHashLocation()
 
+    const routes = [
+        { path: "/", component: UI },
+        { path: "/wallet", component: Wallet },
+        { path: "/tonspace", component: TONSpace },
+        { path: "/onboarding", component: Onboarding },
+        { path: "/textpage", component: TextPage },
+        { path: "/newnavigation", component: NewNavigation },
+        { path: "/colorchanging", component: ColorChanging },
+        { path: "/tabbar", component: TabBar },
+        { path: "/picker", component: Picker },
+        { path: "*", component: UI },
+    ]
+
     return (
         <Router hook={useHashLocation}>
             <Switch key={location}>
-                <Route path="/" component={UI} />
-                <Route path="/wallet" component={Wallet} />
-                <Route path="/tonspace" component={TONSpace} />
-                <Route path="/onboarding" component={Onboarding} />
-                <Route path="/textpage" component={TextPage} />
-                <Route path="/newnavigation" component={NewNavigation} />
-                <Route path="/colorchanging" component={ColorChanging} />
-                <Route path="/tabbar" component={TabBar} />
-                <Route path="/picker" component={Picker} />
-                <Route path="*" component={UI} />
+                {routes.map((route) => (
+                    <Route
+                        key={route.path}
+                        path={route.path}
+                        component={route.component}
+                    />
+                ))}
             </Switch>
         </Router>
     )

@@ -4,8 +4,6 @@ import { AnimatePresence, motion } from "motion/react"
 import * as styles from "./Wallet.module.scss"
 import * as cellStyles from "../../components/Cell/Cell.module.scss"
 
-import PageTransition from "../../components/PageTransition"
-
 import { useApple } from "../../hooks/DeviceProvider"
 import Text from "../../components/Text"
 import SectionList from "../../components/SectionList"
@@ -423,18 +421,14 @@ function Wallet() {
     })
 
     return (
-        <>
-            <div className={styles.wallet}>
-                <PageTransition>
-                    <Balance />
-                    <ActionButtons />
-                    <SectionList>
-                        <Assets />
-                        <TransactionList />
-                    </SectionList>
-                </PageTransition>
-            </div>
-        </>
+        <div className={styles.wallet}>
+            <Balance />
+            <ActionButtons />
+            <SectionList>
+                <Assets />
+                <TransactionList />
+            </SectionList>
+        </div>
     )
 }
 

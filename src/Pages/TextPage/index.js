@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react"
 
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cell"
-import PageTransition from "../../components/PageTransition"
 import ModalView from "../../components/ModalView"
 import PanelHeader from "../../components/PanelHeader"
 
@@ -56,7 +55,7 @@ const TextPage = () => {
     }
 
     return (
-        <PageTransition>
+        <>
             <BackButton />
             <SectionList>
                 <SectionList.Item>
@@ -132,7 +131,7 @@ const TextPage = () => {
                     />
                 </ModalView>
             )}
-        </PageTransition>
+        </>
     )
 }
 

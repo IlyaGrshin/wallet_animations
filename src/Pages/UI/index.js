@@ -1,13 +1,13 @@
 import React, { useState, useEffect, Suspense } from "react"
 import { Link } from "wouter"
 
-import PageTransition from "../../components/PageTransition"
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cell"
 import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
 import SegmentedControl from "../../components/SegmentedControl"
 import WebApp from "@twa-dev/sdk"
+import PageTransition from "../../components/PageTransition"
 
 const Modals = React.lazy(() => import("../Modals"))
 
