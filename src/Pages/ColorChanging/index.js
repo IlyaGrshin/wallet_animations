@@ -32,23 +32,25 @@ function ColorChanging() {
     }
 
     return (
-        <PageTransition>
+        <>
             <BackButton />
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100vh",
-                }}
-            >
-                <RegularButton
-                    variant="filled"
-                    label="Change Color"
-                    onClick={switchColors}
-                />
-            </div>
-        </PageTransition>
+            <PageTransition>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100vh",
+                    }}
+                >
+                    <RegularButton
+                        variant="filled"
+                        label="Change Color"
+                        onClick={switchColors}
+                    />
+                </div>
+            </PageTransition>
+        </>
     )
 }
 
