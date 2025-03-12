@@ -41,12 +41,6 @@
     --background-material-regular-color-2: rgba(255, 255, 255, 0.6);
     --background-material-regular-blend-mode-1: plus-lighter;
     --background-material-regular-blend-mode-2: normal;
-
-    --transition-duration: 0.25s; /* Значение по умолчанию, переопределяется в JS */
-    --transition-easing: cubic-bezier(0.26, 0.08, 0.25, 1); /* Как в PageTransition */
-    --blur-value: 0px; /* Значение по умолчанию, переопределяется в JS в зависимости от устройства */
-    --scale-initial: 1.01; /* Начальный масштаб как в PageTransition */
-    --scale-out: 1.03; /* Масштаб при выходе как в PageTransition */
 }
 
 @media (prefers-color-scheme: light) {
