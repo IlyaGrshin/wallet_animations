@@ -7,6 +7,7 @@ import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
 import SegmentedControl from "../../components/SegmentedControl"
 import WebApp from "@twa-dev/sdk"
+import PageTransition from "../../components/PageTransition"
 
 const Modals = React.lazy(() => import("../Modals"))
 
@@ -47,7 +48,7 @@ const UI = () => {
     }, [])
 
     return (
-        <>
+        <PageTransition>
             <SectionList>
                 <SegmentedControl
                     segments={["Label 1", "Label 2", "Label 3"]}
@@ -128,7 +129,7 @@ const UI = () => {
             <Suspense>
                 <Modals isModalOpen={isModalOpen} closeModal={closeModal} />
             </Suspense>
-        </>
+        </PageTransition>
     )
 }
 

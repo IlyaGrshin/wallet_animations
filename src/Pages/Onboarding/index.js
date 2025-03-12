@@ -4,6 +4,7 @@ import Gallery from "../../components/Gallery"
 import SectionHeader from "../../components/SectionHeader"
 import StartView from "../../components/StartView"
 import { RegularButton } from "../../components/Button"
+import PageTransition from "../../components/PageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -64,7 +65,7 @@ const Onboarding = () => {
     }, [])
 
     return (
-        <>
+        <PageTransition>
             <BackButton />
             <Gallery onPageChange={handlePageChange}>
                 {pages.map(({ imageClass, title, description }, index) => (
@@ -94,7 +95,7 @@ const Onboarding = () => {
                     style={{ textAlign: "center" }}
                 />
             </div>
-        </>
+        </PageTransition>
     )
 }
 

@@ -1,6 +1,7 @@
 import React from "react"
 
 import { RegularButton } from "../../components/Button"
+import PageTransition from "../../components/PageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -31,7 +32,7 @@ function ColorChanging() {
     }
 
     return (
-        <>
+        <PageTransition>
             <BackButton />
             <div
                 style={{
@@ -47,7 +48,7 @@ function ColorChanging() {
                     onClick={switchColors}
                 />
             </div>
-        </>
+        </PageTransition>
     )
 }
 
