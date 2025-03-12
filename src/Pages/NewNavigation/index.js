@@ -4,14 +4,15 @@ import { motion, AnimatePresence } from "motion/react"
 import * as styles from "./NewNav.module.scss"
 import WebApp from "@twa-dev/sdk"
 
-import SegmentedControl from "../../Components/SegmentedControl"
-import { ReactComponent as QRCodeIcon } from "../../Icons/28/QR Code.svg"
+import SegmentedControl from "../../components/SegmentedControl"
+import { ReactComponent as QRCodeIcon } from "../../icons/28/QR Code.svg"
 import { BackButton } from "@twa-dev/sdk/react"
-import DefaultAvatar from "../../Icons/Avatars/IlyaG.png"
+import DefaultAvatar from "../../icons/avatars/IlyaG.png"
 import TonSpaceSkeleton from "../TS Skeleton"
+import PageTransition from "../../components/PageTransition"
 
-const Wallet = React.lazy(() => import("../../Pages/Wallet"))
-const TONSpace = React.lazy(() => import("../../Pages/TS"))
+const Wallet = React.lazy(() => import("../../pages/Wallet"))
+const TONSpace = React.lazy(() => import("../../pages/TS"))
 
 const useAvatarUrl = () => {
     try {
@@ -81,42 +82,51 @@ function NewNavigation() {
     return (
         <>
             <BackButton />
-            <div className={styles.navPanel}>
-                <div className={`${styles.bounds} ${styles.transparent}`}>
+            <PageTransition>
+                <div className={styles.navPanel}>
+                    <div className={`${styles.bounds} ${styles.transparent}`}>
+                        <div
+                            className={styles.avatar}
+                            style={{ backgroundImage: `url(${avatarUrl})` }}
+                        ></div>
+                    </div>
+                    <SegmentedControl
+                        segments={["Wallet", "TON Space"]}
+                        onChange={handleSegmentChange}
+                        colorScheme={activeSegment === 1 ? "dark" : "light"}
+                        type="circled"
+                        style={{ width: "200px" }}
+                    />
                     <div
-                        className={styles.avatar}
-                        style={{ backgroundImage: `url(${avatarUrl})` }}
-                    ></div>
+                        className={styles.bounds}
+                        data-color-scheme={
+                            activeSegment === 1 ? "dark" : "light"
+                        }
+                    >
+                        <QRCodeIcon />
+                    </div>
                 </div>
-                <SegmentedControl
-                    segments={["Wallet", "TON Space"]}
-                    onChange={handleSegmentChange}
-                    colorScheme={activeSegment === 1 ? "dark" : "light"}
-                    type="circled"
-                    style={{ width: "200px" }}
-                />
-                <div
-                    className={styles.bounds}
-                    data-color-scheme={activeSegment === 1 ? "dark" : "light"}
+                <AnimatePresence
+                    mode="popLayout"
+                    initial={false}
+                    custom={view}
+                    inherit={false}
                 >
-                    <QRCodeIcon />
-                </div>
-            </div>
-            <AnimatePresence mode="popLayout" initial={false} custom={view}>
-                <motion.div
-                    initial={{ opacity: 0, scale: 1.006 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 1.01 }}
-                    key={view}
-                    transition={{
-                        duration: 0.2,
-                        ease: "easeOut",
-                    }}
-                    className={styles.pageView}
-                >
-                    {content}
-                </motion.div>
-            </AnimatePresence>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 1.006 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 1.01 }}
+                        key={view}
+                        transition={{
+                            duration: 0.2,
+                            ease: "easeOut",
+                        }}
+                        className={styles.pageView}
+                    >
+                        {content}
+                    </motion.div>
+                </AnimatePresence>
+            </PageTransition>
         </>
     )
 }

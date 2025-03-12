@@ -16,8 +16,8 @@ let platform = {
 let telegramPlatform = WebApp.platform
 let basePlatform = "apple"
 
-export const apple = (platform[telegramPlatform] || basePlatform) === "apple"
-export const material =
+export const useApple = (platform[telegramPlatform] || basePlatform) === "apple"
+export const useMaterial =
     (platform[telegramPlatform] || basePlatform) === "material"
 
 function DeviceProvider() {

@@ -1,33 +1,47 @@
-import React, { Suspense } from "react"
-import { Routes, Route, useLocation } from "react-router-dom"
-import { AnimatePresence } from "motion/react"
+import React from "react"
+import { Router, Route, Switch } from "wouter"
+import { useHashLocation } from "wouter/use-hash-location"
+
 import "./index.css"
 
-import UI from "./Pages/UI"
-import Wallet from "./Pages/Wallet"
-import TONSpace from "./Pages/TS"
-import Onboarding from "./Pages/Onboarding"
-import NewNavigation from "./Pages/NewNavigation"
-import ColorChanging from "./Pages/ColorChanging"
-
-import TextPage from "./Pages/TextPage"
+import UI from "./pages/UI"
+import Wallet from "./pages/Wallet"
+import TONSpace from "./pages/TS"
+import Onboarding from "./pages/Onboarding"
+import NewNavigation from "./pages/NewNavigation"
+import ColorChanging from "./pages/ColorChanging"
+import TextPage from "./pages/TextPage"
+import TabBar from "./pages/TabBar"
+import Picker from "./pages/Picker"
 
 function App() {
-    const location = useLocation()
+    const [location] = useHashLocation()
+
+    const routes = [
+        { path: "/", component: UI },
+        { path: "/wallet", component: Wallet },
+        { path: "/tonspace", component: TONSpace },
+        { path: "/onboarding", component: Onboarding },
+        { path: "/textpage", component: TextPage },
+        { path: "/newnavigation", component: NewNavigation },
+        { path: "/colorchanging", component: ColorChanging },
+        { path: "/tabbar", component: TabBar },
+        { path: "/picker", component: Picker },
+        { path: "*", component: UI },
+    ]
 
     return (
-        <AnimatePresence mode="wait" initial={false}>
-            <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<UI />} />
-                <Route path="wallet" element={<Wallet />} />
-                <Route path="tonspace" element={<TONSpace />} />
-                <Route path="onboarding" element={<Onboarding />} />
-                <Route path="textpage" element={<TextPage />} />
-                <Route path="newnavigation" element={<NewNavigation />} />
-                <Route path="colorchanging" element={<ColorChanging />} />
-                <Route path="*" element={<UI />} />
-            </Routes>
-        </AnimatePresence>
+        <Router hook={useHashLocation}>
+            <Switch key={location}>
+                {routes.map((route) => (
+                    <Route
+                        key={route.path}
+                        path={route.path}
+                        component={route.component}
+                    />
+                ))}
+            </Switch>
+        </Router>
     )
 }
 

@@ -1,58 +1,26 @@
-import PropTypes from "prop-types"
-import * as styles from "./Text.module.scss"
-import { apple } from "../DeviceProvider"
+import { useApple } from "../../hooks/DeviceProvider"
+
+import AppleText from "./AppleText"
+import MaterialText from "./MaterialText"
 
 const Text = ({
-    as: Component = "div",
     apple: appleProps,
     material: materialProps,
     children,
     ...props
 }) => {
-    const platformProps = apple ? appleProps : materialProps
-
-    const dynamicProps = {
-        ...(platformProps?.variant && { variant: platformProps.variant }),
-        ...(platformProps?.weight && { weight: platformProps.weight }),
-        ...(platformProps.rounded && { "data-rounded": true }),
-        ...(platformProps.caps && { "data-caps": true }),
+    if (useApple) {
+        return (
+            <AppleText apple={appleProps} {...props}>
+                {children}
+            </AppleText>
+        )
     }
-
     return (
-        <Component {...dynamicProps} {...props}>
+        <MaterialText material={materialProps} {...props}>
             {children}
-        </Component>
+        </MaterialText>
     )
-}
-
-Text.propTypes = {
-    apple: PropTypes.shape({
-        variant: PropTypes.oneOf([
-            "title1",
-            "title3",
-            "body",
-            "subheadline2",
-            "footnote",
-            "caption2",
-        ]),
-        weight: PropTypes.oneOf(["regular", "medium", "semibold", "bold"]),
-        rounded: PropTypes.bool,
-        caps: PropTypes.bool,
-    }),
-    material: PropTypes.shape({
-        variant: PropTypes.oneOf([
-            "headline5",
-            "headline6",
-            "body1",
-            "subtitle1",
-            "button1",
-            "subtitle2",
-            "caption2",
-        ]),
-        weight: PropTypes.oneOf(["regular", "medium"]),
-        caps: PropTypes.bool,
-    }),
-    as: PropTypes.elementType,
 }
 
 export default Text

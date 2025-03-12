@@ -1,10 +1,10 @@
 import React from "react"
 
-import { RegularButton } from "../../Components/Button"
+import { RegularButton } from "../../components/Button"
+import PageTransition from "../../components/PageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
-import PageTransition from "../../Components/PageTransition"
 
 function ColorChanging() {
     const [isSecondaryColor, setIsSecondaryColor] = React.useState(true)

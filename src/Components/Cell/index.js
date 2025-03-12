@@ -1,7 +1,7 @@
 import Text from "../Text"
 import * as styles from "./Cell.module.scss"
 
-const Cell = ({
+const CellComponent = ({
     as: Component = "div",
     start,
     children,
@@ -18,42 +18,32 @@ const Cell = ({
     )
 }
 
-Cell.Part = ({ type, children }) => {
-    switch (type) {
-        // case "Avatar":
-        //     return <div className={styles.avatar}>{children}</div>
-        case "Chevron":
-            return <div className={styles.chevron}>{children}</div>
-        case "Label":
-            return <div className={styles.label}>{children}</div>
-        // case "Label&Chevron":
-        //     return <div className={styles.labelChevron}>{children}</div>
-        // case "Counter&Chevron":
-        //     return <div className={styles.counterChevron}>{children}</div>
-        // case "Label&Icon":
-        //     return <div className={styles.labelIcon}>{children}</div>
-        case "Dropdown":
-            return <div className={styles.dropdown}>{children}</div>
-        // case "Checkmark":
-        //     return <div className={styles.checkmark}>{children}</div>
-        // case "Switch":
-        //     return <div className={styles.switch}>{children}</div>
-        // case "Picker":
-        //     return <div className={styles.picker}>{children}</div>
-        case "Icon":
-            return <div className={styles.icon}>{children}</div>
-        // case "SegmentedControl":
-        //     return <div className={styles.segmentedControl}>{children}</div>
-        // case "Checkbox":
-        //     return <div className={styles.checkbox}>{children}</div>
-        // case "Button":
-        //     return <div className={styles.button}>{children}</div>
-        default:
-            return <></>
+const CellPart = ({ type, children }) => {
+    const className = styles[type.toLowerCase()]
+
+    if (type === "Picker") {
+        return (
+            <div className={styles.picker}>
+                <Text
+                    apple={{
+                        variant: "body",
+                        weight: "regular",
+                    }}
+                    material={{
+                        variant: "body1",
+                        weight: "regular",
+                    }}
+                >
+                    {children}
+                </Text>
+            </div>
+        )
     }
+
+    return className ? <div className={className}>{children}</div> : null
 }
 
-Cell.Start = ({ type, src = null, iconType = null }) => {
+const CellStart = ({ type, src = null, iconType = null }) => {
     let content
 
     switch (type) {
@@ -76,47 +66,23 @@ Cell.Start = ({ type, src = null, iconType = null }) => {
     return <>{content}</>
 }
 
-Cell.Text = ({ type, title, description, bold }) => {
-    let name
-    let weight = bold ? "medium" : "regular"
-
-    switch (type) {
-        case "Regular":
-            name = `${styles.label}`
-            break
-        case "Accent":
-            name = `${styles.label} ${styles.accent}`
-            break
-        default:
-            name = `${styles.label}`
-            break
-    }
+const CellText = ({ type, title, description, bold }) => {
+    const weight = bold ? "medium" : "regular"
+    const name = `${styles.label} ${type === "Accent" ? styles.accent : ""}`
 
     return (
         <>
             <Text
-                apple={{
-                    variant: "body",
-                    weight: weight,
-                }}
-                material={{
-                    variant: "body1",
-                    weight: weight,
-                }}
+                apple={{ variant: "body", weight: weight }}
+                material={{ variant: "body1", weight: weight }}
                 className={name}
             >
                 {title}
             </Text>
             {description && (
                 <Text
-                    apple={{
-                        variant: "subheadline2",
-                        weight: "regular",
-                    }}
-                    material={{
-                        variant: "subtitle2",
-                        weight: "regular",
-                    }}
+                    apple={{ variant: "subheadline2", weight: "regular" }}
+                    material={{ variant: "subtitle2", weight: "regular" }}
                     className={styles.caption}
                 >
                     {description}
@@ -126,39 +92,32 @@ Cell.Text = ({ type, title, description, bold }) => {
     )
 }
 
-Cell.End = ({ label, caption }) => {
-    return (
-        <>
+const CellEnd = ({ label, caption }) => (
+    <>
+        <Text
+            apple={{ variant: "body", weight: "regular" }}
+            material={{ variant: "body1", weight: "regular" }}
+            className={styles.label}
+        >
+            {label}
+        </Text>
+        {caption && (
             <Text
-                apple={{
-                    variant: "body",
-                    weight: "regular",
-                }}
-                material={{
-                    variant: "body1",
-                    weight: "regular",
-                }}
-                className={styles.label}
+                apple={{ variant: "subheadline2", weight: "regular" }}
+                material={{ variant: "subtitle2", weight: "regular" }}
+                className={styles.caption}
             >
-                {label}
+                {caption}
             </Text>
-            {caption && (
-                <Text
-                    apple={{
-                        variant: "subheadline2",
-                        weight: "regular",
-                    }}
-                    material={{
-                        variant: "subtitle2",
-                        weight: "regular",
-                    }}
-                    className={styles.caption}
-                >
-                    {caption}
-                </Text>
-            )}
-        </>
-    )
-}
+        )}
+    </>
+)
+
+export const Cell = Object.assign(CellComponent, {
+    Start: CellStart,
+    End: CellEnd,
+    Part: CellPart,
+    Text: CellText,
+})
 
 export default Cell

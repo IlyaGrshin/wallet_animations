@@ -1,30 +1,27 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 import * as styles from "./Wallet.module.scss"
-import * as cellStyles from "../../Components/Cell/Cell.module.scss"
+import * as cellStyles from "../../components/Cell/Cell.module.scss"
 
-import PageTransition from "../../Components/PageTransition"
-
-import { apple } from "../../Components/DeviceProvider"
-import Text from "../../Components/Text"
-import SectionList from "../../Components/SectionList"
-import Cell from "../../Components/Cell"
-import NumberFlow from "@number-flow/react"
+import { useApple } from "../../hooks/DeviceProvider"
+import Text from "../../components/Text"
+import SectionList from "../../components/SectionList"
+import Cell from "../../components/Cell"
+import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
-import { MultilineButton } from "../../Components/Button"
+import { MultilineButton } from "../../components/Button"
 
-import { getAssetIcon } from "../../Components/AssetsMap"
+import { useAssetIcon } from "../../utlis/AssetsMap"
 import assets from "./data/assets.json"
 import txHistory from "./data/transactions.json"
 
-import { ReactComponent as ArrowUpCircleFill } from "../../Icons/28/Arrow Up Circle Fill.svg"
-import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../Icons/28/Arrow Left & Right Circle Fill.svg"
-import { ReactComponent as PlusCircleFill28 } from "../../Icons/28/Plus Circle Fill.svg"
-import { ReactComponent as CreditCardFill28 } from "../../Icons/28/Credit Card Fill.svg"
+import { ReactComponent as ArrowUpCircleFill } from "../../icons/28/Arrow Up Circle Fill.svg"
+import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../icons/28/Arrow Left & Right Circle Fill.svg"
+import { ReactComponent as PlusCircleFill28 } from "../../icons/28/Plus Circle Fill.svg"
+import { ReactComponent as CreditCardFill28 } from "../../icons/28/Credit Card Fill.svg"
 
-import HiddenEye from "../../Icons/Avatars/HiddenEyeIcon.svg"
-
+import HiddenEye from "../../icons/avatars/HiddenEyeIcon.svg"
 import WebApp from "@twa-dev/sdk"
 
 function Balance() {
@@ -64,7 +61,19 @@ function Balance() {
                 hidden={hidden}
                 onClick={() => setHidden((s) => !s)}
             >
-                <NumberFlow value={balance} prefix="$" />
+                <NumberFlow
+                    value={balance}
+                    prefix="$"
+                    willChange
+                    plugins={[continuous]}
+                    spinTiming={{
+                        duration: 850,
+                        easing: "linear(0, 0.0013 0.5%, 0.0062 1.11%, 0.0233 2.21%, 0.0518 3.42%, 0.0951 4.82%, 0.1855 7.23%, 0.4176 12.76%, 0.525 15.47%, 0.6247, 0.7105 21.1%, 0.7844, 0.8439 26.92%, 0.8695 28.43%, 0.8934, 0.9139, 0.9314, 0.9463 34.86%, 0.9595 36.57%, 0.9709 38.37%, 0.9805 40.28%, 0.9884 42.29%, 0.9948 44.5%, 1.003 49.42%, 1.0057 53.34%, 1.0063 58.16%, 1.0014 80.77%, 1.0001 99.95%)",
+                    }}
+                    opacityTiming={{
+                        duration: 200,
+                    }}
+                />
             </Spoiler>
         </div>
     )
@@ -107,7 +116,7 @@ function ActionButtons() {
 function AnimatedCellMoreButton({ onClick, state }) {
     const transition = { ease: [0.26, 0.08, 0.25, 1], duration: 0.2 }
 
-    const jettonsSize = apple
+    const jettonsSize = useApple
         ? { position: "relative", width: "40px", height: "40px" }
         : {
               position: "relative",
@@ -116,17 +125,17 @@ function AnimatedCellMoreButton({ onClick, state }) {
               marginLeft: "-6px",
           }
 
-    const jettonsMotion = apple
+    const jettonsMotion = useApple
         ? [
               {
-                  src: getAssetIcon("HMSTR"),
+                  src: useAssetIcon("HMSTR"),
                   variants: {
                       collapsed: { scale: 0.6, top: "-6px", left: "-6px" },
                       expanded: { scale: 1, opacity: 0, top: 0, left: 0 },
                   },
               },
               {
-                  src: getAssetIcon("NOT"),
+                  src: useAssetIcon("NOT"),
                   variants: {
                       collapsed: {
                           scale: 0.6,
@@ -140,14 +149,14 @@ function AnimatedCellMoreButton({ onClick, state }) {
           ]
         : [
               {
-                  src: getAssetIcon("HMSTR"),
+                  src: useAssetIcon("HMSTR"),
                   variants: {
                       collapsed: { scale: 0.6, top: "-6px", left: 0 },
                       expanded: { scale: 1, top: 0, left: "6px" },
                   },
               },
               {
-                  src: getAssetIcon("NOT"),
+                  src: useAssetIcon("NOT"),
                   variants: {
                       collapsed: {
                           scale: 0.6,
@@ -160,7 +169,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
               },
           ]
 
-    const HiddenEyeMotion = apple
+    const HiddenEyeMotion = useApple
         ? {
               variants: {
                   collapsed: {
@@ -249,6 +258,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
                         variants={variants.TextHideLowBalances}
                         transition={transition}
                         animate={state ? "expanded" : "collapsed"}
+                        initial={false}
                         style={{
                             transformOrigin: "0% 50%",
                             position: "absolute",
@@ -302,7 +312,7 @@ function Assets() {
                     start={
                         <Cell.Start
                             type="Image"
-                            src={getAssetIcon(asset.ticker)}
+                            src={useAssetIcon(asset.ticker)}
                         />
                     }
                     end={
@@ -323,7 +333,7 @@ function Assets() {
 
             {smallAssets.length > 0 && (
                 <>
-                    <AnimatePresence>
+                    <AnimatePresence inherit={false}>
                         {showSmallAssets && (
                             <motion.div
                                 initial={{ height: 0, opacity: 0, scale: 0.97 }}
@@ -344,7 +354,7 @@ function Assets() {
                                         start={
                                             <Cell.Start
                                                 type="Image"
-                                                src={getAssetIcon(asset.ticker)}
+                                                src={useAssetIcon(asset.ticker)}
                                             />
                                         }
                                         end={
@@ -384,7 +394,7 @@ function TransactionList() {
     return (
         <SectionList.Item
             header="Transaction History"
-            footer="Section Description"
+            description="Section Description"
         >
             {txHistory.map((tx, index) => (
                 <Cell
@@ -411,18 +421,14 @@ function Wallet() {
     })
 
     return (
-        <>
-            <div className={styles.wallet}>
-                <PageTransition>
-                    <Balance />
-                    <ActionButtons />
-                    <SectionList>
-                        <Assets />
-                        <TransactionList />
-                    </SectionList>
-                </PageTransition>
-            </div>
-        </>
+        <div className={styles.wallet}>
+            <Balance />
+            <ActionButtons />
+            <SectionList>
+                <Assets />
+                <TransactionList />
+            </SectionList>
+        </div>
     )
 }
 

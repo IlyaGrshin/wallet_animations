@@ -1,5 +1,5 @@
 import { motion } from "motion/react"
-import { apple } from "../DeviceProvider"
+import { useApple } from "../../hooks/DeviceProvider"
 
 export let pageTransitionDuration = 0.2
 
@@ -7,7 +7,7 @@ if (typeof window !== "undefined") {
     window.pageTransitionDuration = pageTransitionDuration
 }
 
-const blurValue = apple ? "blur(2px)" : "blur(0px)"
+const blurValue = useApple ? "blur(2px)" : "blur(0px)"
 
 const PageTransition = ({ children }) => {
     const pageVariants = {

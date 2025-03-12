@@ -16,6 +16,7 @@
             display: flex;
             flex-direction: column;
             align-self: stretch;
+            overflow: hidden;
         }
 
         .container > * {

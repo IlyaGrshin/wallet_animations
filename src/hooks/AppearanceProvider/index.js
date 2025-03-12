@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import WebApp from "@twa-dev/sdk"
 
-const ThemeProvider = ({ children }) => {
+const AppearanceProvider = ({ children }) => {
     useEffect(() => {
         const getTelegramColorScheme = () => {
             return getComputedStyle(document.documentElement)
@@ -52,4 +52,4 @@ const ThemeProvider = ({ children }) => {
     return <>{children}</>
 }
 
-export default ThemeProvider
+export default AppearanceProvider
