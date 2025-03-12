@@ -1,6 +1,6 @@
 import React from "react"
 import { Router, Route, Switch } from "wouter"
-import { useTransitionHashLocation } from "./hooks/useTransitionHashLocation"
+import { useHashLocation } from "wouter/use-hash-location"
 
 import "./index.css"
 
@@ -15,7 +15,7 @@ import TabBar from "./pages/TabBar"
 import Picker from "./pages/Picker"
 
 function App() {
-    const [location] = useTransitionHashLocation()
+    const [location] = useHashLocation()
 
     const routes = [
         { path: "/", component: UI },
@@ -31,18 +31,16 @@ function App() {
     ]
 
     return (
-        <Router hook={useTransitionHashLocation}>
-            <div className="page-container">
-                <Switch key={location}>
-                    {routes.map((route) => (
-                        <Route
-                            key={route.path}
-                            path={route.path}
-                            component={route.component}
-                        />
-                    ))}
-                </Switch>
-            </div>
+        <Router hook={useHashLocation}>
+            <Switch key={location}>
+                {routes.map((route) => (
+                    <Route
+                        key={route.path}
+                        path={route.path}
+                        component={route.component}
+                    />
+                ))}
+            </Switch>
         </Router>
     )
 }
