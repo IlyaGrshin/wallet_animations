@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import PageTransition from "../../components/PageTransition"
 
 import Text from "../../components/Text"
-import Cell from "../../components/Cell"
+import Cell from "../../components/Cells"
 import SectionList from "../../components/SectionList"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"

@@ -4,7 +4,7 @@ import * as styles from "./PickerPage.module.scss"
 
 import SectionList from "../../components/SectionList"
 import Picker from "../../components/Picker"
-import Cell from "../../components/Cell"
+import Cell from "../../components/Cells"
 import PageTransition from "../../components/PageTransition"
 
 const PickerPage = () => {

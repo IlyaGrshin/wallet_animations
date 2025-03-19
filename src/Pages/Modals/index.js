@@ -3,7 +3,7 @@ import React from "react"
 import ModalView from "../../components/ModalView"
 import PanelHeader from "../../components/PanelHeader"
 import SectionList from "../../components/SectionList"
-import Cell from "../../components/Cell"
+import Cell from "../../components/Cells"
 
 import { useAssetIcon } from "../../utlis/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"

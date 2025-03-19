@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react"
 
 import SectionList from "../../components/SectionList"
-import Cell from "../../components/Cell"
+import Cell from "../../components/Cells"
 import ModalView from "../../components/ModalView"
 import PanelHeader from "../../components/PanelHeader"
 

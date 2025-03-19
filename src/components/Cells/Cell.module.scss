@@ -74,20 +74,6 @@
 		}
 	}
 
-	.label {
-		color: var(--tg-theme-text-color);
-		font-variant-numeric: lining-nums tabular-nums;
-
-		&.accent {
-			color: var(--tg-theme-accent-text-color);
-		}
-	}
-
-	.caption {
-		max-height: 18px;
-		color: var(--tg-theme-subtitle-text-color);
-	}
-
 	:global(body.apple) & {
 		padding-left: var(--side-padding);
 		min-height: 44px;

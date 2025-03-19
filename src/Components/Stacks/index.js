@@ -6,7 +6,7 @@ import "./index.css"
 
 import { useApple } from "../../hooks/DeviceProvider"
 import Card from "../Card"
-import Cell from "../Cell"
+import Cell from "../Cells"
 import Text from "../Text"
 
 import DollarsLogo from "../../icons/avatars/Dollars.png"

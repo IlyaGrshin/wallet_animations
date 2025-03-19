@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense } from "react"
 import { Link } from "wouter"
 
 import SectionList from "../../components/SectionList"
-import Cell from "../../components/Cell"
+import Cell from "../../components/Cells"
 import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
 import SegmentedControl from "../../components/SegmentedControl"
