@@ -7,28 +7,15 @@ import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
 import WebApp from "@twa-dev/sdk"
 import PageTransition from "../../components/PageTransition"
+import useModal from "../../hooks/useModal"
 
 const Modals = React.lazy(() => import("../Modals"))
 
 const UI = () => {
-    const [isModalOpen, setIsModalOpen] = useState({
+    const { modals, handlers } = useModal({
         modal1: false,
         modal2: false,
     })
-
-    const openModal = (ID) => {
-        setIsModalOpen((prevState) => ({
-            ...prevState,
-            [ID]: true,
-        }))
-    }
-
-    const closeModal = (ID) => {
-        setIsModalOpen((prevState) => ({
-            ...prevState,
-            [ID]: false,
-        }))
-    }
 
     useEffect(() => {
         if (WebApp.initData) {
@@ -109,16 +96,16 @@ const UI = () => {
                     >
                         <Cell.Text title="Label" />
                     </Cell>
-                    <Cell onClick={() => openModal("modal1")}>
+                    <Cell onClick={handlers.modal1.open}>
                         <Cell.Text type="Accent" title="Open Modal" />
                     </Cell>
-                    <Cell onClick={() => openModal("modal2")}>
+                    <Cell onClick={handlers.modal2.open}>
                         <Cell.Text type="Accent" title="Open Modal (CSS)" />
                     </Cell>
                 </SectionList.Item>
             </SectionList>
             <Suspense>
-                <Modals isModalOpen={isModalOpen} closeModal={closeModal} />
+                <Modals modals={modals} handlers={handlers} />
             </Suspense>
         </PageTransition>
     )

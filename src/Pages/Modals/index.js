@@ -10,13 +10,13 @@ import { useAssetIcon } from "../../utlis/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"
 import InitialsAvatar from "../../components/InitialsAvatar"
 
-const Modals = ({ isModalOpen, closeModal }) => {
+const Modals = ({ modals, handlers }) => {
     return (
         <>
             <ModalView
                 key="modal1"
-                isOpen={isModalOpen.modal1}
-                onClose={() => closeModal("modal1")}
+                isOpen={modals.modal1}
+                onClose={handlers.modal1.close}
                 style={{
                     backgroundColor: "var(--tg-theme-secondary-bg-color)",
                 }}
@@ -58,15 +58,12 @@ const Modals = ({ isModalOpen, closeModal }) => {
                         </Cell>
                     </SectionList.Item>
                 </SectionList>
-                <MainButton
-                    text="Confirm"
-                    onClick={() => closeModal("modal1")}
-                />
+                <MainButton text="Confirm" onClick={handlers.modal1.close} />
             </ModalView>
             <ModalView
                 key="modal2"
-                isOpen={isModalOpen.modal2}
-                onClose={() => closeModal("modal2")}
+                isOpen={modals.modal2}
+                onClose={handlers.modal2.close}
                 style={{
                     backgroundColor: "var(--tg-theme-secondary-bg-color)",
                 }}
@@ -109,10 +106,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                         </Cell>
                     </SectionList.Item>
                 </SectionList>
-                <MainButton
-                    text="Confirm"
-                    onClick={() => closeModal("modal2")}
-                />
+                <MainButton text="Confirm" onClick={handlers.modal2.close} />
             </ModalView>
         </>
     )
