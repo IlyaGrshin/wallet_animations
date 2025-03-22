@@ -5,18 +5,11 @@ import * as styles from "./ModalView.module.scss"
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 
-function blendColors(color1, color2, alpha) {
-    function hexToRgb(hex) {
-        hex = hex.replace("#", "")
-        return [
-            parseInt(hex.slice(0, 2), 16),
-            parseInt(hex.slice(2, 4), 16),
-            parseInt(hex.slice(4, 6), 16),
-        ]
-    }
+import { hexToRgb } from "../../utlis/common"
 
-    const [r1, g1, b1] = hexToRgb(color1)
-    const [r2, g2, b2] = hexToRgb(color2)
+function blendColors(color1, color2, alpha) {
+    const [r1, g1, b1] = hexToRgb(color1, "array")
+    const [r2, g2, b2] = hexToRgb(color2, "array")
     const r = Math.round(r1 * (1 - alpha) + r2 * alpha)
     const g = Math.round(g1 * (1 - alpha) + g2 * alpha)
     const b = Math.round(b1 * (1 - alpha) + b2 * alpha)
