@@ -2,6 +2,7 @@ import { useEffect, useCallback, useState } from "react"
 
 import * as styles from "./PickerPage.module.scss"
 
+import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Picker from "../../../components/Picker"
 import Cell from "../../../components/Cells"
@@ -32,46 +33,30 @@ const PickerPage = () => {
         setPickerValue(page)
     }, [])
 
-    useEffect(() => {
-        if (WebApp.initData) {
-            const handleBackButton = () => {
-                WebApp.setHeaderColor("secondary_bg_color")
-                WebApp.setBackgroundColor("secondary_bg_color")
-            }
-
-            WebApp.onEvent("backButtonClicked", handleBackButton)
-
-            return () => {
-                WebApp.offEvent("backButtonClicked", handleBackButton)
-            }
-        } else {
-            document.body.style.backgroundColor =
-                "var(--tg-theme-secondary-bg-color)"
-        }
-    }, [])
-
     return (
         <>
             <BackButton />
-            <PageTransition>
-                <SectionList>
-                    <SectionList.Item>
-                        <Cell
-                            end={
-                                <Cell.Part type="Picker">
-                                    {months[pickerIndex]}
-                                </Cell.Part>
-                            }
-                        >
-                            <Cell.Text title="Picker" />
-                        </Cell>
-                        <Picker
-                            items={months}
-                            onPickerIndex={handlePickerIndex}
-                        />
-                    </SectionList.Item>
-                </SectionList>
-            </PageTransition>
+            <Page>
+                <PageTransition>
+                    <SectionList>
+                        <SectionList.Item>
+                            <Cell
+                                end={
+                                    <Cell.Part type="Picker">
+                                        {months[pickerIndex]}
+                                    </Cell.Part>
+                                }
+                            >
+                                <Cell.Text title="Picker" />
+                            </Cell>
+                            <Picker
+                                items={months}
+                                onPickerIndex={handlePickerIndex}
+                            />
+                        </SectionList.Item>
+                    </SectionList>
+                </PageTransition>
+            </Page>
         </>
     )
 }

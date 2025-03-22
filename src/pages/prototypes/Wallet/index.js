@@ -5,6 +5,8 @@ import * as styles from "./Wallet.module.scss"
 import * as cellStyles from "../../../components/Cells/Cell.module.scss"
 
 import { useApple } from "../../../hooks/DeviceProvider"
+
+import Page from "../../../components/Page"
 import Text from "../../../components/Text"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
@@ -406,25 +408,17 @@ function TransactionList() {
 }
 
 function Wallet() {
-    useEffect(() => {
-        if (WebApp.initData) {
-            WebApp.setHeaderColor("secondary_bg_color")
-            WebApp.setBackgroundColor("secondary_bg_color")
-        } else {
-            document.body.style.backgroundColor =
-                "var(--tg-theme-secondary-bg-color)"
-        }
-    })
-
     return (
-        <div className={styles.wallet}>
-            <Balance />
-            <ActionButtons />
-            <SectionList>
-                <Assets />
-                <TransactionList />
-            </SectionList>
-        </div>
+        <Page>
+            <div className={styles.wallet}>
+                <Balance />
+                <ActionButtons />
+                <SectionList>
+                    <Assets />
+                    <TransactionList />
+                </SectionList>
+            </div>
+        </Page>
     )
 }
 

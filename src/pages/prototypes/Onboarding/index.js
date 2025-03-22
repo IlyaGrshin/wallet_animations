@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react"
 
+import Page from "../../../components/Page"
 import Gallery from "../../../components/Gallery"
 import SectionHeader from "../../../components/SectionHeader"
 import StartView from "../../../components/StartView"
@@ -11,7 +12,7 @@ import { BackButton } from "@twa-dev/sdk/react"
 
 import * as styles from "./Onboarding.module.scss"
 
-const pages = [
+const GalleryPages = [
     {
         imageClass: styles.coin,
         title: "Your TON Space",
@@ -31,7 +32,7 @@ const pages = [
     },
 ]
 
-const Page = ({ imageClass, title, description }) => (
+const GalleryPage = ({ imageClass, title, description }) => (
     <div className={styles.root}>
         <div className={styles.cover}>
             <div className={`${styles.image} ${imageClass}`}></div>
@@ -50,10 +51,8 @@ const Onboarding = () => {
     }, [])
 
     useEffect(() => {
-        WebApp.setHeaderColor("#131314")
         WebApp.disableVerticalSwipes()
         const handleBackButton = () => {
-            WebApp.setHeaderColor("secondary_bg_color")
             WebApp.enableVerticalSwipes()
         }
 
@@ -66,35 +65,39 @@ const Onboarding = () => {
 
     return (
         <PageTransition>
-            <BackButton />
-            <Gallery onPageChange={handlePageChange}>
-                {pages.map(({ imageClass, title, description }, index) => (
-                    <Page
-                        key={index}
-                        imageClass={imageClass}
-                        title={title}
-                        description={description}
+            <Page headerColor="131314">
+                <BackButton />
+                <Gallery onPageChange={handlePageChange}>
+                    {GalleryPages.map(
+                        ({ imageClass, title, description }, index) => (
+                            <GalleryPage
+                                key={index}
+                                imageClass={imageClass}
+                                title={title}
+                                description={description}
+                            />
+                        )
+                    )}
+                </Gallery>
+                <div className={styles.BottomButtons}>
+                    <RegularButton
+                        variant="filled"
+                        label="Start exploring TON"
+                        isFill
+                        isShine
                     />
-                ))}
-            </Gallery>
-            <div className={styles.BottomButtons}>
-                <RegularButton
-                    variant="filled"
-                    label="Start exploring TON"
-                    isFill
-                    isShine
-                />
-                <RegularButton
-                    variant="tinted"
-                    label="Add Existing Wallet"
-                    isFill
-                />
-                <SectionHeader
-                    type="Footer"
-                    title="By continuing you agree to Terms of Service and User Agreement."
-                    style={{ textAlign: "center" }}
-                />
-            </div>
+                    <RegularButton
+                        variant="tinted"
+                        label="Add Existing Wallet"
+                        isFill
+                    />
+                    <SectionHeader
+                        type="Footer"
+                        title="By continuing you agree to Terms of Service and User Agreement."
+                        style={{ textAlign: "center" }}
+                    />
+                </div>
+            </Page>
         </PageTransition>
     )
 }

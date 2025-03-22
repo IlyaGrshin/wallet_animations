@@ -1,5 +1,7 @@
 import { useEffect } from "react"
 
+import Page from "../../../components/Page"
+
 import "./index.css"
 import WebApp from "@twa-dev/sdk"
 
@@ -14,10 +16,10 @@ function TonSpaceSkeleton() {
     })
 
     return (
-        <>
+        <Page headerColor="131314" backgroundColor="131314">
             <div className="ts_skeleton_balance"></div>
             <div className="ts_skeleton_content"></div>
-        </>
+        </Page>
     )
 }
 

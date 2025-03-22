@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 
+import Page from "../../../components/Page"
 import Text from "../../../components/Text"
 import Cell from "../../../components/Cells"
 import ImageAvatar from "../../../components/ImageAvatar"
@@ -196,17 +197,8 @@ function FAQ() {
 }
 
 function TONSpace() {
-    useEffect(() => {
-        if (WebApp.initData) {
-            WebApp.setHeaderColor("#131314")
-            WebApp.setBackgroundColor("#131314")
-        } else {
-            document.body.style.backgroundColor = "#131314"
-        }
-    })
-
     return (
-        <>
+        <Page headerColor="131314" backgroundColor="131314">
             <div className="ton-space">
                 <Profile />
                 <SectionList>
@@ -227,7 +219,7 @@ function TONSpace() {
                     </SectionList.Item>
                 </SectionList>
             </div>
-        </>
+        </Page>
     )
 }
 
