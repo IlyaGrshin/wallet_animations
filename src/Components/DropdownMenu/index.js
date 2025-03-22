@@ -79,8 +79,8 @@ const DropdownMenu = ({ items }) => {
         exit: {
             scale: 0,
             opacity: 0,
-            filter: "blur(5px)",
-            transition: { duration: 0.15 },
+            filter: "blur(2px)",
+            transition: { duration: 0.25 },
         },
     }
 
