@@ -8,6 +8,7 @@ import { useApple } from "../../hooks/DeviceProvider"
 import Text from "../../components/Text"
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cells"
+import ImageAvatar from "../../components/ImageAvatar"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
 import { MultilineButton } from "../../components/Button"
@@ -309,12 +310,7 @@ function Assets() {
         <SectionList.Item ref={AssetsRef}>
             {largeAssets.map((asset, index) => (
                 <Cell
-                    start={
-                        <Cell.Start
-                            type="Image"
-                            src={useAssetIcon(asset.ticker)}
-                        />
-                    }
+                    start={<ImageAvatar src={useAssetIcon(asset.ticker)} />}
                     end={
                         <Cell.Text
                             title={`$${formatNumbers(asset.rate * asset.value)}`}

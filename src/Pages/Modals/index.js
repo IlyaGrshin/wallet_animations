@@ -4,9 +4,11 @@ import ModalView from "../../components/ModalView"
 import PanelHeader from "../../components/PanelHeader"
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cells"
+import ImageAvatar from "../../components/ImageAvatar"
 
 import { useAssetIcon } from "../../utlis/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"
+import InitialsAvatar from "../../components/InitialsAvatar"
 
 const Modals = ({ isModalOpen, closeModal }) => {
     return (
@@ -22,14 +24,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                 <PanelHeader>Modal (Framer)</PanelHeader>
                 <SectionList>
                     <SectionList.Item>
-                        <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={useAssetIcon("TON")}
-                                />
-                            }
-                        >
+                        <Cell start={<ImageAvatar src={useAssetIcon("TON")} />}>
                             <Cell.Text
                                 title="Toncoin"
                                 description="100 TON"
@@ -37,12 +32,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                             />
                         </Cell>
                         <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={useAssetIcon("USDT")}
-                                />
-                            }
+                            start={<ImageAvatar src={useAssetIcon("USDT")} />}
                         >
                             <Cell.Text
                                 title="Dollars"
@@ -50,13 +40,15 @@ const Modals = ({ isModalOpen, closeModal }) => {
                                 bold
                             />
                         </Cell>
+                        <Cell start={<ImageAvatar src={useAssetIcon("BTC")} />}>
+                            <Cell.Text
+                                title="Bitcoin"
+                                description="0.000001 BTC"
+                                bold
+                            />
+                        </Cell>
                         <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={useAssetIcon("BTC")}
-                                />
-                            }
+                            start={<InitialsAvatar userId={1} name="Bitcoin" />}
                         >
                             <Cell.Text
                                 title="Bitcoin"
@@ -83,14 +75,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                 <PanelHeader>Modal (CSS)</PanelHeader>
                 <SectionList>
                     <SectionList.Item>
-                        <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={useAssetIcon("TON")}
-                                />
-                            }
-                        >
+                        <Cell start={<ImageAvatar src={useAssetIcon("TON")} />}>
                             <Cell.Text
                                 title="Toncoin"
                                 description="100 TON"
@@ -98,12 +83,7 @@ const Modals = ({ isModalOpen, closeModal }) => {
                             />
                         </Cell>
                         <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={useAssetIcon("USDT")}
-                                />
-                            }
+                            start={<ImageAvatar src={useAssetIcon("USDT")} />}
                         >
                             <Cell.Text
                                 title="Dollars"
@@ -111,13 +91,15 @@ const Modals = ({ isModalOpen, closeModal }) => {
                                 bold
                             />
                         </Cell>
+                        <Cell start={<ImageAvatar src={useAssetIcon("BTC")} />}>
+                            <Cell.Text
+                                title="Bitcoin"
+                                description="0.000001 BTC"
+                                bold
+                            />
+                        </Cell>
                         <Cell
-                            start={
-                                <Cell.Start
-                                    type="Image"
-                                    src={useAssetIcon("BTC")}
-                                />
-                            }
+                            start={<InitialsAvatar userId={1} name="Bitcoin" />}
                         >
                             <Cell.Text
                                 title="Bitcoin"
