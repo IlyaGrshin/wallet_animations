@@ -1,14 +1,14 @@
 import React from "react"
 
-import ModalView from "../../components/ModalView"
-import PanelHeader from "../../components/PanelHeader"
-import SectionList from "../../components/SectionList"
-import Cell from "../../components/Cells"
-import ImageAvatar from "../../components/ImageAvatar"
+import ModalView from "../../../../components/ModalView"
+import PanelHeader from "../../../../components/PanelHeader"
+import SectionList from "../../../../components/SectionList"
+import Cell from "../../../../components/Cells"
+import ImageAvatar from "../../../../components/ImageAvatar"
 
-import { useAssetIcon } from "../../utlis/AssetsMap"
+import { useAssetIcon } from "../../../../utlis/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"
-import InitialsAvatar from "../../components/InitialsAvatar"
+import InitialsAvatar from "../../../../components/InitialsAvatar"
 
 const Modals = ({ modals, handlers }) => {
     return (

@@ -13,6 +13,7 @@ import ColorChanging from "./pages/prototypes/ColorChanging"
 import TextPage from "./pages/prototypes/TextPage"
 import TabBar from "./pages/prototypes/TabBar"
 import Picker from "./pages/prototypes/Picker"
+import ModalPages from "./pages/prototypes/ModalPages"
 
 function App() {
     const [location] = useHashLocation()
@@ -27,6 +28,7 @@ function App() {
         { path: "/colorchanging", component: ColorChanging },
         { path: "/tabbar", component: TabBar },
         { path: "/picker", component: Picker },
+        { path: "/modalpages", component: ModalPages },
         { path: "*", component: UI },
     ]
 

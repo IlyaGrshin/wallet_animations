@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react"
+import React, { useState } from "react"
 import { Link } from "wouter"
 
 import Page from "../../components/Page"
@@ -8,15 +8,7 @@ import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
 import PageTransition from "../../components/PageTransition"
 
-import useModal from "../../hooks/useModal"
-const Modals = React.lazy(() => import("../Modals"))
-
 const UI = () => {
-    const { modals, handlers } = useModal({
-        modal1: false,
-        modal2: false,
-    })
-
     return (
         <PageTransition>
             <Page>
@@ -57,6 +49,13 @@ const UI = () => {
                         >
                             <Cell.Text title="Picker" />
                         </Cell>
+                        <Cell
+                            as={Link}
+                            to="modalpages"
+                            end={<Cell.Part type="Chevron" />}
+                        >
+                            <Cell.Text title="Modal Pages" />
+                        </Cell>
                     </SectionList.Item>
                     <SectionList.Item>
                         <Cell>
@@ -89,17 +88,8 @@ const UI = () => {
                         >
                             <Cell.Text title="Label" />
                         </Cell>
-                        <Cell onClick={handlers.modal1.open}>
-                            <Cell.Text type="Accent" title="Open Modal" />
-                        </Cell>
-                        <Cell onClick={handlers.modal2.open}>
-                            <Cell.Text type="Accent" title="Open Modal (CSS)" />
-                        </Cell>
                     </SectionList.Item>
                 </SectionList>
-                <Suspense>
-                    <Modals modals={modals} handlers={handlers} />
-                </Suspense>
             </Page>
         </PageTransition>
     )
