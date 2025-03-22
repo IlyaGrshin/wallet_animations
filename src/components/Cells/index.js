@@ -1,5 +1,8 @@
 import Text from "../Text"
+
 import CellText from "./components/CellText"
+import CellPart from "./components/CellPart"
+
 import * as styles from "./Cell.module.scss"
 
 const CellComponent = ({
@@ -17,31 +20,6 @@ const CellComponent = ({
             {end && <div className={styles.end}>{end}</div>}
         </Component>
     )
-}
-
-const CellPart = ({ type, children }) => {
-    const className = styles[type.toLowerCase()]
-
-    if (type === "Picker") {
-        return (
-            <div className={styles.picker}>
-                <Text
-                    apple={{
-                        variant: "body",
-                        weight: "regular",
-                    }}
-                    material={{
-                        variant: "body1",
-                        weight: "regular",
-                    }}
-                >
-                    {children}
-                </Text>
-            </div>
-        )
-    }
-
-    return className ? <div className={className}>{children}</div> : null
 }
 
 const CellStart = ({ type, src = null, iconType = null }) => {

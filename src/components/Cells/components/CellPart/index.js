@@ -1,9 +1,30 @@
 import React from "react"
+import Text from "../../../Text"
+
 import PropTypes from "prop-types"
 
-import styles from "./CellPart.module.scss"
+import * as styles from "./CellPart.module.scss"
 
 export const CellPart = ({ type, className, children }) => {
+    if (type === "Picker") {
+        return (
+            <div className={styles.picker}>
+                <Text
+                    apple={{
+                        variant: "body",
+                        weight: "regular",
+                    }}
+                    material={{
+                        variant: "body1",
+                        weight: "regular",
+                    }}
+                >
+                    {children}
+                </Text>
+            </div>
+        )
+    }
+
     return (
         <div
             className={[className, styles[type.toLowerCase()]]
@@ -33,3 +54,5 @@ CellPart.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node.isRequired,
 }
+
+export default CellPart
