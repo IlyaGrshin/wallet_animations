@@ -39,6 +39,27 @@ const DropdownMenu = ({ items }) => {
         }
     }, [isOpen])
 
+    // Add effect for handling clicks outside the dropdown
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                isOpen &&
+                buttonRef.current &&
+                dropdownRef.current &&
+                !buttonRef.current.contains(event.target) &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setIsOpen(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside)
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+        }
+    }, [isOpen])
+
     const dropdownVariants = {
         hidden: {
             scale: 0,
@@ -59,22 +80,22 @@ const DropdownMenu = ({ items }) => {
             scale: 0,
             opacity: 0,
             filter: "blur(5px)",
-            transition: { duration: 0.3 },
+            transition: { duration: 0.15 },
         },
     }
 
     return (
-        <AnimatePresence>
-            <div className={styles.container}>
-                <div
-                    className={styles.selected}
-                    onClick={toggleDropdown}
-                    ref={buttonRef}
-                >
-                    {selectedItem}
-                </div>
-                {isOpen &&
-                    createPortal(
+        <div className={styles.container}>
+            <div
+                className={styles.selected}
+                onClick={toggleDropdown}
+                ref={buttonRef}
+            >
+                {selectedItem}
+            </div>
+            {createPortal(
+                <AnimatePresence>
+                    {isOpen && (
                         <motion.div
                             ref={dropdownRef}
                             className={styles.root}
@@ -112,11 +133,12 @@ const DropdownMenu = ({ items }) => {
                                     </Text>
                                 </div>
                             ))}
-                        </motion.div>,
-                        document.body
+                        </motion.div>
                     )}
-            </div>
-        </AnimatePresence>
+                </AnimatePresence>,
+                document.body
+            )}
+        </div>
     )
 }
 
