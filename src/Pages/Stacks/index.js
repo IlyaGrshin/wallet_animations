@@ -5,9 +5,9 @@ import { AnimatePresence, motion } from "motion/react"
 import "./index.css"
 
 import { useApple } from "../../hooks/DeviceProvider"
-import Card from "../Card"
-import Cell from "../Cells"
-import Text from "../Text"
+import Card from "../../components/Card"
+import Cell from "../../components/Cells"
+import Text from "../../components/Text"
 
 import DollarsLogo from "../../icons/avatars/Dollars.png"
 import BitcoinLogo from "../../icons/avatars/Bitcoin.png"
