@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react"
 
-import Gallery from "../../components/Gallery"
-import SectionHeader from "../../components/SectionHeader"
-import StartView from "../../components/StartView"
-import { RegularButton } from "../../components/Button"
-import PageTransition from "../../components/PageTransition"
+import Gallery from "../../../components/Gallery"
+import SectionHeader from "../../../components/SectionHeader"
+import StartView from "../../../components/StartView"
+import { RegularButton } from "../../../components/Button"
+import PageTransition from "../../../components/PageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"

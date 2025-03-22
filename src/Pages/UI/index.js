@@ -5,17 +5,12 @@ import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cells"
 import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
-import SegmentedControl from "../../components/SegmentedControl"
 import WebApp from "@twa-dev/sdk"
 import PageTransition from "../../components/PageTransition"
 
 const Modals = React.lazy(() => import("../Modals"))
 
 const UI = () => {
-    const handleSegmentChange = () => {
-        // console.log('Выбранный сегмент: ', index);
-    }
-
     const [isModalOpen, setIsModalOpen] = useState({
         modal1: false,
         modal2: false,
@@ -50,11 +45,7 @@ const UI = () => {
     return (
         <PageTransition>
             <SectionList>
-                <SegmentedControl
-                    segments={["Label 1", "Label 2", "Label 3"]}
-                    onChange={handleSegmentChange}
-                />
-                <SectionList.Item>
+                <SectionList.Item header="Prototypes">
                     <Cell
                         as={Link}
                         to="newnavigation"

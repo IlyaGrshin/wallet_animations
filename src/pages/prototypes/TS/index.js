@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react"
 
-import PageTransition from "../../components/PageTransition"
-
-import Text from "../../components/Text"
-import Cell from "../../components/Cells"
-import ImageAvatar from "../../components/ImageAvatar"
-import SectionList from "../../components/SectionList"
+import Text from "../../../components/Text"
+import Cell from "../../../components/Cells"
+import ImageAvatar from "../../../components/ImageAvatar"
+import SectionList from "../../../components/SectionList"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
-import { useAssetIcon } from "../../utlis/AssetsMap"
-import { MultilineButton } from "../../components/Button"
+import { useAssetIcon } from "../../../utlis/AssetsMap"
+import { MultilineButton } from "../../../components/Button"
 
-import { ReactComponent as ArrowUpCircleFill } from "../../icons/28/Arrow Up Circle Fill.svg"
-import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../icons/28/Arrow Left & Right Circle Fill.svg"
-import { ReactComponent as PlusCircleFill28 } from "../../icons/28/Plus Circle Fill.svg"
+import { ReactComponent as ArrowUpCircleFill } from "../../../icons/28/Arrow Up Circle Fill.svg"
+import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../../icons/28/Arrow Left & Right Circle Fill.svg"
+import { ReactComponent as PlusCircleFill28 } from "../../../icons/28/Plus Circle Fill.svg"
 
 import WebApp from "@twa-dev/sdk"
 
 import * as styles from "./TS.module.scss"
-import * as ButtonStyles from "../../components/Button/MultilineButton/MultilineButton.module.scss"
+import * as ButtonStyles from "../../../components/Button/MultilineButton/MultilineButton.module.scss"
 
 import assets from "./data/assets.json"
 import activityItems from "./data/activity.json"

@@ -5,14 +5,14 @@ import { useHashLocation } from "wouter/use-hash-location"
 import "./index.css"
 
 import UI from "./pages/UI"
-import Wallet from "./pages/Wallet"
-import TONSpace from "./pages/TS"
-import Onboarding from "./pages/Onboarding"
-import NewNavigation from "./pages/NewNavigation"
-import ColorChanging from "./pages/ColorChanging"
-import TextPage from "./pages/TextPage"
-import TabBar from "./pages/TabBar"
-import Picker from "./pages/Picker"
+import Wallet from "./pages/prototypes/Wallet"
+import TONSpace from "./pages/prototypes/TS"
+import Onboarding from "./pages/prototypes/Onboarding"
+import NewNavigation from "./pages/prototypes/NewNavigation"
+import ColorChanging from "./pages/prototypes/ColorChanging"
+import TextPage from "./pages/prototypes/TextPage"
+import TabBar from "./pages/prototypes/TabBar"
+import Picker from "./pages/prototypes/Picker"
 
 function App() {
     const [location] = useHashLocation()

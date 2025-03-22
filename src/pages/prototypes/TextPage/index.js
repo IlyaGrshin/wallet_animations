@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from "react"
 
-import SectionList from "../../components/SectionList"
-import Cell from "../../components/Cells"
-import ModalView from "../../components/ModalView"
-import PanelHeader from "../../components/PanelHeader"
+import SectionList from "../../../components/SectionList"
+import Cell from "../../../components/Cells"
+import ModalView from "../../../components/ModalView"
+import PanelHeader from "../../../components/PanelHeader"
 
-import ToncoinLogo from "../../icons/avatars/Toncoin.svg"
-import DollarsLogo from "../../icons/avatars/Dollars.svg"
-import BitcoinLogo from "../../icons/avatars/Bitcoin.svg"
+import ToncoinLogo from "../../../icons/avatars/Toncoin.svg"
+import DollarsLogo from "../../../icons/avatars/Dollars.svg"
+import BitcoinLogo from "../../../icons/avatars/Bitcoin.svg"
 
 import { BackButton, MainButton } from "@twa-dev/sdk/react"
 

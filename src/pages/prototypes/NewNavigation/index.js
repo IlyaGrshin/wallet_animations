@@ -4,15 +4,15 @@ import { motion, AnimatePresence } from "motion/react"
 import * as styles from "./NewNav.module.scss"
 import WebApp from "@twa-dev/sdk"
 
-import SegmentedControl from "../../components/SegmentedControl"
-import { ReactComponent as QRCodeIcon } from "../../icons/28/QR Code.svg"
+import SegmentedControl from "../../../components/SegmentedControl"
+import { ReactComponent as QRCodeIcon } from "../../../icons/28/QR Code.svg"
 import { BackButton } from "@twa-dev/sdk/react"
-import DefaultAvatar from "../../icons/avatars/IlyaG.png"
+import DefaultAvatar from "../../../icons/avatars/IlyaG.png"
 import TonSpaceSkeleton from "../TS Skeleton"
-import PageTransition from "../../components/PageTransition"
+import PageTransition from "../../../components/PageTransition"
 
-const Wallet = React.lazy(() => import("../../pages/Wallet"))
-const TONSpace = React.lazy(() => import("../../pages/TS"))
+const Wallet = React.lazy(() => import("../Wallet"))
+const TONSpace = React.lazy(() => import("../TS"))
 
 const useAvatarUrl = () => {
     try {

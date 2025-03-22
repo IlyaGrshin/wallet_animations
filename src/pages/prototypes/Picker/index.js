@@ -2,10 +2,10 @@ import { useEffect, useCallback, useState } from "react"
 
 import * as styles from "./PickerPage.module.scss"
 
-import SectionList from "../../components/SectionList"
-import Picker from "../../components/Picker"
-import Cell from "../../components/Cells"
-import PageTransition from "../../components/PageTransition"
+import SectionList from "../../../components/SectionList"
+import Picker from "../../../components/Picker"
+import Cell from "../../../components/Cells"
+import PageTransition from "../../../components/PageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
