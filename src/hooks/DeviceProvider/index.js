@@ -14,7 +14,7 @@ let platform = {
 }
 
 let telegramPlatform = WebApp.platform
-let basePlatform = "material"
+let basePlatform = "apple"
 
 export const useApple = (platform[telegramPlatform] || basePlatform) === "apple"
 export const useMaterial =
