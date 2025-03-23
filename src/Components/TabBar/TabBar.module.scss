@@ -1,8 +1,9 @@
 .root {
     display: flex;
+    position: relative;
     align-items: flex-start;
     align-self: stretch;
-    border-top: 0.33px solid var(--separator-non-opaque);
+    box-shadow: 0 -0.33px 0 0 var(--separator-non-opaque);
     background: var(--tg-theme-bottom-bar-bg-color);
     padding-bottom: env(safe-area-inset-bottom);
 

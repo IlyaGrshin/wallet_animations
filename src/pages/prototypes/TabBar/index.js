@@ -8,7 +8,7 @@ import * as styles from "./TabBarPage.module.scss"
 
 import Wallet from "../Wallet"
 import Trading from "../Trading"
-import UI from "../../UI"
+import History from "../History"
 
 import { ReactComponent as WalletIcon } from "../../../icons/tabbar/Wallet.svg"
 
@@ -17,31 +17,31 @@ import { BackButton } from "@twa-dev/sdk/react"
 
 const tabs = [
     {
-        label: "Label",
+        label: "Wallet",
         path: "/tabbar/",
         icon: <WalletIcon />,
         view: <Wallet />,
     },
     {
-        label: "Label",
+        label: "Trade",
         path: "/tabbar/tab2",
         icon: <WalletIcon />,
         view: <Trading />,
     },
     {
-        label: "Label",
+        label: "History",
         path: "/tabbar/tab3",
         icon: <WalletIcon />,
-        view: <UI />,
+        view: <History />,
     },
 ]
 
 const useTabNavigation = () => {
     const [activeIndex, setActiveTab] = useState(0)
-    const [view, setView] = useState("wallet")
+    const [view, setView] = useState(tabs[0].path)
 
     const handleTabChange = (index) => {
-        setView(tabs[index].label || "wallet")
+        setView(tabs[index].path)
         setActiveTab(index)
     }
     return { activeIndex, view, handleTabChange }
@@ -81,6 +81,7 @@ const TabBarPage = () => {
                         scale: 1,
                     }}
                     exit={{
+                        opacity: 0,
                         scale:
                             (window.innerHeight -
                                 3.0 * window.devicePixelRatio) /
