@@ -62,48 +62,49 @@ const TabBarPage = () => {
     return (
         <PageTransition>
             <BackButton />
-            <AnimatePresence
-                mode="popLayout"
-                initial={false}
-                custom={view}
-                inherit={false}
-            >
-                <motion.div
-                    initial={{
-                        opacity: 0,
-                        scale:
-                            (window.innerHeight -
-                                3.0 * window.devicePixelRatio) /
-                            window.innerHeight, // targetScale
-                    }}
-                    animate={{
-                        opacity: 1,
-                        scale: 1,
-                    }}
-                    exit={{
-                        opacity: 0,
-                        scale:
-                            (window.innerHeight -
-                                3.0 * window.devicePixelRatio) /
-                            window.innerHeight, // targetScale
-                    }}
-                    key={view}
-                    transition={{
-                        scale: {
-                            duration: 0.15,
-                            ease: [0.38, 0.7, 0.125, 1.0],
-                        },
-                        opacity: {
-                            duration: 0.1,
-                            ease: "easeInOut",
-                        },
-                    }}
-                    className={styles.view}
+            <div className={styles.container}>
+                <AnimatePresence
+                    mode="popLayout"
+                    initial={false}
+                    custom={view}
+                    inherit={false}
                 >
-                    {content}
-                </motion.div>
-            </AnimatePresence>
-
+                    <motion.div
+                        initial={{
+                            opacity: 0,
+                            scale:
+                                (window.innerHeight -
+                                    3.0 * window.devicePixelRatio) /
+                                window.innerHeight, // targetScale
+                        }}
+                        animate={{
+                            opacity: 1,
+                            scale: 1,
+                        }}
+                        exit={{
+                            opacity: 0,
+                            scale:
+                                (window.innerHeight -
+                                    3.0 * window.devicePixelRatio) /
+                                window.innerHeight, // targetScale
+                        }}
+                        key={view}
+                        transition={{
+                            scale: {
+                                duration: 0.15,
+                                ease: [0.38, 0.7, 0.125, 1.0],
+                            },
+                            opacity: {
+                                duration: 0.1,
+                                ease: "easeInOut",
+                            },
+                        }}
+                        className={styles.view}
+                    >
+                        {content}
+                    </motion.div>
+                </AnimatePresence>
+            </div>
             <TabBar tabs={tabs} onChange={handleTabChange} />
         </PageTransition>
     )
