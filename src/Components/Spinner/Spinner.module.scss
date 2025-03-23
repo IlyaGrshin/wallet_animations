@@ -6,10 +6,14 @@
   
     :global(body.apple) {
     	animation-timing-function: steps(8);
+
+      svg, path {
+        fill: var(--tg-theme-subtitle-text-color);
+      }
     }
 
-    svg, path {
-		fill: var(--tg-theme-subtitle-text-color);
+    :global(body.material) {
+        stroke: var(--tg-theme-accent-text-color);
     }
 }
   
