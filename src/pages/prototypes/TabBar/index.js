@@ -6,6 +6,8 @@ import PageTransition from "../../../components/PageTransition"
 
 import * as styles from "./TabBarPage.module.scss"
 
+import { useApple } from "../../../hooks/DeviceProvider"
+
 import Wallet from "../Wallet"
 import Trading from "../Trading"
 import History from "../History"
@@ -39,16 +41,81 @@ const tabs = [
 const useTabNavigation = () => {
     const [activeIndex, setActiveTab] = useState(0)
     const [view, setView] = useState(tabs[0].path)
+    const [tabIndex, setTabIndex] = useState(0)
+    const [previousIndex, setPreviousIndex] = useState(0)
 
     const handleTabChange = (index) => {
+        setPreviousIndex(activeIndex)
         setView(tabs[index].path)
         setActiveTab(index)
+        setTabIndex(index)
     }
-    return { activeIndex, view, handleTabChange }
+    return { activeIndex, previousIndex, view, handleTabChange, tabIndex }
 }
 
 const TabBarPage = () => {
-    const { activeIndex, view, handleTabChange } = useTabNavigation()
+    const { activeIndex, previousIndex, view, handleTabChange, tabIndex } =
+        useTabNavigation()
+
+    const direction = () => {
+        return previousIndex < activeIndex ? 1 : -1
+    }
+
+    const animationConfigs = {
+        apple: {
+            initial: {
+                opacity: 0,
+                scale:
+                    (window.innerHeight - 3.0 * window.devicePixelRatio) /
+                    window.innerHeight,
+            },
+            animate: {
+                opacity: 1,
+                scale: 1,
+            },
+            exit: {
+                opacity: 0,
+                scale:
+                    (window.innerHeight - 3.0 * window.devicePixelRatio) /
+                    window.innerHeight,
+            },
+            transition: {
+                scale: {
+                    duration: 0.15,
+                    ease: [0.38, 0.7, 0.125, 1.0],
+                },
+                opacity: {
+                    duration: 0.1,
+                    ease: "easeInOut",
+                },
+            },
+        },
+        material: {
+            initial: {
+                opacity: 0,
+                x: `${3 * direction()}%`,
+            },
+            animate: {
+                opacity: 1,
+                x: 0,
+            },
+            exit: {
+                opacity: 0,
+                x: `${3 * direction()}%`,
+            },
+            transition: {
+                duration: 0.2,
+                ease: [0.26, 0.08, 0.25, 1],
+            },
+        },
+    }
+
+    const getAnimationConfig = () => {
+        const platform = useApple ? "apple" : "material"
+        return animationConfigs[platform]
+    }
+
+    const animationConfig = getAnimationConfig()
 
     const content = useMemo(() => {
         return tabs[activeIndex]?.view || null
@@ -70,35 +137,11 @@ const TabBarPage = () => {
                     inherit={false}
                 >
                     <motion.div
-                        initial={{
-                            opacity: 0,
-                            scale:
-                                (window.innerHeight -
-                                    3.0 * window.devicePixelRatio) /
-                                window.innerHeight, // targetScale
-                        }}
-                        animate={{
-                            opacity: 1,
-                            scale: 1,
-                        }}
-                        exit={{
-                            opacity: 0,
-                            scale:
-                                (window.innerHeight -
-                                    3.0 * window.devicePixelRatio) /
-                                window.innerHeight, // targetScale
-                        }}
+                        initial={animationConfig.initial}
+                        animate={animationConfig.animate}
+                        exit={animationConfig.exit}
                         key={view}
-                        transition={{
-                            scale: {
-                                duration: 0.15,
-                                ease: [0.38, 0.7, 0.125, 1.0],
-                            },
-                            opacity: {
-                                duration: 0.1,
-                                ease: "easeInOut",
-                            },
-                        }}
+                        transition={animationConfig.transition}
                         className={styles.view}
                     >
                         {content}
