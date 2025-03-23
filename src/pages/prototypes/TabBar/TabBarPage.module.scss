@@ -5,6 +5,7 @@
 
     .view {
         overflow-y: scroll;
+        height: 100%;
     }
 
     :global(body.apple) & {
