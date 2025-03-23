@@ -13,6 +13,8 @@ import Trading from "../Trading"
 import History from "../History"
 
 import { ReactComponent as WalletIcon } from "../../../icons/tabbar/Wallet.svg"
+import { ReactComponent as TradeIcon } from "../../../icons/tabbar/Chartline.svg"
+import { ReactComponent as HistoryIcon } from "../../../icons/tabbar/Clock.svg"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -27,13 +29,13 @@ const tabs = [
     {
         label: "Trade",
         path: "/tabbar/tab2",
-        icon: <WalletIcon />,
+        icon: <TradeIcon />,
         view: <Trading />,
     },
     {
         label: "History",
         path: "/tabbar/tab3",
-        icon: <WalletIcon />,
+        icon: <HistoryIcon />,
         view: <History />,
     },
 ]
