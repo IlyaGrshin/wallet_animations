@@ -15,6 +15,8 @@ import TabBar from "./pages/prototypes/TabBar"
 import Picker from "./pages/prototypes/Picker"
 import ModalPages from "./pages/prototypes/ModalPages"
 
+import NavigationBar from "./pages/components/NavigationBar"
+
 function App() {
     const [location] = useHashLocation()
 
@@ -29,6 +31,9 @@ function App() {
         { path: "/tabbar", component: TabBar },
         { path: "/picker", component: Picker },
         { path: "/modalpages", component: ModalPages },
+
+        { path: "/components/header", component: NavigationBar },
+
         { path: "*", component: UI },
     ]
 

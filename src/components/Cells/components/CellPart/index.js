@@ -27,7 +27,7 @@ export const CellPart = ({ type, className, children }) => {
 
     return (
         <div
-            className={[className, styles[type.toLowerCase()]]
+            className={[styles[type.toLowerCase()], styles[className]]
                 .filter(Boolean)
                 .join(" ")}
         >
@@ -48,6 +48,7 @@ CellPart.propTypes = {
         "tabs",
         "segmentedControl",
         "picker",
+        "colorpicker",
         "smallButton",
     ]).isRequired,
     disabled: PropTypes.bool,

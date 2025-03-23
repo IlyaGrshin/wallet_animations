@@ -9,6 +9,35 @@
     color: var(--tg-theme-accent-text-color);
 }
 
+.colorpicker {
+    display: flex;
+    gap: 6px;
+
+    label {
+        margin-top: 1px;
+        font-variant-numeric: lining-nums tabular-nums;
+        color: var(--tg-theme-accent-text-color);
+    }
+
+    input[type="color"] {
+        appearance: none;
+        border: none;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        margin: 0;
+    }
+    
+    input[type="color"]::-webkit-color-swatch {
+        border-radius: 50%;
+    }
+    
+    input[type="color"]::-webkit-color-swatch-wrapper {
+        padding: 0;
+        border-radius: 50%;
+    }
+}
+
 :global(body.apple) {
     .dropdown::after {
         content: '';

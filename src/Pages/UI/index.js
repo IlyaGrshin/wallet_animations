@@ -13,6 +13,15 @@ const UI = () => {
         <PageTransition>
             <Page>
                 <SectionList>
+                    <SectionList.Item header="Components">
+                        <Cell
+                            as={Link}
+                            to="/components/header"
+                            end={<Cell.Part type="Chevron" />}
+                        >
+                            <Cell.Text title="Navigation Bar" />
+                        </Cell>
+                    </SectionList.Item>
                     <SectionList.Item header="Prototypes">
                         <Cell
                             as={Link}

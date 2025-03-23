@@ -107,10 +107,12 @@ html, body {
 
 body {
  	margin: 0;
-	padding: 0;
 	-webkit-font-smoothing: antialiased;
     will-change: background-color;
     transition: background-color 200ms ease;
+    padding-top: calc(env(safe-area-inset-top) + var(--tg-content-safe-area-inset-top));
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 
     &.apple {
         font-family: -apple-system, system-ui, sans-serif;
