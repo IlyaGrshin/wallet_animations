@@ -27,26 +27,21 @@ const InitialsAvatar = ({ size = 40, userId, name }) => {
 
     return (
         <div
-            className={`${styles.root_bounds}`}
-            style={{ width: size, height: size }}
+            className={`${styles.root}`}
+            style={{
+                width: size,
+                height: size,
+                background: useApple
+                    ? `linear-gradient(180deg, ${topColor} 0%, ${bottomColor} 100%)`
+                    : color,
+                "--font_size": `${Math.round(size / 2.2)}px`,
+            }}
         >
-            <div
-                className={`${styles.root}`}
-                style={{
-                    width: size,
-                    height: size,
-                    background: useApple
-                        ? `linear-gradient(180deg, ${topColor} 0%, ${bottomColor} 100%)`
-                        : color,
-                    "--font_size": `${Math.round(size / 2.2)}px`,
-                }}
-            >
-                <div>
-                    {isUnicode(firstName.charAt(0)) &&
-                        firstName.charAt(0).toLocaleUpperCase()}
-                    {isUnicode(lastName.charAt(0)) &&
-                        lastName.charAt(0).toLocaleUpperCase()}
-                </div>
+            <div>
+                {isUnicode(firstName.charAt(0)) &&
+                    firstName.charAt(0).toLocaleUpperCase()}
+                {isUnicode(lastName.charAt(0)) &&
+                    lastName.charAt(0).toLocaleUpperCase()}
             </div>
         </div>
     )
