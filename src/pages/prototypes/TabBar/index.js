@@ -41,20 +41,18 @@ const tabs = [
 const useTabNavigation = () => {
     const [activeIndex, setActiveTab] = useState(0)
     const [view, setView] = useState(tabs[0].path)
-    const [tabIndex, setTabIndex] = useState(0)
     const [previousIndex, setPreviousIndex] = useState(0)
 
     const handleTabChange = (index) => {
         setPreviousIndex(activeIndex)
         setView(tabs[index].path)
         setActiveTab(index)
-        setTabIndex(index)
     }
-    return { activeIndex, previousIndex, view, handleTabChange, tabIndex }
+    return { activeIndex, previousIndex, view, handleTabChange }
 }
 
 const TabBarPage = () => {
-    const { activeIndex, previousIndex, view, handleTabChange, tabIndex } =
+    const { activeIndex, previousIndex, view, handleTabChange } =
         useTabNavigation()
 
     const direction = () => {
