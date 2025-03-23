@@ -1,21 +1,24 @@
-.root {
-    border-radius: 50%;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-    :global(body.apple) & {
-        font-family: ui-rounded, sans-serif;
-        font-size: var(--font_size);
-        font-style: normal;
-        font-weight: 700;
+.root_bounds {
+    .root {
+        border-radius: 50%;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        :global(body.apple) & {
+            font-family: ui-rounded, sans-serif;
+            font-size: var(--font_size);
+            font-style: normal;
+            font-weight: 700;
+        }
+    
+        :global(body.material) & {
+            font-family: Roboto, sans-serif;
+            font-size: var(--font_size);
+            font-style: normal;
+            font-weight: 500;
+            margin-left: var(--image-cell-offset);
+        }
     }
-  
-    :global(body.material) & {
-        font-family: Roboto, sans-serif;
-        font-size: var(--font_size);
-        font-style: normal;
-        font-weight: 500;
-    }
-  }
+}

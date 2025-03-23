@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-import { useApple } from "../../hooks/DeviceProvider"
+import { useApple, useMaterial } from "../../hooks/DeviceProvider"
 
 import { isUnicode } from "../../utlis/common"
 
@@ -23,23 +23,30 @@ const InitialsAvatar = ({ size = 40, userId, name }) => {
     const [color, topColor, bottomColor] = bgColors[bgIndex]
     const [firstName = "", lastName = ""] = name.split(" ")
 
+    if (useMaterial) size = 42
+
     return (
         <div
-            className={`${styles.root}`}
-            style={{
-                width: size,
-                height: size,
-                background: useApple
-                    ? `linear-gradient(180deg, ${topColor} 0%, ${bottomColor} 100%)`
-                    : color,
-                "--font_size": `${Math.round(size / 2.2)}px`,
-            }}
+            className={`${styles.root_bounds}`}
+            style={{ width: size, height: size }}
         >
-            <div>
-                {isUnicode(firstName.charAt(0)) &&
-                    firstName.charAt(0).toLocaleUpperCase()}
-                {isUnicode(lastName.charAt(0)) &&
-                    lastName.charAt(0).toLocaleUpperCase()}
+            <div
+                className={`${styles.root}`}
+                style={{
+                    width: size,
+                    height: size,
+                    background: useApple
+                        ? `linear-gradient(180deg, ${topColor} 0%, ${bottomColor} 100%)`
+                        : color,
+                    "--font_size": `${Math.round(size / 2.2)}px`,
+                }}
+            >
+                <div>
+                    {isUnicode(firstName.charAt(0)) &&
+                        firstName.charAt(0).toLocaleUpperCase()}
+                    {isUnicode(lastName.charAt(0)) &&
+                        lastName.charAt(0).toLocaleUpperCase()}
+                </div>
             </div>
         </div>
     )

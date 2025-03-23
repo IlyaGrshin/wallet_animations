@@ -1,5 +1,10 @@
 :root {
     --cell-separator-height: 0.33px;
+    --image-cell-offset: 0;
+}
+
+:global(body.material) {
+    --image-cell-offset: -6px;
 }
 
 .root {
