@@ -6,4 +6,12 @@
     .view {
         overflow-y: scroll;
     }
+
+    :global(body.apple) & {
+        height: calc(-49px - env(safe-area-inset-bottom) + 100vh);
+    }
+
+    :global(body.material) & {
+        height: calc(-56px - env(safe-area-inset-bottom) + 100vh);
+    }
 }
