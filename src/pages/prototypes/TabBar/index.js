@@ -7,7 +7,7 @@ import PageTransition from "../../../components/PageTransition"
 import * as styles from "./TabBarPage.module.scss"
 
 import Wallet from "../Wallet"
-import TONSpace from "../TS"
+import Trading from "../Trading"
 import UI from "../../UI"
 
 import { ReactComponent as WalletIcon } from "../../../icons/tabbar/Wallet.svg"
@@ -26,7 +26,7 @@ const tabs = [
         label: "Label",
         path: "/tabbar/tab2",
         icon: <WalletIcon />,
-        view: <TONSpace />,
+        view: <Trading />,
     },
     {
         label: "Label",
