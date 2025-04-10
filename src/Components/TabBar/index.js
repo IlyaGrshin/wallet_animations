@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import * as styles from "./TabBar.module.scss"
 
+import Lottie from "lottie-react"
+
 const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
 
@@ -17,7 +19,13 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                     className={`${styles.tab} ${index === activeIndex ? styles.active : ""}`}
                     onClick={() => handleSegmentClick(index)}
                 >
-                    <div className={styles.icon}>{tab.icon}</div>
+                    <div className={styles.icon}>
+                        {tab.lottieIcon ? (
+                            <Lottie animationData={tab.lottieIcon} />
+                        ) : (
+                            tab.icon
+                        )}
+                    </div>
                     <span>{tab.label}</span>
                 </div>
             ))}

@@ -36,6 +36,7 @@
 
             svg, path {
                 fill: var(--tg-theme-text-color);
+                stroke: var(--tg-theme-text-color);
                 height: 32px;
             }
 
@@ -68,7 +69,8 @@
             opacity: 1;
 
             svg, path {
-                fill: var(--tg-theme-accent-text-color)
+                fill: var(--tg-theme-accent-text-color);
+                stroke: var(--tg-theme-accent-text-color);
             }
         }
 

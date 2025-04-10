@@ -16,6 +16,11 @@ import { ReactComponent as WalletIcon } from "../../../icons/tabbar/Wallet.svg"
 import { ReactComponent as TradeIcon } from "../../../icons/tabbar/Chartline.svg"
 import { ReactComponent as HistoryIcon } from "../../../icons/tabbar/Clock.svg"
 
+import lottieIconWallet from ".././../../icons/lottie/wallet.json"
+import lottieIconTrade from ".././../../icons/lottie/trade.json"
+import lottieIconEarn from ".././../../icons/lottie/earn.json"
+import lottieIconHistory from ".././../../icons/lottie/history.json"
+
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 
@@ -25,18 +30,21 @@ const tabs = [
         path: "/tabbar/",
         icon: <WalletIcon />,
         view: <Wallet />,
+        lottieIcon: lottieIconWallet,
     },
     {
         label: "Trade",
         path: "/tabbar/tab2",
         icon: <TradeIcon />,
         view: <Trading />,
+        lottieIcon: lottieIconTrade,
     },
     {
         label: "History",
         path: "/tabbar/tab3",
         icon: <HistoryIcon />,
         view: <History />,
+        lottieIcon: lottieIconHistory,
     },
 ]
 
