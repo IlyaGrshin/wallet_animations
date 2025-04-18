@@ -34,9 +34,16 @@
             opacity: 0.4;
             gap: 2px;
 
+            :global(.wallet-lottie_fill-color) path {
+                fill: var(--tg-theme-text-color);
+            }
+
+            :global(.wallet-lottie_stroke-color) path {
+                stroke: var(--tg-theme-text-color);
+            }
+
             svg, path {
                 fill: var(--tg-theme-text-color);
-                stroke: var(--tg-theme-text-color);
                 height: 32px;
             }
 
@@ -68,9 +75,16 @@
             color: var(--tg-theme-accent-text-color);
             opacity: 1;
 
+            :global(.wallet-lottie_fill-color) path {
+                fill: var(--tg-theme-accent-text-color);
+            }
+
+            :global(.wallet-lottie_stroke-color) path {
+                stroke: var(--tg-theme-accent-text-color);
+            }
+
             svg, path {
                 fill: var(--tg-theme-accent-text-color);
-                stroke: var(--tg-theme-accent-text-color);
             }
         }
 

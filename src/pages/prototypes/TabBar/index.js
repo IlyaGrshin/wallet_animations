@@ -40,8 +40,15 @@ const tabs = [
         lottieIcon: lottieIconTrade,
     },
     {
-        label: "History",
+        label: "Earn",
         path: "/tabbar/tab3",
+        // icon: <TradeIcon />,
+        view: <Trading />,
+        lottieIcon: lottieIconEarn,
+    },
+    {
+        label: "History",
+        path: "/tabbar/tab4",
         icon: <HistoryIcon />,
         view: <History />,
         lottieIcon: lottieIconHistory,
