@@ -7,6 +7,7 @@
     "@babel/runtime": "^7.26.0",
     "@number-flow/react": "^0.5.5",
     "@twa-dev/sdk": "^8.0.1",
+    "colorthief": "^2.6.0",
     "lottie-react": "^2.4.1",
     "motion": "^12.4.2",
     "react": "^19.0.0",

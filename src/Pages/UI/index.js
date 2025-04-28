@@ -25,6 +25,13 @@ const UI = () => {
                     <SectionList.Item header="Prototypes">
                         <Cell
                             as={Link}
+                            to="colorassetpage"
+                            end={<Cell.Part type="Chevron" />}
+                        >
+                            <Cell.Text title="Color Asset Page" />
+                        </Cell>
+                        <Cell
+                            as={Link}
                             to="newnavigation"
                             end={<Cell.Part type="Chevron" />}
                         >

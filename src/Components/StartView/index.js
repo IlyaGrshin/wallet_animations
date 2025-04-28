@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import Text from "../Text"
 
 import * as styles from "./StartView.module.scss"
@@ -29,6 +30,11 @@ const StartView = ({ title, description }) => {
             </Text>
         </div>
     )
+}
+
+StartView.propTypes = {
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string
 }
 
 export default StartView

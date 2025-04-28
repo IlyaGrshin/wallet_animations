@@ -26,6 +26,7 @@ AppleText.propTypes = {
     apple: PropTypes.shape({
         variant: PropTypes.oneOf([
             "title1",
+            "title2",
             "title3",
             "body",
             "subheadline2",

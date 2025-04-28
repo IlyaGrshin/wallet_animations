@@ -40,3 +40,28 @@ export const hexToRgb = (hex, format = "string") => {
             return `${r}, ${g}, ${b}`
     }
 }
+
+export function rgbTohex(r, g, b) {
+    return (
+        "#" +
+        [r, g, b]
+            .map((n) => n.toString(16).padStart(2, "0"))
+            .join("")
+            .toLowerCase()
+    )
+}
+
+export function normalizeHex(input) {
+    if (input.startsWith("#")) {
+        return input.length === 4
+            ? "#" + [...input.slice(1)].map((x) => x + x).join("")
+            : input.toLowerCase()
+    }
+    const c = document.createElement("canvas")
+    c.width = c.height = 1
+    const ctx = c.getContext("2d")
+    ctx.fillStyle = input
+    ctx.fillRect(0, 0, 1, 1)
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
+    return rgb2hex(r, g, b)
+}

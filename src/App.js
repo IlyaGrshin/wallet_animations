@@ -14,6 +14,7 @@ import TextPage from "./pages/prototypes/TextPage"
 import TabBar from "./pages/prototypes/TabBar"
 import Picker from "./pages/prototypes/Picker"
 import ModalPages from "./pages/prototypes/ModalPages"
+import ColorAssetPage from "./pages/prototypes/ColorAssetPage"
 
 import NavigationBar from "./pages/components/NavigationBar"
 
@@ -31,6 +32,7 @@ function App() {
         { path: "/tabbar", component: TabBar },
         { path: "/picker", component: Picker },
         { path: "/modalpages", component: ModalPages },
+        { path: "/colorassetpage", component: ColorAssetPage },
 
         { path: "/components/header", component: NavigationBar },
 

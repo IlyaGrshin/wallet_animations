@@ -5,6 +5,7 @@
     align-items: center;
     gap: 12px;
     text-align: center;
+    color: var(--tg-theme-text-color);
 
     :global(body.apple) & {
         padding: 44px 32px;
