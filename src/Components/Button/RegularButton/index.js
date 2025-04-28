@@ -1,10 +1,7 @@
-import { useEffect } from "react"
 import PropTypes from "prop-types"
 import Text from "../../Text"
 
 import * as styles from "./RegularButton.module.scss"
-
-import { hexToRgb } from "../../../utlis/common"
 
 export const RegularButton = ({
     variant,
@@ -13,15 +10,6 @@ export const RegularButton = ({
     isFill = false,
     ...props
 }) => {
-    useEffect(() => {
-        const root = document.documentElement
-        const hexColor = getComputedStyle(root)
-            .getPropertyValue("--tg-theme-button-color")
-            .trim()
-        const rgbColor = hexToRgb(hexColor)
-        root.style.setProperty("--secondary-button-color", rgbColor)
-    }, [])
-
     const dynamicProps = {
         ...(isFill && { "data-fill": true }),
         ...(variant === "filled" && isShine && { "data-shine": true }),

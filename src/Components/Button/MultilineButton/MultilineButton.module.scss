@@ -18,7 +18,7 @@
     }
 
     &.tinted {
-        background-color: rgba(var(--secondary-button-color), 0.1);
+        background-color: var(--secondary-button-color);
         color: var(--tg-theme-accent-text-color);
 
         svg, path {

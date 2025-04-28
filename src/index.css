@@ -29,16 +29,17 @@
     --tg-theme-section-header-text-color: #6D6D72;
     --tg-theme-section-separator-color: #C8C7CC;
     --tg-theme-bottom-bar-bg-color: #F2F2F2;
+    --secondary-button-color: rgb(from var(--tg-theme-button-color) r g b / 0.1);
     --text-confirm-color: #34C759;
-    --tertiary-fill-background: rgba(116, 116, 128, 0.12);
-    --quaternary-fill-background: rgba(116, 116, 128, 0.08);
-    --separator-non-opaque: rgba(60, 60, 67, 0.36);
+    --tertiary-fill-background: rgb(116 116 128 / 0.12);
+    --quaternary-fill-background: rgb(116 116 128 / 0.08);
+    --separator-non-opaque: rgb(60 60 67 / 0.36);
     --segmented_control_active_background: #FFFFFF;
     --button-disabled-color: #E9E8E8;
     --text-disabled-color: #BABABA;
 
-    --background-material-regular-color-1: rgba(255, 255, 255, 0.25);
-    --background-material-regular-color-2: rgba(255, 255, 255, 0.6);
+    --background-material-regular-color-1: rgb(255 255 255 / 0.25);
+    --background-material-regular-color-2: rgb(255 255 255 / 0.6);
     --background-material-regular-blend-mode-1: plus-lighter;
     --background-material-regular-blend-mode-2: normal;
 }
