@@ -47,6 +47,7 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
+    "@relative-ci/agent": "^4.3.1",
     "@svgr/webpack": "^8.1.0",
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",

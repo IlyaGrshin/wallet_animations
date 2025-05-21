@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { RelativeCiAgentWebpackPlugin } = require('@relative-ci/agent');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -104,6 +105,7 @@ module.exports = {
 			openAnalyzer: false, 
 			reportFilename: 'bundle-report.html',
 		}),
+		new RelativeCiAgentWebpackPlugin(),
 	].filter(Boolean),
 	optimization: {
 		splitChunks: {

@@ -8,6 +8,8 @@ import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
 import PageTransition from "../../components/PageTransition"
 
+import WebApp from "@twa-dev/sdk"
+
 const UI = () => {
     return (
         <PageTransition>
@@ -71,6 +73,17 @@ const UI = () => {
                             end={<Cell.Part type="Chevron" />}
                         >
                             <Cell.Text title="Modal Pages" />
+                        </Cell>
+                    </SectionList.Item>
+                    <SectionList.Item>
+                        <Cell>
+                            <Cell.Text
+                                title="Open Premium"
+                                type="Accent"
+                                onClick={() =>
+                                    WebApp.openLink("tg://premium_offer")
+                                }
+                            />
                         </Cell>
                     </SectionList.Item>
                     <SectionList.Item>

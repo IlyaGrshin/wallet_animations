@@ -1,0 +1,24 @@
+# .github/workflows/relative-ci.yml
+name: Build & RelativeCI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: yarn install --frozen-lockfile
+
+      - name: Build production bundle
+        run: yarn build
+        env:
+          RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
