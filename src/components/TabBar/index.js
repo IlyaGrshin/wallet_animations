@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react"
+import React, { useState } from "react"
 import * as styles from "./TabBar.module.scss"
 
-import Lottie from "lottie-react"
+const Lottie = React.lazy(() => import("lottie-react"))
 
 const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
