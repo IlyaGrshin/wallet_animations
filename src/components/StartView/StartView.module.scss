@@ -1,0 +1,17 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    color: var(--tg-theme-text-color);
+
+    :global(body.apple) & {
+        padding: 44px 32px;
+    }
+
+    :global(body.material) & {
+        padding: 44px 24px;
+    }
+}
