@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 
-import TabBar from "../../../components/Tabbar"
+import TabBar from "../../../components/TabBar"
 import PageTransition from "../../../components/PageTransition"
 
 import * as styles from "./TabBarPage.module.scss"
