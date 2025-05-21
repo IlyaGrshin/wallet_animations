@@ -4,6 +4,8 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { RelativeCiAgentWebpackPlugin } = require('@relative-ci/agent');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -32,7 +34,14 @@ module.exports = {
 			use: {
 				loader: 'babel-loader',
 				options: {
-					configFile: path.resolve(__dirname, 'babel.config.js'),
+					presets: [
+						["@babel/preset-env", { modules: false }],
+						["@babel/preset-react", { runtime: "automatic" }]
+					],
+					plugins: [
+						"@babel/plugin-transform-runtime",
+						["transform-react-remove-prop-types", { "removeImport": true }]
+					]
 				},
 			},
 		},
@@ -110,17 +119,33 @@ module.exports = {
 		new CaseSensitivePathsPlugin(),
 	].filter(Boolean),
 	optimization: {
+		runtimeChunk: 'single',
+	
 		splitChunks: {
-			chunks: 'all',
-			cacheGroups: {
-				vendors: {
-					test: /[\\/]node_modules[\\/]/,
-					priority: -10
-				}
-			}
+		  cacheGroups: {
+			react: {                       
+			  test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+			  name: 'react',
+			  chunks: 'all',
+			  priority: 20,
+			},
+			vendors: {                    
+			  test: /[\\/]node_modules[\\/]/,
+			  name: 'vendors',
+			  chunks: 'all',
+			  priority: 10,
+			},
+		  },
 		},
-		runtimeChunk: {
-			name: 'runtime',
-		},
-	},
+		
+		minimizer: [
+			new TerserPlugin({
+			  terserOptions: {
+				compress: { drop_console: true, drop_debugger: true },
+			  },
+			  extractComments: false,
+			}),
+			new CssMinimizerPlugin(),
+		],
+	}
 };

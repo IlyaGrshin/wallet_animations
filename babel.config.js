@@ -13,5 +13,8 @@ module.exports = {
       },
     ],
   ],
-  plugins: ["@babel/plugin-transform-runtime"],
+  plugins: [
+    "@babel/plugin-transform-runtime",
+    ["transform-react-remove-prop-types", { "removeImport": true }]
+  ],
 };
