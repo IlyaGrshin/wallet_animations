@@ -7,7 +7,7 @@ import ImageAvatar from "../../../components/ImageAvatar"
 import SectionList from "../../../components/SectionList"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
-import { useAssetIcon } from "../../../utlis/AssetsMap"
+import { useAssetIcon } from "../../../utils/AssetsMap"
 import { MultilineButton } from "../../../components/Button"
 
 import { ReactComponent as ArrowUpCircleFill } from "../../../icons/28/Arrow Up Circle Fill.svg"

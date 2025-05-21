@@ -1,7 +1,7 @@
 import ColorThief from "colorthief"
 import { useState, useEffect } from "react"
 
-import { rgbTohex, normalizeHex } from "../utlis/common"
+import { rgbTohex, normalizeHex } from "../utils/common"
 
 export async function getAccentHex(source, quality = 10) {
     let blob, mime

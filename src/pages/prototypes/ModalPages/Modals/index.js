@@ -6,7 +6,7 @@ import SectionList from "../../../../components/SectionList"
 import Cell from "../../../../components/Cells"
 import ImageAvatar from "../../../../components/ImageAvatar"
 
-import { useAssetIcon } from "../../../../utlis/AssetsMap"
+import { useAssetIcon } from "../../../../utils/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"
 import InitialsAvatar from "../../../../components/InitialsAvatar"
 

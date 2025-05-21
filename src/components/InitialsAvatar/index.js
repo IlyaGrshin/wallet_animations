@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 
 import { useApple, useMaterial } from "../../hooks/DeviceProvider"
 
-import { isUnicode } from "../../utlis/common"
+import { isUnicode } from "../../utils/common"
 
 import * as styles from "./InitialsAvatar.module.scss"
 

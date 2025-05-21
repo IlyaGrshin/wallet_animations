@@ -15,7 +15,7 @@ import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
 import { MultilineButton } from "../../../components/Button"
 
-import { useAssetIcon } from "../../../utlis/AssetsMap"
+import { useAssetIcon } from "../../../utils/AssetsMap"
 import assets from "./data/assets.json"
 import txHistory from "./data/transactions.json"
 

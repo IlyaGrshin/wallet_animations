@@ -5,7 +5,7 @@ import * as styles from "./ModalView.module.scss"
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 
-import { hexToRgb } from "../../utlis/common"
+import { hexToRgb } from "../../utils/common"
 
 function blendColors(color1, color2, alpha) {
     const [r1, g1, b1] = hexToRgb(color1, "array")
