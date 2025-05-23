@@ -77,17 +77,6 @@ const UI = () => {
                     </SectionList.Item>
                     <SectionList.Item>
                         <Cell>
-                            <Cell.Text
-                                title="Open Premium"
-                                type="Accent"
-                                onClick={() =>
-                                    WebApp.openLink("tg://premium_offer")
-                                }
-                            />
-                        </Cell>
-                    </SectionList.Item>
-                    <SectionList.Item>
-                        <Cell>
                             <Cell.Text title="Label" descrption="Subtitle" />
                         </Cell>
                         <Cell>
