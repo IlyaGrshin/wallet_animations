@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { memo } from "react"
 import { Link } from "wouter"
 
 import Page from "../../components/Page"
@@ -7,8 +7,6 @@ import Cell from "../../components/Cells"
 import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
 import PageTransition from "../../components/PageTransition"
-
-import WebApp from "@twa-dev/sdk"
 
 const UI = () => {
     return (
@@ -113,4 +111,4 @@ const UI = () => {
     )
 }
 
-export default React.memo(UI)
+export default memo(UI)

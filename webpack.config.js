@@ -128,9 +128,17 @@ module.exports = {
 			  name: 'react',
 			  chunks: 'all',
 			  priority: 20,
+			  enforce: true,
+			},
+			reactVendors: {
+			  test: /[\\/]node_modules[\\/](react-dom[\\/]client|scheduler)[\\/]/,
+			  name: 'react-vendors',
+			  chunks: 'all',
+			  priority: 25,
+			  enforce: true,
 			},
 			vendors: {                    
-			  test: /[\\/]node_modules[\\/]/,
+			  test: /[\\/]node_modules[\\/](?!(react|react-dom)[\\/])/,
 			  name: 'vendors',
 			  chunks: 'all',
 			  priority: 10,
@@ -141,7 +149,15 @@ module.exports = {
 		minimizer: [
 			new TerserPlugin({
 			  terserOptions: {
-				compress: { drop_console: true, drop_debugger: true },
+				compress: { 
+				  drop_console: true, 
+				  drop_debugger: true,
+				  pure_funcs: ['console.log', 'console.info', 'console.debug'],
+				  passes: 2,
+				},
+				mangle: {
+				  safari10: true,
+				},
 			  },
 			  extractComments: false,
 			}),

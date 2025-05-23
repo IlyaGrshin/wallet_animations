@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect, useRef, memo } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
 import * as styles from "./Wallet.module.scss"
@@ -281,7 +281,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
 }
 
 function Assets() {
-    const AssetsRef = React.useRef(null)
+    const AssetsRef = useRef(null)
     const [showSmallAssets, setShowSmallAssets] = useState(false)
 
     const formatNumbers = (number) => {
@@ -422,4 +422,4 @@ function Wallet() {
     )
 }
 
-export default React.memo(Wallet)
+export default memo(Wallet)
