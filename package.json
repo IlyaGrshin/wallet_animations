@@ -4,17 +4,17 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@babel/runtime": "^7.26.0",
-    "@number-flow/react": "^0.5.5",
+    "@babel/runtime": "^7.27.1",
+    "@number-flow/react": "^0.5.9",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.0",
     "@twa-dev/sdk": "^8.0.1",
     "colorthief": "^2.6.0",
     "lottie-react": "^2.4.1",
-    "motion": "^12.4.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "motion": "^12.12.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "spoiled": "^0.4.0",
-    "wouter": "^3.5.1"
+    "wouter": "^3.7.0"
   },
   "scripts": {
     "start": "NODE_ENV=development webpack serve --config webpack.config.js",
