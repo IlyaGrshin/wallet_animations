@@ -1,4 +1,4 @@
-import { motion } from "motion/react"
+import { useState, useEffect, useTransition, useRef } from "react"
 import { useApple } from "../../hooks/DeviceProvider"
 
 export let pageTransitionDuration = 0.2
@@ -7,45 +7,95 @@ if (typeof window !== "undefined") {
     window.pageTransitionDuration = pageTransitionDuration
 }
 
-const blurValue = useApple ? "blur(2px)" : "blur(0px)"
-
 const PageTransition = ({ children }) => {
-    const pageVariants = {
-        initial: {
-            opacity: 0,
-            scale: 1.006,
-            filter: blurValue,
-        },
-        in: {
-            opacity: 1,
-            scale: 1,
-            filter: "blur(0px)",
-        },
-        out: {
-            opacity: 0,
-            scale: 1.01,
-            filter: blurValue,
-        },
-    }
+    const [isVisible, setIsVisible] = useState(false)
+    const [isPending, startTransition] = useTransition()
+    const currentTransitionRef = useRef(null)
+    const blurValue = useApple ? "2px" : "0px"
 
-    const pageTransition = {
-        get duration() {
-            return window.pageTransitionDuration || 0.2
-        },
-        ease: [0.26, 0.08, 0.25, 1],
-        delay: 0,
+    useEffect(() => {
+        // Check if view transitions are supported and working properly
+        const supportsViewTransition =
+            (typeof document !== "undefined" &&
+                document.startViewTransition &&
+                !window.navigator.userAgent.includes("Safari")) ||
+            window.navigator.userAgent.includes("Chrome")
+
+        if (supportsViewTransition) {
+            try {
+                currentTransitionRef.current = document.startViewTransition(
+                    () => {
+                        startTransition(() => {
+                            setIsVisible(true)
+                        })
+                    }
+                )
+            } catch (error) {
+                // Fallback if view transition fails
+                startTransition(() => {
+                    setIsVisible(true)
+                })
+            }
+        } else {
+            startTransition(() => {
+                setIsVisible(true)
+            })
+        }
+
+        // Cleanup function
+        return () => {
+            if (
+                currentTransitionRef.current &&
+                currentTransitionRef.current.finished
+            ) {
+                currentTransitionRef.current.finished.catch(() => {
+                    // Ignore transition errors on cleanup
+                })
+            }
+            currentTransitionRef.current = null
+        }
+    }, [])
+
+    const handleExit = () => {
+        const supportsViewTransition =
+            (typeof document !== "undefined" &&
+                document.startViewTransition &&
+                !window.navigator.userAgent.includes("Safari")) ||
+            window.navigator.userAgent.includes("Chrome")
+
+        if (supportsViewTransition) {
+            try {
+                currentTransitionRef.current = document.startViewTransition(
+                    () => {
+                        startTransition(() => {
+                            setIsVisible(false)
+                        })
+                    }
+                )
+            } catch (error) {
+                startTransition(() => {
+                    setIsVisible(false)
+                })
+            }
+        } else {
+            startTransition(() => {
+                setIsVisible(false)
+            })
+        }
     }
 
     return (
-        <motion.div
-            initial="initial"
-            animate="in"
-            exit="out"
-            variants={pageVariants}
-            transition={pageTransition}
+        <div
+            style={{
+                viewTransitionName: "page-transition",
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? "scale(1)" : "scale(1.04)",
+                filter: isVisible ? "blur(0px)" : `blur(${blurValue})`,
+                transition: `all ${pageTransitionDuration}s cubic-bezier(0.26, 0.08, 0.25, 1)`,
+            }}
         >
             {children}
-        </motion.div>
+        </div>
     )
 }
 
