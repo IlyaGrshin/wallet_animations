@@ -35,7 +35,7 @@
     
         :global(body.material) & {
             background-color: var(--tg-theme-section-bg-color);
-            box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 0.33px 1px 0 rgb(0 0 0 / 6%);
             padding: 0 8px 8px;
     
             svg, path {
@@ -52,7 +52,7 @@
     .banner {
         padding: 8px 14px;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.16);
+        background: rgb(255 255 255 / 16%);
         color: white;
     }
 }

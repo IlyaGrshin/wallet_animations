@@ -25,7 +25,7 @@
         &::after {
             width: 27px;
             height: 27px;
-            filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.10));
+            filter: drop-shadow(0 1px 2px rgb(0 0 0 / 10%));
             border: 0;
         }
 

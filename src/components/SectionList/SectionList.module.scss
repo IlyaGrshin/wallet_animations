@@ -36,12 +36,12 @@
     }
 
     :global(body.material) & {
-        padding: 0px;
+        padding: 0;
         gap: 12px;
 
         section .container {
-            border-radius: 0px;
-            box-shadow: 0px 0.33px 1px 0px rgba(0, 0, 0, 0.06);
+            border-radius: 0;
+            box-shadow: 0 0.33px 1px 0 rgb(0 0 0 / 6%);
         }
     }
 }

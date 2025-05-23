@@ -29,15 +29,15 @@
             will-change: transform;
     
             &.coin {
-                background-image: url(../../../images/Coin\ Image.webp);
+                background-image: url("../../../images/Coin\ Image.webp");
             }
     
             &.disk {
-                background-image: url(../../../images/Disk\ Image.webp);
+                background-image: url("../../../images/Disk\ Image.webp");
             }
     
             &.planet {
-                background-image: url(../../../images/Death\ Planet\ Image.webp);
+                background-image: url("../../../images/Death\ Planet\ Image.webp");
             }
         }
     }
@@ -55,7 +55,6 @@
 .BottomButtons {
     width: 100%;
     position: absolute;
-    display: inline;
     bottom: 0;
     display: flex;
     flex-direction: column;

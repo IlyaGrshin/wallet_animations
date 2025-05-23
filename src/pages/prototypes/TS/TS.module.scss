@@ -33,7 +33,7 @@
             padding: 92px 0 31px;
 
             .amount {
-                font-family: 'Roboto', system-ui, sans-serif;
+                font-family: Roboto, system-ui, sans-serif;
                 font-size: 44px;
                 font-weight: 500;
             }
@@ -51,7 +51,7 @@
         position: relative;
         background-color: transparent !important;
         display: flex;
-        padding: 0px 16px 16px 16px;
+        padding: 0 16px 16px;
         align-items: flex-start;
         gap: 8px;
         align-self: stretch;
@@ -59,8 +59,8 @@
 
         .overlayButton {
             background: 
-              linear-gradient(rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)),
-              rgba(255, 255, 255, 0.03);
+              linear-gradient(rgb(255 255 255 / 7%), rgb(255 255 255 / 7%)),
+              rgb(255 255 255 / 3%);
             background-blend-mode: plus-lighter, normal;
 
             svg, path {
