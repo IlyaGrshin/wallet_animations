@@ -1,7 +1,7 @@
 import React from "react"
 
 import { RegularButton } from "../../../components/Button"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -34,7 +34,7 @@ function ColorChanging() {
     return (
         <>
             <BackButton />
-            <PageTransition>
+            <NativePageTransition>
                 <div
                     style={{
                         display: "flex",
@@ -49,7 +49,7 @@ function ColorChanging() {
                         onClick={switchColors}
                     />
                 </div>
-            </PageTransition>
+            </NativePageTransition>
         </>
     )
 }

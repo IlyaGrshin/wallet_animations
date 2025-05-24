@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Router, Route, Switch } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
+import { initializeViewTransitions } from "./utils/viewTransition"
 
 import "./index.css"
 
@@ -20,6 +21,11 @@ import NavigationBar from "./pages/components/NavigationBar"
 
 function App() {
     const [location] = useHashLocation()
+
+    // Initialize View Transition API on app start
+    useEffect(() => {
+        initializeViewTransitions()
+    }, [])
 
     const routes = [
         { path: "/", component: UI },

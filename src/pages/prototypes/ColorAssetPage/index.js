@@ -1,7 +1,7 @@
 import { BackButton } from "@twa-dev/sdk/react"
 
 import Page from "../../../components/Page"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 
 import ImageAvatar from "../../../components/ImageAvatar"
 import Text from "../../../components/Text"
@@ -159,7 +159,7 @@ function ColorAssetPage() {
         <>
             <BackButton />
             <Page>
-                <PageTransition>
+                <NativePageTransition>
                     <div
                         style={{
                             display: "flex",
@@ -178,7 +178,7 @@ function ColorAssetPage() {
                             />
                         ))}
                     </div>
-                </PageTransition>
+                </NativePageTransition>
             </Page>
         </>
     )

@@ -1,7 +1,7 @@
 import React, { Suspense } from "react"
 
 import Page from "../../../components/Page"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
 
@@ -20,7 +20,7 @@ const ModalPages = () => {
         <>
             <Page>
                 <BackButton />
-                <PageTransition>
+                <NativePageTransition>
                     <SectionList>
                         <SectionList.Item>
                             <Cell onClick={handlers.modal1.open}>
@@ -34,7 +34,7 @@ const ModalPages = () => {
                             </Cell>
                         </SectionList.Item>
                     </SectionList>
-                </PageTransition>
+                </NativePageTransition>
             </Page>
             <Suspense>
                 <Modals modals={modals} handlers={handlers} />

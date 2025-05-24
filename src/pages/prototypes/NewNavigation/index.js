@@ -9,7 +9,7 @@ import { ReactComponent as QRCodeIcon } from "../../../icons/28/QR Code.svg"
 import { BackButton } from "@twa-dev/sdk/react"
 import DefaultAvatar from "../../../icons/avatars/IlyaG.png"
 import TonSpaceSkeleton from "../TS Skeleton"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 
 const Wallet = React.lazy(() => import("../Wallet"))
 const TONSpace = React.lazy(() => import("../TS"))
@@ -82,7 +82,7 @@ function NewNavigation() {
     return (
         <>
             <BackButton />
-            <PageTransition>
+            <NativePageTransition>
                 <div className={styles.navPanel}>
                     <div className={`${styles.bounds} ${styles.transparent}`}>
                         <div
@@ -126,7 +126,7 @@ function NewNavigation() {
                         {content}
                     </motion.div>
                 </AnimatePresence>
-            </PageTransition>
+            </NativePageTransition>
         </>
     )
 }

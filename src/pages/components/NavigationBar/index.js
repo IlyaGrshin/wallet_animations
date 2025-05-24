@@ -7,7 +7,7 @@ import Text from "../../../components/Text"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 
 const NavigationBar = () => {
     const [isFullscreen, setIsFullscreen] = useState(false)
@@ -53,7 +53,7 @@ const NavigationBar = () => {
 
     return (
         <Page>
-            <PageTransition>
+            <NativePageTransition>
                 <BackButton />
                 <SectionList>
                     <SectionList.Item header="Navigation Bar">
@@ -108,7 +108,7 @@ const NavigationBar = () => {
                         </Cell>
                     </SectionList.Item>
                 </SectionList>
-            </PageTransition>
+            </NativePageTransition>
         </Page>
     )
 }

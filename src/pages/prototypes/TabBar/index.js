@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 
 import TabBar from "../../../components/TabBar"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 
 import * as styles from "./TabBarPage.module.scss"
 
@@ -142,7 +142,7 @@ const TabBarPage = () => {
     }, [])
 
     return (
-        <PageTransition>
+        <NativePageTransition>
             <BackButton />
             <div className={styles.container}>
                 <AnimatePresence
@@ -164,7 +164,7 @@ const TabBarPage = () => {
                 </AnimatePresence>
             </div>
             <TabBar tabs={tabs} onChange={handleTabChange} />
-        </PageTransition>
+        </NativePageTransition>
     )
 }
 
