@@ -1,7 +1,6 @@
 import { createRouter } from "@tanstack/react-router"
 import { createHashHistory } from "@tanstack/history"
 
-// Импортируем все маршруты
 import { Route as rootRoute } from "./routes/__root"
 import { Route as indexRoute } from "./routes/index"
 import { Route as walletRoute } from "./routes/wallet"
@@ -16,7 +15,6 @@ import { Route as modalpagesRoute } from "./routes/modalpages"
 import { Route as colorassetpageRoute } from "./routes/colorassetpage"
 import { Route as componentsHeaderRoute } from "./routes/components.header"
 
-// Создаем дерево маршрутов
 const routeTree = rootRoute.addChildren([
     indexRoute,
     walletRoute,
@@ -32,10 +30,8 @@ const routeTree = rootRoute.addChildren([
     componentsHeaderRoute,
 ])
 
-// Создаем hash-based history
 const hashHistory = createHashHistory()
 
-// Создаем роутер
 export const router = createRouter({
     routeTree,
     defaultPreload: "intent",
