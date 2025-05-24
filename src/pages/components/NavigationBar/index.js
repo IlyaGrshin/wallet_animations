@@ -7,6 +7,7 @@ import Text from "../../../components/Text"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
+import PageTransition from "../../../components/PageTransition"
 
 const NavigationBar = () => {
     const [isFullscreen, setIsFullscreen] = useState(false)
@@ -52,60 +53,62 @@ const NavigationBar = () => {
 
     return (
         <Page>
-            <BackButton />
-            <SectionList>
-                <SectionList.Item header="Navigation Bar">
-                    <Cell
-                        onClick={handleColorClick}
-                        end={
-                            <Cell.Part type="ColorPicker">
-                                <input
-                                    ref={colorInputRef}
-                                    type="color"
-                                    value={headerColor}
-                                    onChange={handleColorChange}
-                                    name="color"
-                                    id="color"
-                                />
-                                <label htmlFor="color">
-                                    <Text
-                                        apple={{
-                                            variant: "body",
-                                            weight: "regular",
-                                        }}
-                                        material={{
-                                            variant: "body1",
-                                            weight: "regular",
-                                        }}
-                                    >
-                                        {headerColor}
-                                    </Text>
-                                </label>
-                            </Cell.Part>
-                        }
-                    >
-                        <Cell.Text title="Header Color" />
-                    </Cell>
-                    <Cell
-                        end={<Cell.Part type="Chevron" />}
-                        onClick={toggleBackButton}
-                    >
-                        <Cell.Text title="Change Back / Close Button" />
-                    </Cell>
-                    <Cell
-                        end={<Cell.Part type="Chevron" />}
-                        onClick={toggleFullscreen}
-                    >
-                        <Cell.Text title="Toggle Fullscreen" />
-                    </Cell>
-                    <Cell end={<Cell.Part type="Chevron" />}>
-                        <Cell.Text title="Expand WebView" />
-                    </Cell>
-                    <Cell end={<Cell.Part type="Chevron" />}>
-                        <Cell.Text title="Turn On Settings" />
-                    </Cell>
-                </SectionList.Item>
-            </SectionList>
+            <PageTransition>
+                <BackButton />
+                <SectionList>
+                    <SectionList.Item header="Navigation Bar">
+                        <Cell
+                            onClick={handleColorClick}
+                            end={
+                                <Cell.Part type="ColorPicker">
+                                    <input
+                                        ref={colorInputRef}
+                                        type="color"
+                                        value={headerColor}
+                                        onChange={handleColorChange}
+                                        name="color"
+                                        id="color"
+                                    />
+                                    <label htmlFor="color">
+                                        <Text
+                                            apple={{
+                                                variant: "body",
+                                                weight: "regular",
+                                            }}
+                                            material={{
+                                                variant: "body1",
+                                                weight: "regular",
+                                            }}
+                                        >
+                                            {headerColor}
+                                        </Text>
+                                    </label>
+                                </Cell.Part>
+                            }
+                        >
+                            <Cell.Text title="Header Color" />
+                        </Cell>
+                        <Cell
+                            end={<Cell.Part type="Chevron" />}
+                            onClick={toggleBackButton}
+                        >
+                            <Cell.Text title="Change Back / Close Button" />
+                        </Cell>
+                        <Cell
+                            end={<Cell.Part type="Chevron" />}
+                            onClick={toggleFullscreen}
+                        >
+                            <Cell.Text title="Toggle Fullscreen" />
+                        </Cell>
+                        <Cell end={<Cell.Part type="Chevron" />}>
+                            <Cell.Text title="Expand WebView" />
+                        </Cell>
+                        <Cell end={<Cell.Part type="Chevron" />}>
+                            <Cell.Text title="Turn On Settings" />
+                        </Cell>
+                    </SectionList.Item>
+                </SectionList>
+            </PageTransition>
         </Page>
     )
 }
