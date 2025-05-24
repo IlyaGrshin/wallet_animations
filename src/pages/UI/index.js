@@ -1,6 +1,5 @@
 import { memo } from "react"
-import { Link } from "wouter"
-import TransitionLink from "../../components/TransitionLink"
+import { Link } from "@tanstack/react-router"
 
 import Page from "../../components/Page"
 import SectionList from "../../components/SectionList"
@@ -16,7 +15,7 @@ const UI = () => {
                 <SectionList>
                     <SectionList.Item header="Components">
                         <Cell
-                            as={TransitionLink}
+                            as={Link}
                             to="/components/header"
                             end={<Cell.Part type="Chevron" />}
                         >
@@ -25,49 +24,49 @@ const UI = () => {
                     </SectionList.Item>
                     <SectionList.Item header="Prototypes">
                         <Cell
-                            as={TransitionLink}
+                            as={Link}
                             to="colorassetpage"
                             end={<Cell.Part type="Chevron" />}
                         >
                             <Cell.Text title="Color Asset Page" />
                         </Cell>
                         <Cell
-                            as={TransitionLink}
+                            as={Link}
                             to="newnavigation"
                             end={<Cell.Part type="Chevron" />}
                         >
                             <Cell.Text title="Navigation Update" />
                         </Cell>
                         <Cell
-                            as={TransitionLink}
+                            as={Link}
                             to="onboarding"
                             end={<Cell.Part type="Chevron" />}
                         >
                             <Cell.Text title="Onboarding" />
                         </Cell>
                         <Cell
-                            as={TransitionLink}
+                            as={Link}
                             to="colorchanging"
                             end={<Cell.Part type="Chevron" />}
                         >
                             <Cell.Text title="Background Tests" />
                         </Cell>
                         <Cell
-                            as={TransitionLink}
+                            as={Link}
                             to="tabbar"
                             end={<Cell.Part type="Chevron" />}
                         >
                             <Cell.Text title="Tab Bar" />
                         </Cell>
                         <Cell
-                            as={TransitionLink}
+                            as={Link}
                             to="picker"
                             end={<Cell.Part type="Chevron" />}
                         >
                             <Cell.Text title="Picker" />
                         </Cell>
                         <Cell
-                            as={TransitionLink}
+                            as={Link}
                             to="modalpages"
                             end={<Cell.Part type="Chevron" />}
                         >

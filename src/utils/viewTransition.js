@@ -55,3 +55,28 @@ export const initializeViewTransitions = () => {
 export const navigateWithTransition = async (navigationFunction) => {
     return performViewTransition(navigationFunction)
 }
+
+// Для TanStack Router - создаем middleware для автоматического применения ViewTransition
+export const createViewTransitionMiddleware = () => {
+    return {
+        beforeNavigate: async ({ router, toLocation, fromLocation }) => {
+            if (!isViewTransitionSupported()) {
+                return
+            }
+
+            // Применяем ViewTransition только для переходов между разными маршрутами
+            if (toLocation.pathname !== fromLocation?.pathname) {
+                return new Promise((resolve) => {
+                    if (document.startViewTransition) {
+                        const transition = document.startViewTransition(() => {
+                            resolve()
+                        })
+                        transition.finished.catch(() => resolve())
+                    } else {
+                        resolve()
+                    }
+                })
+            }
+        },
+    }
+}

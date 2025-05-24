@@ -1,27 +1,28 @@
-import { useLocation } from "wouter"
-import { navigateWithTransition } from "../utils/viewTransition"
+import { useNavigate, useLocation } from "@tanstack/react-router"
+import { performViewTransition } from "../utils/viewTransition"
 
 export const useViewTransitionNavigation = () => {
-    const [location, setLocation] = useLocation()
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const navigateTo = async (path, options = {}) => {
-        if (location === path) {
+        if (location.pathname === path) {
             return
         }
 
         try {
-            await navigateWithTransition(() => {
-                setLocation(path, options)
-            })
+            // TanStack Router автоматически применит ViewTransition через middleware
+            await navigate({ to: path, ...options })
         } catch (error) {
             console.warn("Navigation with view transition failed:", error)
-            setLocation(path, options)
+            // Fallback navigation
+            await navigate({ to: path, ...options })
         }
     }
 
     const goBack = async () => {
         try {
-            await navigateWithTransition(() => {
+            await performViewTransition(() => {
                 window.history.back()
             })
         } catch (error) {
@@ -31,9 +32,9 @@ export const useViewTransitionNavigation = () => {
     }
 
     return {
-        location,
+        location: location.pathname,
         navigateTo,
         goBack,
-        setLocation,
+        navigate,
     }
 }
