@@ -36,27 +36,9 @@ const routeTree = rootRoute.addChildren([
 // Создаем hash-based history
 const hashHistory = createHashHistory()
 
-// Создаем роутер с ViewTransition middleware
+// Создаем роутер
 export const router = createRouter({
     routeTree,
     defaultPreload: "intent",
     history: hashHistory,
-})
-
-// Добавляем обработчик для ViewTransition
-router.subscribe("onBeforeLoad", async ({ fromLocation, toLocation, cause }) => {
-    // Применяем ViewTransition только для навигационных переходов между разными маршрутами
-    if (
-        cause === "push" &&
-        fromLocation?.pathname !== toLocation.pathname &&
-        typeof document !== "undefined" &&
-        "startViewTransition" in document
-    ) {
-        return new Promise((resolve) => {
-            const transition = document.startViewTransition(() => {
-                resolve()
-            })
-            transition.finished.catch(() => resolve())
-        })
-    }
 })

@@ -1,9 +1,11 @@
 import React from "react"
-import { Link as TanStackLink } from "@tanstack/react-router"
+import { Link as TanStackLink, useNavigate } from "@tanstack/react-router"
 import { performViewTransition } from "../../utils/viewTransition"
 
 const TransitionLink = React.forwardRef(
     ({ to, onClick, children, ...props }, ref) => {
+        const navigate = useNavigate()
+
         const handleClick = async (event) => {
             if (onClick) {
                 onClick(event)
@@ -13,17 +15,20 @@ const TransitionLink = React.forwardRef(
                 return
             }
 
-            // TanStack Router автоматически обработает навигацию
-            // ViewTransition будет применен через роутер
+            event.preventDefault()
+
+            try {
+                await performViewTransition(() => {
+                    navigate({ to })
+                })
+            } catch (error) {
+                console.warn("Transition failed, falling back:", error)
+                navigate({ to })
+            }
         }
 
         return (
-            <TanStackLink
-                ref={ref}
-                to={to}
-                onClick={handleClick}
-                {...props}
-            >
+            <TanStackLink ref={ref} to={to} onClick={handleClick} {...props}>
                 {children}
             </TanStackLink>
         )
