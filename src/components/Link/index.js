@@ -1,10 +1,10 @@
 import React from "react"
-import { Link as WouterLink, useLocation } from "wouter"
-import { navigateWithTransition } from "../../utils/viewTransition"
+import { Link, useNavigate } from "@tanstack/react-router"
+import { performViewTransition } from "../../utils/viewTransition"
 
 const TransitionLink = React.forwardRef(
-    ({ to, replace, onClick, children, ...props }, ref) => {
-        const [, setLocation] = useLocation()
+    ({ to, onClick, children, ...props }, ref) => {
+        const navigate = useNavigate()
 
         const handleClick = async (event) => {
             if (onClick) {
@@ -18,25 +18,19 @@ const TransitionLink = React.forwardRef(
             event.preventDefault()
 
             try {
-                await navigateWithTransition(() => {
-                    setLocation(to, { replace })
+                await performViewTransition(() => {
+                    navigate({ to })
                 })
             } catch (error) {
                 console.warn("Transition failed, falling back:", error)
-                setLocation(to, { replace })
+                navigate({ to })
             }
         }
 
         return (
-            <WouterLink
-                ref={ref}
-                to={to}
-                replace={replace}
-                onClick={handleClick}
-                {...props}
-            >
+            <Link ref={ref} to={to} onClick={handleClick} {...props}>
                 {children}
-            </WouterLink>
+            </Link>
         )
     }
 )

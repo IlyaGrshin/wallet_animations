@@ -1,5 +1,5 @@
 import { memo } from "react"
-import TransitionLink from "../../components/TanStackLink"
+import TransitionLink from "../../components/Link"
 
 import Page from "../../components/Page"
 import SectionList from "../../components/SectionList"

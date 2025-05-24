@@ -30,53 +30,18 @@ export const performViewTransition = async (updateCallback) => {
         if (error.name !== "AbortError") {
             console.warn("View transition failed:", error)
         }
-        try {
-            updateCallback()
-        } catch (callbackError) {
-            // Callback may have already been called
-        }
+        updateCallback()
     } finally {
         isAnyTransitionRunning = false
     }
 }
 
 export const initializeViewTransitions = () => {
-    if (isInitialized) return
+    if (isInitialized || !isViewTransitionSupported()) return
 
-    if (isViewTransitionSupported()) {
-        if (typeof window !== "undefined") {
-            window.pageTransitionDuration = VIEW_TRANSITION_DURATION / 1000
-        }
-
-        isInitialized = true
+    if (typeof window !== "undefined") {
+        window.pageTransitionDuration = VIEW_TRANSITION_DURATION / 1000
     }
-}
 
-export const navigateWithTransition = async (navigationFunction) => {
-    return performViewTransition(navigationFunction)
-}
-
-// Для TanStack Router - создаем middleware для автоматического применения ViewTransition
-export const createViewTransitionMiddleware = () => {
-    return {
-        beforeNavigate: async ({ router, toLocation, fromLocation }) => {
-            if (!isViewTransitionSupported()) {
-                return
-            }
-
-            // Применяем ViewTransition только для переходов между разными маршрутами
-            if (toLocation.pathname !== fromLocation?.pathname) {
-                return new Promise((resolve) => {
-                    if (document.startViewTransition) {
-                        const transition = document.startViewTransition(() => {
-                            resolve()
-                        })
-                        transition.finished.catch(() => resolve())
-                    } else {
-                        resolve()
-                    }
-                })
-            }
-        },
-    }
+    isInitialized = true
 }

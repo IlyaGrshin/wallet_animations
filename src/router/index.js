@@ -1,6 +1,5 @@
 import { createRouter } from "@tanstack/react-router"
 import { createHashHistory } from "@tanstack/history"
-import { performViewTransition } from "../utils/viewTransition"
 
 // Импортируем все маршруты
 import { Route as rootRoute } from "./routes/__root"

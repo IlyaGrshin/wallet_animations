@@ -3,7 +3,7 @@ import { Route as rootRoute } from "./__root"
 import ColorAssetPage from "../../pages/prototypes/ColorAssetPage"
 
 export const Route = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/colorassetpage",
-  component: ColorAssetPage,
+    getParentRoute: () => rootRoute,
+    path: "/colorassetpage",
+    component: ColorAssetPage,
 })
