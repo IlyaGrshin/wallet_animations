@@ -1,7 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { RelativeCiAgentWebpackPlugin } = require('@relative-ci/agent');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -110,11 +109,6 @@ module.exports = {
 			favicon: './public/favicon.ico',
 		}),
 		isDevelopment && new ReactRefreshWebpackPlugin(),
-		!isDevelopment && new BundleAnalyzerPlugin({
-			analyzerMode: 'static',
-			openAnalyzer: false, 
-			reportFilename: 'bundle-report.html',
-		}),
 		new RelativeCiAgentWebpackPlugin(),
 		new CaseSensitivePathsPlugin(),
 	].filter(Boolean),
