@@ -3,6 +3,7 @@ import { createHashHistory } from "@tanstack/history"
 
 import { Route as rootRoute } from "./routes/__root"
 import { Route as indexRoute } from "./routes/index"
+import { Route as notFoundRoute } from "./routes/notFound"
 import { Route as walletRoute } from "./routes/wallet"
 import { Route as tonspaceRoute } from "./routes/tonspace"
 import { Route as onboardingRoute } from "./routes/onboarding"
@@ -28,6 +29,7 @@ const routeTree = rootRoute.addChildren([
     modalpagesRoute,
     colorassetpageRoute,
     componentsHeaderRoute,
+    notFoundRoute,
 ])
 
 const hashHistory = createHashHistory()
