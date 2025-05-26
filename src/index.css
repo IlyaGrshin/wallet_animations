@@ -31,12 +31,13 @@
     --tg-theme-bottom-bar-bg-color: #F2F2F2;
     --secondary-button-color: rgb(from var(--tg-theme-button-color) r g b / 0.1);
     --text-confirm-color: #34C759;
-    --tertiary-fill-background: rgb(116 116 128 / 0.12);
-    --quaternary-fill-background: rgb(116 116 128 / 0.08);
+    --tertiary-fill-background: oklch(from var(--tg-theme-secondary-bg-color) 0.5631 0.0183 h / 0.12);
+    --quaternary-fill-background: oklch(from var(--tg-theme-secondary-bg-color) 0.5631 0.0183 h / 0.08);
     --separator-non-opaque: rgb(60 60 67 / 0.36);
     --segmented_control_active_background: #FFFFFF;
     --button-disabled-color: #E9E8E8;
     --text-disabled-color: #BABABA;
+    --border-color: oklch(from var(--tg-theme-hint-color) l c h / 0.5);
 
     --background-material-regular-color-1: rgb(255 255 255 / 0.25);
     --background-material-regular-color-2: rgb(255 255 255 / 0.6);
@@ -59,12 +60,13 @@
         --tg-theme-section-separator-color: #C8C7CC;
         --tg-theme-bottom-bar-bg-color: #F2F2F2;
         --text-confirm-color: #34C759;
-        --tertiary-fill-background: rgba(116, 116, 128, 0.12);
-        --quaternary-fill-background: rgba(116, 116, 128, 0.08);
+        --tertiary-fill-background: oklch(from var(--tg-theme-secondary-bg-color) 0.5631 0.0183 h / 0.12);
+        --quaternary-fill-background: oklch(from var(--tg-theme-secondary-bg-color) 0.5631 0.0183 h / 0.08);
         --separator-non-opaque: rgba(60, 60, 67, 0.36);
         --segmented_control_active_background: #FFFFFF;
         --button-disabled-color: #E9E8E8;
         --text-disabled-color: #BABABA;
+        --border-color: oklch(from var(--tg-theme-hint-color) l c h / 0.5);
 
         --background-material-regular-color-1: rgba(255, 255, 255, 0.25);
         --background-material-regular-color-2: rgba(255, 255, 255, 0.6);
@@ -88,12 +90,13 @@
         --tg-theme-section-separator-color: #545458;
         --tg-theme-bottom-bar-bg-color: #1D1D1D;
         --text-confirm-color: #30D158;
-        --tertiary-fill-background: rgba(116, 116, 128, 0.24);
-        --quaternary-fill-background: rgba(118, 118, 128, 0.18);
+        --tertiary-fill-background: oklch(from var(--tg-theme-secondary-bg-color) 0.5692 0.0152 h / 0.24);
+        --quaternary-fill-background: oklch(from var(--tg-theme-secondary-bg-color) 0.5692 0.0152 h / 0.18);
         --separator-non-opaque: rgba(84, 84, 88, 0.65);
-        --segmented_control_active_background: #636366;
+        --segmented_control_active_background: oklch(from var(--tg-theme-secondary-bg-color) 0.4674 0.0212 h);
         --button-disabled-color: #3C3C3E;
         --text-disabled-color: #606060;
+        --border-color: oklch(from var(--tg-theme-hint-color) l c h / 0.4);
 
         --background-material-regular-color-1: rgba(0, 0, 0, 0.41);
         --background-material-regular-color-2: rgba(0, 0, 0, 0);
