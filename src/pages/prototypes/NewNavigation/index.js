@@ -10,6 +10,7 @@ import { BackButton } from "@twa-dev/sdk/react"
 import DefaultAvatar from "../../../icons/avatars/IlyaG.png"
 import TonSpaceSkeleton from "../TS Skeleton"
 import NativePageTransition from "../../../components/NativePageTransition"
+
 import Wallet from "../Wallet"
 import TONSpace from "../TS"
 

@@ -87,4 +87,10 @@
             border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
         }
     }
+    
+    .spacer {
+        :global(body.material) & {
+            height: 12px;
+        }
+    }
 }

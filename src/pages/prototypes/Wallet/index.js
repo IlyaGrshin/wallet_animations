@@ -407,12 +407,17 @@ function TransactionList() {
     )
 }
 
+function Spacer() {
+    return <div className={styles.spacer}></div>
+}
+
 function Wallet() {
     return (
         <Page>
             <div className={styles.wallet}>
                 <Balance />
                 <ActionButtons />
+                <Spacer />
                 <SectionList>
                     <Assets />
                     <TransactionList />
