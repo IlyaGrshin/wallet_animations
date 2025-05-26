@@ -1,3 +1,8 @@
+:root {
+    --duration: 200ms;
+    --scale: 0.98;
+}
+
 .bounds[data-color-scheme="dark"] {
     --quaternary-fill-background: rgb(118 118 128 / 18%);
     --tg-theme-text-color: #FFF;
@@ -11,6 +16,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 14px;
+    view-transition-name: nav-panel;
 
     body.material & {
         padding-top: 14px;
@@ -45,4 +51,43 @@
 
 .pageView {
     will-change: transform, opacity;
+    view-transition-name: page-content;
+    transition: opacity var(--duration) ease-out, transform var(--duration) ease-out;
+}
+
+// View Transition API анимации
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
+    animation-duration: var(--duration);
+    animation-timing-function: ease-out;
+}
+
+::view-transition-old(page-content) {
+    animation-name: scale-fade-out;
+}
+
+::view-transition-new(page-content) {
+    animation-name: scale-fade-in;
+}
+
+@keyframes scale-fade-out {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(var(--scale));
+    }
+}
+
+@keyframes scale-fade-in {
+    from {
+        opacity: 0;
+        transform: scale(var(--scale));
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

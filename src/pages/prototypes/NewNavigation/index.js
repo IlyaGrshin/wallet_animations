@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useEffect } from "react"
-import { motion, AnimatePresence } from "motion/react"
 
 import * as styles from "./NewNav.module.scss"
 import WebApp from "@twa-dev/sdk"
@@ -43,14 +42,20 @@ const useSegmentNavigation = () => {
     })
 
     const handleSegmentChange = (index) => {
-        if (index === 1) {
-            setView("tonspace")
-        } else if (index === 0) {
-            setView("wallet")
+        const newView = index === 1 ? "tonspace" : "wallet"
+
+        // Используем View Transition API если доступен
+        if (document.startViewTransition && newView !== view) {
+            document.startViewTransition(() => {
+                setView(newView)
+                setActiveSegment(index)
+            })
+        } else {
+            setView(newView)
+            setActiveSegment(index)
         }
 
         WebApp.HapticFeedback.selectionChanged()
-        setActiveSegment(index)
     }
 
     return { activeSegment, view, handleSegmentChange }
@@ -106,26 +111,12 @@ function NewNavigation() {
                         <QRCodeIcon />
                     </div>
                 </div>
-                <AnimatePresence
-                    mode="popLayout"
-                    initial={false}
-                    custom={view}
-                    inherit={false}
+                <div
+                    className={styles.pageView}
+                    style={{ viewTransitionName: "page-content" }}
                 >
-                    <motion.div
-                        initial={{ opacity: 0, scale: 1.006 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 1.01 }}
-                        key={view}
-                        transition={{
-                            duration: 0.2,
-                            ease: "easeOut",
-                        }}
-                        className={styles.pageView}
-                    >
-                        {content}
-                    </motion.div>
-                </AnimatePresence>
+                    {content}
+                </div>
             </NativePageTransition>
         </>
     )
