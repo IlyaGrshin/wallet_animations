@@ -10,9 +10,8 @@ import { BackButton } from "@twa-dev/sdk/react"
 import DefaultAvatar from "../../../icons/avatars/IlyaG.png"
 import TonSpaceSkeleton from "../TS Skeleton"
 import NativePageTransition from "../../../components/NativePageTransition"
-
-const Wallet = React.lazy(() => import("../Wallet"))
-const TONSpace = React.lazy(() => import("../TS"))
+import Wallet from "../Wallet"
+import TONSpace from "../TS"
 
 const useAvatarUrl = () => {
     try {
