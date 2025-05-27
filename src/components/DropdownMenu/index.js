@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "motion/react"
+import { SPRING } from "../../utils/animations"
 import Text from "../Text"
 
 import * as styles from "./DropdownMenu.module.scss"
@@ -70,11 +71,7 @@ const DropdownMenu = ({ items }) => {
             scale: 1,
             opacity: 1,
             filter: "blur(0px)",
-            transition: {
-                type: "spring",
-                stiffness: 500,
-                damping: 32,
-            },
+            transition: SPRING.DROPDOWN,
         },
         exit: {
             scale: 0,

@@ -1,4 +1,6 @@
-import React, { Suspense } from "react"
+import { Suspense, memo } from "react"
+import { formatPercentage } from "../../../utils/number"
+
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
@@ -27,7 +29,9 @@ const AssetsList = () => {
                         end={
                             <Cell.Text
                                 title={`$${asset.current_price}`}
-                                description={`${asset.price_change_percentage_24h?.toFixed(2)}%`}
+                                description={formatPercentage(
+                                    asset.price_change_percentage_24h
+                                )}
                             />
                         }
                         key={`tx-${asset.id}`}
@@ -67,4 +71,4 @@ const Trading = () => {
     )
 }
 
-export default React.memo(Trading)
+export default memo(Trading)

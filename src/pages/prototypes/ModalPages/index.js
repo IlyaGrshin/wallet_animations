@@ -1,4 +1,4 @@
-import React, { Suspense } from "react"
+import { Suspense, lazy } from "react"
 
 import Page from "../../../components/Page"
 import NativePageTransition from "../../../components/NativePageTransition"
@@ -6,7 +6,7 @@ import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
 
 import useModal from "../../../hooks/useModal"
-const Modals = React.lazy(() => import("./Modals"))
+const Modals = lazy(() => import("./Modals"))
 
 import { BackButton } from "@twa-dev/sdk/react"
 

@@ -8,13 +8,14 @@ import { useApple } from "../../hooks/DeviceProvider"
 import Card from "../../components/Card"
 import Cell from "../../components/Cells"
 import Text from "../../components/Text"
+import { TRANSITIONS } from "../../utils/animations"
 
 import DollarsLogo from "../../icons/avatars/Dollars.png"
 import BitcoinLogo from "../../icons/avatars/Bitcoin.png"
 import ToncoinLogo from "../../icons/avatars/TON.png"
 
 function AnimatedCell({ expandedAssets, index }) {
-    const transition = { ease: [0.26, 0.08, 0.25, 1], duration: 0.2 }
+    const transition = TRANSITIONS.MATERIAL_STANDARD
 
     const logos = useApple
         ? [
@@ -284,8 +285,6 @@ function Stacks() {
             image: DollarsLogo,
         },
         { isAnimated: true },
-        // { name: 'Toncoin', coins: '100 TON', value: '$150.00', image: ToncoinLogo },
-        // { name: 'Dollars', coins: '50 USDT', value: '$50.00', image: DollarsLogo },
         {
             name: "Bitcoin",
             coins: "0.000011 BTC",

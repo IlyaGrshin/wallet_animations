@@ -1,4 +1,4 @@
-import React from "react"
+import { forwardRef } from "react"
 
 const NativePageTransition = ({ children }) => {
     return <>{children}</>

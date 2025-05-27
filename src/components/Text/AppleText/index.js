@@ -1,5 +1,3 @@
-import PropTypes from "prop-types"
-
 import * as styles from "./AppleText.module.scss"
 
 const AppleText = ({
@@ -20,24 +18,6 @@ const AppleText = ({
             {children}
         </Component>
     )
-}
-
-AppleText.propTypes = {
-    apple: PropTypes.shape({
-        variant: PropTypes.oneOf([
-            "title1",
-            "title2",
-            "title3",
-            "body",
-            "subheadline2",
-            "footnote",
-            "caption2",
-        ]),
-        weight: PropTypes.oneOf(["regular", "medium", "semibold", "bold"]),
-        rounded: PropTypes.bool,
-        caps: PropTypes.bool,
-    }),
-    as: PropTypes.elementType,
 }
 
 export default AppleText

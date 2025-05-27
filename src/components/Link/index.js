@@ -1,8 +1,8 @@
-import React from "react"
+import { forwardRef } from "react"
 import { Link, useNavigate } from "@tanstack/react-router"
 import { performViewTransition } from "../../utils/viewTransition"
 
-const TransitionLink = React.forwardRef(
+const TransitionLink = forwardRef(
     ({ to, onClick, children, ...props }, ref) => {
         const navigate = useNavigate()
 

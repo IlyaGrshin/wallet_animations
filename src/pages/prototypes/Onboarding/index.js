@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, memo } from "react"
 
 import Page from "../../../components/Page"
 import Gallery from "../../../components/Gallery"
@@ -102,4 +102,4 @@ const Onboarding = () => {
     )
 }
 
-export default React.memo(Onboarding)
+export default memo(Onboarding)

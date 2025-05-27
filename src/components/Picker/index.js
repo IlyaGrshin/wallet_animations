@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import * as styles from "./Picker.module.scss"
 
 import WebApp from "@twa-dev/sdk"

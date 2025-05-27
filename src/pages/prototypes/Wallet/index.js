@@ -16,6 +16,15 @@ import { Spoiler } from "spoiled"
 import { MultilineButton } from "../../../components/Button"
 
 import { useAssetIcon } from "../../../utils/AssetsMap"
+import {
+    generateRandomBalance,
+    formatToTwoDecimals,
+} from "../../../utils/number"
+import {
+    DURATION,
+    COMPLEX_EASING,
+    TRANSITIONS,
+} from "../../../utils/animations"
 import assets from "./data/assets.json"
 import txHistory from "./data/transactions.json"
 
@@ -34,7 +43,7 @@ function Balance() {
     useEffect(() => {
         const updateBalance = () => {
             if (!hidden) {
-                const randomBalance = (Math.random() * 2000).toFixed(2)
+                const randomBalance = generateRandomBalance()
                 setBalance(randomBalance)
             }
         }
@@ -70,11 +79,11 @@ function Balance() {
                     willChange
                     plugins={[continuous]}
                     spinTiming={{
-                        duration: 850,
-                        easing: "linear(0, 0.0013 0.5%, 0.0062 1.11%, 0.0233 2.21%, 0.0518 3.42%, 0.0951 4.82%, 0.1855 7.23%, 0.4176 12.76%, 0.525 15.47%, 0.6247, 0.7105 21.1%, 0.7844, 0.8439 26.92%, 0.8695 28.43%, 0.8934, 0.9139, 0.9314, 0.9463 34.86%, 0.9595 36.57%, 0.9709 38.37%, 0.9805 40.28%, 0.9884 42.29%, 0.9948 44.5%, 1.003 49.42%, 1.0057 53.34%, 1.0063 58.16%, 1.0014 80.77%, 1.0001 99.95%)",
+                        duration: DURATION.BALANCE_ANIMATION,
+                        easing: COMPLEX_EASING,
                     }}
                     opacityTiming={{
-                        duration: 200,
+                        duration: DURATION.OPACITY,
                     }}
                 />
             </Spoiler>
@@ -117,7 +126,7 @@ function ActionButtons() {
 }
 
 function AnimatedCellMoreButton({ onClick, state }) {
-    const transition = { ease: [0.26, 0.08, 0.25, 1], duration: 0.2 }
+    const transition = TRANSITIONS.MATERIAL_STANDARD
 
     const jettonsSize = useApple
         ? { position: "relative", width: "40px", height: "40px" }
@@ -284,10 +293,6 @@ function Assets() {
     const AssetsRef = useRef(null)
     const [showSmallAssets, setShowSmallAssets] = useState(false)
 
-    const formatNumbers = (number) => {
-        return Number(number.toFixed(2))
-    }
-
     const priorityAssets = assets.filter(
         (asset) => asset.id === 0 || asset.id === 1
     )
@@ -315,7 +320,7 @@ function Assets() {
                     start={<ImageAvatar src={useAssetIcon(asset.ticker)} />}
                     end={
                         <Cell.Text
-                            title={`$${formatNumbers(asset.rate * asset.value)}`}
+                            title={`$${formatToTwoDecimals(asset.rate * asset.value)}`}
                             description={`${asset.value} ${asset.ticker}`}
                         />
                     }
@@ -357,7 +362,7 @@ function Assets() {
                                         }
                                         end={
                                             <Cell.Text
-                                                title={`$${formatNumbers(asset.rate * asset.value)}`}
+                                                title={`$${formatToTwoDecimals(asset.rate * asset.value)}`}
                                                 description={`${asset.value} ${asset.ticker}`}
                                             />
                                         }

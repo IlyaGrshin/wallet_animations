@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import { useRef, useEffect, Children } from "react"
 import * as styles from "./Gallery.module.scss"
 
 const Gallery = ({ children, onPageChange, onScrollProgress }) => {
@@ -32,7 +32,7 @@ const Gallery = ({ children, onPageChange, onScrollProgress }) => {
 
     return (
         <div className={styles.root} ref={containerRef}>
-            {React.Children.map(children, (child) => (
+            {Children.map(children, (child) => (
                 <div className={styles.page}>{child}</div>
             ))}
         </div>

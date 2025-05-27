@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { RouterProvider } from "@tanstack/react-router"
 import { router } from "./router"
 import {

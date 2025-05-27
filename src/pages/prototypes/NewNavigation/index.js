@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect } from "react"
 
 import * as styles from "./NewNav.module.scss"
 import WebApp from "@twa-dev/sdk"
