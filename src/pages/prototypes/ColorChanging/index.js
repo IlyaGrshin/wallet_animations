@@ -1,4 +1,4 @@
-import { memo } from "react"
+import { memo, useState } from "react"
 
 import { RegularButton } from "../../../components/Button"
 import NativePageTransition from "../../../components/NativePageTransition"
@@ -7,7 +7,7 @@ import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 
 function ColorChanging() {
-    const [isSecondaryColor, setIsSecondaryColor] = React.useState(true)
+    const [isSecondaryColor, setIsSecondaryColor] = useState(true)
 
     const switchColors = () => {
         if (WebApp.initData) {
