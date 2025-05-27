@@ -6,7 +6,7 @@ const cacheStore = {}
 // Время жизни кеша в миллисекундах (например, 5 минут)
 const CACHE_TTL = 5 * 60 * 1000
 
-// Функция для создания ресурса, совместимого с Suspense
+// Функция для создания ресурса, совместимого с React 19's use хуком
 export function createResource(key, fetchFn, ttl = CACHE_TTL) {
     // Создаем или используем существующую запись кеша
     if (!cacheStore[key]) {
@@ -20,7 +20,42 @@ export function createResource(key, fetchFn, ttl = CACHE_TTL) {
 
     const entry = cacheStore[key]
 
-    return {
+    // Создаем объект, совместимый с thenable, который может быть использован React's use хуком
+    const resource = {
+        // Для React 19's use хука
+        then(resolve, reject) {
+            const now = Date.now()
+            // Если данные есть и они не устарели, возвращаем их
+            if (entry.data && entry.timestamp && now - entry.timestamp < ttl) {
+                if (entry.error) reject(entry.error)
+                else resolve(entry.data)
+                return
+            }
+
+            // Если данные устарели или их нет, но промис уже запущен
+            if (entry.promise) {
+                return entry.promise.then(resolve, reject)
+            }
+
+            // Создаем новый промис для загрузки данных
+            entry.promise = fetchFn()
+                .then((data) => {
+                    entry.data = data
+                    entry.timestamp = Date.now()
+                    entry.promise = null
+                    resolve(data)
+                    return data
+                })
+                .catch((error) => {
+                    entry.error = error
+                    entry.promise = null
+                    reject(error)
+                    throw error
+                })
+
+            return entry.promise.then(resolve, reject)
+        },
+        // Для совместимости с методом read
         read() {
             const now = Date.now()
             // Если данные есть и они не устарели, возвращаем их
@@ -73,6 +108,8 @@ export function createResource(key, fetchFn, ttl = CACHE_TTL) {
             }
         },
     }
+
+    return resource
 }
 
 // Оригинальный хук для обратной совместимости

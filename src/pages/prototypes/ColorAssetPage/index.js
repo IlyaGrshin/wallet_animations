@@ -1,3 +1,4 @@
+import { use } from "react"
 import { BackButton } from "@twa-dev/sdk/react"
 
 import Page from "../../../components/Page"
@@ -153,7 +154,7 @@ function AssetSection({ mode, image, name, price, ticker }) {
 }
 
 function ColorAssetPage() {
-    const assets = assetsResource.read()
+    const assets = use(assetsResource)
 
     return (
         <>

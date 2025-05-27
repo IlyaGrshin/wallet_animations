@@ -87,6 +87,15 @@ export const cleanupViewTransitions = () => {
         popstateHandler = null
     }
 
+    if (originalPushState) {
+        window.history.pushState = originalPushState
+        originalPushState = null
+    }
+
+    if (originalReplaceState) {
+        window.history.replaceState = originalReplaceState
+        originalReplaceState = null
+    }
+
     isInitialized = false
-    isAnyTransitionRunning = false
 }

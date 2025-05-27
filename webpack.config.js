@@ -35,12 +35,13 @@ module.exports = {
 				options: {
 					presets: [
 						["@babel/preset-env", { modules: false }],
-						["@babel/preset-react", { runtime: "automatic" }]
+						["@babel/preset-react", { runtime: "automatic", importSource: "react" }]
 					],
 					plugins: [
 						"@babel/plugin-transform-runtime",
-						["transform-react-remove-prop-types", { "removeImport": true }]
-					]
+						["transform-react-remove-prop-types", { "removeImport": true }],
+						isDevelopment && "react-refresh/babel"
+					].filter(Boolean)
 				},
 			},
 		},

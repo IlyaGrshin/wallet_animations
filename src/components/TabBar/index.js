@@ -1,4 +1,4 @@
-import { useState, lazy } from "react"
+import { useState, lazy, Suspense } from "react"
 import * as styles from "./TabBar.module.scss"
 
 const Lottie = lazy(() => import("lottie-react"))
@@ -8,7 +8,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
 
     const handleSegmentClick = (index) => {
         setActiveIndex(index)
-        if (onChange) onChange(index)
+        onChange?.(index)
     }
 
     return (
@@ -21,7 +21,9 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                 >
                     <div className={styles.icon}>
                         {tab.lottieIcon ? (
-                            <Lottie animationData={tab.lottieIcon} />
+                            <Suspense fallback={tab.icon || null}>
+                                <Lottie animationData={tab.lottieIcon} />
+                            </Suspense>
                         ) : (
                             tab.icon
                         )}

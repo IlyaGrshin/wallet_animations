@@ -1,4 +1,4 @@
-import { Suspense, memo } from "react"
+import { use, Suspense } from "react"
 import { formatPercentage } from "../../../utils/number"
 
 import Page from "../../../components/Page"
@@ -18,7 +18,7 @@ const fetchAssets = async () => {
 const assetsResource = createResource("crypto-assets", fetchAssets)
 
 const AssetsList = () => {
-    const assets = assetsResource.read()
+    const assets = use(assetsResource)
 
     return (
         <SectionList>
@@ -48,7 +48,8 @@ const AssetsList = () => {
     )
 }
 
-const Trading = () => {
+// No need for memo with React 19's automatic memoization
+function Trading() {
     return (
         <Page>
             <Suspense
@@ -71,4 +72,4 @@ const Trading = () => {
     )
 }
 
-export default memo(Trading)
+export default Trading
