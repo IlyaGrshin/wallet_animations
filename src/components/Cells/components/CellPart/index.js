@@ -1,8 +1,4 @@
-import React from "react"
 import Text from "../../../Text"
-
-import PropTypes from "prop-types"
-
 import * as styles from "./CellPart.module.scss"
 
 export const CellPart = ({ type, className, children }) => {
@@ -34,26 +30,6 @@ export const CellPart = ({ type, className, children }) => {
             {children}
         </div>
     )
-}
-
-CellPart.propTypes = {
-    type: PropTypes.oneOf([
-        "avatar",
-        "switch",
-        "checkbox",
-        "radio",
-        "icon",
-        "roundedIcon",
-        "squareIcon",
-        "tabs",
-        "segmentedControl",
-        "picker",
-        "colorpicker",
-        "smallButton",
-    ]).isRequired,
-    disabled: PropTypes.bool,
-    className: PropTypes.string,
-    children: PropTypes.node.isRequired,
 }
 
 export default CellPart

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, memo } from "react"
 import { motion, AnimatePresence } from "motion/react"
+import { TRANSITIONS } from "../../../utils/animations"
 
 import TabBar from "../../../components/TabBar"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 
 import * as styles from "./TabBarPage.module.scss"
 
@@ -118,10 +119,7 @@ const TabBarPage = () => {
                 opacity: 0,
                 x: `${3 * direction()}%`,
             },
-            transition: {
-                duration: 0.2,
-                ease: [0.26, 0.08, 0.25, 1],
-            },
+            transition: TRANSITIONS.MATERIAL_STANDARD,
         },
     }
 
@@ -142,7 +140,7 @@ const TabBarPage = () => {
     }, [])
 
     return (
-        <PageTransition>
+        <NativePageTransition>
             <BackButton />
             <div className={styles.container}>
                 <AnimatePresence
@@ -164,8 +162,8 @@ const TabBarPage = () => {
                 </AnimatePresence>
             </div>
             <TabBar tabs={tabs} onChange={handleTabChange} />
-        </PageTransition>
+        </NativePageTransition>
     )
 }
 
-export default React.memo(TabBarPage)
+export default memo(TabBarPage)

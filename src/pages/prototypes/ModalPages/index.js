@@ -1,12 +1,12 @@
-import React, { Suspense } from "react"
+import { Suspense, lazy } from "react"
 
 import Page from "../../../components/Page"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
 
 import useModal from "../../../hooks/useModal"
-const Modals = React.lazy(() => import("./Modals"))
+const Modals = lazy(() => import("./Modals"))
 
 import { BackButton } from "@twa-dev/sdk/react"
 
@@ -20,7 +20,7 @@ const ModalPages = () => {
         <>
             <Page>
                 <BackButton />
-                <PageTransition>
+                <NativePageTransition>
                     <SectionList>
                         <SectionList.Item>
                             <Cell onClick={handlers.modal1.open}>
@@ -34,7 +34,7 @@ const ModalPages = () => {
                             </Cell>
                         </SectionList.Item>
                     </SectionList>
-                </PageTransition>
+                </NativePageTransition>
             </Page>
             <Suspense>
                 <Modals modals={modals} handlers={handlers} />

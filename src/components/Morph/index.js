@@ -1,4 +1,5 @@
-import { motion, AnimatePresence } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
+import { TRANSITIONS } from "../../utils/animations"
 
 function Morph({ children }) {
     function generateKeys(text) {
@@ -25,16 +26,7 @@ function Morph({ children }) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{
-                        duration: 0.25,
-                        type: "spring",
-                        bounce: 0,
-                        opacity: {
-                            duration: 0.35,
-                            type: "spring",
-                            bounce: 0,
-                        },
-                    }}
+                    transition={TRANSITIONS.MORPH}
                 >
                     {char === " " ? "\u00A0" : char}
                 </motion.span>

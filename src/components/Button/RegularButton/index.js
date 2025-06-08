@@ -1,4 +1,3 @@
-import PropTypes from "prop-types"
 import Text from "../../Text"
 
 import * as styles from "./RegularButton.module.scss"
@@ -29,8 +28,4 @@ export const RegularButton = ({
             </Text>
         </div>
     )
-}
-
-RegularButton.propTypes = {
-    variant: PropTypes.oneOf(["filled", "tinted", "plain", "gray", "disabled"]),
 }

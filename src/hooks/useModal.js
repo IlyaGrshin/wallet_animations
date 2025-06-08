@@ -9,24 +9,15 @@ const useModal = (modalKeys = {}) => {
     const [modals, setModals] = useState(initialState)
 
     const openModal = useCallback((modalId) => {
-        setModals((prevState) => ({
-            ...prevState,
-            [modalId]: true,
-        }))
+        setModals((prev) => ({ ...prev, [modalId]: true }))
     }, [])
 
     const closeModal = useCallback((modalId) => {
-        setModals((prevState) => ({
-            ...prevState,
-            [modalId]: false,
-        }))
+        setModals((prev) => ({ ...prev, [modalId]: false }))
     }, [])
 
     const toggleModal = useCallback((modalId) => {
-        setModals((prevState) => ({
-            ...prevState,
-            [modalId]: !prevState[modalId],
-        }))
+        setModals((prev) => ({ ...prev, [modalId]: !prev[modalId] }))
     }, [])
 
     // Create handlers object with pre-bound functions for each modal
@@ -41,15 +32,17 @@ const useModal = (modalKeys = {}) => {
             }
         })
         return result
-    }, [modals, openModal, closeModal, toggleModal])
+    }, [modals, openModal, closeModal, toggleModal, initialState])
+
+    const isOpen = useCallback((modalId) => !!modals[modalId], [modals])
 
     return {
         modals,
         openModal,
         closeModal,
         toggleModal,
-        isOpen: (modalId) => !!modals[modalId],
-        handlers, // Pre-bound handlers for each modal
+        isOpen,
+        handlers,
     }
 }
 

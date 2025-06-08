@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react"
-import { motion, AnimatePresence } from "motion/react"
+import { useState, useMemo, useEffect } from "react"
 
 import * as styles from "./NewNav.module.scss"
 import WebApp from "@twa-dev/sdk"
@@ -9,10 +8,10 @@ import { ReactComponent as QRCodeIcon } from "../../../icons/28/QR Code.svg"
 import { BackButton } from "@twa-dev/sdk/react"
 import DefaultAvatar from "../../../icons/avatars/IlyaG.png"
 import TonSpaceSkeleton from "../TS Skeleton"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 
-const Wallet = React.lazy(() => import("../Wallet"))
-const TONSpace = React.lazy(() => import("../TS"))
+import Wallet from "../Wallet"
+import TONSpace from "../TS"
 
 const useAvatarUrl = () => {
     try {
@@ -43,14 +42,20 @@ const useSegmentNavigation = () => {
     })
 
     const handleSegmentChange = (index) => {
-        if (index === 1) {
-            setView("tonspace")
-        } else if (index === 0) {
-            setView("wallet")
+        const newView = index === 1 ? "tonspace" : "wallet"
+
+        // Используем View Transition API если доступен
+        if (document.startViewTransition && newView !== view) {
+            document.startViewTransition(() => {
+                setView(newView)
+                setActiveSegment(index)
+            })
+        } else {
+            setView(newView)
+            setActiveSegment(index)
         }
 
         WebApp.HapticFeedback.selectionChanged()
-        setActiveSegment(index)
     }
 
     return { activeSegment, view, handleSegmentChange }
@@ -82,7 +87,7 @@ function NewNavigation() {
     return (
         <>
             <BackButton />
-            <PageTransition>
+            <NativePageTransition>
                 <div className={styles.navPanel}>
                     <div className={`${styles.bounds} ${styles.transparent}`}>
                         <div
@@ -106,27 +111,13 @@ function NewNavigation() {
                         <QRCodeIcon />
                     </div>
                 </div>
-                <AnimatePresence
-                    mode="popLayout"
-                    initial={false}
-                    custom={view}
-                    inherit={false}
+                <div
+                    className={styles.pageView}
+                    style={{ viewTransitionName: "page-content" }}
                 >
-                    <motion.div
-                        initial={{ opacity: 0, scale: 1.006 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 1.01 }}
-                        key={view}
-                        transition={{
-                            duration: 0.2,
-                            ease: "easeOut",
-                        }}
-                        className={styles.pageView}
-                    >
-                        {content}
-                    </motion.div>
-                </AnimatePresence>
-            </PageTransition>
+                    {content}
+                </div>
+            </NativePageTransition>
         </>
     )
 }

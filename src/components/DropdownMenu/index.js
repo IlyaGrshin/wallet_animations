@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "motion/react"
+import { SPRING } from "../../utils/animations"
 import Text from "../Text"
 
 import * as styles from "./DropdownMenu.module.scss"
@@ -15,35 +16,32 @@ const DropdownMenu = ({ items }) => {
     const buttonRef = useRef(null)
     const dropdownRef = useRef(null)
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen)
-    }
+    const toggleDropdown = useCallback(() => {
+        setIsOpen((prev) => !prev)
+    }, [])
 
-    const handleSelectItem = (item) => {
+    const handleSelectItem = useCallback((item) => {
         setSelectedItem(item)
         setIsOpen(false)
-    }
+    }, [])
 
     useEffect(() => {
         if (isOpen && buttonRef.current && dropdownRef.current) {
             const buttonRect = buttonRef.current.getBoundingClientRect()
             const dropdownRect = dropdownRef.current.getBoundingClientRect()
 
-            let top = buttonRect.bottom + 1
-            let left = buttonRect.right - dropdownRect.width - 216
+            const top = buttonRect.bottom + 1
+            const left = buttonRect.right - dropdownRect.width - 216
 
-            setDropdownPosition({
-                top,
-                left,
-            })
+            setDropdownPosition({ top, left })
         }
     }, [isOpen])
 
-    // Add effect for handling clicks outside the dropdown
     useEffect(() => {
+        if (!isOpen) return
+
         const handleClickOutside = (event) => {
             if (
-                isOpen &&
                 buttonRef.current &&
                 dropdownRef.current &&
                 !buttonRef.current.contains(event.target) &&
@@ -54,10 +52,8 @@ const DropdownMenu = ({ items }) => {
         }
 
         document.addEventListener("mousedown", handleClickOutside)
-
-        return () => {
+        return () =>
             document.removeEventListener("mousedown", handleClickOutside)
-        }
     }, [isOpen])
 
     const dropdownVariants = {
@@ -70,11 +66,7 @@ const DropdownMenu = ({ items }) => {
             scale: 1,
             opacity: 1,
             filter: "blur(0px)",
-            transition: {
-                type: "spring",
-                stiffness: 500,
-                damping: 32,
-            },
+            transition: SPRING.DROPDOWN,
         },
         exit: {
             scale: 0,

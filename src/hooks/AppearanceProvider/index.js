@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import WebApp from "@twa-dev/sdk"
 
 const AppearanceProvider = ({ children }) => {

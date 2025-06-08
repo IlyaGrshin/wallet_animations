@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, memo } from "react"
 
 import Page from "../../../components/Page"
 import Gallery from "../../../components/Gallery"
 import SectionHeader from "../../../components/SectionHeader"
 import StartView from "../../../components/StartView"
 import { RegularButton } from "../../../components/Button"
-import PageTransition from "../../../components/PageTransition"
+import NativePageTransition from "../../../components/NativePageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -64,7 +64,7 @@ const Onboarding = () => {
     }, [])
 
     return (
-        <PageTransition>
+        <NativePageTransition>
             <Page headerColor="131314">
                 <BackButton />
                 <Gallery onPageChange={handlePageChange}>
@@ -98,8 +98,8 @@ const Onboarding = () => {
                     />
                 </div>
             </Page>
-        </PageTransition>
+        </NativePageTransition>
     )
 }
 
-export default React.memo(Onboarding)
+export default memo(Onboarding)

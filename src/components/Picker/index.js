@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import * as styles from "./Picker.module.scss"
 
 import WebApp from "@twa-dev/sdk"
@@ -13,35 +13,37 @@ const Picker = ({ items, onPickerIndex }) => {
     const ticking = useRef(false)
 
     useEffect(() => {
-        if (pickerRef.current && pickerRef.current.children.length > 0) {
+        if (pickerRef.current?.children.length > 0) {
             setItemHeight(pickerRef.current.children[0].offsetHeight)
             baseline.current = pickerRef.current.scrollTop
         }
     }, [])
 
     const handleScroll = useCallback(() => {
-        if (!ticking.current) {
-            requestAnimationFrame(() => {
-                if (pickerRef.current) {
-                    const scrollTop = pickerRef.current.scrollTop
-                    const index = Math.min(
-                        items.length - 1,
-                        Math.max(0, Math.round(scrollTop / itemHeight) - 1)
-                    )
+        if (ticking.current) return
 
-                    setScrollPosition(scrollTop)
-
-                    if (selectedIndex !== index) {
-                        setSelectedIndex(index)
-                        if (onPickerIndex) {
-                            onPickerIndex(index)
-                        }
-                    }
-                }
+        ticking.current = true
+        requestAnimationFrame(() => {
+            if (!pickerRef.current) {
                 ticking.current = false
-            })
-            ticking.current = true
-        }
+                return
+            }
+
+            const scrollTop = pickerRef.current.scrollTop
+            const index = Math.min(
+                items.length - 1,
+                Math.max(0, Math.round(scrollTop / itemHeight) - 1)
+            )
+
+            setScrollPosition(scrollTop)
+
+            if (selectedIndex !== index) {
+                setSelectedIndex(index)
+                onPickerIndex?.(index)
+            }
+
+            ticking.current = false
+        })
     }, [itemHeight, items.length, selectedIndex, onPickerIndex])
 
     useEffect(() => {

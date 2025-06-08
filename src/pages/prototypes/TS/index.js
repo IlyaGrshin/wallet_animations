@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState, memo } from "react"
 
 import Page from "../../../components/Page"
 import Text from "../../../components/Text"
@@ -8,6 +8,8 @@ import SectionList from "../../../components/SectionList"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
 import { useAssetIcon } from "../../../utils/AssetsMap"
+import { generateRandomBalance } from "../../../utils/number"
+import { DURATION, COMPLEX_EASING } from "../../../utils/animations"
 import { MultilineButton } from "../../../components/Button"
 
 import { ReactComponent as ArrowUpCircleFill } from "../../../icons/28/Arrow Up Circle Fill.svg"
@@ -29,7 +31,7 @@ function Profile() {
     useEffect(() => {
         const updateBalance = () => {
             if (!hidden) {
-                const randomBalance = (Math.random() * 2000).toFixed(2)
+                const randomBalance = generateRandomBalance()
                 setBalance(randomBalance)
             }
         }
@@ -66,11 +68,11 @@ function Profile() {
                         willChange
                         plugins={[continuous]}
                         spinTiming={{
-                            duration: 850,
-                            easing: "linear(0, 0.0013 0.5%, 0.0062 1.11%, 0.0233 2.21%, 0.0518 3.42%, 0.0951 4.82%, 0.1855 7.23%, 0.4176 12.76%, 0.525 15.47%, 0.6247, 0.7105 21.1%, 0.7844, 0.8439 26.92%, 0.8695 28.43%, 0.8934, 0.9139, 0.9314, 0.9463 34.86%, 0.9595 36.57%, 0.9709 38.37%, 0.9805 40.28%, 0.9884 42.29%, 0.9948 44.5%, 1.003 49.42%, 1.0057 53.34%, 1.0063 58.16%, 1.0014 80.77%, 1.0001 99.95%)",
+                            duration: DURATION.BALANCE_ANIMATION,
+                            easing: COMPLEX_EASING,
                         }}
                         opacityTiming={{
-                            duration: 200,
+                            duration: DURATION.OPACITY,
                         }}
                     />
                 </Spoiler>
@@ -223,4 +225,4 @@ function TONSpace() {
     )
 }
 
-export default React.memo(TONSpace)
+export default memo(TONSpace)

@@ -6,14 +6,15 @@
   "dependencies": {
     "@babel/runtime": "^7.27.1",
     "@number-flow/react": "^0.5.9",
+    "@tanstack/history": "^1.115.0",
+    "@tanstack/react-router": "^1.120.10",
     "@twa-dev/sdk": "^8.0.1",
     "colorthief": "^2.6.0",
     "lottie-react": "^2.4.1",
     "motion": "^12.12.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "spoiled": "^0.4.0",
-    "wouter": "^3.7.0"
+    "spoiled": "^0.4.0"
   },
   "scripts": {
     "start": "NODE_ENV=development webpack serve --config webpack.config.js",
@@ -70,7 +71,6 @@
     "stylelint-config-standard-scss": "^15.0.1",
     "terser-webpack-plugin": "^5.3.14",
     "webpack": "^5.97.1",
-    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.0"
   }

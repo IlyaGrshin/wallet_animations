@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react"
+import { useState, useMemo } from "react"
 import Text from "../Text"
 
 import * as styles from "./SegmentedControl.module.scss"

@@ -1,4 +1,4 @@
-import React from "react"
+import { memo } from "react"
 
 import ModalView from "../../../../components/ModalView"
 import PanelHeader from "../../../../components/PanelHeader"
@@ -112,4 +112,4 @@ const Modals = ({ modals, handlers }) => {
     )
 }
 
-export default React.memo(Modals)
+export default memo(Modals)

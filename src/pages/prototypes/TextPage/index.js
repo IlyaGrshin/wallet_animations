@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, memo } from "react"
 
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
@@ -44,14 +44,6 @@ const TextPage = () => {
             ...prevState,
             [ID]: false,
         }))
-
-        // setInterval(() => {
-        //     handleFocus()
-        //     WebApp.MainButton
-        //         .show()
-        //         .setText('Continue')
-        //         .onClick(() => openModal('modal3'))
-        // }, 1)
     }
 
     return (
@@ -135,4 +127,4 @@ const TextPage = () => {
     )
 }
 
-export default React.memo(TextPage)
+export default memo(TextPage)
