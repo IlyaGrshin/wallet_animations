@@ -1,41 +1,52 @@
-import { createRouter } from "@tanstack/react-router"
-import { createHashHistory } from "@tanstack/history"
+import { Router, Route, Switch } from "wouter"
+import { useHashLocation } from "wouter/use-hash-location"
+import UI from "../pages/UI"
+import Wallet from "../pages/prototypes/Wallet"
+import TONSpace from "../pages/prototypes/TS"
+import Onboarding from "../pages/prototypes/Onboarding"
+import NewNavigation from "../pages/prototypes/NewNavigation"
+import ColorChanging from "../pages/prototypes/ColorChanging"
+import TextPage from "../pages/prototypes/TextPage"
+import TabBar from "../pages/prototypes/TabBar"
+import Picker from "../pages/prototypes/Picker"
+import ModalPages from "../pages/prototypes/ModalPages"
+import ColorAssetPage from "../pages/prototypes/ColorAssetPage"
+import NavigationBar from "../pages/components/NavigationBar"
+import { useEffect } from "react"
+import { useLocation } from "wouter"
 
-import { Route as rootRoute } from "./routes/__root"
-import { Route as indexRoute } from "./routes/index"
-import { Route as notFoundRoute } from "./routes/notFound"
-import { Route as walletRoute } from "./routes/wallet"
-import { Route as tonspaceRoute } from "./routes/tonspace"
-import { Route as onboardingRoute } from "./routes/onboarding"
-import { Route as newnavigationRoute } from "./routes/newnavigation"
-import { Route as colorchangingRoute } from "./routes/colorchanging"
-import { Route as textpageRoute } from "./routes/textpage"
-import { Route as tabbarRoute } from "./routes/tabbar"
-import { Route as pickerRoute } from "./routes/picker"
-import { Route as modalpagesRoute } from "./routes/modalpages"
-import { Route as colorassetpageRoute } from "./routes/colorassetpage"
-import { Route as componentsHeaderRoute } from "./routes/components.header"
+function Redirect({ to }) {
+    const [, navigate] = useLocation()
+    useEffect(() => {
+        navigate(to)
+    }, [navigate, to])
+    return null
+}
 
-const routeTree = rootRoute.addChildren([
-    indexRoute,
-    walletRoute,
-    tonspaceRoute,
-    onboardingRoute,
-    newnavigationRoute,
-    colorchangingRoute,
-    textpageRoute,
-    tabbarRoute,
-    pickerRoute,
-    modalpagesRoute,
-    colorassetpageRoute,
-    componentsHeaderRoute,
-    notFoundRoute,
-])
+const Routes = () => (
+    <Switch>
+        <Route path="/" component={UI} />
+        <Route path="/wallet" component={Wallet} />
+        <Route path="/tonspace" component={TONSpace} />
+        <Route path="/onboarding" component={Onboarding} />
+        <Route path="/newnavigation" component={NewNavigation} />
+        <Route path="/colorchanging" component={ColorChanging} />
+        <Route path="/textpage" component={TextPage} />
+        <Route path="/tabbar" component={TabBar} />
+        <Route path="/picker" component={Picker} />
+        <Route path="/modalpages" component={ModalPages} />
+        <Route path="/colorassetpage" component={ColorAssetPage} />
+        <Route path="/components/header" component={NavigationBar} />
+        <Route>
+            <Redirect to="/" />
+        </Route>
+    </Switch>
+)
 
-const hashHistory = createHashHistory()
-
-export const router = createRouter({
-    routeTree,
-    defaultPreload: "intent",
-    history: hashHistory,
-})
+export default function AppRouter() {
+    return (
+        <Router hook={useHashLocation}>
+            <Routes />
+        </Router>
+    )
+}
