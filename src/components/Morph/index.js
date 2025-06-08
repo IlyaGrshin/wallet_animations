@@ -1,4 +1,5 @@
-import { AnimatePresence, motion } from "motion/react"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 import { TRANSITIONS } from "../../utils/animations"
 
 function Morph({ children }) {
@@ -19,7 +20,7 @@ function Morph({ children }) {
     return (
         <AnimatePresence mode="popLayout" initial={false}>
             {textToDisplay.map(({ char, key }) => (
-                <motion.span
+                <m.span
                     key={key}
                     layoutId={key}
                     style={{ display: "inline-block" }}
@@ -29,7 +30,7 @@ function Morph({ children }) {
                     transition={TRANSITIONS.MORPH}
                 >
                     {char === " " ? "\u00A0" : char}
-                </motion.span>
+                </m.span>
             ))}
         </AnimatePresence>
     )

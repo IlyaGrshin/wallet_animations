@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { motion, AnimatePresence } from "motion/react"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 import * as styles from "./ModalView.module.scss"
 
 import WebApp from "@twa-dev/sdk"
@@ -116,7 +117,7 @@ const ModalView = ({
             {isOpen && (
                 <>
                     <BackButton onClick={onClose} />
-                    <motion.div
+                    <m.div
                         className={styles.overlayFramer}
                         variants={overlayAnimation}
                         initial="hidden"
@@ -124,7 +125,7 @@ const ModalView = ({
                         exit="exit"
                         onClick={onClose}
                     >
-                        <motion.div
+                        <m.div
                             className={styles.root}
                             variants={modalAnimation}
                             initial="hidden"
@@ -134,8 +135,8 @@ const ModalView = ({
                             {...props}
                         >
                             {children}
-                        </motion.div>
-                    </motion.div>
+                        </m.div>
+                    </m.div>
                 </>
             )}
         </AnimatePresence>

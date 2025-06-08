@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, memo } from "react"
-import { motion, AnimatePresence } from "motion/react"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 import { TRANSITIONS } from "../../../utils/animations"
 
 import TabBar from "../../../components/TabBar"
@@ -149,7 +150,7 @@ const TabBarPage = () => {
                     custom={view}
                     inherit={false}
                 >
-                    <motion.div
+                    <m.div
                         initial={animationConfig.initial}
                         animate={animationConfig.animate}
                         exit={animationConfig.exit}
@@ -158,7 +159,7 @@ const TabBarPage = () => {
                         className={styles.view}
                     >
                         {content}
-                    </motion.div>
+                    </m.div>
                 </AnimatePresence>
             </div>
             <TabBar tabs={tabs} onChange={handleTabChange} />

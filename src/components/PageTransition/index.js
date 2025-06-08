@@ -1,4 +1,4 @@
-import { motion } from "motion/react"
+import * as m from "motion/react-m"
 import { EASING } from "../../utils/animations"
 import { useApple } from "../../hooks/DeviceProvider"
 
@@ -38,7 +38,7 @@ const PageTransition = ({ children, slide = "none" }) => {
     }
 
     return (
-        <motion.div
+        <m.div
             initial="initial"
             animate="in"
             exit="out"
@@ -46,7 +46,7 @@ const PageTransition = ({ children, slide = "none" }) => {
             transition={pageTransition}
         >
             {children}
-        </motion.div>
+        </m.div>
     )
 }
 
