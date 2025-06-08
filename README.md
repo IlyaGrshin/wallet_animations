@@ -72,3 +72,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### Motion Provider
 
 Animation features are loaded lazily using `LazyMotion` from the `motion/react` package. Components import the lightweight `m` component from `motion/react-m` to enable tree shaking and reduce bundle size.
+Lottie animations also use the light build of `lottie-web` via a webpack alias to keep the bundle small.
