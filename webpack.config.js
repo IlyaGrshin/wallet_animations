@@ -101,9 +101,12 @@ module.exports = {
 		},
 		],
 	},
-	resolve: {
-		extensions: ['.js', '.jsx'],
-	},
+        resolve: {
+                extensions: ['.js', '.jsx'],
+                alias: {
+                        'lottie-web': 'lottie-web/build/player/lottie_light',
+                },
+        },
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './public/index.html',
