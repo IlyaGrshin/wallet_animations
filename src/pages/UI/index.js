@@ -75,7 +75,7 @@ const UI = () => {
                     </SectionList.Item>
                     <SectionList.Item>
                         <Cell>
-                            <Cell.Text title="Label" descrption="Subtitle" />
+                            <Cell.Text title="Label" description="Subtitle" />
                         </Cell>
                         <Cell>
                             <Cell.Text title="Label" bold />
