@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, memo } from "react"
-import { AnimatePresence, motion } from "motion/react"
+import { AnimatePresence, m } from "motion"
 
 import * as styles from "./Wallet.module.scss"
 import * as cellStyles from "../../../components/Cells/Cell.module.scss"
@@ -212,11 +212,11 @@ function AnimatedCellMoreButton({ onClick, state }) {
     }
 
     return (
-        <motion.div onClick={onClick}>
+        <m.div onClick={onClick}>
             <div className={cellStyles.root}>
                 <div className={cellStyles.start}>
                     <div className="assetIcon" style={jettonsSize}>
-                        <motion.div
+                        <m.div
                             className={cellStyles.image}
                             variants={HiddenEyeMotion.variants}
                             transition={transition}
@@ -228,9 +228,9 @@ function AnimatedCellMoreButton({ onClick, state }) {
                             }}
                             key={`stack-asset-3`}
                             initial={false}
-                        ></motion.div>
+                        ></m.div>
                         {jettonsMotion.map((jetton, index) => (
-                            <motion.div
+                            <m.div
                                 className={cellStyles.image}
                                 variants={jetton.variants}
                                 transition={transition}
@@ -242,7 +242,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
                                 }}
                                 key={`stack-asset-${index}`}
                                 initial={false}
-                            ></motion.div>
+                            ></m.div>
                         ))}
                     </div>
                 </div>
@@ -250,7 +250,7 @@ function AnimatedCellMoreButton({ onClick, state }) {
                     className={cellStyles.body}
                     style={{ position: "relative" }}
                 >
-                    <motion.div
+                    <m.div
                         variants={variants.TextMoreAssets}
                         transition={transition}
                         animate={state ? "expanded" : "collapsed"}
@@ -265,8 +265,8 @@ function AnimatedCellMoreButton({ onClick, state }) {
                         >
                             More Assets
                         </Text>
-                    </motion.div>
-                    <motion.div
+                    </m.div>
+                    <m.div
                         variants={variants.TextHideLowBalances}
                         transition={transition}
                         animate={state ? "expanded" : "collapsed"}
@@ -282,10 +282,10 @@ function AnimatedCellMoreButton({ onClick, state }) {
                         >
                             Hide Low Balances
                         </Text>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     )
 }
 
@@ -338,7 +338,7 @@ function Assets() {
                 <>
                     <AnimatePresence inherit={false}>
                         {showSmallAssets && (
-                            <motion.div
+                            <m.div
                                 initial={{ height: 0, opacity: 0, scale: 0.97 }}
                                 animate={{
                                     height: "auto",
@@ -375,7 +375,7 @@ function Assets() {
                                         />
                                     </Cell>
                                 ))}
-                            </motion.div>
+                            </m.div>
                         )}
                     </AnimatePresence>
                     <AnimatedCellMoreButton

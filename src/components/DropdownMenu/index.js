@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { createPortal } from "react-dom"
-import { motion, AnimatePresence } from "motion/react"
+import { m, AnimatePresence } from "motion"
 import { SPRING } from "../../utils/animations"
 import Text from "../Text"
 
@@ -88,7 +88,7 @@ const DropdownMenu = ({ items }) => {
             {createPortal(
                 <AnimatePresence>
                     {isOpen && (
-                        <motion.div
+                        <m.div
                             ref={dropdownRef}
                             className={styles.root}
                             initial="hidden"
@@ -125,7 +125,7 @@ const DropdownMenu = ({ items }) => {
                                     </Text>
                                 </div>
                             ))}
-                        </motion.div>
+                        </m.div>
                     )}
                 </AnimatePresence>,
                 document.body

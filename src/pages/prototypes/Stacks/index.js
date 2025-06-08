@@ -1,6 +1,6 @@
 // TODO: Use CSS Modules
 import { useState } from "react"
-import { AnimatePresence, motion } from "motion/react"
+import { AnimatePresence, m } from "motion"
 
 import "./index.css"
 
@@ -153,12 +153,12 @@ function AnimatedCell({ expandedAssets, index }) {
           }
 
     return (
-        <motion.div className="asset" style={{ zIndex: 10 - index }}>
+        <m.div className="asset" style={{ zIndex: 10 - index }}>
             <div className="Cell">
                 <div className="start">
                     <div className="assetIcon" style={logosStyle}>
                         {logos.map((logo, index) => (
-                            <motion.div
+                            <m.div
                                 className="image"
                                 variants={logo.variants}
                                 transition={transition}
@@ -171,12 +171,12 @@ function AnimatedCell({ expandedAssets, index }) {
                                     zIndex: logo.zIndex,
                                 }}
                                 key={`stack-asset-${index}`}
-                            ></motion.div>
+                            ></m.div>
                         ))}
                     </div>
                 </div>
                 <div className="body" style={{ position: "relative" }}>
-                    <motion.div
+                    <m.div
                         variants={animatedVariants.moreAssets}
                         transition={transition}
                         animate={expandedAssets ? "expanded" : "collapsed"}
@@ -191,8 +191,8 @@ function AnimatedCell({ expandedAssets, index }) {
                         >
                             More Assets
                         </Text>
-                    </motion.div>
-                    <motion.div
+                    </m.div>
+                    <m.div
                         variants={animatedVariants.bodyTitle}
                         transition={transition}
                         animate={expandedAssets ? "expanded" : "collapsed"}
@@ -208,8 +208,8 @@ function AnimatedCell({ expandedAssets, index }) {
                         >
                             Toncoin
                         </Text>
-                    </motion.div>
-                    <motion.div
+                    </m.div>
+                    <m.div
                         variants={animatedVariants.bodySubtitle}
                         transition={transition}
                         animate={expandedAssets ? "expanded" : "collapsed"}
@@ -231,10 +231,10 @@ function AnimatedCell({ expandedAssets, index }) {
                         >
                             100 TON
                         </Text>
-                    </motion.div>
+                    </m.div>
                 </div>
                 <div className="end">
-                    <motion.div
+                    <m.div
                         variants={animatedVariants.endTitle1}
                         transition={transition}
                         animate={expandedAssets ? "expanded" : "collapsed"}
@@ -250,8 +250,8 @@ function AnimatedCell({ expandedAssets, index }) {
                         >
                             $150.00
                         </Text>
-                    </motion.div>
-                    <motion.div
+                    </m.div>
+                    <m.div
                         variants={animatedVariants.endTitle2}
                         transition={transition}
                         animate={expandedAssets ? "expanded" : "collapsed"}
@@ -267,10 +267,10 @@ function AnimatedCell({ expandedAssets, index }) {
                         >
                             $201.92
                         </Text>
-                    </motion.div>
+                    </m.div>
                 </div>
             </div>
-        </motion.div>
+        </m.div>
     )
 }
 
@@ -387,7 +387,7 @@ function Stacks() {
 
     return (
         <AnimatePresence initial={false}>
-            <motion.div
+            <m.div
                 animate={expandedAssets ? "expanded" : "collapsed"}
                 className={expandedAssets ? "expanded" : "collapsed"}
                 onClick={toggleAssets}
@@ -406,13 +406,13 @@ function Stacks() {
                         }
 
                         return (
-                            <motion.div
+                            <m.div
                                 className="asset"
                                 key={`asset-${index}`}
                                 animate={getItemVariant(index)}
                                 transition={springValue}
                             >
-                                <motion.div
+                                <m.div
                                     className="assetColorFill"
                                     animate={getAssetColorFill(index)}
                                     transition={{
@@ -420,7 +420,7 @@ function Stacks() {
                                         duration: 0.15,
                                     }}
                                 />
-                                <motion.div
+                                <m.div
                                     animate={getItemVariantInside(index)}
                                     transition={{
                                         ease: "linear",
@@ -444,12 +444,12 @@ function Stacks() {
                                             bold
                                         />
                                     </Cell>
-                                </motion.div>
-                            </motion.div>
+                                </m.div>
+                            </m.div>
                         )
                     })}
                 </Card>
-            </motion.div>
+            </m.div>
         </AnimatePresence>
     )
 }
