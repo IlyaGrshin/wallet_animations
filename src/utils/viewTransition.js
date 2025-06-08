@@ -54,11 +54,7 @@ const setupBrowserNavigationTransitions = () => {
     if (typeof window === "undefined") return
 
     const runBrowserTransition = () => {
-        if (
-            !isViewTransitionSupported() ||
-            isAnyTransitionRunning ||
-            window.navigation?.transition
-        ) {
+        if (!isViewTransitionSupported() || isAnyTransitionRunning) {
             return
         }
 
@@ -86,12 +82,24 @@ const setupBrowserNavigationTransitions = () => {
         window.navigation.addEventListener("navigate", (event) => {
             if (event.navigationType !== "traverse") return
 
-            if (event.transition) {
-                event.transition.finished.finally(() => {
-                    isAnyTransitionRunning = false
-                })
-            } else {
-                runBrowserTransition()
+            if (!isViewTransitionSupported() || isAnyTransitionRunning) return
+
+            isAnyTransitionRunning = true
+
+            try {
+                event.transitionWhile(
+                    new Promise((resolve) => {
+                        requestAnimationFrame(() => {
+                            isAnyTransitionRunning = false
+                            resolve()
+                        })
+                    })
+                )
+            } catch (error) {
+                if (error.name !== "AbortError") {
+                    console.warn("Browser navigation transition failed:", error)
+                }
+                isAnyTransitionRunning = false
             }
         })
     } else {
