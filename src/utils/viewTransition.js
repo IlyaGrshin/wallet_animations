@@ -84,7 +84,13 @@ const setupBrowserNavigationTransitions = () => {
 
     if ("navigation" in window) {
         window.navigation.addEventListener("navigate", (event) => {
-            if (event.navigationType === "traverse") {
+            if (event.navigationType !== "traverse") return
+
+            if (event.transition) {
+                event.transition.finished.finally(() => {
+                    isAnyTransitionRunning = false
+                })
+            } else {
                 runBrowserTransition()
             }
         })
