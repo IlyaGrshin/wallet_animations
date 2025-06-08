@@ -1,5 +1,5 @@
 import { Router, Switch, Route } from "wouter"
-import useHashLocation from "wouter/use-hash-location"
+import { useHashLocation } from "wouter/use-hash-location"
 import UI from "../pages/UI"
 import Wallet from "../pages/prototypes/Wallet"
 import TONSpace from "../pages/prototypes/TS"
