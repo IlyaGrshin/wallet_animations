@@ -53,53 +53,45 @@ export const initializeViewTransitions = () => {
 const setupBrowserNavigationTransitions = () => {
     if (typeof window === "undefined") return
 
+    const runBrowserTransition = () => {
+        if (
+            !isViewTransitionSupported() ||
+            isAnyTransitionRunning ||
+            window.navigation?.transition
+        ) {
+            return
+        }
+
+        isAnyTransitionRunning = true
+
+        try {
+            const transition = document.startViewTransition(() => {
+                return new Promise((resolve) => {
+                    setTimeout(resolve, 10)
+                })
+            })
+
+            transition.finished.finally(() => {
+                isAnyTransitionRunning = false
+            })
+        } catch (error) {
+            if (error.name !== "AbortError") {
+                console.warn("Browser navigation transition failed:", error)
+            }
+            isAnyTransitionRunning = false
+        }
+    }
+
     if ("navigation" in window) {
         window.navigation.addEventListener("navigate", (event) => {
-            if (
-                event.navigationType === "traverse" &&
-                isViewTransitionSupported() &&
-                !isAnyTransitionRunning
-            ) {
-                isAnyTransitionRunning = true
-
-                const waitForNextFrame = () =>
-                    new Promise((resolve) => requestAnimationFrame(() => resolve()))
-
-                event
-                    .transitionWhile(waitForNextFrame())
-                    .finally(() => {
-                        isAnyTransitionRunning = false
-                    })
+            if (event.navigationType === "traverse") {
+                runBrowserTransition()
             }
         })
     } else {
-        popstateHandler = () => {
-            if (isViewTransitionSupported() && !isAnyTransitionRunning) {
-                isAnyTransitionRunning = true
-
-                try {
-                    const transition = document.startViewTransition(() => {
-                        return new Promise((resolve) => {
-                            setTimeout(resolve, 10)
-                        })
-                    })
-
-                    transition.finished.finally(() => {
-                        isAnyTransitionRunning = false
-                    })
-                } catch (error) {
-                    if (error.name !== "AbortError") {
-                        console.warn(
-                            "Browser navigation transition failed:",
-                            error
-                        )
-                    }
-                    isAnyTransitionRunning = false
-                }
-            }
-        }
-
+        popstateHandler = runBrowserTransition
         window.addEventListener("popstate", popstateHandler)
+        window.addEventListener("hashchange", popstateHandler)
     }
 }
 
