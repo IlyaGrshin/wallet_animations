@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, memo } from "react"
-import { AnimatePresence, m } from "motion"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 
 import * as styles from "./Wallet.module.scss"
 import * as cellStyles from "../../../components/Cells/Cell.module.scss"

@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, memo } from "react"
-import { m, AnimatePresence } from "motion"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 import { TRANSITIONS } from "../../../utils/animations"
 
 import TabBar from "../../../components/TabBar"

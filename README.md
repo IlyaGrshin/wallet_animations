@@ -71,4 +71,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ### Motion Provider
 
-Animation features are loaded lazily using `LazyMotion` from the `motion` library. Components import `m` instead of `motion` to enable tree-shaking and reduce bundle size.
+Animation features are loaded lazily using `LazyMotion` from the `motion/react` package. Components import the lightweight `m` component from `motion/react-m` to enable tree shaking and reduce bundle size.

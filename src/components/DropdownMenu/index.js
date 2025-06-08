@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { createPortal } from "react-dom"
-import { m, AnimatePresence } from "motion"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 import { SPRING } from "../../utils/animations"
 import Text from "../Text"
 

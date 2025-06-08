@@ -1,6 +1,7 @@
 // TODO: Use CSS Modules
 import { useState } from "react"
-import { AnimatePresence, m } from "motion"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 
 import "./index.css"
 

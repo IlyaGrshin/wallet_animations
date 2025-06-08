@@ -1,4 +1,4 @@
-import { m } from "motion"
+import * as m from "motion/react-m"
 import { EASING } from "../../utils/animations"
 import { useApple } from "../../hooks/DeviceProvider"
 

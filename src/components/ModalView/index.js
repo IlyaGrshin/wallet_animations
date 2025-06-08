@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { m, AnimatePresence } from "motion"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 import * as styles from "./ModalView.module.scss"
 
 import WebApp from "@twa-dev/sdk"

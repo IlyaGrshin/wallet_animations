@@ -1,4 +1,4 @@
-import { LazyMotion, domAnimation } from "motion"
+import { LazyMotion, domAnimation } from "motion/react"
 
 const MotionProvider = ({ children }) => {
     return <LazyMotion features={domAnimation}>{children}</LazyMotion>
