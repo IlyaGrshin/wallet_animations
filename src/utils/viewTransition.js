@@ -53,30 +53,50 @@ export const initializeViewTransitions = () => {
 const setupBrowserNavigationTransitions = () => {
     if (typeof window === "undefined") return
 
-    popstateHandler = (event) => {
-        if (isViewTransitionSupported() && !isAnyTransitionRunning) {
-            isAnyTransitionRunning = true
+    if ("navigation" in window) {
+        window.navigation.addEventListener("navigate", (event) => {
+            if (
+                event.navigationType === "traverse" &&
+                event.canIntercept &&
+                isViewTransitionSupported() &&
+                !isAnyTransitionRunning
+            ) {
+                event.intercept({
+                    handler: async () => {
+                        await performViewTransition(() => {})
+                    },
+                })
+            }
+        })
+    } else {
+        popstateHandler = () => {
+            if (isViewTransitionSupported() && !isAnyTransitionRunning) {
+                isAnyTransitionRunning = true
 
-            try {
-                const transition = document.startViewTransition(() => {
-                    return new Promise((resolve) => {
-                        setTimeout(resolve, 10)
+                try {
+                    const transition = document.startViewTransition(() => {
+                        return new Promise((resolve) => {
+                            setTimeout(resolve, 10)
+                        })
                     })
-                })
 
-                transition.finished.finally(() => {
+                    transition.finished.finally(() => {
+                        isAnyTransitionRunning = false
+                    })
+                } catch (error) {
+                    if (error.name !== "AbortError") {
+                        console.warn(
+                            "Browser navigation transition failed:",
+                            error
+                        )
+                    }
                     isAnyTransitionRunning = false
-                })
-            } catch (error) {
-                if (error.name !== "AbortError") {
-                    console.warn("Browser navigation transition failed:", error)
                 }
-                isAnyTransitionRunning = false
             }
         }
-    }
 
-    window.addEventListener("popstate", popstateHandler)
+        window.addEventListener("popstate", popstateHandler)
+    }
 }
 
 export const cleanupViewTransitions = () => {
