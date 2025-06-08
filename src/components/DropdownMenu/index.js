@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, useEffectEvent } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "motion/react"
 import { SPRING } from "../../utils/animations"
@@ -37,19 +37,19 @@ const DropdownMenu = ({ items }) => {
         }
     }, [isOpen])
 
+    const handleClickOutside = useEffectEvent((event) => {
+        if (
+            buttonRef.current &&
+            dropdownRef.current &&
+            !buttonRef.current.contains(event.target) &&
+            !dropdownRef.current.contains(event.target)
+        ) {
+            setIsOpen(false)
+        }
+    })
+
     useEffect(() => {
         if (!isOpen) return
-
-        const handleClickOutside = (event) => {
-            if (
-                buttonRef.current &&
-                dropdownRef.current &&
-                !buttonRef.current.contains(event.target) &&
-                !dropdownRef.current.contains(event.target)
-            ) {
-                setIsOpen(false)
-            }
-        }
 
         document.addEventListener("mousedown", handleClickOutside)
         return () =>

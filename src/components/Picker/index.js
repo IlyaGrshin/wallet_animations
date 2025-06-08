@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useEffectEvent } from "react"
 import * as styles from "./Picker.module.scss"
 
 import WebApp from "@twa-dev/sdk"
@@ -19,7 +19,7 @@ const Picker = ({ items, onPickerIndex }) => {
         }
     }, [])
 
-    const handleScroll = useCallback(() => {
+    const handleScroll = useEffectEvent(() => {
         if (ticking.current) return
 
         ticking.current = true
@@ -44,7 +44,7 @@ const Picker = ({ items, onPickerIndex }) => {
 
             ticking.current = false
         })
-    }, [itemHeight, items.length, selectedIndex, onPickerIndex])
+    })
 
     useEffect(() => {
         const container = pickerRef.current
@@ -52,7 +52,7 @@ const Picker = ({ items, onPickerIndex }) => {
             container.addEventListener("scroll", handleScroll)
             return () => container.removeEventListener("scroll", handleScroll)
         }
-    }, [handleScroll])
+    }, [])
 
     useEffect(() => {
         if (selectedIndex >= 0 && selectedIndex < items.length) {
