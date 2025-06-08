@@ -63,5 +63,5 @@ export function normalizeHex(input) {
     ctx.fillStyle = input
     ctx.fillRect(0, 0, 1, 1)
     const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
-    return rgb2hex(r, g, b)
+    return rgbTohex(r, g, b)
 }
