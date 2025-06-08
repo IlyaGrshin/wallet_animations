@@ -1,10 +1,10 @@
-import { useRef, useEffect, Children, useCallback, useEffectEvent } from "react"
+import { useRef, useEffect, Children, useCallback } from "react"
 import * as styles from "./Gallery.module.scss"
 
 const Gallery = ({ children, onPageChange, onScrollProgress }) => {
     const containerRef = useRef(null)
 
-    const handleScroll = useEffectEvent(() => {
+    const handleScroll = useCallback(() => {
         if (containerRef.current) {
             const scrollLeft = containerRef.current.scrollLeft
             const pageWidth = containerRef.current.offsetWidth
@@ -15,7 +15,7 @@ const Gallery = ({ children, onPageChange, onScrollProgress }) => {
             onPageChange?.(newPage)
             onScrollProgress?.(progress)
         }
-    })
+    }, [onPageChange, onScrollProgress])
 
     useEffect(() => {
         const container = containerRef.current

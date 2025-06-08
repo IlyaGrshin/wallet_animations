@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useEffectEvent } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "motion/react"
 import { SPRING } from "../../utils/animations"
@@ -37,7 +37,7 @@ const DropdownMenu = ({ items }) => {
         }
     }, [isOpen])
 
-    const handleClickOutside = useEffectEvent((event) => {
+    const handleClickOutside = useCallback((event) => {
         if (
             buttonRef.current &&
             dropdownRef.current &&
@@ -46,7 +46,7 @@ const DropdownMenu = ({ items }) => {
         ) {
             setIsOpen(false)
         }
-    })
+    }, [])
 
     useEffect(() => {
         if (!isOpen) return
