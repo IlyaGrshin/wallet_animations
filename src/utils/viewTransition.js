@@ -60,7 +60,16 @@ const setupBrowserNavigationTransitions = () => {
                 isViewTransitionSupported() &&
                 !isAnyTransitionRunning
             ) {
-                event.transitionWhile(performViewTransition(() => {}))
+                isAnyTransitionRunning = true
+
+                const waitForNextFrame = () =>
+                    new Promise((resolve) => requestAnimationFrame(() => resolve()))
+
+                event
+                    .transitionWhile(waitForNextFrame())
+                    .finally(() => {
+                        isAnyTransitionRunning = false
+                    })
             }
         })
     } else {
