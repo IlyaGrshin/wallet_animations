@@ -57,15 +57,10 @@ const setupBrowserNavigationTransitions = () => {
         window.navigation.addEventListener("navigate", (event) => {
             if (
                 event.navigationType === "traverse" &&
-                event.canIntercept &&
                 isViewTransitionSupported() &&
                 !isAnyTransitionRunning
             ) {
-                event.intercept({
-                    handler: async () => {
-                        await performViewTransition(() => {})
-                    },
-                })
+                event.transitionWhile(performViewTransition(() => {}))
             }
         })
     } else {
