@@ -12,6 +12,7 @@ import Picker from "../pages/prototypes/Picker"
 import ModalPages from "../pages/prototypes/ModalPages"
 import ColorAssetPage from "../pages/prototypes/ColorAssetPage"
 import NavigationBar from "../pages/components/NavigationBar"
+import MainButton from "../pages/components/MainButton"
 import { useEffect } from "react"
 import { useLocation } from "wouter"
 
@@ -37,6 +38,7 @@ const Routes = () => (
         <Route path="/modalpages" component={ModalPages} />
         <Route path="/colorassetpage" component={ColorAssetPage} />
         <Route path="/components/header" component={NavigationBar} />
+        <Route path="/components/mainbutton" component={MainButton} />
         <Route>
             <Redirect to="/" />
         </Route>
