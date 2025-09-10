@@ -136,30 +136,13 @@ const BottomBar = () => {
                         <Cell
                             onClick={handleColorClick}
                             end={
-                                <Cell.Part type="ColorPicker">
-                                    <input
-                                        ref={colorInputRef}
-                                        type="color"
-                                        value={buttonBgColor}
-                                        onChange={handleButtonBgColorChange}
-                                        name="color"
-                                        id="color"
-                                    />
-                                    <label htmlFor="color">
-                                        <Text
-                                            apple={{
-                                                variant: "body",
-                                                weight: "regular",
-                                            }}
-                                            material={{
-                                                variant: "body1",
-                                                weight: "regular",
-                                            }}
-                                        >
-                                            {buttonBgColor}
-                                        </Text>
-                                    </label>
-                                </Cell.Part>
+                                <Cell.Part
+                                    type="ColorPicker"
+                                    value={buttonBgColor}
+                                    onChange={handleButtonBgColorChange}
+                                    inputRef={colorInputRef}
+                                    id="main-button-color"
+                                />
                             }
                         >
                             <Cell.Text title="Header Color" />

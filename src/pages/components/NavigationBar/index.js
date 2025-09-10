@@ -72,30 +72,13 @@ const NavigationBar = () => {
                         <Cell
                             onClick={handleColorClick}
                             end={
-                                <Cell.Part type="ColorPicker">
-                                    <input
-                                        ref={colorInputRef}
-                                        type="color"
-                                        value={headerColor}
-                                        onChange={handleColorChange}
-                                        name="color"
-                                        id="color"
-                                    />
-                                    <label htmlFor="color">
-                                        <Text
-                                            apple={{
-                                                variant: "body",
-                                                weight: "regular",
-                                            }}
-                                            material={{
-                                                variant: "body1",
-                                                weight: "regular",
-                                            }}
-                                        >
-                                            {headerColor}
-                                        </Text>
-                                    </label>
-                                </Cell.Part>
+                                <Cell.Part
+                                    type="ColorPicker"
+                                    value={headerColor}
+                                    onChange={handleColorChange}
+                                    inputRef={colorInputRef}
+                                    id="header-color"
+                                />
                             }
                         >
                             <Cell.Text title="Header Color" />
