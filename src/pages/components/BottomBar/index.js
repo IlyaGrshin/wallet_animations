@@ -82,6 +82,7 @@ const BottomBar = () => {
     }, [])
 
     const colorInputRef = useRef(null)
+    const textColorInputRef = useRef(null)
     const [buttonBgColor, setButtonBgColor] = useState(
         WebApp.themeParams.button_color
     )
@@ -92,11 +93,19 @@ const BottomBar = () => {
     const handleColorClick = () => {
         colorInputRef.current.click()
     }
+    const handleTextColorClick = () => {
+        textColorInputRef.current.click()
+    }
 
     const handleButtonBgColorChange = (event) => {
         let color = event.target.value.toUpperCase()
         setButtonBgColor(color)
         WebApp.MainButton.setParams({ color: color })
+    }
+    const handleTextColorChange = (event) => {
+        let color = event.target.value.toUpperCase()
+        setTextColor(color)
+        WebApp.MainButton.setParams({ text_color: color })
     }
 
     return (
@@ -116,6 +125,8 @@ const BottomBar = () => {
                             }}
                             autoFocus
                             autoComplete="off"
+                            autoCorrect="off"
+                            spellCheck={false}
                         />
                     </Cell>
                     <Cell>
@@ -128,6 +139,8 @@ const BottomBar = () => {
                                 WebApp.SecondaryButton.hide()
                             }}
                             autoComplete="off"
+                            autoCorrect="off"
+                            spellCheck={false}
                         />
                     </Cell>
                 </SectionList.Item>
@@ -145,7 +158,21 @@ const BottomBar = () => {
                                 />
                             }
                         >
-                            <Cell.Text title="Header Color" />
+                            Background Color
+                        </Cell>
+                        <Cell
+                            onClick={handleTextColorClick}
+                            end={
+                                <Cell.Part
+                                    type="ColorPicker"
+                                    value={textColor}
+                                    onChange={handleTextColorChange}
+                                    inputRef={textColorInputRef}
+                                    id="main-button-text-color"
+                                />
+                            }
+                        >
+                            Text Color
                         </Cell>
                         <Cell
                             onClick={toggleShine}
