@@ -23,10 +23,10 @@ const UI = () => {
                         </Cell>
                         <Cell
                             as={TransitionLink}
-                            to="/components/mainbutton"
+                            to="/components/bottombar"
                             end={<Cell.Part type="Chevron" />}
                         >
-                            <Cell.Text title="Main Button" />
+                            <Cell.Text title="Bottom Bar" />
                         </Cell>
                     </SectionList.Item>
                     <SectionList.Item header="Prototypes">

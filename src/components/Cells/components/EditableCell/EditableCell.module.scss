@@ -3,15 +3,15 @@
 }
 
 .input {
-    font: inherit;
+    font-size: inherit;
     line-height: inherit;
-    border-radius: 12px;
     background: var(--input-bg-color);
     color: var(--tg-theme-text-color);
     caret-color: var(--tg-theme-accent-text-color);
     border: none;
     outline: none;
     width: 100%;
+    padding: 0;
 
     &::placeholder {
         color: var(--tg-theme-subtitle-text-color);
@@ -36,11 +36,15 @@
 
 .clearButtonIcon {
     opacity: 1;
-    inset-inline-end: -12px;
+    inset-inline-end: 0px;
     margin-top: -12px;
     height: 22px;
     transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
     background-color: transparent;
     border: 0;
     padding: 0;
+
+    :global(body.apple) & {
+        inset-inline-end: -4px;
+    }
 }
