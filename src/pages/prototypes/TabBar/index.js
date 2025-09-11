@@ -14,9 +14,9 @@ import Wallet from "../Wallet"
 import Trading from "../Trading"
 import History from "../History"
 
-import { ReactComponent as WalletIcon } from "../../../icons/tabbar/Wallet.svg"
-import { ReactComponent as TradeIcon } from "../../../icons/tabbar/Chartline.svg"
-import { ReactComponent as HistoryIcon } from "../../../icons/tabbar/Clock.svg"
+import WalletIcon from "../../../icons/tabbar/Wallet.svg?react"
+import TradeIcon from "../../../icons/tabbar/Chartline.svg?react"
+import HistoryIcon from "../../../icons/tabbar/Clock.svg?react"
 
 import lottieIconWallet from ".././../../icons/lottie/wallet.json"
 import lottieIconTrade from ".././../../icons/lottie/trade.json"

@@ -4,7 +4,7 @@ import * as styles from "./NewNav.module.scss"
 import WebApp from "@twa-dev/sdk"
 
 import SegmentedControl from "../../../components/SegmentedControl"
-import { ReactComponent as QRCodeIcon } from "../../../icons/28/QR Code.svg"
+import QRCodeIcon from "../../../icons/28/QR Code.svg?react"
 import { BackButton } from "@twa-dev/sdk/react"
 import DefaultAvatar from "../../../icons/avatars/IlyaG.png"
 import TonSpaceSkeleton from "../TS Skeleton"

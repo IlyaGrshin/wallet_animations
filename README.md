@@ -1,75 +1,51 @@
-# Getting Started with Create React App
+## Wallet Animations – Vite Setup
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The project now runs on [Vite](https://vite.dev/).
 
-## Available Scripts
+### Scripts
 
-In the project directory, you can run:
+`yarn dev` – start local development (http://localhost:3000) (entry: `src/index.js`)
 
-### `yarn start`
+`yarn build` – production build into `build/`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+`yarn preview` – locally preview the production build
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`yarn lint` – run ESLint
 
-### `yarn test`
+### Configuration Highlights
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Code splitting into `react`, `react-vendors`, `vendors`, plus application chunks
+- SVG imported as React components via `?react` (`vite-plugin-svgr`)
+- Uses `babel.config.js` (React Compiler + prop-types removal in production)
+- Alias: `lottie-web` → `lottie_light`
 
-### `yarn build`
+### SVG Import Example
+```
+import Icon from './icon.svg?react'
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Optimization Notes
+- Add dynamic `import()` for heavy prototype pages if needed
+- Tune `build.chunkSizeWarningLimit` in `vite.config.js` if bundle size warnings appear
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Animations
+Lazy Motion usage and lightweight Lottie build to reduce bundle size.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Linting & Style
+`yarn lint` for JS/JSX. Stylelint configured for SCSS modules.
 
-### `yarn eject`
+### Quick Start
+```
+yarn install
+yarn dev
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Environment
+Node 18+ required.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Housekeeping
+Legacy Webpack config was removed. If you still find references to it, they can be safely deleted.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-### Motion Provider
-
-Animation features are loaded lazily using `LazyMotion` from the `motion/react` package. Components import the lightweight `m` component from `motion/react-m` to enable tree shaking and reduce bundle size.
-Lottie animations also use the light build of `lottie-web` via a webpack alias to keep the bundle small.
+### Next Ideas
+- Add bundle analyzer (e.g. rollup-plugin-visualizer)
+- Introduce tests (Vitest/Jest) if needed

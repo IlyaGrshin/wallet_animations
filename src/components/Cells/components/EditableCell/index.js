@@ -1,6 +1,6 @@
 import { forwardRef } from "react"
 import Text from "../../../Text"
-import { ReactComponent as ClearAppleSVG } from "../../../../images/clear_apple.svg"
+import ClearAppleSVG from "../../../../images/clear_apple.svg?react"
 
 import * as styles from "./EditableCell.module.scss"
 

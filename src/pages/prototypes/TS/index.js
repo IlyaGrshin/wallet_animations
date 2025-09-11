@@ -12,9 +12,9 @@ import { generateRandomBalance } from "../../../utils/number"
 import { DURATION, COMPLEX_EASING } from "../../../utils/animations"
 import { MultilineButton } from "../../../components/Button"
 
-import { ReactComponent as ArrowUpCircleFill } from "../../../icons/28/Arrow Up Circle Fill.svg"
-import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../../icons/28/Arrow Left & Right Circle Fill.svg"
-import { ReactComponent as PlusCircleFill28 } from "../../../icons/28/Plus Circle Fill.svg"
+import ArrowUpCircleFill from "../../../icons/28/Arrow Up Circle Fill.svg?react"
+import ArrowLiftAndRightCircleFill28 from "../../../icons/28/Arrow Left & Right Circle Fill.svg?react"
+import PlusCircleFill28 from "../../../icons/28/Plus Circle Fill.svg?react"
 
 import WebApp from "@twa-dev/sdk"
 

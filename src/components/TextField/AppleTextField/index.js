@@ -1,8 +1,8 @@
 import { forwardRef } from "react"
 import AppleText from "../../Text/AppleText"
 import { TextArea } from "../TextArea"
-import { ReactComponent as ClearAppleSVG } from "../../../images/clear_apple.svg"
-import { ReactComponent as SearchAppleSVG } from "../../../images/search_apple.svg"
+import ClearAppleSVG from "../../../images/clear_apple.svg?react"
+import SearchAppleSVG from "../../../images/search_apple.svg?react"
 
 import * as styles from "./AppleTextField.module.scss"
 
