@@ -59,6 +59,10 @@
         border-radius: 10px;
     }
 
+    :global(body.apple26) & {
+        border-radius: 25px;
+    }
+
     :global(body.material) & {
         padding: 12px 16px;
         border-radius: 8px;

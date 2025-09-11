@@ -24,3 +24,6 @@ yarn-debug.log*
 yarn-error.log*
 
 deploy.sh
+
+src/config
+src/config/apple26Whitelist.js

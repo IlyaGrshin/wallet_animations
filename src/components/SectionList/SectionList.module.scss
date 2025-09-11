@@ -35,6 +35,12 @@
         }
     }
 
+    :global(body.apple26) & {
+        section .container {
+            border-radius: 26px;
+        }
+    }
+
     :global(body.material) & {
         padding: 0;
         gap: 12px;

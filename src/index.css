@@ -7,7 +7,7 @@
 }
 
 :root {
-    .apple {
+    .apple, .apple26 {
         --side-padding: 16px;
     }
 
