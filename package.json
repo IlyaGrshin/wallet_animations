@@ -48,6 +48,7 @@
     "@babel/plugin-transform-runtime": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.26.3",
+    "@relative-ci/agent": "^4.3.1",
     "@vitejs/plugin-react": "^5.0.2",
     "babel-plugin-react-compiler": "^19.1.0-rc.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
