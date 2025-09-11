@@ -4,6 +4,7 @@ import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
 export default defineConfig(({ mode }) => ({
+  base: './',
   plugins: [
     react({
       babel: {
