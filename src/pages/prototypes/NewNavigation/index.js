@@ -96,7 +96,7 @@ function NewNavigation() {
                         ></div>
                     </div>
                     <SegmentedControl
-                        segments={["Wallet", "TON Space"]}
+                        segments={["Crypto", "TON"]}
                         onChange={handleSegmentChange}
                         colorScheme={activeSegment === 1 ? "dark" : "light"}
                         type="circled"

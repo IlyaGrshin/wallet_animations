@@ -55,7 +55,7 @@ function Profile() {
                     }}
                     className={styles.label}
                 >
-                    TON Space Balance
+                    TON Wallet Balance
                 </Text>
                 <Spoiler
                     className={styles.amount}

@@ -15,7 +15,7 @@ import * as styles from "./Onboarding.module.scss"
 const GalleryPages = [
     {
         imageClass: styles.coin,
-        title: "Your TON Space",
+        title: "Your TON Wallet",
         description:
             "Get access to all the features of TON blockchain directly in Telegram",
     },
@@ -23,12 +23,12 @@ const GalleryPages = [
         imageClass: styles.disk,
         title: "Secure Ownership",
         description:
-            "You have complete control of the Toncoin, collectibles, and jettons in your TON Space",
+            "You have complete control of the Toncoin, collectibles, and jettons in your TON Wallet",
     },
     {
         imageClass: styles.planet,
         title: "Your Gateway to TON",
-        description: "Access decentralized applications with your TON Space",
+        description: "Access decentralized applications with your TON Wallet",
     },
 ]
 

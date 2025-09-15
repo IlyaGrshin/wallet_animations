@@ -67,7 +67,7 @@ function Balance() {
                 }}
                 className={styles.label}
             >
-                Wallet Balance
+                Total Balance
             </Text>
             <Spoiler
                 className={styles.amount}
