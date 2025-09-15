@@ -1,4 +1,4 @@
-import * as styles from "./AppleText.module.scss"
+import "./AppleText.scss"
 
 const AppleText = ({
     as: Component = "div",

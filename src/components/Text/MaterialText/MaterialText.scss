@@ -1,44 +1,44 @@
-:global(body.material) {
-    & [variant="headline5"] {
+body.material {
+    [variant="headline5"] {
         font-size: 24px;
         line-height: 28px;
         font-weight: 500 !important;
     }
 
-    & [variant="headline6"] {
+    [variant="headline6"] {
         font-size: 20px;
         line-height: 24px;
         font-weight: 500 !important;
     }
 
-    & [variant="body1"] {
+    [variant="body1"] {
         font-size: 16px;
         line-height: 20px;
     }
 
-    & [variant="subtitle1"] {
+    [variant="subtitle1"] {
         font-size: 15px;
         line-height: 18px;
     }
 
-    & [variant="button1"] {
+    [variant="button1"] {
         font-size: 15px;
         line-height: 18px;
         font-weight: 500 !important;
     }
 
-    & [variant="subtitle2"] {
+    [variant="subtitle2"] {
         font-size: 14px;
         line-height: 16px;
     }
 
-    & [variant="caption2"] {
+    [variant="caption2"] {
         font-size: 12px;
         line-height: 14px;
     }
 
-    & [weight="medium"],
-    & [weight="bold"] {
+    [weight="medium"],
+    [weight="bold"] {
         font-weight: 500;
     }
 }

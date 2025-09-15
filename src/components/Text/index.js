@@ -12,11 +12,12 @@ const Text = ({
 }) => {
     if (useApple26) {
         return (
-            <AppleText apple={apple26Props || appleProps} {...props}>
+            <AppleText apple={apple26Props ?? appleProps} {...props}>
                 {children}
             </AppleText>
         )
     }
+
     if (useApple) {
         return (
             <AppleText apple={appleProps} {...props}>
@@ -24,6 +25,7 @@ const Text = ({
             </AppleText>
         )
     }
+
     return (
         <MaterialText material={materialProps} {...props}>
             {children}

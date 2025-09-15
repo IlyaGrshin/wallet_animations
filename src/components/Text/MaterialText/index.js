@@ -1,4 +1,4 @@
-import * as styles from "./MaterialText.module.scss"
+import "./MaterialText.scss"
 
 const MaterialText = ({
     as: Component = "div",
