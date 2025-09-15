@@ -6,6 +6,14 @@
     .view {
         overflow-y: scroll;
         height: 100%;
+
+        :global(body.apple26) & {
+            padding-bottom: 80px;
+        }
+    }
+
+    :global(body.apple26) & {
+        height: 100vh !important;
     }
 
     :global(body.apple) & {

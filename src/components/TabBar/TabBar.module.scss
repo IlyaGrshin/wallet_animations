@@ -7,6 +7,21 @@
     background: var(--tg-theme-bottom-bar-bg-color);
     padding-bottom: env(safe-area-inset-bottom);
 
+    :global(body.apple26) & {
+        position: absolute;
+        width: calc(100% - 42px);
+        margin: 21px;
+        bottom: 0;
+        box-shadow: 0 0 10px 0 rgba(0 0 0 / 0.1), 
+                    0.67px 0.67px 0.25px 0 white inset, 
+                    -0.67px -0.67px 0.25px 0 white inset, 
+                    0 0 20px 0 var(--tg-theme-section-bg-color) inset !important;
+        border-radius: 100px;
+        padding: 4px;
+        background: rgba(from var(--tg-theme-section-bg-color) r g b / 0.7);
+        backdrop-filter: saturate(180%) blur(8px);
+    }
+
     :global(body.apple) & {
         box-shadow: 0 -0.33px 0 0 var(--separator-non-opaque);
     }
@@ -25,6 +40,18 @@
         flex: 1 0 0;
         text-decoration: none;
         font-weight: 500;
+
+        :global(body.apple26) & {
+            opacity: 0.9 !important;
+        }
+
+        :global(body.apple26) .root[data-color-scheme="dark"] & {
+            mix-blend-mode: plus-darker;
+        }
+
+        :global(body.apple26) .root[data-color-scheme="dark"] & {
+            mix-blend-mode: plus-lighter;
+        }
 
         :global(body.apple) & {
             padding: 2px 0 1px;
@@ -88,6 +115,12 @@
             }
         }
 
+        :global(body.apple26) & {
+            font-weight: 700;
+            background-color: var(--secondary-button-color);
+            border-radius: 100px;
+        }
+
         :global(body.material) & {
             color: var(--tg-theme-text-color);
 
@@ -95,5 +128,12 @@
                 fill: var(--tg-theme-text-color);
             }
         }
+    }
+}
+
+.root:active {
+    :global(body.apple26) & {
+        transition: transform 0.5s ease;
+        transform: scale(1.02);
     }
 }
