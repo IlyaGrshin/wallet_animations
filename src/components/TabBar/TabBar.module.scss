@@ -6,20 +6,47 @@
     box-shadow: 0 -0.33px 0 0 var(--separator-non-opaque);
     background: var(--tg-theme-bottom-bar-bg-color);
     padding-bottom: env(safe-area-inset-bottom);
+    will-change: transform;
 
     :global(body.apple26) & {
         position: absolute;
-        width: calc(100% - 42px);
-        margin: 21px;
-        bottom: 0;
-        box-shadow: 0 0 10px 0 rgba(0 0 0 / 0.1), 
-                    0.67px 0.67px 0.25px 0 white inset, 
-                    -0.67px -0.67px 0.25px 0 white inset, 
-                    0 0 20px 0 var(--tg-theme-section-bg-color) inset !important;
+        left: 21px;
+        right: 21px;
+        margin: 0;
+        bottom: 21px;
         border-radius: 100px;
         padding: 4px;
         background: rgba(from var(--tg-theme-section-bg-color) r g b / 0.7);
         backdrop-filter: saturate(180%) blur(8px);
+        box-shadow: none !important;
+        isolation: isolate;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+            box-shadow: 0 0 10px 0 rgba(0 0 0 / 0.1);
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 0;
+            box-shadow: 0.67px 0.67px 0.25px 0 white inset, 
+                    -0.67px -0.67px 0.25px 0 white inset, 
+                    0 0 20px 0 var(--tg-theme-section-bg-color) inset !important;
+            mix-blend-mode: saturation;
+        }
+
+        .tab:not(:first-child) {
+            margin-left: -7.33px;
+        }
     }
 
     :global(body.apple) & {
@@ -43,6 +70,8 @@
 
         :global(body.apple26) & {
             opacity: 0.9 !important;
+            position: relative;
+            z-index: 2; // keep content above ::before/::after layers
         }
 
         :global(body.apple26) .root[data-color-scheme="dark"] & {
@@ -129,11 +158,17 @@
             }
         }
     }
-}
 
-.root:active {
-    :global(body.apple26) & {
-        transition: transform 0.5s ease;
-        transform: scale(1.02);
+    .gradient {
+        position: absolute;
+        content: "";
+        inset: 0;
+        background: linear-gradient(
+            to bottom,
+            rgba(from var(--tg-theme-secondary-bg-color) r g b / 0),
+            rgba(from var(--tg-theme-secondary-bg-color) r g b / 0.9)
+        );
+        z-index: -1;
+        margin: -12px -21px -21px;
     }
 }

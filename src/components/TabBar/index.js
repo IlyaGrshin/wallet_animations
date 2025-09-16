@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect, lazy, Suspense } from "react"
+import { motion } from "motion/react"
+import { useApple26 } from "../../hooks/DeviceProvider"
 import * as styles from "./TabBar.module.scss"
 
 const Lottie = lazy(() => import("lottie-react"))
@@ -27,6 +29,8 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
         }
     }
 
+    // Press animation handled by whileTap with spring transition
+
     useEffect(() => {
         if (!userInteractedRef.current) return
         const refObj = lottieRefs.current[activeIndex]
@@ -38,7 +42,13 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     }, [activeIndex, replayNonce])
 
     return (
-        <div className={styles.root}>
+        <motion.div
+            className={styles.root}
+            whileTap={{ scale: 1.02 }}
+            transition={{
+                scale: { type: "spring", stiffness: 800, damping: 40 },
+            }}
+        >
             {tabs.map((tab, index) => {
                 const isActive = index === activeIndex
                 const showLottie = Boolean(tab.lottieIcon)
@@ -66,7 +76,8 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                     </div>
                 )
             })}
-        </div>
+            {useApple26 && <div className={styles.gradient}></div>}
+        </motion.div>
     )
 }
 
