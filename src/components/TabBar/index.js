@@ -29,8 +29,6 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
         }
     }
 
-    // Press animation handled by whileTap with spring transition
-
     useEffect(() => {
         if (!userInteractedRef.current) return
         const refObj = lottieRefs.current[activeIndex]
@@ -76,6 +74,23 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                     </div>
                 )
             })}
+            {useApple26 && (
+                <motion.div
+                    className={styles.activeIndicator}
+                    animate={{
+                        width: `calc(${100 / tabs.length}% + 7.33px - 4px)`,
+                        left: `calc(${(100 / tabs.length) * activeIndex}% - ${3.67 * activeIndex}px)`,
+                    }}
+                    transition={{
+                        left: { type: "spring", stiffness: 800, damping: 50 },
+                        width: { type: "spring", stiffness: 800, damping: 50 },
+                    }}
+                    style={{
+                        marginLeft: "4px",
+                        marginRight: "4px",
+                    }}
+                />
+            )}
             {useApple26 && <div className={styles.gradient}></div>}
         </motion.div>
     )
