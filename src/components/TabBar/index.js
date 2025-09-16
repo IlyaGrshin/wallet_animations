@@ -1,13 +1,11 @@
-import { useState, useRef, useEffect, lazy, Suspense } from "react"
+import { useState, useRef } from "react"
 import { motion } from "motion/react"
 import { useApple26 } from "../../hooks/DeviceProvider"
 import * as styles from "./TabBar.module.scss"
-
-const Lottie = lazy(() => import("lottie-react"))
+import Tab from "./components/Tab"
 
 const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
-    const lottieRefs = useRef([])
     const userInteractedRef = useRef(false)
     const [replayNonce, setReplayNonce] = useState(0)
 
@@ -21,23 +19,11 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
         }
     }
 
-    if (lottieRefs.current.length < tabs.length) {
-        for (let i = 0; i < tabs.length; i++) {
-            if (!lottieRefs.current[i]) {
-                lottieRefs.current[i] = { current: null }
-            }
-        }
-    }
-
-    useEffect(() => {
-        if (!userInteractedRef.current) return
-        const refObj = lottieRefs.current[activeIndex]
-        const anim = refObj?.current
-        if (anim?.play) {
-            anim.stop?.()
-            anim.play()
-        }
-    }, [activeIndex, replayNonce])
+    const playKey = `${activeIndex}:${replayNonce}`
+    const segmentPercent = 100 / tabs.length
+    const indicatorWidth = `calc(${segmentPercent}% + 7.33px - 4px)`
+    const indicatorLeft = `calc(${segmentPercent * activeIndex}% - ${3.67 * activeIndex}px)`
+    const spring = { type: "spring", stiffness: 800, damping: 50 }
 
     return (
         <motion.div
@@ -47,51 +33,27 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                 scale: { type: "spring", stiffness: 800, damping: 40 },
             }}
         >
-            {tabs.map((tab, index) => {
-                const isActive = index === activeIndex
-                const showLottie = Boolean(tab.lottieIcon)
-                return (
-                    <div
-                        key={index}
-                        className={`${styles.tab} ${isActive ? styles.active : ""}`}
-                        onClick={() => handleSegmentClick(index)}
-                    >
-                        <div className={styles.icon}>
-                            {showLottie ? (
-                                <Suspense fallback={tab.icon || null}>
-                                    <Lottie
-                                        lottieRef={lottieRefs.current[index]}
-                                        animationData={tab.lottieIcon}
-                                        autoplay={false}
-                                        loop={false}
-                                    />
-                                </Suspense>
-                            ) : (
-                                tab.icon
-                            )}
-                        </div>
-                        <span>{tab.label}</span>
-                    </div>
-                )
-            })}
-            {useApple26 && (
-                <motion.div
-                    className={styles.activeIndicator}
-                    animate={{
-                        width: `calc(${100 / tabs.length}% + 7.33px - 4px)`,
-                        left: `calc(${(100 / tabs.length) * activeIndex}% - ${3.67 * activeIndex}px)`,
-                    }}
-                    transition={{
-                        left: { type: "spring", stiffness: 800, damping: 50 },
-                        width: { type: "spring", stiffness: 800, damping: 50 },
-                    }}
-                    style={{
-                        marginLeft: "4px",
-                        marginRight: "4px",
-                    }}
+            {tabs.map((tab, index) => (
+                <Tab
+                    key={index}
+                    isActive={index === activeIndex}
+                    onClick={() => handleSegmentClick(index)}
+                    label={tab.label}
+                    icon={tab.icon}
+                    lottieIcon={tab.lottieIcon}
+                    playKey={playKey}
                 />
+            ))}
+            {useApple26 && (
+                <>
+                    <motion.div
+                        className={styles.activeIndicator}
+                        animate={{ width: indicatorWidth, left: indicatorLeft }}
+                        transition={{ left: spring, width: spring }}
+                    />
+                    <div className={styles.gradient}></div>
+                </>
             )}
-            {useApple26 && <div className={styles.gradient}></div>}
         </motion.div>
     )
 }
