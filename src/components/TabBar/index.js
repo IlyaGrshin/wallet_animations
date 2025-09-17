@@ -3,6 +3,7 @@ import { motion } from "motion/react"
 import { useApple26 } from "../../hooks/DeviceProvider"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
+import { useIndicatorDrag } from "./useIndicatorDrag"
 
 const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
@@ -10,6 +11,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const [replayNonce, setReplayNonce] = useState(0)
 
     const handleSegmentClick = (index) => {
+        if (drag?.isDragging) return
         userInteractedRef.current = true
         if (index === activeIndex) {
             setReplayNonce((n) => n + 1)
@@ -20,13 +22,18 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     }
 
     const playKey = `${activeIndex}:${replayNonce}`
-    const segmentPercent = 100 / tabs.length
-    const indicatorWidth = `calc(${segmentPercent}% + 7.33px - 4px)`
-    const indicatorLeft = `calc(${segmentPercent * activeIndex}% - ${3.67 * activeIndex}px)`
     const spring = { type: "spring", stiffness: 800, damping: 50 }
 
-    const clipLeft = indicatorLeft
-    const clipRight = `calc(100% - (${indicatorLeft} + ${indicatorWidth}) - 2.33px * ${activeIndex})`
+    const drag = useIndicatorDrag({
+        tabsLength: tabs.length,
+        activeIndex,
+        spring,
+        onSnapToSame: () => setReplayNonce((n) => n + 1),
+        onSnapToNew: (idx) => {
+            setActiveIndex(idx)
+            onChange?.(idx)
+        },
+    })
 
     return (
         <motion.div
@@ -52,10 +59,10 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                 <>
                     <motion.div
                         className={styles.clipPathContainer}
-                        animate={{
-                            clipPath: `inset(0 ${clipRight} 0 ${clipLeft} round 100px)`,
-                        }}
-                        transition={{ clipPath: spring }}
+                        ref={drag.overlayRef}
+                        {...drag.handlers}
+                        animate={drag.animate}
+                        transition={drag.transition}
                     >
                         {tabs.map((tab, index) => (
                             <Tab
