@@ -25,6 +25,9 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const indicatorLeft = `calc(${segmentPercent * activeIndex}% - ${3.67 * activeIndex}px)`
     const spring = { type: "spring", stiffness: 800, damping: 50 }
 
+    const clipLeft = indicatorLeft
+    const clipRight = `calc(100% - (${indicatorLeft} + ${indicatorWidth}) - 2.33px * ${activeIndex})`
+
     return (
         <motion.div
             className={styles.root}
@@ -44,13 +47,28 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                     playKey={playKey}
                 />
             ))}
+
             {useApple26 && (
                 <>
                     <motion.div
-                        className={styles.activeIndicator}
-                        animate={{ width: indicatorWidth, left: indicatorLeft }}
-                        transition={{ left: spring, width: spring }}
-                    />
+                        className={styles.clipPathContainer}
+                        animate={{
+                            clipPath: `inset(0 ${clipRight} 0 ${clipLeft} round 100px)`,
+                        }}
+                        transition={{ clipPath: spring }}
+                    >
+                        {tabs.map((tab, index) => (
+                            <Tab
+                                key={index}
+                                isActive={index === activeIndex}
+                                onClick={() => handleSegmentClick(index)}
+                                label={tab.label}
+                                icon={tab.icon}
+                                lottieIcon={tab.lottieIcon}
+                                playKey={playKey}
+                            />
+                        ))}
+                    </motion.div>
                     <div className={styles.gradient}></div>
                 </>
             )}

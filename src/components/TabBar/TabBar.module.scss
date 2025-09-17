@@ -54,8 +54,6 @@
             0 1px 3px 0 rgb(0 0 0 / 6%);
     }
 
-    // .tab and .tab.active styles are moved to components/Tab/Tab.module.scss
-
     .gradient {
         position: absolute;
         content: "";
@@ -88,6 +86,29 @@
             z-index: 1;
             margin-left: 4px;
             margin-right: 4px;
+        }
+    }
+
+    .clipPathContainer {
+        position: absolute;
+        display: flex;
+        background-color: var(--secondary-button-color);
+        width: calc(100% - 8px);
+        clip-path: inset(0px calc(75% - 5px) 0px 0% round 100px);
+        will-change: clip-path;
+        z-index: 10;
+        overflow: hidden;
+
+        span {
+            color: var(--tg-theme-accent-text-color) !important;
+        }
+
+        :global(.wallet-lottie_fill-color) path {
+            fill: var(--tg-theme-accent-text-color) !important;
+        }
+
+        :global(.wallet-lottie_stroke-color) path {
+            stroke: var(--tg-theme-accent-text-color) !important;
         }
     }
 }
