@@ -6,6 +6,16 @@ import Tab from "./components/Tab"
 import { useIndicatorDrag } from "./useIndicatorDrag"
 
 const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
+    const appearVariants = {
+        hidden: { y: 16, opacity: 0, scale: 0.97 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            transition: { type: "spring", stiffness: 700, damping: 40 },
+        },
+    }
+
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
     const userInteractedRef = useRef(false)
     const [replayNonce, setReplayNonce] = useState(0)
@@ -38,6 +48,10 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     return (
         <motion.div
             className={styles.root}
+            variants={appearVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.6 }}
             whileTap={{ scale: 1.02 }}
             transition={{
                 scale: { type: "spring", stiffness: 800, damping: 40 },
