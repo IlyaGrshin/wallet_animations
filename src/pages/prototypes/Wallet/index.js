@@ -29,10 +29,10 @@ import {
 import assets from "./data/assets.json"
 import txHistory from "./data/transactions.json"
 
-import ArrowUpCircleFill from "../../../icons/28/Arrow Up Circle Fill.svg?react"
-import ArrowLiftAndRightCircleFill28 from "../../../icons/28/Arrow Left & Right Circle Fill.svg?react"
-import PlusCircleFill28 from "../../../icons/28/Plus Circle Fill.svg?react"
-import CreditCardFill28 from "../../../icons/28/Credit Card Fill.svg?react"
+import { ReactComponent as ArrowUpCircleFill } from "../../../icons/28/Arrow Up Circle Fill.svg"
+import { ReactComponent as ArrowLiftAndRightCircleFill28 } from "../../../icons/28/Arrow Left & Right Circle Fill.svg"
+import { ReactComponent as PlusCircleFill28 } from "../../../icons/28/Plus Circle Fill.svg"
+import { ReactComponent as CreditCardFill28 } from "../../../icons/28/Credit Card Fill.svg"
 
 import HiddenEye from "../../../icons/avatars/HiddenEyeIcon.svg"
 import WebApp from "@twa-dev/sdk"

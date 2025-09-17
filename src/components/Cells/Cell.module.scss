@@ -89,22 +89,6 @@
 			padding: 10px var(--side-padding) 10px 0;
 		}
 	}
-	
-	:global(body.apple26) & {
-		.start {
-			padding: 12px 10px 12px 0;
-		}
-
-		.body {
-			min-height: 52px;
-			padding: 10px var(--side-padding) 9px 0;
-			gap: 1px;
-		}
-
-		.end {
-			gap: 1px;
-		}
-	}
 
 	:global(body.material) & {
 		padding-left: var(--side-padding);

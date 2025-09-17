@@ -2,7 +2,6 @@ import Text from "../Text"
 
 import CellText from "./components/CellText"
 import CellPart from "./components/CellPart"
-import EditableCell from "./components/EditableCell"
 
 import * as styles from "./Cell.module.scss"
 
@@ -72,7 +71,6 @@ export const Cell = Object.assign(CellComponent, {
     End: CellEnd,
     Part: CellPart,
     Text: CellText,
-    Editable: EditableCell,
 })
 
 export default Cell

@@ -42,20 +42,6 @@
         }
     }
 
-    :global(body.apple26) & {
-        width: 64px;
-
-        &::after {
-            width: 39px;
-            height: 24px;
-            border-radius: 12px;
-        }
-
-        &[data-state="true"]::after {
-        transform: translateX(53%);
-    }
-    }
-
     :global(body.material) & {
         width: 32px;
         height: 14px;

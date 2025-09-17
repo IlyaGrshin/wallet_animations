@@ -12,8 +12,6 @@ import NativePageTransition from "../../../components/NativePageTransition"
 const NavigationBar = () => {
     const [isFullscreen, setIsFullscreen] = useState(false)
     const [isVisibleBackButton, setBackButton] = useState(true)
-    const [isSettingsButtonAvailable, setSettingsButtonAvailable] =
-        useState(false)
     const [headerColor, setHeaderColor] = useState("#EFEFF4")
     const colorInputRef = useRef(null)
 
@@ -53,16 +51,6 @@ const NavigationBar = () => {
         }
     }
 
-    const toggleSettingsButton = () => {
-        if (isSettingsButtonAvailable) {
-            setSettingsButtonAvailable(false)
-            WebApp.SettingsButton.hide()
-        } else {
-            setSettingsButtonAvailable(true)
-            WebApp.SettingsButton.show()
-        }
-    }
-
     return (
         <Page>
             <NativePageTransition>
@@ -72,13 +60,30 @@ const NavigationBar = () => {
                         <Cell
                             onClick={handleColorClick}
                             end={
-                                <Cell.Part
-                                    type="ColorPicker"
-                                    value={headerColor}
-                                    onChange={handleColorChange}
-                                    inputRef={colorInputRef}
-                                    id="header-color"
-                                />
+                                <Cell.Part type="ColorPicker">
+                                    <input
+                                        ref={colorInputRef}
+                                        type="color"
+                                        value={headerColor}
+                                        onChange={handleColorChange}
+                                        name="color"
+                                        id="color"
+                                    />
+                                    <label htmlFor="color">
+                                        <Text
+                                            apple={{
+                                                variant: "body",
+                                                weight: "regular",
+                                            }}
+                                            material={{
+                                                variant: "body1",
+                                                weight: "regular",
+                                            }}
+                                        >
+                                            {headerColor}
+                                        </Text>
+                                    </label>
+                                </Cell.Part>
                             }
                         >
                             <Cell.Text title="Header Color" />
@@ -87,40 +92,19 @@ const NavigationBar = () => {
                             end={<Cell.Part type="Chevron" />}
                             onClick={toggleBackButton}
                         >
-                            <Cell.Text
-                                title={
-                                    isVisibleBackButton
-                                        ? "Hide Back Button"
-                                        : "Show Back Button"
-                                }
-                            />
+                            <Cell.Text title="Change Back / Close Button" />
                         </Cell>
                         <Cell
                             end={<Cell.Part type="Chevron" />}
                             onClick={toggleFullscreen}
                         >
-                            <Cell.Text
-                                title={
-                                    isFullscreen
-                                        ? "Exit Fullscreen"
-                                        : "Enter Fullscreen"
-                                }
-                            />
+                            <Cell.Text title="Toggle Fullscreen" />
                         </Cell>
                         <Cell end={<Cell.Part type="Chevron" />}>
                             <Cell.Text title="Expand WebView" />
                         </Cell>
-                        <Cell
-                            end={<Cell.Part type="Chevron" />}
-                            onClick={toggleSettingsButton}
-                        >
-                            <Cell.Text
-                                title={
-                                    isSettingsButtonAvailable
-                                        ? "Turn Off Settings"
-                                        : "Turn On Settings"
-                                }
-                            />
+                        <Cell end={<Cell.Part type="Chevron" />}>
+                            <Cell.Text title="Turn On Settings" />
                         </Cell>
                     </SectionList.Item>
                 </SectionList>

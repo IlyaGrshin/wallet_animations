@@ -5,13 +5,9 @@ import { useApple } from "../../hooks/DeviceProvider"
 import AppleTextField from "./AppleTextField"
 import MaterialTextField from "./MaterialTextField"
 
-export const TextField = forwardRef((props, ref) => {
+export const TextField = forwardRef((ref) => {
     if (useApple) {
-        return <AppleTextField {...props} ref={ref} />
+        return <AppleTextField ref={ref} />
     }
-
-    // return <MaterialTextField {...props} ref={ref} />
-    return <AppleTextField {...props} ref={ref} />
+    return <MaterialTextField ref={ref} />
 })
-
-export default TextField

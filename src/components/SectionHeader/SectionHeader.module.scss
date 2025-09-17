@@ -10,10 +10,6 @@
         color: var(--tg-theme-text-color);
     }
 
-    :global(body.apple26) & {
-        padding: 10px 16px;
-    }
-
     :global(body.material) & {
         padding: 19px 20px 3px;
         background-color: var(--tg-theme-section-bg-color);

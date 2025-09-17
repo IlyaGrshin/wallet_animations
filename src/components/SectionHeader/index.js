@@ -11,10 +11,6 @@ function SectionHeader({ type, title, value, ...props }) {
                             variant: "title3",
                             weight: "bold",
                         }}
-                        apple26={{
-                            variant: "title3",
-                            weight: "bold",
-                        }}
                         material={{
                             variant: "headline6",
                         }}
@@ -24,10 +20,6 @@ function SectionHeader({ type, title, value, ...props }) {
                     {value && (
                         <Text
                             apple={{
-                                variant: "title3",
-                                weight: "bold",
-                            }}
-                            apple26={{
                                 variant: "title3",
                                 weight: "bold",
                             }}
@@ -48,9 +40,6 @@ function SectionHeader({ type, title, value, ...props }) {
                         apple={{
                             variant: "footnote",
                         }}
-                        apple26={{
-                            variant: "footnote",
-                        }}
                         material={{
                             variant: "subtitle2",
                         }}
@@ -66,10 +55,6 @@ function SectionHeader({ type, title, value, ...props }) {
                         apple={{
                             variant: "footnote",
                             caps: true,
-                        }}
-                        apple26={{
-                            variant: "body",
-                            weight: "semibold",
                         }}
                         material={{
                             variant: "button1",

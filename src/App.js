@@ -1,5 +1,6 @@
 import { useEffect } from "react"
-import AppRouter from "./router"
+import { RouterProvider } from "@tanstack/react-router"
+import { router } from "./router"
 import {
     initializeViewTransitions,
     cleanupViewTransitions,
@@ -16,7 +17,7 @@ function App() {
         }
     }, [])
 
-    return <AppRouter />
+    return <RouterProvider router={router} />
 }
 
 export default App

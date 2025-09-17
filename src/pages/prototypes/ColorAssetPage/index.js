@@ -11,10 +11,10 @@ import { RegularButton, MultilineButton } from "../../../components/Button"
 import { useAccentColor } from "../../../hooks/useAccentColor"
 import { createResource } from "../../../hooks/useCache"
 
-import ArrowUpCircleFill from "../../../icons/28/Arrow Up Circle Fill.svg?react"
-import ArrowDownCircleFill from "../../../icons/28/Arrow Down Circle Fill.svg?react"
-import PlusCircleFill from "../../../icons/28/Plus Circle Fill.svg?react"
-import ArrowLeftAndRightCircleFill from "../../../icons/28/Arrow Left & Right Circle Fill.svg?react"
+import { ReactComponent as ArrowUpCircleFill } from "../../../icons/28/Arrow Up Circle Fill.svg"
+import { ReactComponent as ArrowDownCircleFill } from "../../../icons/28/Arrow Down Circle Fill.svg"
+import { ReactComponent as PlusCircleFill } from "../../../icons/28/Plus Circle Fill.svg"
+import { ReactComponent as ArrowLeftAndRightCircleFill } from "../../../icons/28/Arrow Left & Right Circle Fill.svg"
 
 import * as styles from "./ColorAssetPage.module.scss"
 

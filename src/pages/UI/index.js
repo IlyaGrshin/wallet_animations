@@ -21,13 +21,6 @@ const UI = () => {
                         >
                             <Cell.Text title="Navigation Bar" />
                         </Cell>
-                        <Cell
-                            as={TransitionLink}
-                            to="/components/bottombar"
-                            end={<Cell.Part type="Chevron" />}
-                        >
-                            <Cell.Text title="Bottom Bar" />
-                        </Cell>
                     </SectionList.Item>
                     <SectionList.Item header="Prototypes">
                         <Cell
