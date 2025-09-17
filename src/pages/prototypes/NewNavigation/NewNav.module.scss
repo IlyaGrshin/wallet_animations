@@ -75,6 +75,7 @@
         opacity: 1;
         transform: scale(1);
     }
+
     to {
         opacity: 0;
         transform: scale(var(--scale));
@@ -86,6 +87,7 @@
         opacity: 0;
         transform: scale(var(--scale));
     }
+
     to {
         opacity: 1;
         transform: scale(1);

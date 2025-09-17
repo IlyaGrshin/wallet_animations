@@ -20,12 +20,13 @@ $scale-factor: 1.02;
     from {
         opacity: 0;
         transform: scale($scale-factor);
-        filter: blur(0px);
+        filter: blur(0);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
-        filter: blur(0px);
+        filter: blur(0);
     }
 }
 
@@ -33,12 +34,13 @@ $scale-factor: 1.02;
     from {
         opacity: 1;
         transform: scale(1);
-        filter: blur(0px);
+        filter: blur(0);
     }
+
     to {
         opacity: 0;
         transform: scale($scale-factor);
-        filter: blur(0px);
+        filter: blur(0);
     }
 }
 
@@ -49,10 +51,11 @@ body.apple {
             transform: scale(0.99);
             filter: blur(2px);
         }
+
         to {
             opacity: 1;
             transform: scale(1);
-            filter: blur(0px);
+            filter: blur(0);
         }
     }
 
@@ -60,8 +63,9 @@ body.apple {
         from {
             opacity: 1;
             transform: scale(1);
-            filter: blur(0px);
+            filter: blur(0);
         }
+
         to {
             opacity: 0;
             transform: scale($scale-factor);

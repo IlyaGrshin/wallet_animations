@@ -47,7 +47,7 @@
         &::-webkit-search-decoration,
         &::-webkit-search-results-button,
         &::-webkit-search-results-decoration {
-            -webkit-appearance: none;
+            appearance: none;
             appearance: none;
             display: none;
         }
@@ -57,6 +57,7 @@
             width: 0;
             height: 0;
         }
+
         &::-ms-reveal {
             display: none;
             width: 0;

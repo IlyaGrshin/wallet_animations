@@ -11,6 +11,10 @@
         box-shadow: 0 -0.33px 0 0 var(--separator-non-opaque);
     }
 
+    :global(body.apple26) & {
+        box-shadow: 0 -0.33px 0 0 var(--separator-non-opaque);
+    }
+
     :global(body.material) & {
         box-shadow: 0 -0.5px 0 0 var(--tg-theme-section-separator-color), 
             0 1px 3px 0 rgb(0 0 0 / 6%);
@@ -52,6 +56,32 @@
             }
         }
 
+        :global(body.apple26) & {
+            padding: 4px 0 2px;
+            color: var(--tg-theme-text-color);
+            font-size: 11px;
+            line-height: 13px;
+            opacity: 0.4;
+            gap: 3px;
+
+            :global(.wallet-lottie_fill-color) path {
+                fill: var(--tg-theme-text-color);
+            }
+
+            :global(.wallet-lottie_stroke-color) path {
+                stroke: var(--tg-theme-text-color);
+            }
+
+            svg, path {
+                fill: var(--tg-theme-text-color);
+                height: 34px;
+            }
+
+            .icon {
+                height: 34px;
+            }
+        }
+
         :global(body.material) & {
             padding: 6px 0 3px;
             color: var(--tg-theme-subtitle-text-color);
@@ -72,6 +102,23 @@
 
     .tab.active {
         :global(body.apple) & {
+            color: var(--tg-theme-accent-text-color);
+            opacity: 1;
+
+            :global(.wallet-lottie_fill-color) path {
+                fill: var(--tg-theme-accent-text-color);
+            }
+
+            :global(.wallet-lottie_stroke-color) path {
+                stroke: var(--tg-theme-accent-text-color);
+            }
+
+            svg, path {
+                fill: var(--tg-theme-accent-text-color);
+            }
+        }
+
+        :global(body.apple26) & {
             color: var(--tg-theme-accent-text-color);
             opacity: 1;
 
