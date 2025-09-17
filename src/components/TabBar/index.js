@@ -87,6 +87,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                                 icon={tab.icon}
                                 lottieIcon={tab.lottieIcon}
                                 playKey={playKey}
+                                data-overlay
                             />
                         ))}
                     </motion.div>

@@ -3,7 +3,16 @@ import * as styles from "./Tab.module.scss"
 
 const Lottie = lazy(() => import("lottie-react"))
 
-const Tab = ({ isActive, onClick, label, icon, lottieIcon, playKey }) => {
+const Tab = ({
+    isActive,
+    onClick,
+    label,
+    icon,
+    lottieIcon,
+    playKey,
+    className = "",
+    ...rest
+}) => {
     const showLottie = Boolean(lottieIcon)
     const internalLottieRef = useRef(null)
 
@@ -17,7 +26,8 @@ const Tab = ({ isActive, onClick, label, icon, lottieIcon, playKey }) => {
 
     return (
         <div
-            className={`${styles.tab} ${isActive ? styles.active : ""}`}
+            {...rest}
+            className={`${styles.tab} ${isActive ? styles.active : ""} ${className}`.trim()}
             onClick={onClick}
         >
             <div className={styles.icon}>

@@ -64,7 +64,7 @@
             rgba(from var(--tg-theme-secondary-bg-color) r g b / 0.9)
         );
         z-index: -1;
-        margin: -12px -21px -21px;
+        margin: -21px;
     }
 
     .activeIndicator {
@@ -92,7 +92,7 @@
     .clipPathContainer {
         position: absolute;
         display: flex;
-        background-color: var(--secondary-button-color);
+        background-color: var(--quaternary-fill-background);
         width: calc(100% - 8px);
         clip-path: inset(0px calc(75% - 5px) 0px 0% round 100px);
         will-change: clip-path;
@@ -100,15 +100,20 @@
         overflow: hidden;
 
         span {
-            color: var(--tg-theme-accent-text-color) !important;
+            color: var(--tg-theme-text-color) !important;
         }
 
         :global(.wallet-lottie_fill-color) path {
-            fill: var(--tg-theme-accent-text-color) !important;
+            fill: var(--tg-theme-text-color) !important;
         }
 
         :global(.wallet-lottie_stroke-color) path {
-            stroke: var(--tg-theme-accent-text-color) !important;
+            stroke: var(--tg-theme-text-color) !important;
+        }
+
+        // Target Tab components rendered inside overlay (attribute comes from TabBar)
+        [data-overlay] {
+            opacity: 1 !important;
         }
     }
 }
