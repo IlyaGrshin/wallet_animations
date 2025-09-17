@@ -76,3 +76,11 @@
         will-change: transform;
 	}
 }
+
+:global(body.apple26) {
+    .root {
+        .selected {
+            border-radius: 20px;
+        }
+    }
+}

@@ -57,6 +57,12 @@
 	}
 }
 
+:global(body.apple26) {
+    .picker {
+        border-radius: 18px;
+    }
+}
+
 :global(body.material) {
     .picker {
         color: var(--tg-theme-accent-text-color);
