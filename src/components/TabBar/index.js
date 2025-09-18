@@ -1,3 +1,5 @@
+// TODO: Made some styles as a Liquid Glass component
+
 import { useState, useRef } from "react"
 import { motion } from "motion/react"
 import { useApple26 } from "../../hooks/DeviceProvider"
