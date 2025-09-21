@@ -413,6 +413,21 @@ function TransactionList() {
     )
 }
 
+function ImagePlayground() {
+    return (
+        <SectionList.Item header="Image Playground">
+            <div
+                style={{
+                    backgroundImage: "url(https://picsum.photos/1200/1200)",
+                    width: "100%",
+                    height: "400px",
+                    backgroundSize: "cover",
+                }}
+            ></div>
+        </SectionList.Item>
+    )
+}
+
 function Spacer() {
     return <div className={styles.spacer}></div>
 }
@@ -427,6 +442,7 @@ function Wallet() {
                 <SectionList>
                     <Assets />
                     <TransactionList />
+                    <ImagePlayground />
                 </SectionList>
             </div>
         </Page>

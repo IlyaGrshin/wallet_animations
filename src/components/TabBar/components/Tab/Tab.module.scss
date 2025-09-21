@@ -14,10 +14,6 @@
         z-index: 2;
     }
 
-    :global(body.apple26) :global([data-color-scheme="dark"]) & {
-        mix-blend-mode: plus-lighter;
-    }
-
     :global(body.apple) & {
         padding: 4px 0 6px;
         color: var(--tg-theme-text-color);
@@ -61,7 +57,6 @@
         }
     }
 
-    // Spacing between sibling tabs in Apple26 layout
     :global(body.apple26) &:not(:first-child) {
         margin-left: -7.33px;
     }
@@ -81,7 +76,7 @@
         }
 
         svg, path {
-            // fill: var(--tg-theme-accent-text-color);
+            fill: var(--tg-theme-accent-text-color);
         }
     }
 

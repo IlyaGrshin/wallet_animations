@@ -1,11 +1,12 @@
 // TODO: Made some styles as a Liquid Glass component
 
-import { useState, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { motion } from "motion/react"
 import { useApple26 } from "../../hooks/DeviceProvider"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
 import { useIndicatorDrag } from "./useIndicatorDrag"
+import GradientMask from "./components/GradientMask"
 
 const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const appearVariants = {
@@ -47,8 +48,28 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
         },
     })
 
+    const rootRef = useRef(null)
+    const [size, setSize] = useState({ width: 0, height: 0 })
+
+    useEffect(() => {
+        const el = rootRef.current
+        if (!el) return
+        const update = () => {
+            const r = el.getBoundingClientRect()
+            setSize({
+                width: Math.round(r.width),
+                height: Math.round(r.height),
+            })
+        }
+        update()
+        const ro = new ResizeObserver(update)
+        ro.observe(el)
+        return () => ro.disconnect()
+    }, [])
+
     return (
         <motion.div
+            ref={rootRef}
             className={styles.root}
             variants={appearVariants}
             initial="hidden"
@@ -93,7 +114,9 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                             />
                         ))}
                     </motion.div>
-                    <div className={styles.gradient}></div>
+
+                    {useApple26 && <div className={styles.glass} aria-hidden />}
+                    <GradientMask width={size.width} height={size.height} />
                 </>
             )}
         </motion.div>
