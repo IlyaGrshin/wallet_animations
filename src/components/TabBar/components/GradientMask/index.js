@@ -1,4 +1,4 @@
-import React, { useId } from "react"
+import { useId } from "react"
 import * as styles from "../../TabBar.module.scss"
 
 export default function GradientMask({
