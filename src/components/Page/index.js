@@ -41,7 +41,7 @@ const Page = ({
         } else {
             document.body.style.backgroundColor = CSSBackgroundColor
         }
-    }, [tgBackgroundColor, tgHeaderColor])
+    }, [tgBackgroundColor, tgHeaderColor, CSSBackgroundColor])
 
     return <>{children}</>
 }

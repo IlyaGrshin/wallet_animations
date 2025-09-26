@@ -8,6 +8,9 @@ export default function GradientMask({
     innerHeight = 64,
     className,
 }) {
+    // Hooks must run unconditionally before any early returns
+    const uid = useId()
+
     if (!width || !height) return null
 
     const { top, right, bottom, left } = insets
@@ -16,7 +19,6 @@ export default function GradientMask({
     const innerWidth = Math.max(0, overlayWidth - left - right)
     const rx = Math.min(innerHeight / 2, innerWidth / 2, 999)
 
-    const uid = useId()
     const gradId = `grad-${uid}`
     const maskId = `mask-${uid}`
 

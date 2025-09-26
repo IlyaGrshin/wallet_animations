@@ -16,7 +16,7 @@ import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
 import { MultilineButton } from "../../../components/Button"
 
-import { useAssetIcon } from "../../../utils/AssetsMap"
+import { getAssetIcon } from "../../../utils/AssetsMap"
 import {
     generateRandomBalance,
     formatToTwoDecimals,
@@ -141,14 +141,14 @@ function AnimatedCellMoreButton({ onClick, state }) {
     const jettonsMotion = useApple
         ? [
               {
-                  src: useAssetIcon("HMSTR"),
+                  src: getAssetIcon("HMSTR"),
                   variants: {
                       collapsed: { scale: 0.6, top: "-6px", left: "-6px" },
                       expanded: { scale: 1, opacity: 0, top: 0, left: 0 },
                   },
               },
               {
-                  src: useAssetIcon("NOT"),
+                  src: getAssetIcon("NOT"),
                   variants: {
                       collapsed: {
                           scale: 0.6,
@@ -162,14 +162,14 @@ function AnimatedCellMoreButton({ onClick, state }) {
           ]
         : [
               {
-                  src: useAssetIcon("HMSTR"),
+                  src: getAssetIcon("HMSTR"),
                   variants: {
                       collapsed: { scale: 0.6, top: "-6px", left: 0 },
                       expanded: { scale: 1, top: 0, left: "6px" },
                   },
               },
               {
-                  src: useAssetIcon("NOT"),
+                  src: getAssetIcon("NOT"),
                   variants: {
                       collapsed: {
                           scale: 0.6,
@@ -318,7 +318,7 @@ function Assets() {
         <SectionList.Item ref={AssetsRef}>
             {largeAssets.map((asset, index) => (
                 <Cell
-                    start={<ImageAvatar src={useAssetIcon(asset.ticker)} />}
+                    start={<ImageAvatar src={getAssetIcon(asset.ticker)} />}
                     end={
                         <Cell.Text
                             title={`$${formatToTwoDecimals(asset.rate * asset.value)}`}
@@ -358,7 +358,7 @@ function Assets() {
                                         start={
                                             <Cell.Start
                                                 type="Image"
-                                                src={useAssetIcon(asset.ticker)}
+                                                src={getAssetIcon(asset.ticker)}
                                             />
                                         }
                                         end={

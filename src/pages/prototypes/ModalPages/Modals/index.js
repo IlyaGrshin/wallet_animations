@@ -6,7 +6,7 @@ import SectionList from "../../../../components/SectionList"
 import Cell from "../../../../components/Cells"
 import ImageAvatar from "../../../../components/ImageAvatar"
 
-import { useAssetIcon } from "../../../../utils/AssetsMap"
+import { getAssetIcon } from "../../../../utils/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"
 import InitialsAvatar from "../../../../components/InitialsAvatar"
 
@@ -24,7 +24,7 @@ const Modals = ({ modals, handlers }) => {
                 <PanelHeader>Modal (Framer)</PanelHeader>
                 <SectionList>
                     <SectionList.Item>
-                        <Cell start={<ImageAvatar src={useAssetIcon("TON")} />}>
+                        <Cell start={<ImageAvatar src={getAssetIcon("TON")} />}>
                             <Cell.Text
                                 title="Toncoin"
                                 description="100 TON"
@@ -32,7 +32,7 @@ const Modals = ({ modals, handlers }) => {
                             />
                         </Cell>
                         <Cell
-                            start={<ImageAvatar src={useAssetIcon("USDT")} />}
+                            start={<ImageAvatar src={getAssetIcon("USDT")} />}
                         >
                             <Cell.Text
                                 title="Dollars"
@@ -40,7 +40,7 @@ const Modals = ({ modals, handlers }) => {
                                 bold
                             />
                         </Cell>
-                        <Cell start={<ImageAvatar src={useAssetIcon("BTC")} />}>
+                        <Cell start={<ImageAvatar src={getAssetIcon("BTC")} />}>
                             <Cell.Text
                                 title="Bitcoin"
                                 description="0.000001 BTC"
@@ -72,7 +72,7 @@ const Modals = ({ modals, handlers }) => {
                 <PanelHeader>Modal (CSS)</PanelHeader>
                 <SectionList>
                     <SectionList.Item>
-                        <Cell start={<ImageAvatar src={useAssetIcon("TON")} />}>
+                        <Cell start={<ImageAvatar src={getAssetIcon("TON")} />}>
                             <Cell.Text
                                 title="Toncoin"
                                 description="100 TON"
@@ -80,7 +80,7 @@ const Modals = ({ modals, handlers }) => {
                             />
                         </Cell>
                         <Cell
-                            start={<ImageAvatar src={useAssetIcon("USDT")} />}
+                            start={<ImageAvatar src={getAssetIcon("USDT")} />}
                         >
                             <Cell.Text
                                 title="Dollars"
@@ -88,7 +88,7 @@ const Modals = ({ modals, handlers }) => {
                                 bold
                             />
                         </Cell>
-                        <Cell start={<ImageAvatar src={useAssetIcon("BTC")} />}>
+                        <Cell start={<ImageAvatar src={getAssetIcon("BTC")} />}>
                             <Cell.Text
                                 title="Bitcoin"
                                 description="0.000001 BTC"

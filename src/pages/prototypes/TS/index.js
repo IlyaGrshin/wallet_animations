@@ -7,7 +7,7 @@ import ImageAvatar from "../../../components/ImageAvatar"
 import SectionList from "../../../components/SectionList"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
-import { useAssetIcon } from "../../../utils/AssetsMap"
+import { getAssetIcon } from "../../../utils/AssetsMap"
 import { generateRandomBalance } from "../../../utils/number"
 import { DURATION, COMPLEX_EASING } from "../../../utils/animations"
 import { MultilineButton } from "../../../components/Button"
@@ -104,7 +104,7 @@ function Profile() {
 function Assets() {
     return assets.map((asset, index) => (
         <Cell
-            start={<ImageAvatar src={useAssetIcon(asset.ticker)} />}
+            start={<ImageAvatar src={getAssetIcon(asset.ticker)} />}
             end={<Cell.Text title={asset.value} />}
             key={`tx-${index}`}
         >

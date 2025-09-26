@@ -18,4 +18,5 @@ const AssetsMap = {
     CATI: CatizenLogo,
 }
 
-export const useAssetIcon = (ticker) => AssetsMap[ticker] || null
+// Not a React hook; rename to avoid rules-of-hooks false positives
+export const getAssetIcon = (ticker) => AssetsMap[ticker] || null

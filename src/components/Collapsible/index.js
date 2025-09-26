@@ -41,7 +41,7 @@ const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
             return
         }
         setHeight(0)
-    }, [open])
+    }, [open, height])
     useEffect(() => {
         if (!open) return
         const el = contentRef.current

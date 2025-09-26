@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useMemo } from "react"
 
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
@@ -21,34 +21,43 @@ const BottomBar = () => {
     const MainButton = WebApp.MainButton
     const SecondaryButton = WebApp.SecondaryButton
 
-    const setMainButton = useCallback((buttonLabel) => {
-        setLabel(buttonLabel)
-        if (buttonLabel) {
-            MainButton.setText(buttonLabel)
-            MainButton.show()
-        } else {
-            MainButton.hide()
-        }
-    }, [])
+    const setMainButton = useCallback(
+        (buttonLabel) => {
+            setLabel(buttonLabel)
+            if (buttonLabel) {
+                MainButton.setText(buttonLabel)
+                MainButton.show()
+            } else {
+                MainButton.hide()
+            }
+        },
+        [MainButton]
+    )
 
-    const setSecondaryButton = useCallback((buttonLabel) => {
-        setLabelSecondary(buttonLabel)
-        if (buttonLabel) {
-            SecondaryButton.setText(buttonLabel)
-            SecondaryButton.show()
-        } else {
-            SecondaryButton.hide()
-        }
-    }, [])
+    const setSecondaryButton = useCallback(
+        (buttonLabel) => {
+            setLabelSecondary(buttonLabel)
+            if (buttonLabel) {
+                SecondaryButton.setText(buttonLabel)
+                SecondaryButton.show()
+            } else {
+                SecondaryButton.hide()
+            }
+        },
+        [SecondaryButton]
+    )
 
     const [pickerIndex, setPickerValue] = useState(0)
 
-    const position = ["Left", "Top", "Right", "Bottom"]
+    const position = useMemo(() => ["Left", "Top", "Right", "Bottom"], [])
 
-    const handlePickerIndex = useCallback((page) => {
-        SecondaryButton.position = position[page].toLowerCase()
-        setPickerValue(page)
-    }, [])
+    const handlePickerIndex = useCallback(
+        (page) => {
+            SecondaryButton.position = position[page].toLowerCase()
+            setPickerValue(page)
+        },
+        [SecondaryButton, position]
+    )
 
     const [shine, setShine] = useState(false)
 
@@ -79,7 +88,7 @@ const BottomBar = () => {
             MainButton.hide()
             SecondaryButton.hide()
         }
-    }, [])
+    }, [MainButton, SecondaryButton])
 
     const colorInputRef = useRef(null)
     const textColorInputRef = useRef(null)
