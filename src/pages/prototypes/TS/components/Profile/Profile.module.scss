@@ -67,15 +67,9 @@
                 fill: white;
             }
             
-            .label {
+            :global(.label) {
                 color: white;
             }
         }
     }
-}
-
-.placeholder {
-    padding: 40px 28px;
-    color: var(--tg-theme-subtitle-text-color);
-    text-align: center;
 }
