@@ -1,0 +1,24 @@
+.buttons {
+    display: flex;
+    flex-direction: row;
+    padding: 0 16px 16px;
+    gap: 8px;
+
+    :global(body.apple) & {
+        svg, path {
+            width: 28px;
+            height: 28px;
+        }
+    }
+
+    :global(body.material) & {
+        background-color: var(--tg-theme-section-bg-color);
+        box-shadow: 0 0.33px 1px 0 rgb(0 0 0 / 6%);
+        padding: 0 8px 8px;
+
+        svg, path {
+            width: 32px;
+            height: 32px;
+        }
+    }
+}
