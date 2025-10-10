@@ -1,0 +1,45 @@
+.bounds[data-color-scheme="dark"] {
+    --quaternary-fill-background: rgb(118 118 128 / 18%);
+    --tg-theme-text-color: #FFF;
+}
+
+.navPanel {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    z-index: 1;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 14px;
+    view-transition-name: nav-panel;
+
+    :global(body.material) & {
+        padding-top: 14px;
+    }
+}
+
+.bounds {
+    display: flex;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background-color: var(--quaternary-fill-background);
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+
+    .avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background-size: contain;
+    }
+
+    svg, path {
+        fill: var(--tg-theme-text-color);
+    }
+
+    &.transparent {
+        background-color: transparent;
+    }
+}
