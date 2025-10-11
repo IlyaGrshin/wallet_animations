@@ -1,0 +1,21 @@
+.root {
+    position: relative;
+}
+
+.glassBackground {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    backdrop-filter: saturate(300%) blur(8px);
+    z-index: 0;
+}
+
+.glassShadow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: 0 0 10px 0 rgba(0 0 0 / 0.1);
+}

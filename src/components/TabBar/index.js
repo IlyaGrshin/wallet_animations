@@ -1,8 +1,7 @@
-// TODO: Made some styles as a Liquid Glass component
-
 import { useEffect, useRef, useState } from "react"
 import { motion } from "motion/react"
 import { useApple26 } from "../../hooks/DeviceProvider"
+import { GlassContainer } from "../GlassEffect"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
 import { useIndicatorDrag } from "./useIndicatorDrag"
@@ -115,7 +114,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                         ))}
                     </motion.div>
 
-                    {useApple26 && <div className={styles.glass} aria-hidden />}
+                    <GlassContainer />
                     <GradientMask width={size.width} height={size.height} />
                 </>
             )}
