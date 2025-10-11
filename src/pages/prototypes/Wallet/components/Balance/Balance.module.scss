@@ -9,6 +9,7 @@
     align-items: center;
     gap: 2px;
     color: var(--tg-theme-text-color);
+    background: var(--tg-theme-section-bg-color);
 
     .label {
         :global(body.apple) & {
