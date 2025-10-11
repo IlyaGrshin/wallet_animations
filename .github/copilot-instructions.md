@@ -8,6 +8,10 @@
    - Fix any linting or type errors before considering the task complete
    - Do this for any file you create or modify
 
+2. NEVER create markdown (.md) after you're done.
+3. NEVER use emojies in your replies.
+4. I know i'm absolutely right. No need to mention that.
+
 This is a CRITICAL step that must NEVER be skipped when working on any code-related task
 
 ## File Size Limits
