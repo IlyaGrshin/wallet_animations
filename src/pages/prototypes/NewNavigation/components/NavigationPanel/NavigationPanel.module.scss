@@ -18,6 +18,17 @@
     }
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(0 0 0 / 0.12);
+    z-index: 9;
+    will-change: opacity;
+}
+
 .bounds {
     display: flex;
     width: 36px;
@@ -27,12 +38,16 @@
     justify-content: center;
     align-items: center;
     transition: background-color 0.2s ease;
+    position: relative;
+    z-index: 3;
+    will-change: background-color;
 
     .avatar {
         width: 34px;
         height: 34px;
         border-radius: 50%;
         background-size: contain;
+        will-change: transform;
     }
 
     svg, path {
@@ -41,5 +56,64 @@
 
     &.transparent {
         background-color: transparent;
+    }
+}
+
+.dropdownWrapper {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    will-change: transform;
+    view-transition-name: none;
+    z-index: 10;
+}
+
+.dropdownControl[data-expanded="true"] {
+    box-shadow: 0 0 10px 0 rgba(0 0 0 / 0.1);
+}
+
+.dropdownControl[data-color-scheme="dark"] {
+    --quaternary-fill-background: rgb(118 118 128 / 18%);
+    --tg-theme-text-color: #FFF;
+    --tg-theme-section-bg-color: #1C1C1E;
+    --tg-theme-section-separator-color: rgb(84 84 88 / 65%);
+}
+
+.dropdownControl {
+    padding: 9px 12px;
+    border-radius: 26px;
+    color: var(--tg-theme-text-color);
+    text-align: center;
+    background-color: var(--tg-theme-section-bg-color);
+    overflow: hidden;
+    will-change: width, height, border-radius;
+    z-index: 10;
+}
+
+.contentWrapper {
+    position: relative;
+    will-change: transform, opacity, filter;
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    width: calc(100vw - 36px);
+    text-align: left;
+    gap: 6px;
+}
+
+.item {
+    padding: 4px 0;
+    --cell-separator-height: 0;
+    border-radius: 20px;
+    border: 0.33px solid var(--tg-theme-section-separator-color);
+    margin: 3px 0;
+
+    &.active {
+        border: 2px solid var(--tg-theme-accent-text-color);
     }
 }

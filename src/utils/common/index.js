@@ -65,3 +65,16 @@ export function normalizeHex(input) {
     const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
     return rgbTohex(r, g, b)
 }
+
+export function blendColors(color1, color2, alpha) {
+    const [r1, g1, b1] = hexToRgb(color1, "array")
+    const [r2, g2, b2] = hexToRgb(color2, "array")
+    const r = Math.round(r1 * (1 - alpha) + r2 * alpha)
+    const g = Math.round(g1 * (1 - alpha) + g2 * alpha)
+    const b = Math.round(b1 * (1 - alpha) + b2 * alpha)
+
+    return ((1 << 24) + (r << 16) + (g << 8) + b)
+        .toString(16)
+        .slice(1)
+        .toUpperCase()
+}
