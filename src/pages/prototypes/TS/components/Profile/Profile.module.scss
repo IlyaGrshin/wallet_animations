@@ -17,6 +17,10 @@
         text-align: center;
         z-index: 1;
 
+        .label {
+            opacity: 0.6;
+        }
+
         .amount span {
             font-family: ui-rounded, -apple-system, system-ui, sans-serif;
             font-size: 48px;
