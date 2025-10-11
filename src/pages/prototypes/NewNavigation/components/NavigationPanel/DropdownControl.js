@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import { motion } from "motion/react"
-
+import { GlassContainer } from "../../../../../components/GlassEffect"
 import * as styles from "./NavigationPanel.module.scss"
 import CollapsedView from "./CollapsedView"
 import ExpandedView from "./ExpandedView"
@@ -42,6 +42,7 @@ export default function DropdownControl({
             style={{ borderRadius: 26 }}
             data-expanded={view === "expanded"}
         >
+            <GlassContainer />
             <motion.div
                 className={styles.contentWrapper}
                 initial={{ opacity: 0 }}

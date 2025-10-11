@@ -9,6 +9,10 @@
     pointer-events: none;
     backdrop-filter: saturate(300%) blur(8px);
     z-index: 0;
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 .glassShadow {
@@ -18,4 +22,6 @@
     pointer-events: none;
     z-index: 1;
     box-shadow: 0 0 10px 0 rgba(0 0 0 / 0.1);
+    will-change: transform;
+    transform: translateZ(0);
 }

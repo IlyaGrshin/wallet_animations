@@ -7,6 +7,10 @@
     mix-blend-mode: overlay;
     z-index: 2;
     pointer-events: none;
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     -webkit-mask: linear-gradient(rgb(0, 0, 0) 0px, rgb(0, 0, 0) 0px) content-box,
         linear-gradient(rgb(0, 0, 0) 0px, rgb(0, 0, 0) 0px);
     -webkit-mask-composite: xor;
