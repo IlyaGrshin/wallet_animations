@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { motion, AnimatePresence } from "motion/react"
 import * as styles from "./PageContent.module.scss"
 import Wallet from "../../../Wallet"
 import TONSpace from "../../../TS"
@@ -24,11 +25,25 @@ export default function PageContent({ view }) {
     }, [view])
 
     return (
-        <div
-            className={styles.pageView}
-            style={{ viewTransitionName: "page-content" }}
+        <AnimatePresence
+            mode="popLayout"
+            initial={false}
+            custom={view}
+            inherit={false}
         >
-            {content}
-        </div>
+            <motion.div
+                initial={{ opacity: 0, scale: 1.006 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 1.01 }}
+                key={view}
+                transition={{
+                    duration: 0.2,
+                    ease: "easeOut",
+                }}
+                className={styles.pageView}
+            >
+                {content}
+            </motion.div>
+        </AnimatePresence>
     )
 }

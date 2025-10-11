@@ -20,16 +20,8 @@ export const useSegmentNavigation = () => {
     const handleSegmentChange = (index) => {
         const newView = index === 1 ? "tonspace" : "wallet"
 
-        // Используем View Transition API если доступен
-        if (document.startViewTransition && newView !== view) {
-            document.startViewTransition(() => {
-                setView(newView)
-                setActiveSegment(index)
-            })
-        } else {
-            setView(newView)
-            setActiveSegment(index)
-        }
+        setView(newView)
+        setActiveSegment(index)
 
         WebApp.HapticFeedback.selectionChanged()
     }
