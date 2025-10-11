@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react"
+import { useMemo } from "react"
 import { motion } from "motion/react"
 
 import * as styles from "./NavigationPanel.module.scss"
@@ -12,8 +12,6 @@ export default function DropdownControl({
     onToggle,
     colorScheme,
 }) {
-    const isFirstRender = useRef(true)
-
     const content = useMemo(() => {
         switch (view) {
             case "expanded":
@@ -29,17 +27,12 @@ export default function DropdownControl({
         }
     }, [view, activeSegment, onSegmentChange])
 
-    const handleClick = () => {
-        onToggle()
-        isFirstRender.current = false
-    }
-
     return (
         <motion.div
             layout
             layoutDependency={view}
             className={styles.dropdownControl}
-            onClick={handleClick}
+            onClick={onToggle}
             transition={{
                 layout: {
                     type: "spring",
@@ -53,23 +46,13 @@ export default function DropdownControl({
         >
             <motion.div
                 className={styles.contentWrapper}
-                transition={{
-                    ease: "easeOut",
-                    duration: 0.5,
-                }}
-                initial={
-                    isFirstRender.current
-                        ? false
-                        : {
-                              opacity: 0,
-                              // filter: "blur(5px)",
-                          }
-                }
+                initial={{ opacity: 0 }}
                 animate={{
                     opacity: 1,
-                    // filter: "blur(0px)",
                     transition: {
-                        delay: isFirstRender.current ? 0 : 0.1,
+                        delay: 0.1,
+                        ease: "easeOut",
+                        duration: 0.3,
                     },
                 }}
                 key={`${view}-${view === "collapsed" ? activeSegment : ""}`}
