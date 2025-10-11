@@ -49,6 +49,7 @@
             width: 39px;
             height: 24px;
             border-radius: 12px;
+            filter: none;
         }
 
         &[data-state="true"]::after {
