@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { motion } from "motion/react"
 import WebApp from "@twa-dev/sdk"
 
+import { useColorScheme } from "../../../../../hooks/useColorScheme"
 import { blendColors } from "../../../../../utils/common"
 import * as styles from "./NavigationPanel.module.scss"
 import QRCodeIcon from "../../../../../icons/28/QR Code.svg?react"
@@ -13,6 +14,7 @@ export default function NavigationPanel({
     onSegmentChange,
 }) {
     const [view, setView] = useState("collapsed")
+    const colorScheme = useColorScheme(activeSegment === 1 ? "dark" : "light")
 
     const handleToggle = () => {
         const newView = view === "collapsed" ? "expanded" : "collapsed"
@@ -38,7 +40,7 @@ export default function NavigationPanel({
     }, [view, activeSegment])
 
     return (
-        <div className={styles.navPanel}>
+        <div className={styles.navPanel} data-color-scheme={colorScheme}>
             <motion.div
                 className={styles.overlay}
                 initial={false}
@@ -63,13 +65,9 @@ export default function NavigationPanel({
                     activeSegment={activeSegment}
                     onSegmentChange={onSegmentChange}
                     onToggle={handleToggle}
-                    colorScheme={activeSegment === 1 ? "dark" : "light"}
                 />
             </div>
-            <div
-                className={styles.bounds}
-                data-color-scheme={activeSegment === 1 ? "dark" : "light"}
-            >
+            <div className={styles.bounds}>
                 <QRCodeIcon />
             </div>
         </div>

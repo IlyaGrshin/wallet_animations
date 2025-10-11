@@ -1,7 +1,22 @@
-import { useEffect } from "react"
+import { createContext, useEffect, useState, useMemo } from "react"
 import WebApp from "@twa-dev/sdk"
 
+export const AppearanceContext = createContext({
+    colorScheme: "light",
+})
+
 const AppearanceProvider = ({ children }) => {
+    const [colorScheme, setColorScheme] = useState(() => {
+        const tgColorScheme = getComputedStyle(document.documentElement)
+            .getPropertyValue("--tg-color-scheme")
+            .trim()
+        if (tgColorScheme) return tgColorScheme
+
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light"
+    })
+
     useEffect(() => {
         const getTelegramColorScheme = () => {
             return getComputedStyle(document.documentElement)
@@ -12,7 +27,7 @@ const AppearanceProvider = ({ children }) => {
         const updateThemeFromTelegram = () => {
             const tgColorScheme = getTelegramColorScheme()
             if (tgColorScheme) {
-                document.body.setAttribute("data-color-scheme", tgColorScheme)
+                setColorScheme(tgColorScheme)
             }
         }
 
@@ -22,17 +37,19 @@ const AppearanceProvider = ({ children }) => {
             ).matches
                 ? "dark"
                 : "light"
+            setColorScheme(systemColorScheme)
             document.body.setAttribute("data-color-scheme", systemColorScheme)
         }
 
         const handleSystemThemeChange = (e) => {
             const systemColorScheme = e.matches ? "dark" : "light"
+            setColorScheme(systemColorScheme)
             document.body.setAttribute("data-color-scheme", systemColorScheme)
         }
 
         updateThemeFromTelegram()
 
-        if (!document.body.getAttribute("data-color-scheme")) {
+        if (!getTelegramColorScheme()) {
             updateThemeFromSystem()
         }
 
@@ -49,7 +66,18 @@ const AppearanceProvider = ({ children }) => {
         }
     }, [])
 
-    return <>{children}</>
+    const value = useMemo(
+        () => ({
+            colorScheme,
+        }),
+        [colorScheme]
+    )
+
+    return (
+        <AppearanceContext.Provider value={value}>
+            {children}
+        </AppearanceContext.Provider>
+    )
 }
 
 export default AppearanceProvider

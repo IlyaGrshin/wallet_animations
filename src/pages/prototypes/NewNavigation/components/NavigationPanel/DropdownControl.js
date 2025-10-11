@@ -10,7 +10,6 @@ export default function DropdownControl({
     activeSegment,
     onSegmentChange,
     onToggle,
-    colorScheme,
 }) {
     const content = useMemo(() => {
         switch (view) {
@@ -42,7 +41,6 @@ export default function DropdownControl({
             }}
             style={{ borderRadius: 26 }}
             data-expanded={view === "expanded"}
-            data-color-scheme={colorScheme}
         >
             <motion.div
                 className={styles.contentWrapper}

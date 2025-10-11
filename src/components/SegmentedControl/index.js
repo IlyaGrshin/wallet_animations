@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react"
+import { useColorScheme } from "../../hooks/useColorScheme"
 import Text from "../Text"
 
 import * as styles from "./SegmentedControl.module.scss"
@@ -7,11 +8,12 @@ const SegmentedControl = ({
     segments,
     onChange,
     defaultIndex = 0,
-    colorScheme = "light",
+    colorScheme: forceColorScheme,
     type,
     ...props
 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
+    const colorScheme = useColorScheme(forceColorScheme)
 
     const handleSegmentClick = (index) => {
         setActiveIndex(index)
