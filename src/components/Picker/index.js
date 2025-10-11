@@ -9,13 +9,13 @@ const Picker = ({ items, onPickerIndex }) => {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [scrollPosition, setScrollPosition] = useState(0)
     const [itemHeight, setItemHeight] = useState(34)
-    const baseline = useRef(0)
+    const [baseline, setBaseline] = useState(0)
     const ticking = useRef(false)
 
     useEffect(() => {
         if (pickerRef.current?.children.length > 0) {
             setItemHeight(pickerRef.current.children[0].offsetHeight)
-            baseline.current = pickerRef.current.scrollTop
+            setBaseline(pickerRef.current.scrollTop)
         }
     }, [])
 
@@ -66,7 +66,7 @@ const Picker = ({ items, onPickerIndex }) => {
             <ul ref={pickerRef}>
                 {items.map((item, index) => {
                     const itemCoordinate =
-                        -scrollPosition + baseline.current + index * itemHeight
+                        -scrollPosition + baseline + index * itemHeight
 
                     const radius = itemHeight * 3
 

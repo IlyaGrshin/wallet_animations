@@ -15,8 +15,9 @@ const ModalView = ({
     children,
     ...props
 }) => {
-    const [shouldRender, setShouldRender] = useState(false)
-    const [animate, setAnimate] = useState(false)
+    const [shouldRender, setShouldRender] = useState(isOpen)
+    const [animate, setAnimate] = useState(isOpen)
+    const actualShouldRender = isOpen ? true : shouldRender
 
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "auto"
@@ -27,7 +28,6 @@ const ModalView = ({
         if (useCssAnimation) {
             if (isOpen) {
                 WebApp.disableVerticalSwipes()
-                setShouldRender(true)
                 setTimeout(() => {
                     setAnimate(true)
                     WebApp.setHeaderColor(headerColorWithOverlay)
@@ -37,7 +37,8 @@ const ModalView = ({
                 WebApp.BackButton.hide()
                 WebApp.MainButton.hide()
                 WebApp.setHeaderColor(headerColor)
-                setAnimate(false)
+                const timer = setTimeout(() => setAnimate(false), 0)
+                return () => clearTimeout(timer)
             }
         } else {
             if (isOpen) {
@@ -78,7 +79,7 @@ const ModalView = ({
 
     if (useCssAnimation) {
         return (
-            shouldRender && (
+            actualShouldRender && (
                 <>
                     <BackButton onClick={onClose} />
                     <div

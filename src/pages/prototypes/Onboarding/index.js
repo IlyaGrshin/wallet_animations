@@ -46,9 +46,12 @@ const GalleryPage = ({ imageClass, title, description }) => (
 const Onboarding = () => {
     const [, setCurrentPage] = useState(0)
 
-    const handlePageChange = useCallback((page) => {
-        setCurrentPage(page)
-    }, [])
+    const handlePageChange = useCallback(
+        (page) => {
+            setCurrentPage(page)
+        },
+        [setCurrentPage]
+    )
 
     useEffect(() => {
         WebApp.disableVerticalSwipes()

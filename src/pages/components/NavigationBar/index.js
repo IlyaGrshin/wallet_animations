@@ -14,14 +14,11 @@ const NavigationBar = () => {
     const [isVisibleBackButton, setBackButton] = useState(true)
     const [isSettingsButtonAvailable, setSettingsButtonAvailable] =
         useState(false)
-    const [headerColor, setHeaderColor] = useState("#EFEFF4")
+    const [headerColor, setHeaderColor] = useState(() => {
+        const color = WebApp.themeParams.secondary_bg_color || "#EFEFF4"
+        return color.toUpperCase()
+    })
     const colorInputRef = useRef(null)
-
-    useEffect(() => {
-        let color = WebApp.themeParams.secondary_bg_color || "#EFEFF4"
-        color = color.toUpperCase()
-        setHeaderColor(color)
-    }, [])
 
     const toggleFullscreen = () => {
         if (isFullscreen) {

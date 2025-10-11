@@ -64,18 +64,24 @@ export function useAccentColor(src, quality = 10) {
 
     useEffect(() => {
         if (!src) {
-            setHex(null)
-            return
+            const timer = setTimeout(() => setHex(null), 0)
+            return () => clearTimeout(timer)
         }
+
         let canceled = false
+        const resetTimer = setTimeout(() => {
+            if (!canceled) setHex(null)
+        }, 0)
+
         getAccentHex(src, quality)
             .then((c) => !canceled && setHex(c))
             .catch(() => !canceled && setHex(null))
 
         return () => {
             canceled = true
+            clearTimeout(resetTimer)
         }
     }, [src, quality])
 
-    return hex
+    return src ? hex : null
 }

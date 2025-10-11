@@ -11,9 +11,7 @@ const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
 
     const [height, setHeight] = useState(open ? "auto" : 0)
     const [shouldRender, setShouldRender] = useState(open)
-    useEffect(() => {
-        if (open) setShouldRender(true)
-    }, [open])
+    const actualShouldRender = open ? true : shouldRender
     const handleTransitionEnd = useCallback(
         (e) => {
             if (e.propertyName !== "height") return
@@ -70,9 +68,9 @@ const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
         <div
             style={style}
             onTransitionEnd={handleTransitionEnd}
-            aria-hidden={!open && !shouldRender}
+            aria-hidden={!open && !actualShouldRender}
         >
-            <div ref={contentRef}>{shouldRender ? children : null}</div>
+            <div ref={contentRef}>{actualShouldRender ? children : null}</div>
         </div>
     )
 }
