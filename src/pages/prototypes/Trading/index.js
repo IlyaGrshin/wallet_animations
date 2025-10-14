@@ -6,6 +6,7 @@ import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
 import ImageAvatar from "../../../components/ImageAvatar"
 import Spinner from "../../../components/Spinner"
+import CryptoHeatmap from "../../../components/CryptoHeatmap"
 import { createResource } from "../../../hooks/useCache"
 
 const fetchAssets = async () => {
@@ -22,6 +23,9 @@ const AssetsList = () => {
 
     return (
         <SectionList>
+            <SectionList.Item header="Market heatmap" description="Sized by 24h volume">
+                <CryptoHeatmap assets={assets} />
+            </SectionList.Item>
             <SectionList.Item header="Today's lists">
                 {assets.map((asset) => (
                     <Cell
