@@ -30,7 +30,7 @@ function Spacer() {
 
 function Wallet() {
     return (
-        <Page>
+        <Page mode="primary">
             <div className={styles.wallet}>
                 <Balance />
                 <ActionButtons />
