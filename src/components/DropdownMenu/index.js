@@ -13,107 +13,155 @@ import Text from "../Text"
 
 import * as styles from "./DropdownMenu.module.scss"
 
-const DropdownMenu = ({ items }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [selectedItem, setSelectedItem] = useState(items[0])
-    const [dropdownPosition, setDropdownPosition] = useState({
+const DROPDOWN_WIDTH = 250
+const DROPDOWN_OFFSET = 24
+const GAP = 1
+
+const DROPDOWN_VARIANTS = {
+    hidden: {
+        scale: 0,
+        opacity: 0,
+        filter: "blur(5px)",
+    },
+    visible: {
+        scale: 1,
+        opacity: 1,
+        filter: "blur(0px)",
+        transition: SPRING.DROPDOWN,
+    },
+    exit: {
+        scale: 0,
+        opacity: 0,
+        filter: "blur(2px)",
+        transition: { duration: 0.25 },
+    },
+}
+
+const calculatePosition = (buttonRect, dropdownRect) => {
+    const viewportHeight = window.innerHeight
+    const spaceBelow = viewportHeight - buttonRect.bottom
+    const spaceAbove = buttonRect.top
+
+    const openUpwards =
+        spaceBelow < dropdownRect.height && spaceAbove > spaceBelow
+
+    return {
+        top: openUpwards
+            ? buttonRect.top - dropdownRect.height - GAP
+            : buttonRect.bottom + GAP,
+        left: buttonRect.right - dropdownRect.width + DROPDOWN_OFFSET,
+        openUpwards,
+    }
+}
+
+const useDropdownPosition = (isOpen, buttonRef, dropdownRef) => {
+    const [position, setPosition] = useState({
         top: 0,
         left: 0,
         openUpwards: false,
     })
     const [isPositioned, setIsPositioned] = useState(false)
-    const buttonRef = useRef(null)
-    const dropdownRef = useRef(null)
-    const animatedDropdownRef = useRef(null)
-
-    const toggleDropdown = useCallback(() => {
-        setIsOpen((prev) => !prev)
-        setIsPositioned(false)
-    }, [])
-
-    const handleSelectItem = useCallback((item) => {
-        setSelectedItem(item)
-        setIsOpen(false)
-        setIsPositioned(false)
-    }, [])
 
     useLayoutEffect(() => {
-        if (isOpen && buttonRef.current && !isPositioned) {
-            const buttonRect = buttonRef.current.getBoundingClientRect()
+        if (!isOpen || !buttonRef.current || isPositioned) return
 
-            if (!dropdownRef.current) {
-                const initialPosition = {
-                    top: buttonRect.bottom + 1,
-                    left: buttonRect.right - 250,
-                    openUpwards: false,
-                }
-                setDropdownPosition(initialPosition)
-                return
-            }
+        const buttonRect = buttonRef.current.getBoundingClientRect()
 
-            const dropdownRect = dropdownRef.current.getBoundingClientRect()
-
-            const viewportHeight = window.innerHeight
-            const spaceBelow = viewportHeight - buttonRect.bottom
-            const spaceAbove = buttonRect.top
-
-            const shouldOpenUpwards =
-                spaceBelow < dropdownRect.height && spaceAbove > spaceBelow
-
-            const top = shouldOpenUpwards
-                ? buttonRect.top - dropdownRect.height - 1
-                : buttonRect.bottom + 1
-            const left = buttonRect.right - dropdownRect.width + 24
-
-            setDropdownPosition({
-                top,
-                left,
-                openUpwards: shouldOpenUpwards,
+        if (!dropdownRef.current) {
+            setPosition({
+                top: buttonRect.bottom + GAP,
+                left: buttonRect.right - DROPDOWN_WIDTH,
+                openUpwards: false,
             })
-            setIsPositioned(true)
+            return
         }
-    }, [isOpen, isPositioned])
 
+        const dropdownRect = dropdownRef.current.getBoundingClientRect()
+        setPosition(calculatePosition(buttonRect, dropdownRect))
+        setIsPositioned(true)
+    }, [isOpen, isPositioned, buttonRef, dropdownRef])
+
+    return {
+        position,
+        isPositioned,
+        resetPosition: () => setIsPositioned(false),
+    }
+}
+
+const useClickOutside = (isOpen, refs, onClose) => {
     useEffect(() => {
         if (!isOpen) return
 
         const handleClickOutside = (event) => {
-            if (
-                buttonRef.current &&
-                !buttonRef.current.contains(event.target) &&
-                ((dropdownRef.current &&
-                    !dropdownRef.current.contains(event.target)) ||
-                    (animatedDropdownRef.current &&
-                        !animatedDropdownRef.current.contains(event.target)))
-            ) {
-                setIsOpen(false)
+            const isOutside = refs.every(
+                (ref) => ref.current && !ref.current.contains(event.target)
+            )
+
+            if (isOutside) {
+                onClose()
             }
         }
 
         document.addEventListener("mousedown", handleClickOutside)
         return () =>
             document.removeEventListener("mousedown", handleClickOutside)
-    }, [isOpen])
+    }, [isOpen, refs, onClose])
+}
 
-    const dropdownVariants = {
-        hidden: {
-            scale: 0,
-            opacity: 0,
-            filter: "blur(5px)",
+const MenuItem = ({ item, isSelected, onClick }) => (
+    <div
+        onClick={onClick}
+        className={`${styles.item} ${isSelected ? styles.selected : ""}`}
+    >
+        <Text
+            apple={{ variant: "body" }}
+            material={{ variant: "body1" }}
+            style={{ padding: "2px 0" }}
+        >
+            {item}
+        </Text>
+    </div>
+)
+
+const DropdownMenu = ({ items }) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const [selectedItem, setSelectedItem] = useState(items[0])
+    const buttonRef = useRef(null)
+    const dropdownRef = useRef(null)
+    const animatedDropdownRef = useRef(null)
+
+    const { position, isPositioned, resetPosition } = useDropdownPosition(
+        isOpen,
+        buttonRef,
+        dropdownRef
+    )
+
+    const closeDropdown = useCallback(() => {
+        setIsOpen(false)
+        resetPosition()
+    }, [resetPosition])
+
+    const toggleDropdown = useCallback(() => {
+        setIsOpen((prev) => !prev)
+        resetPosition()
+    }, [resetPosition])
+
+    const handleSelectItem = useCallback(
+        (item) => {
+            setSelectedItem(item)
+            setIsOpen(false)
+            resetPosition()
         },
-        visible: {
-            scale: 1,
-            opacity: 1,
-            filter: "blur(0px)",
-            transition: SPRING.DROPDOWN,
-        },
-        exit: {
-            scale: 0,
-            opacity: 0,
-            filter: "blur(2px)",
-            transition: { duration: 0.25 },
-        },
-    }
+        [resetPosition]
+    )
+
+    useClickOutside(
+        isOpen,
+        [buttonRef, dropdownRef, animatedDropdownRef],
+        closeDropdown
+    )
+
+    const transformOrigin = position.openUpwards ? "100% 100%" : "100% 0%"
 
     return (
         <div className={styles.container}>
@@ -132,22 +180,18 @@ const DropdownMenu = ({ items }) => {
                             className={styles.root}
                             style={{
                                 position: "absolute",
-                                top: dropdownPosition.top,
-                                left: dropdownPosition.left,
+                                top: position.top,
+                                left: position.left,
                                 visibility: "hidden",
                                 pointerEvents: "none",
                             }}
                         >
                             {items.map((item, index) => (
-                                <div key={index} className={styles.item}>
-                                    <Text
-                                        apple={{ variant: "body" }}
-                                        material={{ variant: "body1" }}
-                                        style={{ padding: "2px 0" }}
-                                    >
-                                        {item}
-                                    </Text>
-                                </div>
+                                <MenuItem
+                                    key={index}
+                                    item={item}
+                                    isSelected={false}
+                                />
                             ))}
                         </div>
                     )}
@@ -159,34 +203,21 @@ const DropdownMenu = ({ items }) => {
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
-                                variants={dropdownVariants}
+                                variants={DROPDOWN_VARIANTS}
                                 style={{
-                                    top: dropdownPosition.top,
-                                    left: dropdownPosition.left,
-                                    transformOrigin:
-                                        dropdownPosition.openUpwards
-                                            ? "100% 100%"
-                                            : "100% 0%",
+                                    top: position.top,
+                                    left: position.left,
+                                    transformOrigin,
                                 }}
                             >
+                                <GlassEffect />
                                 {items.map((item, index) => (
-                                    <div
+                                    <MenuItem
                                         key={index}
+                                        item={item}
+                                        isSelected={item === selectedItem}
                                         onClick={() => handleSelectItem(item)}
-                                        className={
-                                            item === selectedItem
-                                                ? `${styles.item} ${styles.selected}`
-                                                : `${styles.item}`
-                                        }
-                                    >
-                                        <Text
-                                            apple={{ variant: "body" }}
-                                            material={{ variant: "body1" }}
-                                            style={{ padding: "2px 0" }}
-                                        >
-                                            {item}
-                                        </Text>
-                                    </div>
+                                    />
                                 ))}
                             </m.div>
                         )}
