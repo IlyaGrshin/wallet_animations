@@ -46,15 +46,15 @@ function ActionButtons({ mode }) {
     const custodyButtons = [
         {
             icon: <ArrowUpCircleFill />,
-            name: "Send",
+            name: "Transfer",
         },
         {
             icon: <ArrowDownCircleFill />,
-            name: "Receive",
+            name: "Deposit",
         },
         {
             icon: <PlusCircleFill />,
-            name: "Buy",
+            name: "Withdraw",
         },
         {
             icon: <ArrowLeftAndRightCircleFill />,
