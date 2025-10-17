@@ -1,4 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from "react"
+import {
+    useState,
+    useEffect,
+    useRef,
+    useCallback,
+    useLayoutEffect,
+} from "react"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -13,30 +19,60 @@ const DropdownMenu = ({ items }) => {
     const [dropdownPosition, setDropdownPosition] = useState({
         top: 0,
         left: 0,
+        openUpwards: false,
     })
+    const [isPositioned, setIsPositioned] = useState(false)
     const buttonRef = useRef(null)
     const dropdownRef = useRef(null)
+    const animatedDropdownRef = useRef(null)
 
     const toggleDropdown = useCallback(() => {
         setIsOpen((prev) => !prev)
+        setIsPositioned(false)
     }, [])
 
     const handleSelectItem = useCallback((item) => {
         setSelectedItem(item)
         setIsOpen(false)
+        setIsPositioned(false)
     }, [])
 
-    useEffect(() => {
-        if (isOpen && buttonRef.current && dropdownRef.current) {
+    useLayoutEffect(() => {
+        if (isOpen && buttonRef.current && !isPositioned) {
             const buttonRect = buttonRef.current.getBoundingClientRect()
+
+            if (!dropdownRef.current) {
+                const initialPosition = {
+                    top: buttonRect.bottom + 1,
+                    left: buttonRect.right - 250,
+                    openUpwards: false,
+                }
+                setDropdownPosition(initialPosition)
+                return
+            }
+
             const dropdownRect = dropdownRef.current.getBoundingClientRect()
 
-            const top = buttonRect.bottom + 1
-            const left = buttonRect.right - dropdownRect.width - 216
+            const viewportHeight = window.innerHeight
+            const spaceBelow = viewportHeight - buttonRect.bottom
+            const spaceAbove = buttonRect.top
 
-            setDropdownPosition({ top, left })
+            const shouldOpenUpwards =
+                spaceBelow < dropdownRect.height && spaceAbove > spaceBelow
+
+            const top = shouldOpenUpwards
+                ? buttonRect.top - dropdownRect.height - 1
+                : buttonRect.bottom + 1
+            const left = buttonRect.right - dropdownRect.width + 24
+
+            setDropdownPosition({
+                top,
+                left,
+                openUpwards: shouldOpenUpwards,
+            })
+            setIsPositioned(true)
         }
-    }, [isOpen])
+    }, [isOpen, isPositioned])
 
     useEffect(() => {
         if (!isOpen) return
@@ -44,9 +80,11 @@ const DropdownMenu = ({ items }) => {
         const handleClickOutside = (event) => {
             if (
                 buttonRef.current &&
-                dropdownRef.current &&
                 !buttonRef.current.contains(event.target) &&
-                !dropdownRef.current.contains(event.target)
+                ((dropdownRef.current &&
+                    !dropdownRef.current.contains(event.target)) ||
+                    (animatedDropdownRef.current &&
+                        !animatedDropdownRef.current.contains(event.target)))
             ) {
                 setIsOpen(false)
             }
@@ -87,48 +125,73 @@ const DropdownMenu = ({ items }) => {
                 {selectedItem}
             </div>
             {createPortal(
-                <AnimatePresence>
-                    {isOpen && (
-                        <m.div
+                <>
+                    {isOpen && !isPositioned && (
+                        <div
                             ref={dropdownRef}
                             className={styles.root}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
-                            variants={dropdownVariants}
                             style={{
+                                position: "absolute",
                                 top: dropdownPosition.top,
                                 left: dropdownPosition.left,
+                                visibility: "hidden",
+                                pointerEvents: "none",
                             }}
                         >
                             {items.map((item, index) => (
-                                <div
-                                    key={index}
-                                    onClick={() => handleSelectItem(item)}
-                                    className={
-                                        item === selectedItem
-                                            ? `${styles.item} ${styles.selected}`
-                                            : `${styles.item}`
-                                    }
-                                >
+                                <div key={index} className={styles.item}>
                                     <Text
-                                        apple={{
-                                            variant: "body",
-                                        }}
-                                        material={{
-                                            variant: "body1",
-                                        }}
-                                        style={{
-                                            padding: "2px 0",
-                                        }}
+                                        apple={{ variant: "body" }}
+                                        material={{ variant: "body1" }}
+                                        style={{ padding: "2px 0" }}
                                     >
                                         {item}
                                     </Text>
                                 </div>
                             ))}
-                        </m.div>
+                        </div>
                     )}
-                </AnimatePresence>,
+                    <AnimatePresence>
+                        {isOpen && isPositioned && (
+                            <m.div
+                                ref={animatedDropdownRef}
+                                className={styles.root}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                variants={dropdownVariants}
+                                style={{
+                                    top: dropdownPosition.top,
+                                    left: dropdownPosition.left,
+                                    transformOrigin:
+                                        dropdownPosition.openUpwards
+                                            ? "100% 100%"
+                                            : "100% 0%",
+                                }}
+                            >
+                                {items.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={() => handleSelectItem(item)}
+                                        className={
+                                            item === selectedItem
+                                                ? `${styles.item} ${styles.selected}`
+                                                : `${styles.item}`
+                                        }
+                                    >
+                                        <Text
+                                            apple={{ variant: "body" }}
+                                            material={{ variant: "body1" }}
+                                            style={{ padding: "2px 0" }}
+                                        >
+                                            {item}
+                                        </Text>
+                                    </div>
+                                ))}
+                            </m.div>
+                        )}
+                    </AnimatePresence>
+                </>,
                 document.body
             )}
         </div>
