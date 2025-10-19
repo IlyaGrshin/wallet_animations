@@ -49,7 +49,9 @@ export default defineConfig(({ mode }) => ({
         }
       }
     }),
-    webpackStats()
+    webpackStats({
+      filename: './build/webpack-stats.json',
+    })
   ],
   esbuild: {
     loader: 'jsx',
