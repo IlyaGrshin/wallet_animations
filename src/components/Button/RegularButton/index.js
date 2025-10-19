@@ -24,7 +24,7 @@ export const RegularButton = ({
             {...dynamicProps}
             {...props}
         >
-            {(variant === "filled" || variant === "tinted") && <GlassBorder />}
+            {variant === "filled" && <GlassBorder />}
             <Text
                 apple={{ variant: "body", weight: "semibold" }}
                 material={{ variant: "button1" }}
