@@ -20,9 +20,5 @@ jobs:
 
       - name: Build production bundle
         run: yarn build
-
-      - name: Report bundle to RelativeCI
-        if: ${{ always() }}
-        run: yarn build && npx @relative-ci/agent
         env:
           RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}

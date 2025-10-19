@@ -2,12 +2,12 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
-import { visualizer } from 'rollup-plugin-visualizer';
-import fs from 'fs';
+import { relativeCI } from '@relative-ci/vite-plugin';
 
 export default defineConfig(({ mode }) => ({
   base: './',
   plugins: [
+    relativeCI(),
     react({
       babel: {
         plugins: [
@@ -72,13 +72,6 @@ export default defineConfig(({ mode }) => ({
     assetsDir: '',
     sourcemap: mode === 'development' ? 'inline' : true,
     rollupOptions: {
-      plugins: [
-        visualizer({
-          filename: './build/stats.json',
-          json: true,
-          open: false
-        })
-      ],
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
