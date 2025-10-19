@@ -9,7 +9,6 @@ import Text from "../../../components/Text"
 import { RegularButton, MultilineButton } from "../../../components/Button"
 
 import { useAccentColor } from "../../../hooks/useAccentColor"
-import { createResource } from "../../../hooks/useCache"
 
 import ArrowUpCircleFill from "../../../icons/28/Arrow Up Circle Fill.svg?react"
 import ArrowDownCircleFill from "../../../icons/28/Arrow Down Circle Fill.svg?react"
@@ -19,13 +18,11 @@ import ArrowLeftAndRightCircleFill from "../../../icons/28/Arrow Left & Right Ci
 import * as styles from "./ColorAssetPage.module.scss"
 
 const fetchAssets = async () => {
-    const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1"
-    )
+    const response = await fetch("https://ilyagrshn.com/coingeckoApi/index.php")
     return response.json()
 }
 
-const assetsResource = createResource("crypto-assets", fetchAssets)
+const assetsResource = fetchAssets()
 
 function Banner({ name }) {
     const BannerText = `Currently, ${name} can only be purchased, held and sold within Wallet. It is not possible to transfer, receive or withdraw ${name} externally.`

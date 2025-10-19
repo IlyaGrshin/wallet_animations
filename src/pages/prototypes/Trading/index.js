@@ -6,16 +6,13 @@ import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
 import ImageAvatar from "../../../components/ImageAvatar"
 import Spinner from "../../../components/Spinner"
-import { createResource } from "../../../hooks/useCache"
 
 const fetchAssets = async () => {
-    const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1"
-    )
+    const response = await fetch("https://ilyagrshn.com/coingeckoApi/index.php")
     return response.json()
 }
 
-const assetsResource = createResource("crypto-assets", fetchAssets)
+const assetsResource = fetchAssets()
 
 const AssetsList = () => {
     const assets = use(assetsResource)
