@@ -2,12 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
-import { relativeCI } from '@relative-ci/vite-plugin';
+import { webpackStats } from 'rollup-plugin-webpack-stats';
 
 export default defineConfig(({ mode }) => ({
   base: './',
   plugins: [
-    relativeCI(),
     react({
       babel: {
         plugins: [
@@ -49,7 +48,8 @@ export default defineConfig(({ mode }) => ({
           ]
         }
       }
-    })
+    }),
+    webpackStats()
   ],
   esbuild: {
     loader: 'jsx',
@@ -73,6 +73,9 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === 'development' ? 'inline' : true,
     rollupOptions: {
       output: {
+        assetFileNames: 'assets/[name].[hash][extname]',
+        chunkFileNames: 'assets/[name].[hash].js',
+        entryFileNames: 'assets/[name].[hash].js',
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.match(/node_modules\/react(-dom)?\//)) return 'react';
