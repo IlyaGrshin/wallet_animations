@@ -73,7 +73,7 @@
 		min-height: 44px;
 
 		.start {
-			padding: 10px 10px 10px 0;
+			padding: 12px 10px 12px 0;
 
 			.icon {
 				background: linear-gradient(156.88deg, #00E7FF 14.96%, #007AFF 85.04%);
@@ -83,16 +83,6 @@
 				width: 40px;
 				height: 40px;
 			}
-		}
-
-		.body {
-			padding: 10px var(--side-padding) 10px 0;
-		}
-	}
-	
-	:global(body.apple26) & {
-		.start {
-			padding: 12px 10px 12px 0;
 		}
 
 		.body {

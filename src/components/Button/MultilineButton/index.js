@@ -11,10 +11,6 @@ export function MultilineButton({ variant, icon, label, style, ...props }) {
             {icon}
             <Text
                 apple={{
-                    variant: "caption2",
-                    weight: "medium",
-                }}
-                apple26={{
                     variant: "footnote",
                     weight: "semibold",
                 }}

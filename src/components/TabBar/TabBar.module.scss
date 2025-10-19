@@ -7,7 +7,7 @@
     background: var(--tg-theme-bottom-bar-bg-color);
     padding-bottom: env(safe-area-inset-bottom);
 
-    :global(body.apple26) & {
+    :global(body.apple) & {
         position: absolute;
         left: 21px;
         right: 21px;
@@ -17,10 +17,6 @@
         padding: 4px;
         background: rgba(from var(--tg-theme-section-bg-color) r g b / 0.7);
         box-shadow: none !important;
-    }
-
-    :global(body.apple) & {
-        box-shadow: 0 -0.33px 0 0 var(--separator-non-opaque);
     }
 
     :global(body.material) & {
@@ -53,7 +49,7 @@
         z-index: 2;
         will-change: left;
 
-        :global(body.apple26) & {
+        :global(body.apple) & {
             background-color: var(--secondary-button-color);
             border-radius: 100px;
             height: calc(100% - 8px);

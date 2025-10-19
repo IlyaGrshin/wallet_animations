@@ -53,14 +53,8 @@
 		background-color: var(--tertiary-fill-background);
 		color: var(--tg-theme-text-color);
 		padding: 7px 10px;
-		border-radius: 10px;
+		border-radius: 18px;
 	}
-}
-
-:global(body.apple26) {
-    .picker {
-        border-radius: 18px;
-    }
 }
 
 :global(body.material) {

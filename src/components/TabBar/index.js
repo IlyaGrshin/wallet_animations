@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "motion/react"
-import { useApple26 } from "../../hooks/DeviceProvider"
+import { useApple } from "../../hooks/DeviceProvider"
 import { GlassContainer } from "../GlassEffect"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
@@ -91,7 +91,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                 />
             ))}
 
-            {useApple26 && (
+            {useApple && (
                 <>
                     <motion.div
                         className={styles.clipPathContainer}

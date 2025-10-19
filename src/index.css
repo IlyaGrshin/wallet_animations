@@ -7,8 +7,7 @@
 }
 
 :root {
-    .apple, 
-    .apple26 {
+    .apple {
         --side-padding: 16px;
     }
 
@@ -148,8 +147,7 @@ body {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
 
-    &.apple,
-    &.apple26 {
+    &.apple {
         font-family: -apple-system, system-ui, sans-serif;
     }
 

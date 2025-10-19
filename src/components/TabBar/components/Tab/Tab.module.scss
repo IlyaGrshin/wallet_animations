@@ -8,18 +8,14 @@
     text-decoration: none;
     font-weight: 500;
 
-    :global(body.apple26) & {
-        opacity: 0.4 !important;
-        position: relative;
-        z-index: 2;
-    }
-
     :global(body.apple) & {
         padding: 4px 0 6px;
         color: var(--tg-theme-text-color);
         font-size: 10px;
         line-height: 12px;
-        opacity: 0.4;
+        opacity: 0.4 !important;
+        position: relative;
+        z-index: 2;
         gap: 2px;
 
         :global(.wallet-lottie_fill-color) path {
@@ -57,32 +53,20 @@
         }
     }
 
-    :global(body.apple26) &:not(:first-child) {
+    :global(body.apple) &:not(:first-child) {
         margin-left: -7.33px;
     }
 }
 
 .active {
     :global(body.apple) & {
-        // color: var(--tg-theme-accent-text-color);
         opacity: 1;
-
-        :global(.wallet-lottie_fill-color) path {
-            // fill: var(--tg-theme-accent-text-color);
-        }
-
-        :global(.wallet-lottie_stroke-color) path {
-            // stroke: var(--tg-theme-accent-text-color);
-        }
+        font-weight: 500;
+        border-radius: 100px;
 
         svg, path {
             fill: var(--tg-theme-accent-text-color);
         }
-    }
-
-    :global(body.apple26) & {
-        font-weight: 500;
-        border-radius: 100px;
     }
 
     :global(body.material) & {
@@ -91,11 +75,5 @@
         svg, path {
             fill: var(--tg-theme-text-color);
         }
-    }
-}
-
-:global(body.apple26) {
-    .tab:not(:first-child) {
-        margin-left: -7.33px;
     }
 }
