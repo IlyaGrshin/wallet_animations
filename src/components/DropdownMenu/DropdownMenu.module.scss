@@ -9,7 +9,7 @@
 }
 
 .root {
-    position: absolute; 
+    position: absolute;
     width: 250px;
     overflow: hidden;
     z-index: 1000;
@@ -17,9 +17,11 @@
     .item {
         cursor: pointer;
         color: var(--tg-theme-text-color);
+        position: relative;
 
         &:hover {
             background-color: rgb(120 120 128 / 12%);
+            border-radius: 50px;
         }
 
         /* &.selected {
@@ -28,17 +30,11 @@
     }
 
     :global(body.apple) & {
-        background-color: var(--background-material-regular-color-1);
-        background-blend-mode: var(--background-material-regular-blend-mode-1);
-        box-shadow: 0 0 32px 0 rgb(0 0 0 / 20%);
-        backdrop-filter: blur(25px);
-        border-radius: 12px;
+        border-radius: 36px;
+        padding: 16px;
         
         .item { 
-            background-color: var(--background-material-regular-color-2);
-            background-blend-mode: var(--background-material-regular-blend-mode-2);
-            border-bottom: 0.33px solid var(--separator-non-opaque);
-            padding: 11px 16px;
+            padding: 9px 8px;
 
             &:last-child {
                 border-bottom: 0;

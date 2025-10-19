@@ -10,6 +10,7 @@ import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import { SPRING } from "../../utils/animations"
 import Text from "../Text"
+import { GlassContainer } from "../GlassEffect"
 
 import * as styles from "./DropdownMenu.module.scss"
 
@@ -21,18 +22,15 @@ const DROPDOWN_VARIANTS = {
     hidden: {
         scale: 0,
         opacity: 0,
-        filter: "blur(5px)",
     },
     visible: {
         scale: 1,
         opacity: 1,
-        filter: "blur(0px)",
         transition: SPRING.DROPDOWN,
     },
     exit: {
         scale: 0,
         opacity: 0,
-        filter: "blur(2px)",
         transition: { duration: 0.25 },
     },
 }
@@ -199,26 +197,29 @@ const DropdownMenu = ({ items }) => {
                         {isOpen && isPositioned && (
                             <m.div
                                 ref={animatedDropdownRef}
-                                className={styles.root}
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
                                 variants={DROPDOWN_VARIANTS}
                                 style={{
+                                    position: "absolute",
                                     top: position.top,
                                     left: position.left,
-                                    transformOrigin,
+                                    transformOrigin, // todo: fixed that, still works incorrectly
                                 }}
                             >
-                                <GlassEffect />
-                                {items.map((item, index) => (
-                                    <MenuItem
-                                        key={index}
-                                        item={item}
-                                        isSelected={item === selectedItem}
-                                        onClick={() => handleSelectItem(item)}
-                                    />
-                                ))}
+                                <GlassContainer className={styles.root}>
+                                    {items.map((item, index) => (
+                                        <MenuItem
+                                            key={index}
+                                            item={item}
+                                            isSelected={item === selectedItem}
+                                            onClick={() =>
+                                                handleSelectItem(item)
+                                            }
+                                        />
+                                    ))}
+                                </GlassContainer>
                             </m.div>
                         )}
                     </AnimatePresence>
