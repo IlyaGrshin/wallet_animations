@@ -63,7 +63,7 @@
     .clipPathContainer {
         position: absolute;
         display: flex;
-        background-color: var(--quaternary-fill-background);
+        background-color: var(--tertiary-fill-background);
         width: calc(100% - 8px);
         clip-path: inset(0px calc(75% - 5px) 0px 0% round 100px);
         will-change: clip-path;
