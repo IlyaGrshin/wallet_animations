@@ -11,6 +11,7 @@
 2. NEVER create markdown (.md) after you're done.
 3. NEVER use emojies in your replies.
 4. I know i'm absolutely right. No need to mention that.
+5. Always use yarn instead of npm.
 
 This is a CRITICAL step that must NEVER be skipped when working on any code-related task
 
