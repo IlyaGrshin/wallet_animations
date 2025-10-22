@@ -12,7 +12,6 @@
     "motion": "^12.23.24",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "rollup-plugin-webpack-stats": "^2.1.6",
     "spoiled": "^0.4.0",
     "wouter": "^3.7.1"
   },
@@ -61,7 +60,7 @@
     "eslint-plugin-react-hooks": "^7.0.0",
     "prettier": "^3.6.2",
     "prop-types": "^15.8.1",
-    "rollup-plugin-webpack-stats": "^0.2.3",
+    "rollup-plugin-webpack-stats": "^2.1.6",
     "sass": "^1.93.2",
     "stylelint": "^16.25.0",
     "stylelint-config-standard-scss": "^16.0.0",
