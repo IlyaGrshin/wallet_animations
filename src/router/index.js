@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { Router, Switch, Route } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
 import UI from "../pages/UI"
@@ -22,6 +23,10 @@ function Redirect({ to }) {
         navigate(to)
     }, [navigate, to])
     return null
+}
+
+Redirect.propTypes = {
+    to: PropTypes.string,
 }
 
 const Routes = () => (

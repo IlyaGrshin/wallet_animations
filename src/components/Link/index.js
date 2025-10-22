@@ -1,4 +1,5 @@
 import { forwardRef } from "react"
+import PropTypes from "prop-types"
 import { Link } from "wouter"
 import { useLocation } from "wouter"
 import { performViewTransition } from "../../utils/viewTransition"
@@ -38,4 +39,9 @@ const TransitionLink = forwardRef(
 
 TransitionLink.displayName = "TransitionLink"
 
+TransitionLink.propTypes = {
+    to: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+    children: PropTypes.node,
+}
 export default TransitionLink

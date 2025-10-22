@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import Text from "../Text"
 
 import * as styles from "./PanelHeader.module.scss"
@@ -50,4 +51,7 @@ const PanelHeader = ({ children }) => {
     )
 }
 
+PanelHeader.propTypes = {
+    children: PropTypes.node,
+}
 export default PanelHeader

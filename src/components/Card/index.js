@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import * as styles from "./Card.module.scss"
 
 function Card({ children, ...props }) {
@@ -8,4 +9,7 @@ function Card({ children, ...props }) {
     )
 }
 
+Card.propTypes = {
+    children: PropTypes.node,
+}
 export default Card

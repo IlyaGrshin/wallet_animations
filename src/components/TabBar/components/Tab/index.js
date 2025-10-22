@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { lazy, Suspense, useEffect, useRef } from "react"
 import * as styles from "./Tab.module.scss"
 
@@ -47,6 +48,16 @@ const Tab = ({
             <span>{label}</span>
         </div>
     )
+}
+
+Tab.propTypes = {
+    isActive: PropTypes.bool,
+    onClick: PropTypes.func,
+    label: PropTypes.string,
+    icon: PropTypes.node,
+    lottieIcon: PropTypes.object,
+    playKey: PropTypes.string,
+    className: PropTypes.string,
 }
 
 export default Tab

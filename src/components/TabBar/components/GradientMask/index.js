@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { useId } from "react"
 import * as styles from "../../TabBar.module.scss"
 
@@ -72,4 +73,17 @@ export default function GradientMask({
             />
         </svg>
     )
+}
+
+GradientMask.propTypes = {
+    width: PropTypes.number,
+    height: PropTypes.number,
+    insets: PropTypes.shape({
+        top: PropTypes.number,
+        right: PropTypes.number,
+        bottom: PropTypes.number,
+        left: PropTypes.number,
+    }),
+    innerHeight: PropTypes.number,
+    className: PropTypes.string,
 }

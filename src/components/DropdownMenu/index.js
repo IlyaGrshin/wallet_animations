@@ -5,6 +5,7 @@ import {
     useCallback,
     useLayoutEffect,
 } from "react"
+import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -121,6 +122,12 @@ const MenuItem = ({ item, isSelected, onClick }) => (
     </div>
 )
 
+MenuItem.propTypes = {
+    item: PropTypes.string,
+    isSelected: PropTypes.bool,
+    onClick: PropTypes.func,
+}
+
 const DropdownMenu = ({ items }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
@@ -230,4 +237,7 @@ const DropdownMenu = ({ items }) => {
     )
 }
 
+DropdownMenu.propTypes = {
+    items: PropTypes.arrayOf(PropTypes.string).isRequired,
+}
 export default DropdownMenu

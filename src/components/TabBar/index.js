@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import PropTypes from "prop-types"
 import { motion } from "motion/react"
 import { useApple } from "../../hooks/DeviceProvider"
 import { GlassContainer } from "../GlassEffect"
@@ -122,4 +123,9 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     )
 }
 
+TabBar.propTypes = {
+    tabs: PropTypes.array.isRequired,
+    onChange: PropTypes.func,
+    defaultIndex: PropTypes.number,
+}
 export default TabBar

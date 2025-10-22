@@ -5,6 +5,7 @@ import {
     useEffect,
     useCallback,
 } from "react"
+import PropTypes from "prop-types"
 
 const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
     const contentRef = useRef(null)
@@ -75,4 +76,10 @@ const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
     )
 }
 
+Collapsible.propTypes = {
+    open: PropTypes.bool,
+    children: PropTypes.node,
+    duration: PropTypes.number,
+    easing: PropTypes.string,
+}
 export default Collapsible

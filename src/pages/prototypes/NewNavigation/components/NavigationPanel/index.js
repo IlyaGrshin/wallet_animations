@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { useState, useEffect } from "react"
 import { motion } from "motion/react"
 import WebApp from "@twa-dev/sdk"
@@ -72,4 +73,10 @@ export default function NavigationPanel({
             </div>
         </div>
     )
+}
+
+NavigationPanel.propTypes = {
+    avatarUrl: PropTypes.string,
+    activeSegment: PropTypes.number,
+    onSegmentChange: PropTypes.func,
 }

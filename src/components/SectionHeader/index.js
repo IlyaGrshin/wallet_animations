@@ -1,4 +1,5 @@
 import Text from "../Text"
+import PropTypes from "prop-types"
 import * as styles from "./SectionHeader.module.scss"
 
 function SectionHeader({ type, title, value, ...props }) {
@@ -80,4 +81,9 @@ function SectionHeader({ type, title, value, ...props }) {
     }
 }
 
+SectionHeader.propTypes = {
+    type: PropTypes.string,
+    title: PropTypes.string.isRequired,
+    value: PropTypes.string,
+}
 export default SectionHeader

@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react"
+import PropTypes from "prop-types"
 import * as styles from "./Switch.module.scss"
 
 function Switch({
@@ -45,4 +46,11 @@ function Switch({
     )
 }
 
+Switch.propTypes = {
+    value: PropTypes.bool,
+    defaultValue: PropTypes.bool,
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool,
+    className: PropTypes.string,
+}
 export default Switch

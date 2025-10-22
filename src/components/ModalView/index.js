@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import * as styles from "./ModalView.module.scss"
@@ -131,4 +132,10 @@ const ModalView = ({
     )
 }
 
+ModalView.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    useCssAnimation: PropTypes.bool,
+    children: PropTypes.node,
+}
 export default ModalView

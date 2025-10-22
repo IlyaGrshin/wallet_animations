@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { useMemo } from "react"
 import { motion } from "motion/react"
 import { GlassContainer } from "../../../../../components/GlassEffect"
@@ -60,4 +61,11 @@ export default function DropdownControl({
             </motion.div>
         </motion.div>
     )
+}
+
+DropdownControl.propTypes = {
+    view: PropTypes.string,
+    activeSegment: PropTypes.number,
+    onSegmentChange: PropTypes.func,
+    onToggle: PropTypes.func,
 }

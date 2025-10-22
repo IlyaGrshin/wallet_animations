@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { forwardRef } from "react"
 import AppleText from "../../Text/AppleText"
 import { TextArea } from "../TextArea"
@@ -94,5 +95,15 @@ export const AppleTextField = forwardRef(
         )
     }
 )
+
+AppleTextField.propTypes = {
+    type: PropTypes.string,
+    className: PropTypes.string,
+    label: PropTypes.string,
+    onClear: PropTypes.func,
+    onChange: PropTypes.func,
+    value: PropTypes.string,
+    backgroundColor: PropTypes.string,
+}
 
 export default AppleTextField

@@ -1,4 +1,5 @@
 import * as styles from "./SectionList.module.scss"
+import PropTypes from "prop-types"
 import SectionHeader from "../../components/SectionHeader"
 
 const SectionList = ({ children, ...props }) => {
@@ -19,4 +20,12 @@ SectionList.Item = ({ children, header, description, ...props }) => {
     )
 }
 
+SectionList.propTypes = {
+    children: PropTypes.node,
+}
+SectionList.Item.propTypes = {
+    children: PropTypes.node,
+    header: PropTypes.string,
+    description: PropTypes.string,
+}
 export default SectionList

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import Text from "../../../Text"
 import * as styles from "./CellPart.module.scss"
 
@@ -60,6 +61,18 @@ export const CellPart = ({
             {children}
         </div>
     )
+}
+
+CellPart.propTypes = {
+    type: PropTypes.string,
+    className: PropTypes.string,
+    children: PropTypes.node,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    inputRef: PropTypes.object,
+    id: PropTypes.string,
+    name: PropTypes.string,
+    showValue: PropTypes.bool,
 }
 
 export default CellPart

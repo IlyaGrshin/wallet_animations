@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { use } from "react"
 import { BackButton } from "@twa-dev/sdk/react"
 
@@ -37,6 +38,10 @@ function Banner({ name }) {
             </Text>
         </div>
     )
+}
+
+Banner.propTypes = {
+    name: PropTypes.string,
 }
 
 function ActionButtons({ mode }) {
@@ -110,6 +115,10 @@ function ActionButtons({ mode }) {
     }
 }
 
+ActionButtons.propTypes = {
+    mode: PropTypes.string,
+}
+
 function AssetSection({ mode, image, name, price, ticker }) {
     const accentColor = useAccentColor(image)
 
@@ -148,6 +157,14 @@ function AssetSection({ mode, image, name, price, ticker }) {
             <ActionButtons mode={mode} />
         </section>
     )
+}
+
+AssetSection.propTypes = {
+    mode: PropTypes.string,
+    image: PropTypes.string,
+    name: PropTypes.string,
+    price: PropTypes.string,
+    ticker: PropTypes.string,
 }
 
 function ColorAssetPage() {

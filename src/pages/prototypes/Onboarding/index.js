@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { useState, useEffect, useCallback, memo } from "react"
 
 import Page from "../../../components/Page"
@@ -42,6 +43,12 @@ const GalleryPage = ({ imageClass, title, description }) => (
         </div>
     </div>
 )
+
+GalleryPage.propTypes = {
+    imageClass: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+}
 
 const Onboarding = () => {
     const [, setCurrentPage] = useState(0)

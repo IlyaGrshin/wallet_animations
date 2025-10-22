@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import { TRANSITIONS } from "../../utils/animations"
@@ -34,6 +35,10 @@ function Morph({ children }) {
             ))}
         </AnimatePresence>
     )
+}
+
+Morph.propTypes = {
+    children: PropTypes.string.isRequired,
 }
 
 export default Morph

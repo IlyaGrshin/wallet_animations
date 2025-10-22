@@ -1,4 +1,5 @@
 // TODO: Use CSS Modules
+import PropTypes from "prop-types"
 import { useState } from "react"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -273,6 +274,11 @@ function AnimatedCell({ expandedAssets, index }) {
             </div>
         </m.div>
     )
+}
+
+AnimatedCell.propTypes = {
+    expandedAssets: PropTypes.bool,
+    index: PropTypes.number,
 }
 
 function Stacks() {

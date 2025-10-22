@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import * as styles from "./GlassContainer.module.scss"
 import GlassBorder from "./GlassBorder"
 
@@ -22,6 +23,12 @@ const GlassContainer = ({ children, className = "", style = {}, ...rest }) => {
             {children}
         </div>
     )
+}
+
+GlassContainer.propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+    style: PropTypes.object,
 }
 
 export default GlassContainer

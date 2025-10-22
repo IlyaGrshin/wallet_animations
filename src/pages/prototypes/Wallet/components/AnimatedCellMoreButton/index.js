@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import * as cellStyles from "../../../../../components/Cells/Cell.module.scss"
 import Text from "../../../../../components/Text"
@@ -168,4 +169,9 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
             </div>
         </m.div>
     )
+}
+
+AnimatedCellMoreButton.propTypes = {
+    onClick: PropTypes.func,
+    state: PropTypes.bool,
 }

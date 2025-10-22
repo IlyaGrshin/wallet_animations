@@ -1,4 +1,5 @@
 import { useApple } from "../../hooks/DeviceProvider"
+import PropTypes from "prop-types"
 
 import SpinnerAppleIcon from "../../images/spinner_apple.svg?react"
 import SpinnerIcon from "../../images/spinner.svg?react"
@@ -15,4 +16,7 @@ const Spinner = (props) => {
     return <Icon {...props} className={combinedClassName} />
 }
 
+Spinner.propTypes = {
+    className: PropTypes.string,
+}
 export default Spinner

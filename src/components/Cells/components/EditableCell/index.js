@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { forwardRef } from "react"
 import Text from "../../../Text"
 import ClearAppleSVG from "../../../../images/clear_apple.svg?react"
@@ -44,5 +45,12 @@ const EditableCell = forwardRef(
         )
     }
 )
+
+EditableCell.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    onClear: PropTypes.func,
+}
 
 export default EditableCell

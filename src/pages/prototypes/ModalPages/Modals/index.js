@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { memo } from "react"
 
 import ModalView from "../../../../components/ModalView"
@@ -110,6 +111,21 @@ const Modals = ({ modals, handlers }) => {
             </ModalView>
         </>
     )
+}
+
+Modals.propTypes = {
+    modals: PropTypes.shape({
+        modal1: PropTypes.bool,
+        modal2: PropTypes.bool,
+    }),
+    handlers: PropTypes.shape({
+        modal1: PropTypes.shape({
+            close: PropTypes.func,
+        }),
+        modal2: PropTypes.shape({
+            close: PropTypes.func,
+        }),
+    }),
 }
 
 export default memo(Modals)

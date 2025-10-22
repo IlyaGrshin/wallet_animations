@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import Text from "../../../../../components/Text"
 
 const walletNames = {
@@ -20,4 +21,8 @@ export default function CollapsedView({ activeSegment }) {
             {walletNames[activeSegment]}
         </Text>
     )
+}
+
+CollapsedView.propTypes = {
+    activeSegment: PropTypes.number,
 }

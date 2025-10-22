@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import "./AppleText.scss"
 
 const AppleText = ({
@@ -18,6 +19,17 @@ const AppleText = ({
             {children}
         </Component>
     )
+}
+
+AppleText.propTypes = {
+    as: PropTypes.elementType,
+    apple: PropTypes.shape({
+        variant: PropTypes.string,
+        weight: PropTypes.string,
+        rounded: PropTypes.bool,
+        caps: PropTypes.bool,
+    }),
+    children: PropTypes.node,
 }
 
 export default AppleText

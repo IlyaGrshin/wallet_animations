@@ -1,4 +1,5 @@
 import { useState } from "react"
+import PropTypes from "prop-types"
 
 import * as styles from "./Image.module.scss"
 
@@ -31,4 +32,9 @@ export const Image = ({ className, onLoad, ...restProps }) => {
             {...restProps}
         />
     )
+}
+
+Image.propTypes = {
+    className: PropTypes.string,
+    onLoad: PropTypes.func,
 }

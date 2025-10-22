@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import * as styles from "./PageContent.module.scss"
@@ -46,4 +47,8 @@ export default function PageContent({ view }) {
             </motion.div>
         </AnimatePresence>
     )
+}
+
+PageContent.propTypes = {
+    view: PropTypes.string,
 }

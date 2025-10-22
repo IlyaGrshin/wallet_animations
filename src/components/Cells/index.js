@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import Text from "../Text"
 
 import CellText from "./components/CellText"
@@ -66,6 +67,25 @@ const CellEnd = ({ label, caption }) => (
         )}
     </>
 )
+
+CellComponent.propTypes = {
+    as: PropTypes.elementType,
+    start: PropTypes.node,
+    children: PropTypes.node,
+    end: PropTypes.node,
+    onClick: PropTypes.func,
+}
+
+CellStart.propTypes = {
+    type: PropTypes.string,
+    src: PropTypes.string,
+    iconType: PropTypes.node,
+}
+
+CellEnd.propTypes = {
+    label: PropTypes.string,
+    caption: PropTypes.string,
+}
 
 export const Cell = Object.assign(CellComponent, {
     Start: CellStart,

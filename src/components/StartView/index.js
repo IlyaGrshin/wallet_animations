@@ -1,4 +1,5 @@
 import Text from "../Text"
+import PropTypes from "prop-types"
 
 import * as styles from "./StartView.module.scss"
 
@@ -31,4 +32,8 @@ const StartView = ({ title, description }) => {
     )
 }
 
+StartView.propTypes = {
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+}
 export default StartView

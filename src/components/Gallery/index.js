@@ -1,4 +1,5 @@
 import { useRef, useEffect, Children, useCallback } from "react"
+import PropTypes from "prop-types"
 import * as styles from "./Gallery.module.scss"
 
 const Gallery = ({ children, onPageChange, onScrollProgress }) => {
@@ -34,4 +35,9 @@ const Gallery = ({ children, onPageChange, onScrollProgress }) => {
     )
 }
 
+Gallery.propTypes = {
+    children: PropTypes.node,
+    onPageChange: PropTypes.func,
+    onScrollProgress: PropTypes.func,
+}
 export default Gallery

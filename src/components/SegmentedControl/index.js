@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react"
+import PropTypes from "prop-types"
 import { useColorScheme } from "../../hooks/useColorScheme"
 import Text from "../Text"
 
@@ -64,4 +65,11 @@ const SegmentedControl = ({
     )
 }
 
+SegmentedControl.propTypes = {
+    segments: PropTypes.array.isRequired,
+    onChange: PropTypes.func,
+    defaultIndex: PropTypes.number,
+    colorScheme: PropTypes.string,
+    type: PropTypes.string,
+}
 export default SegmentedControl

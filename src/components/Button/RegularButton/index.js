@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { GlassBorder } from "../../GlassEffect"
 import { motion } from "motion/react"
 import Text from "../../Text"
@@ -33,4 +34,11 @@ export const RegularButton = ({
             </Text>
         </motion.div>
     )
+}
+
+RegularButton.propTypes = {
+    variant: PropTypes.string,
+    label: PropTypes.string,
+    isShine: PropTypes.bool,
+    isFill: PropTypes.bool,
 }

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { EASING } from "../../utils/animations"
 import { useApple } from "../../hooks/DeviceProvider"
@@ -50,4 +51,8 @@ const PageTransition = ({ children, slide = "none" }) => {
     )
 }
 
+PageTransition.propTypes = {
+    children: PropTypes.node,
+    slide: PropTypes.string,
+}
 export default PageTransition

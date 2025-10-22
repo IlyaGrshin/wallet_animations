@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import PropTypes from "prop-types"
 import WebApp from "@twa-dev/sdk"
 
 const { setHeaderColor, setBackgroundColor } = WebApp
@@ -46,4 +47,11 @@ const Page = ({
     return <>{children}</>
 }
 
+Page.propTypes = {
+    children: PropTypes.node,
+    mode: PropTypes.oneOf(["primary", "secondary"]),
+    headerColor: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    expandOnMount: PropTypes.bool,
+}
 export default Page

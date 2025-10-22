@@ -1,4 +1,5 @@
 import { useApple, useMaterial } from "../../hooks/DeviceProvider"
+import PropTypes from "prop-types"
 
 import { isUnicode } from "../../utils/common"
 
@@ -44,4 +45,9 @@ const InitialsAvatar = ({ size = 40, userId, name }) => {
     )
 }
 
+InitialsAvatar.propTypes = {
+    size: PropTypes.number,
+    userId: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+}
 export default InitialsAvatar

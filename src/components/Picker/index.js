@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react"
+import PropTypes from "prop-types"
 import * as styles from "./Picker.module.scss"
 
 import WebApp from "@twa-dev/sdk"
@@ -96,4 +97,8 @@ const Picker = ({ items, onPickerIndex }) => {
     )
 }
 
+Picker.propTypes = {
+    items: PropTypes.array.isRequired,
+    onPickerIndex: PropTypes.func,
+}
 export default Picker

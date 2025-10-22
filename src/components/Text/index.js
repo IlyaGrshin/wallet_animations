@@ -1,4 +1,5 @@
 import { useApple } from "../../hooks/DeviceProvider"
+import PropTypes from "prop-types"
 
 import AppleText from "./AppleText"
 import MaterialText from "./MaterialText"
@@ -24,4 +25,9 @@ const Text = ({
     )
 }
 
+Text.propTypes = {
+    apple: PropTypes.object,
+    material: PropTypes.object,
+    children: PropTypes.node,
+}
 export default Text

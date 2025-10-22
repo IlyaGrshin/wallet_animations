@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import Cell from "../../../../../components/Cells"
 import ImageAvatar from "../../../../../components/ImageAvatar"
 import { getAssetIcon } from "../../../../../utils/AssetsMap"
@@ -45,4 +46,9 @@ export default function ExpandedView({ activeSegment, onSegmentChange }) {
             ))}
         </div>
     )
+}
+
+ExpandedView.propTypes = {
+    activeSegment: PropTypes.number,
+    onSegmentChange: PropTypes.func,
 }

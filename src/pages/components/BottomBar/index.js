@@ -1,4 +1,5 @@
 import { useRef, useMemo } from "react"
+import PropTypes from "prop-types"
 
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
@@ -218,4 +219,5 @@ const BottomBar = () => {
     )
 }
 
+BottomBar.propTypes = {}
 export default BottomBar

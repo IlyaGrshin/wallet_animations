@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { createContext, useEffect, useState, useMemo } from "react"
 import WebApp from "@twa-dev/sdk"
 
@@ -78,6 +79,10 @@ const AppearanceProvider = ({ children }) => {
             {children}
         </AppearanceContext.Provider>
     )
+}
+
+AppearanceProvider.propTypes = {
+    children: PropTypes.node,
 }
 
 export default AppearanceProvider

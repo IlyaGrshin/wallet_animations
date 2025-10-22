@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import { forwardRef } from "react"
 
 import { useMaterial } from "../../hooks/DeviceProvider"
@@ -29,4 +30,11 @@ const ImageAvatar = forwardRef(
     }
 )
 
+ImageAvatar.propTypes = {
+    size: PropTypes.number,
+    className: PropTypes.string,
+    style: PropTypes.object,
+    src: PropTypes.string,
+    shape: PropTypes.oneOf(["circle", "rounded"]),
+}
 export default ImageAvatar

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import Text from "../../../Text"
 import * as styles from "./CellText.module.scss"
 
@@ -25,6 +26,13 @@ const CellText = ({ type, title, description, bold }) => {
             )}
         </>
     )
+}
+
+CellText.propTypes = {
+    type: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    bold: PropTypes.bool,
 }
 
 export default CellText

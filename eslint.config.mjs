@@ -43,7 +43,7 @@ export default [
             'react/jsx-uses-vars': 'error',
             'prettier/prettier': 'error',
             'react/react-in-jsx-scope': 'off',
-            'react/prop-types': 'off',
+            'react/prop-types': 'error',
             'react/display-name': 'off',
             'react/jsx-key': 'error',
             'no-console': ['warn', { allow: ['warn', 'error'] }],
