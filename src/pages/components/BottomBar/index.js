@@ -121,8 +121,8 @@ const BottomBar = () => {
         <Page>
             <BackButton />
             <NativePageTransition />
-            <SectionList title="Main Button">
-                <SectionList.Item>
+            <SectionList>
+                <SectionList.Item header="Main Button">
                     <Cell>
                         <Cell.Editable
                             label="Main Button Label"
