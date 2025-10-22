@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
-import path from 'path';
-import { webpackStats } from 'rollup-plugin-webpack-stats';
+import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 export default defineConfig(({ mode }) => ({
   base: './',
@@ -49,7 +48,7 @@ export default defineConfig(({ mode }) => ({
         }
       }
     }),
-    webpackStats({
+    webpackStatsPlugin({
       filename: './build/webpack-stats.json',
     })
   ],
