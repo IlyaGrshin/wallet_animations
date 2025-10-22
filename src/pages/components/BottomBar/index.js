@@ -123,7 +123,7 @@ const BottomBar = () => {
             <BackButton />
             <NativePageTransition />
             <SectionList>
-                <SectionList.Item header="Main Button">
+                <SectionList.Item header="Bottom Bar">
                     <Cell>
                         <Cell.Editable
                             label="Main Button Label"
