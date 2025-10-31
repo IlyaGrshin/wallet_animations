@@ -1,4 +1,3 @@
-import { memo } from "react"
 import TransitionLink from "../../components/Link"
 
 import Page from "../../components/Page"
@@ -118,4 +117,4 @@ const UI = () => {
     )
 }
 
-export default memo(UI)
+export default UI

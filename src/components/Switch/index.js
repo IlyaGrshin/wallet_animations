@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react"
+import { useState } from "react"
 import PropTypes from "prop-types"
 import * as styles from "./Switch.module.scss"
 
@@ -13,17 +13,14 @@ function Switch({
     const [uncontrolled, setUncontrolled] = useState(defaultValue)
     const checked = isControlled ? value : uncontrolled
 
-    const setChecked = useCallback(
-        (next) => {
-            if (!isControlled) setUncontrolled(next)
-            if (onChange) onChange(next)
-        },
-        [isControlled, onChange]
-    )
+    const setChecked = (next) => {
+        if (!isControlled) setUncontrolled(next)
+        if (onChange) onChange(next)
+    }
 
-    const toggle = useCallback(() => {
+    const toggle = () => {
         setChecked(!checked)
-    }, [checked, setChecked])
+    }
 
     const handleClick = (e) => {
         e.stopPropagation()

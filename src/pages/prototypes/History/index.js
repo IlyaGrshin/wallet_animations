@@ -1,4 +1,3 @@
-import { memo } from "react"
 
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
@@ -35,4 +34,4 @@ function TransactionList() {
     )
 }
 
-export default memo(TransactionList)
+export default TransactionList

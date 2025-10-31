@@ -1,5 +1,4 @@
 import PropTypes from "prop-types"
-import { useMemo } from "react"
 import { motion } from "motion/react"
 import { GlassContainer } from "../../../../../components/GlassEffect"
 import * as styles from "./NavigationPanel.module.scss"
@@ -12,20 +11,20 @@ export default function DropdownControl({
     onSegmentChange,
     onToggle,
 }) {
-    const content = useMemo(() => {
-        switch (view) {
-            case "expanded":
-                return (
-                    <ExpandedView
-                        activeSegment={activeSegment}
-                        onSegmentChange={onSegmentChange}
-                    />
-                )
-            case "collapsed":
-            default:
-                return <CollapsedView activeSegment={activeSegment} />
-        }
-    }, [view, activeSegment, onSegmentChange])
+    let content
+    switch (view) {
+        case "expanded":
+            content = (
+                <ExpandedView
+                    activeSegment={activeSegment}
+                    onSegmentChange={onSegmentChange}
+                />
+            )
+            break
+        case "collapsed":
+        default:
+            content = <CollapsedView activeSegment={activeSegment} />
+    }
 
     return (
         <motion.div

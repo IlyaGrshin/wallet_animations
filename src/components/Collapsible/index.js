@@ -3,7 +3,6 @@ import {
     useState,
     useLayoutEffect,
     useEffect,
-    useCallback,
 } from "react"
 import PropTypes from "prop-types"
 
@@ -13,17 +12,14 @@ const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
     const [height, setHeight] = useState(open ? "auto" : 0)
     const [shouldRender, setShouldRender] = useState(open)
     const actualShouldRender = open ? true : shouldRender
-    const handleTransitionEnd = useCallback(
-        (e) => {
-            if (e.propertyName !== "height") return
-            if (open) {
-                setHeight("auto")
-                return
-            }
-            setShouldRender(false)
-        },
-        [open]
-    )
+    const handleTransitionEnd = (e) => {
+        if (e.propertyName !== "height") return
+        if (open) {
+            setHeight("auto")
+            return
+        }
+        setShouldRender(false)
+    }
     useLayoutEffect(() => {
         const el = contentRef.current
         if (!el) return

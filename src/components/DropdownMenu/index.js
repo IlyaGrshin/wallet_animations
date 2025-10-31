@@ -2,7 +2,6 @@ import {
     useState,
     useEffect,
     useRef,
-    useCallback,
     useLayoutEffect,
 } from "react"
 import PropTypes from "prop-types"
@@ -141,24 +140,21 @@ const DropdownMenu = ({ items }) => {
         dropdownRef
     )
 
-    const closeDropdown = useCallback(() => {
+    const closeDropdown = () => {
         setIsOpen(false)
         resetPosition()
-    }, [resetPosition])
+    }
 
-    const toggleDropdown = useCallback(() => {
+    const toggleDropdown = () => {
         setIsOpen((prev) => !prev)
         resetPosition()
-    }, [resetPosition])
+    }
 
-    const handleSelectItem = useCallback(
-        (item) => {
-            setSelectedItem(item)
-            setIsOpen(false)
-            resetPosition()
-        },
-        [resetPosition]
-    )
+    const handleSelectItem = (item) => {
+        setSelectedItem(item)
+        setIsOpen(false)
+        resetPosition()
+    }
 
     useClickOutside(
         isOpen,

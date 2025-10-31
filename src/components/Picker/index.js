@@ -1,11 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import * as styles from "./Picker.module.scss"
 
 import WebApp from "@twa-dev/sdk"
 
 const Picker = ({ items, onPickerIndex }) => {
-    // TODO: Android Support
     const pickerRef = useRef(null)
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [scrollPosition, setScrollPosition] = useState(0)
@@ -20,40 +19,40 @@ const Picker = ({ items, onPickerIndex }) => {
         }
     }, [])
 
-    const handleScroll = useCallback(() => {
-        if (ticking.current) return
-
-        ticking.current = true
-        requestAnimationFrame(() => {
-            if (!pickerRef.current) {
-                ticking.current = false
-                return
-            }
-
-            const scrollTop = pickerRef.current.scrollTop
-            const index = Math.min(
-                items.length - 1,
-                Math.max(0, Math.round(scrollTop / itemHeight) - 1)
-            )
-
-            setScrollPosition(scrollTop)
-
-            if (selectedIndex !== index) {
-                setSelectedIndex(index)
-                onPickerIndex?.(index)
-            }
-
-            ticking.current = false
-        })
-    }, [itemHeight, items.length, selectedIndex, onPickerIndex])
-
     useEffect(() => {
+        const handleScroll = () => {
+            if (ticking.current) return
+
+            ticking.current = true
+            requestAnimationFrame(() => {
+                if (!pickerRef.current) {
+                    ticking.current = false
+                    return
+                }
+
+                const scrollTop = pickerRef.current.scrollTop
+                const index = Math.min(
+                    items.length - 1,
+                    Math.max(0, Math.round(scrollTop / itemHeight) - 1)
+                )
+
+                setScrollPosition(scrollTop)
+
+                if (selectedIndex !== index) {
+                    setSelectedIndex(index)
+                    onPickerIndex?.(index)
+                }
+
+                ticking.current = false
+            })
+        }
+
         const container = pickerRef.current
         if (container) {
             container.addEventListener("scroll", handleScroll)
             return () => container.removeEventListener("scroll", handleScroll)
         }
-    }, [handleScroll])
+    }, [itemHeight, items.length, selectedIndex, onPickerIndex])
 
     useEffect(() => {
         if (selectedIndex >= 0 && selectedIndex < items.length) {

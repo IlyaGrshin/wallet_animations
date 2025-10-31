@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, memo } from "react"
+import { useEffect, useState } from "react"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import { TRANSITIONS } from "../../../utils/animations"
@@ -131,9 +131,7 @@ const TabBarPage = () => {
 
     const animationConfig = getAnimationConfig()
 
-    const content = useMemo(() => {
-        return tabs[activeIndex]?.view || null
-    }, [activeIndex])
+    const content = tabs[activeIndex]?.view || null
 
     useEffect(() => {
         WebApp.disableVerticalSwipes()
@@ -167,4 +165,4 @@ const TabBarPage = () => {
     )
 }
 
-export default memo(TabBarPage)
+export default TabBarPage

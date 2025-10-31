@@ -1,4 +1,3 @@
-import { memo } from "react"
 
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
@@ -27,4 +26,4 @@ function TONSpace() {
     )
 }
 
-export default memo(TONSpace)
+export default TONSpace

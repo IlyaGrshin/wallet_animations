@@ -1,10 +1,9 @@
-import { useRef, useMemo } from "react"
+import { useRef, useState, useEffect } from "react"
 import PropTypes from "prop-types"
 
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
-import { useState, useCallback, useEffect } from "react"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -22,61 +21,49 @@ const BottomBar = () => {
     const MainButton = WebApp.MainButton
     const SecondaryButton = WebApp.SecondaryButton
 
-    const setMainButton = useCallback(
-        (buttonLabel) => {
-            setLabel(buttonLabel)
-            if (buttonLabel) {
-                MainButton.setText(buttonLabel)
-                MainButton.show()
-            } else {
-                MainButton.hide()
-            }
-        },
-        [MainButton]
-    )
+    const setMainButton = (buttonLabel) => {
+        setLabel(buttonLabel)
+        if (buttonLabel) {
+            MainButton.setText(buttonLabel)
+            MainButton.show()
+        } else {
+            MainButton.hide()
+        }
+    }
 
-    const setSecondaryButton = useCallback(
-        (buttonLabel) => {
-            setLabelSecondary(buttonLabel)
-            if (buttonLabel) {
-                SecondaryButton.setText(buttonLabel)
-                SecondaryButton.show()
-            } else {
-                SecondaryButton.hide()
-            }
-        },
-        [SecondaryButton]
-    )
+    const setSecondaryButton = (buttonLabel) => {
+        setLabelSecondary(buttonLabel)
+        if (buttonLabel) {
+            SecondaryButton.setText(buttonLabel)
+            SecondaryButton.show()
+        } else {
+            SecondaryButton.hide()
+        }
+    }
 
     const [pickerIndex, setPickerValue] = useState(0)
 
-    const position = useMemo(() => ["Left", "Top", "Right", "Bottom"], [])
+    const position = ["Left", "Top", "Right", "Bottom"]
 
-    const handlePickerIndex = useCallback(
-        (page) => {
-            SecondaryButton.position = position[page].toLowerCase()
-            setPickerValue(page)
-        },
-        [SecondaryButton, position]
-    )
+    const handlePickerIndex = (page) => {
+        SecondaryButton.position = position[page].toLowerCase()
+        setPickerValue(page)
+    }
 
     const [shine, setShine] = useState(false)
 
-    const handleShineChange = useCallback(
-        (value) => {
-            setShine(value)
-            MainButton.setParams({ has_shine_effect: value })
-        },
-        [MainButton]
-    )
+    const handleShineChange = (value) => {
+        setShine(value)
+        MainButton.setParams({ has_shine_effect: value })
+    }
 
-    const toggleShine = useCallback(() => {
+    const toggleShine = () => {
         setShine((prev) => {
             const next = !prev
             MainButton.setParams({ has_shine_effect: next })
             return next
         })
-    }, [MainButton])
+    }
 
     useEffect(() => {
         const handleBack = () => {

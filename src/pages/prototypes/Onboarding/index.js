@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import { useState, useEffect, useCallback, memo } from "react"
+import { useState, useEffect } from "react"
 
 import Page from "../../../components/Page"
 import Gallery from "../../../components/Gallery"
@@ -53,12 +53,9 @@ GalleryPage.propTypes = {
 const Onboarding = () => {
     const [, setCurrentPage] = useState(0)
 
-    const handlePageChange = useCallback(
-        (page) => {
-            setCurrentPage(page)
-        },
-        [setCurrentPage]
-    )
+    const handlePageChange = (page) => {
+        setCurrentPage(page)
+    }
 
     useEffect(() => {
         WebApp.disableVerticalSwipes()
@@ -112,4 +109,4 @@ const Onboarding = () => {
     )
 }
 
-export default memo(Onboarding)
+export default Onboarding

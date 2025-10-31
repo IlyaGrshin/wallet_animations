@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import { createContext, useEffect, useState, useMemo } from "react"
+import { createContext, useEffect, useState } from "react"
 import WebApp from "@twa-dev/sdk"
 
 export const AppearanceContext = createContext({
@@ -67,12 +67,9 @@ const AppearanceProvider = ({ children }) => {
         }
     }, [])
 
-    const value = useMemo(
-        () => ({
-            colorScheme,
-        }),
-        [colorScheme]
-    )
+    const value = {
+        colorScheme,
+    }
 
     return (
         <AppearanceContext.Provider value={value}>

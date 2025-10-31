@@ -1,4 +1,3 @@
-import { memo } from "react"
 
 import * as styles from "./Wallet.module.scss"
 import Page from "../../../components/Page"
@@ -45,4 +44,4 @@ function Wallet() {
     )
 }
 
-export default memo(Wallet)
+export default Wallet

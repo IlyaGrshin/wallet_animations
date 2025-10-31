@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
 
@@ -18,17 +18,10 @@ export function useIndicatorDrag({
     const startXRef = useRef(0)
     const DRAG_THRESHOLD_PX = 6
 
-    const segmentPercent = useMemo(() => 100 / tabsLength, [tabsLength])
+    const segmentPercent = 100 / tabsLength
 
-    const indicatorWidth = useMemo(
-        () => `calc(${segmentPercent}% + 7.33px - 4px)`,
-        [segmentPercent]
-    )
-    const indicatorLeft = useMemo(
-        () =>
-            `calc(${segmentPercent * activeIndex}% - ${3.67 * activeIndex}px)`,
-        [segmentPercent, activeIndex]
-    )
+    const indicatorWidth = `calc(${segmentPercent}% + 7.33px - 4px)`
+    const indicatorLeft = `calc(${segmentPercent * activeIndex}% - ${3.67 * activeIndex}px)`
 
     const clipLeft = indicatorLeft
     const clipRight = `calc(100% - (${indicatorLeft} + ${indicatorWidth}) - 2.33px * ${activeIndex})`

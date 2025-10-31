@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState } from "react"
 import PropTypes from "prop-types"
 import { useColorScheme } from "../../hooks/useColorScheme"
 import Text from "../Text"
@@ -21,14 +21,8 @@ const SegmentedControl = ({
         if (onChange) onChange(index)
     }
 
-    const controlType = useMemo(() => {
-        switch (type) {
-            case "circled":
-                return `${styles.root} ${styles.circled}`
-            default:
-                return `${styles.root}`
-        }
-    }, [type])
+    const controlType =
+        type === "circled" ? `${styles.root} ${styles.circled}` : styles.root
 
     return (
         <div className={controlType} data-color-scheme={colorScheme} {...props}>

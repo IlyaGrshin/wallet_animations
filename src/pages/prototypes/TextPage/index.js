@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, memo } from "react"
+import { useState, useRef, useEffect } from "react"
 
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
@@ -127,4 +127,4 @@ const TextPage = () => {
     )
 }
 
-export default memo(TextPage)
+export default TextPage

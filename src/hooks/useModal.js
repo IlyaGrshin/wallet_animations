@@ -1,27 +1,25 @@
-import { useState, useCallback, useMemo } from "react"
+import { useState } from "react"
 
 const useModal = (modalKeys = {}) => {
-    // Convert array of keys to object if necessary
     const initialState = Array.isArray(modalKeys)
         ? modalKeys.reduce((acc, key) => ({ ...acc, [key]: false }), {})
         : modalKeys
 
     const [modals, setModals] = useState(initialState)
 
-    const openModal = useCallback((modalId) => {
+    const openModal = (modalId) => {
         setModals((prev) => ({ ...prev, [modalId]: true }))
-    }, [])
+    }
 
-    const closeModal = useCallback((modalId) => {
+    const closeModal = (modalId) => {
         setModals((prev) => ({ ...prev, [modalId]: false }))
-    }, [])
+    }
 
-    const toggleModal = useCallback((modalId) => {
+    const toggleModal = (modalId) => {
         setModals((prev) => ({ ...prev, [modalId]: !prev[modalId] }))
-    }, [])
+    }
 
-    // Create handlers object with pre-bound functions for each modal
-    const handlers = useMemo(() => {
+    const handlers = (() => {
         const result = {}
         Object.keys(initialState).forEach((modalId) => {
             result[modalId] = {
@@ -32,9 +30,9 @@ const useModal = (modalKeys = {}) => {
             }
         })
         return result
-    }, [modals, openModal, closeModal, toggleModal, initialState])
+    })()
 
-    const isOpen = useCallback((modalId) => !!modals[modalId], [modals])
+    const isOpen = (modalId) => !!modals[modalId]
 
     return {
         modals,

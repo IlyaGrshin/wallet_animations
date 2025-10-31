@@ -1,29 +1,21 @@
 import PropTypes from "prop-types"
-import { useMemo } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import * as styles from "./PageContent.module.scss"
 import Wallet from "../../../Wallet"
 import TONSpace from "../../../TS"
 
 export default function PageContent({ view }) {
-    const content = useMemo(() => {
-        switch (view) {
-            case "wallet":
-                return (
-                    // <Suspense>
-                    <Wallet />
-                    // </Suspense>
-                )
-            case "tonspace":
-                return (
-                    // <Suspense fallback={<TonSpaceSkeleton />}>
-                    <TONSpace />
-                    // </Suspense>
-                )
-            default:
-                return <Wallet />
-        }
-    }, [view])
+    let content
+    switch (view) {
+        case "wallet":
+            content = <Wallet />
+            break
+        case "tonspace":
+            content = <TONSpace />
+            break
+        default:
+            content = <Wallet />
+    }
 
     return (
         <AnimatePresence

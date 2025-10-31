@@ -1,4 +1,4 @@
-import { memo, useState } from "react"
+import { useState } from "react"
 
 import { RegularButton } from "../../../components/Button"
 import NativePageTransition from "../../../components/NativePageTransition"
@@ -54,4 +54,4 @@ function ColorChanging() {
     )
 }
 
-export default memo(ColorChanging)
+export default ColorChanging

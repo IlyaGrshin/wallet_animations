@@ -1,5 +1,4 @@
 import PropTypes from "prop-types"
-import { memo } from "react"
 
 import ModalView from "../../../../components/ModalView"
 import PanelHeader from "../../../../components/PanelHeader"
@@ -128,4 +127,4 @@ Modals.propTypes = {
     }),
 }
 
-export default memo(Modals)
+export default Modals

@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react"
+import { useState } from "react"
 
 import * as styles from "./PickerPage.module.scss"
 
@@ -29,9 +29,9 @@ const PickerPage = () => {
         "December",
     ]
 
-    const handlePickerIndex = useCallback((page) => {
+    const handlePickerIndex = (page) => {
         setPickerValue(page)
-    }, [])
+    }
 
     return (
         <>
