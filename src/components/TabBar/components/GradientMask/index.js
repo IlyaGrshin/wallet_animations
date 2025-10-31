@@ -1,8 +1,9 @@
-import PropTypes from "prop-types"
 import { useId } from "react"
+import PropTypes from "prop-types"
+
 import * as styles from "../../TabBar.module.scss"
 
-export default function GradientMask({
+function GradientMask({
     width,
     height,
     insets = { top: 21, right: 21, bottom: 21, left: 21 },
@@ -87,3 +88,5 @@ GradientMask.propTypes = {
     innerHeight: PropTypes.number,
     className: PropTypes.string,
 }
+
+export default GradientMask

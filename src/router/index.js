@@ -1,6 +1,9 @@
+import { useEffect } from "react"
 import PropTypes from "prop-types"
 import { Router, Switch, Route } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
+import { useLocation } from "wouter"
+
 import UI from "../pages/UI"
 import Wallet from "../pages/prototypes/Wallet"
 import TONSpace from "../pages/prototypes/TS"
@@ -14,8 +17,6 @@ import ModalPages from "../pages/prototypes/ModalPages"
 import ColorAssetPage from "../pages/prototypes/ColorAssetPage"
 import NavigationBar from "../pages/components/NavigationBar"
 import BottomBar from "../pages/components/BottomBar"
-import { useEffect } from "react"
-import { useLocation } from "wouter"
 
 function Redirect({ to }) {
     const [, navigate] = useLocation()

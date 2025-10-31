@@ -1,5 +1,6 @@
-import Text from "../Text"
 import PropTypes from "prop-types"
+
+import Text from "../Text"
 import * as styles from "./SectionHeader.module.scss"
 
 function SectionHeader({ type, title, value, ...props }) {

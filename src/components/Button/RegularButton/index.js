@@ -1,8 +1,8 @@
 import PropTypes from "prop-types"
-import { GlassBorder } from "../../GlassEffect"
 import { motion } from "motion/react"
-import Text from "../../Text"
 
+import { GlassBorder } from "../../GlassEffect"
+import Text from "../../Text"
 import * as styles from "./RegularButton.module.scss"
 import { useApple } from "../../../hooks/DeviceProvider"
 

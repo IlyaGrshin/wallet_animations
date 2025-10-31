@@ -1,10 +1,8 @@
-import PropTypes from "prop-types"
 import { forwardRef } from "react"
+import PropTypes from "prop-types"
 
 import { useMaterial } from "../../hooks/DeviceProvider"
-
 import { Image } from "../Image"
-
 import * as styles from "./ImageAvatar.module.scss"
 
 const ImageAvatar = forwardRef(

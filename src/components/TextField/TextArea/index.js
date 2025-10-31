@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useRef } from "react"
+import PropTypes from "prop-types"
 
 import * as styles from "./TextArea.module.scss"
 
@@ -40,5 +41,10 @@ export const TextArea = forwardRef((props, ref) => {
         />
     )
 })
+
+TextArea.propTypes = {
+    value: PropTypes.string,
+    className: PropTypes.string,
+}
 
 export default TextArea

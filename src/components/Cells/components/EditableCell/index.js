@@ -1,8 +1,8 @@
-import PropTypes from "prop-types"
 import { forwardRef } from "react"
+import PropTypes from "prop-types"
+
 import Text from "../../../Text"
 import ClearAppleSVG from "../../../../images/clear_apple.svg?react"
-
 import * as styles from "./EditableCell.module.scss"
 
 const EditableCell = forwardRef(

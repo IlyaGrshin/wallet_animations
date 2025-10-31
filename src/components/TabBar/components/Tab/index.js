@@ -1,5 +1,6 @@
-import PropTypes from "prop-types"
 import { lazy, Suspense, useEffect, useRef } from "react"
+import PropTypes from "prop-types"
+
 import * as styles from "./Tab.module.scss"
 
 const Lottie = lazy(() => import("lottie-react"))

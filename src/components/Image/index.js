@@ -38,3 +38,5 @@ Image.propTypes = {
     className: PropTypes.string,
     onLoad: PropTypes.func,
 }
+
+export default Image
