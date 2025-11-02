@@ -27,6 +27,13 @@ const UI = () => {
                         >
                             <Cell.Text title="Bottom Bar" />
                         </Cell>
+                        <Cell
+                            as={TransitionLink}
+                            to="/inputpage"
+                            end={<Cell.Part type="Chevron" />}
+                        >
+                            <Cell.Text title="Input Page" />
+                        </Cell>
                     </SectionList.Item>
                     <SectionList.Item header="Prototypes">
                         <Cell

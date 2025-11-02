@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: var(--tg-viewport-stable-height, 100vh);
+    overflow: hidden;
+    position: relative;
+    contain: layout style paint;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    background-image: url("../../../images/ChatBackground.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.input {
+    position: absolute;
+    width: calc(100% - 144px);
+    bottom: 21px;
+    left: 50%;
+    transform: translateX(-50%) translateZ(0);
+    border-radius: 36px;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+    will-change: width;
+    contain: layout style paint;
+    backface-visibility: hidden;
+
+    &:focus-within {
+        width: calc(100% - 42px);
+    }
+    
+    & input {
+        border-radius: 36px;
+        background: var(--tg-theme-section-bg-color);
+        opacity: 0.75;
+
+        &::placeholder {
+            color: var(--tg-theme-subtitle-text-color);
+            opacity: 0.8;
+        }
+    }
+}

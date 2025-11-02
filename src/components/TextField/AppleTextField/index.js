@@ -2,7 +2,7 @@ import { forwardRef } from "react"
 import PropTypes from "prop-types"
 
 import AppleText from "../../Text/AppleText"
-import { TextArea } from "../TextArea"
+import TextArea from "../TextArea"
 import ClearAppleSVG from "../../../images/clear_apple.svg?react"
 import SearchAppleSVG from "../../../images/search_apple.svg?react"
 import * as styles from "./AppleTextField.module.scss"

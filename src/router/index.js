@@ -17,6 +17,7 @@ import ModalPages from "../pages/prototypes/ModalPages"
 import ColorAssetPage from "../pages/prototypes/ColorAssetPage"
 import NavigationBar from "../pages/components/NavigationBar"
 import BottomBar from "../pages/components/BottomBar"
+import InputPage from "../pages/prototypes/InputPage"
 
 function Redirect({ to }) {
     const [, navigate] = useLocation()
@@ -45,6 +46,7 @@ const Routes = () => (
         <Route path="/colorassetpage" component={ColorAssetPage} />
         <Route path="/components/header" component={NavigationBar} />
         <Route path="/components/bottombar" component={BottomBar} />
+        <Route path="/inputpage" component={InputPage} />
         <Route>
             <Redirect to="/" />
         </Route>

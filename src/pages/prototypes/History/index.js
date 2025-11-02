@@ -1,4 +1,3 @@
-
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
