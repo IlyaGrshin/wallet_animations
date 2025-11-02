@@ -8,12 +8,15 @@ import TextField from "../../../components/TextField"
 import GlassContainer from "../../../components/GlassEffect"
 import GradientBackground from "../../../components/GradientBackground"
 
+import patternSvg from "../../../images/pattern.svg"
+import { useColorScheme } from "../../../hooks/useColorScheme"
 import { useViewportHeight } from "./useViewportHeight"
 import { usePreventScroll } from "./usePreventScroll"
 import * as styles from "./InputPage.module.scss"
 
 function InputPage() {
     const viewportHeight = useViewportHeight()
+    const colorScheme = useColorScheme()
 
     // Используем стабильную начальную высоту для фона
     const stableHeight =
@@ -22,11 +25,18 @@ function InputPage() {
     usePreventScroll()
 
     const gradientColors = ["#d5d88d", "#d5d88d", "#88b884", "#88b884"]
+    const gradientColorsDark = ["#fec496", "#dd6cb9", "#962fbf", "#4f5bd5"]
+
+    // Цвет header в зависимости от темы
+    const headerColor = colorScheme === "dark" ? "000000" : "88b884"
 
     return (
-        <Page headerColor={"88b884"}>
+        <Page headerColor={headerColor}>
             <GradientBackground
                 colors={gradientColors}
+                colorsDark={gradientColorsDark}
+                patternUrl={patternSvg}
+                patternIntensity={0.5}
                 className={styles.background}
                 style={{ height: `${stableHeight}px` }}
                 rotation={0}

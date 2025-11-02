@@ -22,5 +22,17 @@
     transform: translateZ(0);
     backface-visibility: hidden;
     will-change: contents;
+    display: block;
+    opacity: var(--opacity-max, 1);
+}
+
+.patternCanvas {
+    z-index: 1;
+    opacity: var(--opacity-max, 1);
+    display: block;
+}
+
+.blend {
+    mix-blend-mode: overlay;
 }
 
