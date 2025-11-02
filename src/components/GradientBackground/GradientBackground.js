@@ -1,8 +1,57 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 
 import { useColorScheme } from "../../hooks/useColorScheme"
 import * as styles from "./GradientBackground.module.scss"
+
+// Константы
+const DEFAULT_POSITIONS = [
+    { x: 0.5, y: 0.75 }, // topRight (позиция для colors[0])
+    { x: 0.35, y: 0.75 }, // bottomRight (позиция для colors[1])
+    { x: 0.25, y: 0.4 }, // bottomLeft (позиция для colors[2])
+    { x: 0.6, y: 0 }, // topLeft (позиция для colors[3])
+]
+
+const MAX_CANVAS_SIZE = 1920 * 1080
+const RESIZE_DEBOUNCE_GRADIENT = 150
+const RESIZE_DEBOUNCE_PATTERN = 300
+const PATTERN_INITIAL_DELAY = 100
+const DEVICE_PIXEL_RATIO_MAX = 2
+
+// Утилиты
+const parseColor = (color) => {
+    if (!color) return [0, 0, 0]
+
+    // Если цвет в формате #RRGGBB
+    if (color.startsWith("#")) {
+        const hex = color.slice(1)
+        const r = parseInt(hex.slice(0, 2), 16)
+        const g = parseInt(hex.slice(2, 4), 16)
+        const b = parseInt(hex.slice(4, 6), 16)
+        return [r, g, b]
+    }
+
+    // Если цвет в формате rgb(r, g, b)
+    const rgbMatch = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/)
+    if (rgbMatch) {
+        return [
+            parseInt(rgbMatch[1], 10),
+            parseInt(rgbMatch[2], 10),
+            parseInt(rgbMatch[3], 10),
+        ]
+    }
+
+    return [0, 0, 0]
+}
+
+const parseSize = (size) => {
+    if (!size) return null
+    const match = size.toString().match(/^(\d+(?:\.\d+)?)(px)?$/)
+    if (match) {
+        return parseFloat(match[1])
+    }
+    return null
+}
 
 /**
  * Генерирует 4-цветный градиент на canvas как фоновое изображение
@@ -34,32 +83,6 @@ function GradientBackground({
     // Автоматически определяем isDarkPattern на основе темы, если не указан явно
     const activeIsDarkPattern =
         isDarkPattern !== undefined ? isDarkPattern : colorScheme === "dark"
-
-    // Парсинг цветов в формат RGB
-    const parseColor = (color) => {
-        if (!color) return [0, 0, 0]
-
-        // Если цвет в формате #RRGGBB
-        if (color.startsWith("#")) {
-            const hex = color.slice(1)
-            const r = parseInt(hex.slice(0, 2), 16)
-            const g = parseInt(hex.slice(2, 4), 16)
-            const b = parseInt(hex.slice(4, 6), 16)
-            return [r, g, b]
-        }
-
-        // Если цвет в формате rgb(r, g, b)
-        const rgbMatch = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/)
-        if (rgbMatch) {
-            return [
-                parseInt(rgbMatch[1], 10),
-                parseInt(rgbMatch[2], 10),
-                parseInt(rgbMatch[3], 10),
-            ]
-        }
-
-        return [0, 0, 0]
-    }
 
     // Генерация градиента на canvas
     const generateGradient = () => {
@@ -137,18 +160,8 @@ function GradientBackground({
         // Очищаем canvas
         ctx.clearRect(0, 0, width, height)
 
-        // Позиции цветов в нормализованных координатах (0-1)
-        // Порядок позиций: [topRight, bottomRight, bottomLeft, topLeft]
-        // Дефолтные позиции для однотонного верха
-        const defaultPositions = [
-            { x: 0.5, y: 0.75 }, // topRight (позиция для colors[0])
-            { x: 0.35, y: 0.75 }, // bottomRight (позиция для colors[1])
-            { x: 0.25, y: 0.4 }, // bottomLeft (позиция для colors[2])
-            { x: 0.6, y: 0 }, // topLeft (позиция для colors[3])
-        ]
-
         // Используем переданные позиции или значения по умолчанию
-        const colorPositions = positions || defaultPositions
+        const colorPositions = positions || DEFAULT_POSITIONS
 
         // Валидация позиций
         const validPositions = colorPositions.map((pos, index) => {
@@ -195,7 +208,7 @@ function GradientBackground({
 
         // Оптимизированная генерация: используем ImageData для точного контроля
         // Для больших экранов используем пониженное разрешение
-        const scale = width * height > 1920 * 1080 ? 0.5 : 1
+        const scale = width * height > MAX_CANVAS_SIZE ? 0.5 : 1
         const scaledWidth = Math.floor(width * scale)
         const scaledHeight = Math.floor(height * scale)
 
@@ -284,31 +297,114 @@ function GradientBackground({
 
         // Если использовали пониженное разрешение, масштабируем результат
         if (scale !== 1) {
-            const tempCanvas = document.createElement("canvas")
-            tempCanvas.width = scaledWidth
-            tempCanvas.height = scaledHeight
-            const tempCtx = tempCanvas.getContext("2d")
+            // Переиспользуем временный canvas из ref если возможно
+            if (
+                !canvas._tempCanvas ||
+                canvas._tempCanvas.width !== scaledWidth ||
+                canvas._tempCanvas.height !== scaledHeight
+            ) {
+                canvas._tempCanvas = document.createElement("canvas")
+                canvas._tempCanvas.width = scaledWidth
+                canvas._tempCanvas.height = scaledHeight
+            }
+            const tempCtx = canvas._tempCanvas.getContext("2d")
             tempCtx.putImageData(finalImageData, 0, 0)
 
             ctx.clearRect(0, 0, width, height)
-            ctx.drawImage(tempCanvas, 0, 0, width, height)
+            ctx.drawImage(canvas._tempCanvas, 0, 0, width, height)
         } else {
             ctx.putImageData(finalImageData, 0, 0)
         }
 
         // Применяем интенсивность через globalAlpha
         if (intensity !== 1) {
-            const tempCanvas = document.createElement("canvas")
-            tempCanvas.width = width
-            tempCanvas.height = height
-            const tempCtx = tempCanvas.getContext("2d")
+            // Переиспользуем временный canvas из ref если возможно
+            if (
+                !canvas._intensityCanvas ||
+                canvas._intensityCanvas.width !== width ||
+                canvas._intensityCanvas.height !== height
+            ) {
+                canvas._intensityCanvas = document.createElement("canvas")
+                canvas._intensityCanvas.width = width
+                canvas._intensityCanvas.height = height
+            }
+            const tempCtx = canvas._intensityCanvas.getContext("2d")
             tempCtx.globalAlpha = intensity
             tempCtx.drawImage(canvas, 0, 0)
             ctx.clearRect(0, 0, width, height)
-            ctx.drawImage(tempCanvas, 0, 0)
+            ctx.drawImage(canvas._intensityCanvas, 0, 0)
         }
 
         // Canvas уже готов, просто рисуем на нём
+    }
+
+    // Функция заполнения canvas паттерном (как в Telegram fillCanvas)
+    // Вынесена как обычная функция, т.к. не зависит от props/state
+    const fillCanvasWithPattern = (
+        ctx,
+        canvas,
+        source,
+        width,
+        height,
+        isDark
+    ) => {
+        let imageWidth = source.width
+        let imageHeight = source.height
+
+        // Вычисляем patternHeight как в Telegram
+        // patternHeight = (500 + (windowSize.height / 2.5)) * canvas.dpr
+        const windowHeight = height / canvas.dpr
+        const patternHeight = (500 + windowHeight / 2.5) * canvas.dpr
+
+        const ratio = patternHeight / imageHeight
+        imageWidth *= ratio
+        imageHeight = patternHeight
+
+        // Очищаем canvas перед рисованием
+        ctx.clearRect(0, 0, width, height)
+
+        // Если mask (isDark), заливаем чёрным и используем destination-out
+        // В этом режиме паттерн "вырезает" градиент, создавая эффект маски
+        if (isDark) {
+            ctx.fillStyle = "#000"
+            ctx.fillRect(0, 0, width, height)
+            ctx.globalCompositeOperation = "destination-out"
+        } else {
+            ctx.globalCompositeOperation = "source-over"
+        }
+
+        // Функция для рисования одной строки паттерна
+        const drawRow = (y) => {
+            for (let x = 0; x < width; x += imageWidth) {
+                ctx.drawImage(source, x, y, imageWidth, imageHeight)
+            }
+        }
+
+        // Рисуем от центра вверх и вниз
+        const centerY = (height - imageHeight) / 2
+        drawRow(centerY)
+
+        // Рисуем вверх от центра
+        if (centerY > 0) {
+            let topY = centerY
+            do {
+                topY -= imageHeight
+                drawRow(topY)
+            } while (topY >= 0)
+        }
+
+        // Рисуем вниз от центра
+        const endY = height - 1
+        for (
+            let bottomY = centerY + imageHeight;
+            bottomY < endY;
+            bottomY += imageHeight
+        ) {
+            drawRow(bottomY)
+        }
+
+        // Сбрасываем globalCompositeOperation
+        ctx.globalCompositeOperation = "source-over"
     }
 
     // Функция для рендеринга паттерна
@@ -353,7 +449,10 @@ function GradientBackground({
         }
 
         // Используем devicePixelRatio как в Telegram
-        const devicePixelRatio = Math.min(2, window.devicePixelRatio || 1)
+        const devicePixelRatio = Math.min(
+            DEVICE_PIXEL_RATIO_MAX,
+            window.devicePixelRatio || 1
+        )
         const width = Math.round(baseWidth * devicePixelRatio)
         const height = Math.round(baseHeight * devicePixelRatio)
 
@@ -449,74 +548,6 @@ function GradientBackground({
         }
     }
 
-    // Функция заполнения canvas паттерном (как в Telegram fillCanvas)
-    const fillCanvasWithPattern = (
-        ctx,
-        canvas,
-        source,
-        width,
-        height,
-        isDark
-    ) => {
-        let imageWidth = source.width
-        let imageHeight = source.height
-
-        // Вычисляем patternHeight как в Telegram
-        // patternHeight = (500 + (windowSize.height / 2.5)) * canvas.dpr
-        const windowHeight = height / canvas.dpr
-        const patternHeight = (500 + windowHeight / 2.5) * canvas.dpr
-
-        const ratio = patternHeight / imageHeight
-        imageWidth *= ratio
-        imageHeight = patternHeight
-
-        // Очищаем canvas перед рисованием
-        ctx.clearRect(0, 0, width, height)
-
-        // Если mask (isDark), заливаем чёрным и используем destination-out
-        // В этом режиме паттерн "вырезает" градиент, создавая эффект маски
-        if (isDark) {
-            ctx.fillStyle = "#000"
-            ctx.fillRect(0, 0, width, height)
-            ctx.globalCompositeOperation = "destination-out"
-        } else {
-            ctx.globalCompositeOperation = "source-over"
-        }
-
-        // Функция для рисования одной строки паттерна
-        const drawRow = (y) => {
-            for (let x = 0; x < width; x += imageWidth) {
-                ctx.drawImage(source, x, y, imageWidth, imageHeight)
-            }
-        }
-
-        // Рисуем от центра вверх и вниз
-        const centerY = (height - imageHeight) / 2
-        drawRow(centerY)
-
-        // Рисуем вверх от центра
-        if (centerY > 0) {
-            let topY = centerY
-            do {
-                topY -= imageHeight
-                drawRow(topY)
-            } while (topY >= 0)
-        }
-
-        // Рисуем вниз от центра
-        const endY = height - 1
-        for (
-            let bottomY = centerY + imageHeight;
-            bottomY < endY;
-            bottomY += imageHeight
-        ) {
-            drawRow(bottomY)
-        }
-
-        // Сбрасываем globalCompositeOperation
-        ctx.globalCompositeOperation = "source-over"
-    }
-
     // Эффект для генерации градиента при монтировании и изменении размеров
     useEffect(() => {
         let timeoutId = null
@@ -543,7 +574,7 @@ function GradientBackground({
             resizeTimeoutId = setTimeout(() => {
                 generateGradient()
                 resizeTimeoutId = null
-            }, 150)
+            }, RESIZE_DEBOUNCE_GRADIENT)
         }
 
         window.addEventListener("resize", handleResize)
@@ -595,7 +626,7 @@ function GradientBackground({
         }
 
         // Откладываем рендеринг, чтобы canvas успел добавиться в DOM
-        scheduleRender(100)
+        scheduleRender(PATTERN_INITIAL_DELAY)
 
         const handleResize = () => {
             if (resizeTimeoutId) {
@@ -606,7 +637,7 @@ function GradientBackground({
                     renderPattern()
                 })
                 resizeTimeoutId = null
-            }, 300)
+            }, RESIZE_DEBOUNCE_PATTERN)
         }
 
         window.addEventListener("resize", handleResize)
@@ -643,8 +674,7 @@ function GradientBackground({
         patternIntensity !== null && activeIsDarkPattern
             ? (() => {
                   const absIntensity = Math.abs(patternIntensity)
-                  let opacityMax = absIntensity * 0.5
-                  opacityMax = Math.max(0.3, opacityMax)
+                  const opacityMax = Math.max(0.3, absIntensity * 0.5)
                   return opacityMax
               })()
             : null
