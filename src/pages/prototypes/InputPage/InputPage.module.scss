@@ -1,3 +1,19 @@
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background-image: url("../../../images/ChatBackground.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: 0;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    pointer-events: none;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -8,10 +24,7 @@
     contain: layout style paint;
     transform: translateZ(0);
     backface-visibility: hidden;
-    background-image: url("../../../images/ChatBackground.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    z-index: 1;
 }
 
 .input {

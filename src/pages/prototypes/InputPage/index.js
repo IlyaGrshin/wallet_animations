@@ -1,5 +1,6 @@
 import { BackButton } from "@twa-dev/sdk/react"
 import { motion } from "motion/react"
+import WebApp from "@twa-dev/sdk"
 
 import Page from "../../../components/Page"
 import NativePageTransition from "../../../components/NativePageTransition"
@@ -13,10 +14,18 @@ import * as styles from "./InputPage.module.scss"
 function InputPage() {
     const viewportHeight = useViewportHeight()
 
+    // Используем стабильную начальную высоту для фона
+    const stableHeight =
+        WebApp.viewportHeight || window.innerHeight || window.screen.height
+
     usePreventScroll()
 
     return (
         <Page headerColor={"9BBF86"}>
+            <div
+                className={styles.background}
+                style={{ height: `${stableHeight}px` }}
+            />
             <motion.div
                 className={styles.container}
                 animate={{ height: viewportHeight }}
