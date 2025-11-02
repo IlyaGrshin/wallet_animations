@@ -6,6 +6,7 @@ import Page from "../../../components/Page"
 import NativePageTransition from "../../../components/NativePageTransition"
 import TextField from "../../../components/TextField"
 import GlassContainer from "../../../components/GlassEffect"
+import GradientBackground from "../../../components/GradientBackground"
 
 import { useViewportHeight } from "./useViewportHeight"
 import { usePreventScroll } from "./usePreventScroll"
@@ -20,11 +21,16 @@ function InputPage() {
 
     usePreventScroll()
 
+    const gradientColors = ["#d5d88d", "#d5d88d", "#88b884", "#88b884"]
+
     return (
-        <Page headerColor={"9BBF86"}>
-            <div
+        <Page headerColor={"88b884"}>
+            <GradientBackground
+                colors={gradientColors}
                 className={styles.background}
                 style={{ height: `${stableHeight}px` }}
+                rotation={0}
+                intensity={1}
             />
             <motion.div
                 className={styles.container}
