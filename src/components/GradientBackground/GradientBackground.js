@@ -23,6 +23,8 @@ function GradientBackground({
     const canvasRef = useRef(null)
     const patternCanvasRef = useRef(null)
     const containerRef = useRef(null)
+    const patternImageRef = useRef(null)
+    const patternDimensionsRef = useRef({ width: 0, height: 0 })
     const colorScheme = useColorScheme()
 
     // Выбираем цвета в зависимости от темы
@@ -310,7 +312,7 @@ function GradientBackground({
     }
 
     // Функция для рендеринга паттерна
-    const renderPattern = () => {
+    const renderPattern = (forceRender = false) => {
         const patternCanvas = patternCanvasRef.current
         const container = containerRef.current
 
@@ -352,29 +354,90 @@ function GradientBackground({
 
         // Используем devicePixelRatio как в Telegram
         const devicePixelRatio = Math.min(2, window.devicePixelRatio || 1)
-        const width = baseWidth * devicePixelRatio
-        const height = baseHeight * devicePixelRatio
+        const width = Math.round(baseWidth * devicePixelRatio)
+        const height = Math.round(baseHeight * devicePixelRatio)
+
+        // Проверяем, изменились ли размеры существенно (больше чем на 1 пиксель)
+        const prevDimensions = patternDimensionsRef.current
+        const widthChanged = Math.abs(width - prevDimensions.width) > 1
+        const heightChanged = Math.abs(height - prevDimensions.height) > 1
+
+        // Если размеры не изменились и не принудительная перерисовка, пропускаем
+        if (
+            !forceRender &&
+            !widthChanged &&
+            !heightChanged &&
+            patternImageRef.current
+        ) {
+            return
+        }
+
+        // Обновляем сохранённые размеры
+        patternDimensionsRef.current = { width, height }
 
         // Сохраняем dpr для использования в fillCanvas
         patternCanvas.dpr = devicePixelRatio
-        patternCanvas.width = width
-        patternCanvas.height = height
+
+        // Изменяем размеры canvas только если они изменились
+        if (widthChanged || heightChanged) {
+            patternCanvas.width = width
+            patternCanvas.height = height
+        }
 
         const ctx = patternCanvas.getContext("2d")
         if (!ctx) return
 
-        const img = new Image()
-        img.crossOrigin = "anonymous"
-
-        img.onload = () => {
-            // Проверяем, что размеры не изменились
+        // Если изображение уже загружено, используем его сразу
+        if (patternImageRef.current && patternImageRef.current.complete) {
+            // Проверяем, что размеры canvas не изменились
             if (
-                patternCanvas.width !== width ||
-                patternCanvas.height !== height
+                patternCanvas.width === width &&
+                patternCanvas.height === height
             ) {
-                return
+                fillCanvasWithPattern(
+                    ctx,
+                    patternCanvas,
+                    patternImageRef.current,
+                    width,
+                    height,
+                    activeIsDarkPattern
+                )
+            }
+            return
+        }
+
+        // Загружаем изображение только если его ещё нет
+        const img = patternImageRef.current || new Image()
+        if (!patternImageRef.current) {
+            patternImageRef.current = img
+            img.crossOrigin = "anonymous"
+
+            img.onload = () => {
+                // Проверяем, что размеры не изменились
+                if (
+                    patternCanvas.width !== width ||
+                    patternCanvas.height !== height
+                ) {
+                    return
+                }
+
+                fillCanvasWithPattern(
+                    ctx,
+                    patternCanvas,
+                    img,
+                    width,
+                    height,
+                    activeIsDarkPattern
+                )
             }
 
+            img.onerror = (error) => {
+                console.warn("Failed to load pattern image:", patternUrl, error)
+            }
+
+            img.src = patternUrl
+        } else if (img.complete) {
+            // Изображение уже загружено, сразу рисуем
             fillCanvasWithPattern(
                 ctx,
                 patternCanvas,
@@ -384,12 +447,6 @@ function GradientBackground({
                 activeIsDarkPattern
             )
         }
-
-        img.onerror = (error) => {
-            console.warn("Failed to load pattern image:", patternUrl, error)
-        }
-
-        img.src = patternUrl
     }
 
     // Функция заполнения canvas паттерном (как в Telegram fillCanvas)
@@ -513,7 +570,16 @@ function GradientBackground({
 
     // Эффект для рендеринга паттерна
     useEffect(() => {
-        if (!patternUrl) return
+        if (!patternUrl) {
+            // Очищаем кэш если паттерн удалён
+            patternImageRef.current = null
+            patternDimensionsRef.current = { width: 0, height: 0 }
+            return
+        }
+
+        // Сбрасываем кэш при изменении URL паттерна
+        patternImageRef.current = null
+        patternDimensionsRef.current = { width: 0, height: 0 }
 
         let timeoutId = null
         let resizeTimeoutId = null
@@ -536,9 +602,11 @@ function GradientBackground({
                 clearTimeout(resizeTimeoutId)
             }
             resizeTimeoutId = setTimeout(() => {
-                renderPattern()
+                requestAnimationFrame(() => {
+                    renderPattern()
+                })
                 resizeTimeoutId = null
-            }, 150)
+            }, 300)
         }
 
         window.addEventListener("resize", handleResize)
@@ -559,6 +627,9 @@ function GradientBackground({
             }
             window.removeEventListener("resize", handleResize)
             resizeObserver.disconnect()
+            // Сбрасываем кэш изображения при изменении URL или режима паттерна
+            patternImageRef.current = null
+            patternDimensionsRef.current = { width: 0, height: 0 }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [patternUrl, activeIsDarkPattern])
