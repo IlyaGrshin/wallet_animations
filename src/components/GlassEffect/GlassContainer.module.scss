@@ -13,6 +13,11 @@
     transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+
+    @supports (-apple-visual-effect: -apple-system-glass-material) {
+        -apple-visual-effect: -apple-system-glass-material;
+        backdrop-filter: none;
+    }
 }
 
 .glassShadow {
