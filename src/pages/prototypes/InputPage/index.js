@@ -1,6 +1,6 @@
-import { BackButton } from "@twa-dev/sdk/react"
 import { motion } from "motion/react"
 import WebApp from "@twa-dev/sdk"
+import { BackButton } from "@twa-dev/sdk/react"
 
 import Page from "../../../components/Page"
 import NativePageTransition from "../../../components/NativePageTransition"
