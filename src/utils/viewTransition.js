@@ -53,26 +53,39 @@ export const initializeViewTransitions = () => {
 const setupBrowserNavigationTransitions = () => {
     if (typeof window === "undefined") return
 
-    popstateHandler = (event) => {
-        if (isViewTransitionSupported() && !isAnyTransitionRunning) {
-            isAnyTransitionRunning = true
-
-            try {
-                const transition = document.startViewTransition(() => {
-                    return new Promise((resolve) => {
-                        setTimeout(resolve, 10)
-                    })
+    const waitForNextHashChange = () =>
+        new Promise((resolve) => {
+            const finalize = () => {
+                window.clearTimeout(timeout)
+                window.removeEventListener("hashchange", finalize)
+                requestAnimationFrame(() => {
+                    resolve()
                 })
-
-                transition.finished.finally(() => {
-                    isAnyTransitionRunning = false
-                })
-            } catch (error) {
-                if (error.name !== "AbortError") {
-                    console.warn("Browser navigation transition failed:", error)
-                }
-                isAnyTransitionRunning = false
             }
+
+            const timeout = window.setTimeout(finalize, VIEW_TRANSITION_DURATION)
+
+            window.addEventListener("hashchange", finalize)
+        })
+
+    popstateHandler = () => {
+        if (!isViewTransitionSupported() || isAnyTransitionRunning) {
+            return
+        }
+
+        isAnyTransitionRunning = true
+
+        try {
+            const transition = document.startViewTransition(() => waitForNextHashChange())
+
+            transition.finished.finally(() => {
+                isAnyTransitionRunning = false
+            })
+        } catch (error) {
+            if (error.name !== "AbortError") {
+                console.warn("Browser navigation transition failed:", error)
+            }
+            isAnyTransitionRunning = false
         }
     }
 
