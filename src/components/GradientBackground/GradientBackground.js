@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useEffectEvent, Activity } from "react"
 import PropTypes from "prop-types"
 
 import { useColorScheme } from "../../hooks/useColorScheme"
@@ -85,7 +85,7 @@ function GradientBackground({
         isDarkPattern !== undefined ? isDarkPattern : colorScheme === "dark"
 
     // Генерация градиента на canvas
-    const generateGradient = () => {
+    const generateGradient = useEffectEvent(() => {
         const canvas = canvasRef.current
         const container = containerRef.current
 
@@ -336,7 +336,7 @@ function GradientBackground({
         }
 
         // Canvas уже готов, просто рисуем на нём
-    }
+    })
 
     // Функция заполнения canvas паттерном (как в Telegram fillCanvas)
     // Вынесена как обычная функция, т.к. не зависит от props/state
@@ -596,7 +596,6 @@ function GradientBackground({
             window.removeEventListener("resize", handleResize)
             resizeObserver.disconnect()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeColors, rotation, intensity, positions])
 
     // Эффект для рендеринга паттерна
@@ -709,7 +708,7 @@ function GradientBackground({
                 }
                 aria-hidden="true"
             />
-            {patternUrl && (
+            <Activity mode={patternUrl ? "visible" : "hidden"}>
                 <canvas
                     ref={patternCanvasRef}
                     className={`${styles.canvas} ${styles.patternCanvas} ${
@@ -724,7 +723,7 @@ function GradientBackground({
                     }
                     aria-hidden="true"
                 />
-            )}
+            </Activity>
         </div>
     )
 }

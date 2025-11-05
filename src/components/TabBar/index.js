@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, Activity } from "react"
 import PropTypes from "prop-types"
 import { motion } from "motion/react"
 import { useApple } from "../../hooks/DeviceProvider"
@@ -92,33 +92,31 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                 />
             ))}
 
-            {useApple && (
-                <>
-                    <motion.div
-                        className={styles.clipPathContainer}
-                        ref={drag.overlayRef}
-                        {...drag.handlers}
-                        animate={drag.animate}
-                        transition={drag.transition}
-                    >
-                        {tabs.map((tab, index) => (
-                            <Tab
-                                key={index}
-                                isActive={index === activeIndex}
-                                onClick={() => handleSegmentClick(index)}
-                                label={tab.label}
-                                icon={tab.icon}
-                                lottieIcon={tab.lottieIcon}
-                                playKey={playKey}
-                                data-overlay
-                            />
-                        ))}
-                    </motion.div>
+            <Activity mode={useApple ? "visible" : "hidden"}>
+                <motion.div
+                    className={styles.clipPathContainer}
+                    ref={drag.overlayRef}
+                    {...drag.handlers}
+                    animate={drag.animate}
+                    transition={drag.transition}
+                >
+                    {tabs.map((tab, index) => (
+                        <Tab
+                            key={index}
+                            isActive={index === activeIndex}
+                            onClick={() => handleSegmentClick(index)}
+                            label={tab.label}
+                            icon={tab.icon}
+                            lottieIcon={tab.lottieIcon}
+                            playKey={playKey}
+                            data-overlay
+                        />
+                    ))}
+                </motion.div>
 
-                    <GlassContainer />
-                    <GradientMask width={size.width} height={size.height} />
-                </>
-            )}
+                <GlassContainer />
+                <GradientMask width={size.width} height={size.height} />
+            </Activity>
         </motion.div>
     )
 }
