@@ -33,10 +33,8 @@ export default [
         rules: {
             ...reactPlugin.configs.recommended.rules,
             
+            // Используем recommended preset из react-hooks, который включает правила React Compiler
             ...(reactHooks.configs?.recommended?.rules ?? {}),
-
-            'react-hooks/rules-of-hooks': 'error',
-            'react-hooks/exhaustive-deps': 'warn',
 
             ...(react19.configs?.recommended?.rules ?? {}),
 
