@@ -1,9 +1,4 @@
-import {
-    useRef,
-    useState,
-    useLayoutEffect,
-    useEffect,
-} from "react"
+import { useRef, useState, useLayoutEffect, useEffect } from "react"
 import PropTypes from "prop-types"
 
 const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
