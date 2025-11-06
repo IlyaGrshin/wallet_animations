@@ -1,9 +1,8 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
-import Text from "../../../components/Text"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -19,16 +18,6 @@ const NavigationBar = () => {
     })
     const colorInputRef = useRef(null)
 
-    const toggleFullscreen = () => {
-        if (isFullscreen) {
-            setIsFullscreen(false)
-            WebApp.exitFullscreen()
-        } else {
-            setIsFullscreen(true)
-            WebApp.requestFullscreen()
-        }
-    }
-
     const handleColorClick = () => {
         colorInputRef.current.click()
     }
@@ -39,86 +28,69 @@ const NavigationBar = () => {
         WebApp.setHeaderColor(color)
     }
 
-    const toggleBackButton = () => {
-        if (isVisibleBackButton) {
-            setBackButton(false)
-            WebApp.BackButton.hide()
-        } else {
-            setBackButton(true)
-            WebApp.BackButton.show()
-        }
-    }
-
-    const toggleSettingsButton = () => {
-        if (isSettingsButtonAvailable) {
-            setSettingsButtonAvailable(false)
-            WebApp.SettingsButton.hide()
-        } else {
-            setSettingsButtonAvailable(true)
-            WebApp.SettingsButton.show()
-        }
-    }
-
     return (
         <Page>
             <BackButton />
             <SectionList>
-                    <SectionList.Item header="Navigation Bar">
-                        <Cell
-                            onClick={handleColorClick}
-                            end={
-                                <Cell.Part
-                                    type="ColorPicker"
-                                    value={headerColor}
-                                    onChange={handleColorChange}
-                                    inputRef={colorInputRef}
-                                    id="header-color"
-                                />
+                <SectionList.Item header="Navigation Bar">
+                    <Cell
+                        onClick={handleColorClick}
+                        end={
+                            <Cell.Part
+                                type="ColorPicker"
+                                value={headerColor}
+                                onChange={handleColorChange}
+                                inputRef={colorInputRef}
+                                id="header-color"
+                            />
+                        }
+                    >
+                        <Cell.Text title="Header Color" />
+                    </Cell>
+                    <Cell.Switch
+                        value={isVisibleBackButton}
+                        onChange={(checked) => {
+                            if (checked) {
+                                setBackButton(true)
+                                WebApp.BackButton.show()
+                            } else {
+                                setBackButton(false)
+                                WebApp.BackButton.hide()
                             }
-                        >
-                            <Cell.Text title="Header Color" />
-                        </Cell>
-                        <Cell
-                            end={<Cell.Part type="Chevron" />}
-                            onClick={toggleBackButton}
-                        >
-                            <Cell.Text
-                                title={
-                                    isVisibleBackButton
-                                        ? "Hide Back Button"
-                                        : "Show Back Button"
-                                }
-                            />
-                        </Cell>
-                        <Cell
-                            end={<Cell.Part type="Chevron" />}
-                            onClick={toggleFullscreen}
-                        >
-                            <Cell.Text
-                                title={
-                                    isFullscreen
-                                        ? "Exit Fullscreen"
-                                        : "Enter Fullscreen"
-                                }
-                            />
-                        </Cell>
-                        <Cell end={<Cell.Part type="Chevron" />}>
-                            <Cell.Text title="Expand WebView" />
-                        </Cell>
-                        <Cell
-                            end={<Cell.Part type="Chevron" />}
-                            onClick={toggleSettingsButton}
-                        >
-                            <Cell.Text
-                                title={
-                                    isSettingsButtonAvailable
-                                        ? "Turn Off Settings"
-                                        : "Turn On Settings"
-                                }
-                            />
-                        </Cell>
-                    </SectionList.Item>
-                </SectionList>
+                        }}
+                    >
+                        <Cell.Text title="Back Button" />
+                    </Cell.Switch>
+                    <Cell.Switch
+                        value={isFullscreen}
+                        onChange={(checked) => {
+                            if (checked) {
+                                setIsFullscreen(true)
+                                WebApp.requestFullscreen()
+                            } else {
+                                setIsFullscreen(false)
+                                WebApp.exitFullscreen()
+                            }
+                        }}
+                    >
+                        <Cell.Text title="Fullscreen" />
+                    </Cell.Switch>
+                    <Cell.Switch
+                        value={isSettingsButtonAvailable}
+                        onChange={(checked) => {
+                            if (checked) {
+                                setSettingsButtonAvailable(true)
+                                WebApp.SettingsButton.show()
+                            } else {
+                                setSettingsButtonAvailable(false)
+                                WebApp.SettingsButton.hide()
+                            }
+                        }}
+                    >
+                        <Cell.Text title="Settings Button" />
+                    </Cell.Switch>
+                </SectionList.Item>
+            </SectionList>
         </Page>
     )
 }

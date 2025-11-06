@@ -4,6 +4,7 @@ import Text from "../Text"
 import CellText from "./components/CellText"
 import CellPart from "./components/CellPart"
 import EditableCell from "./components/EditableCell"
+import SwitchCell from "./components/SwitchCell"
 
 import * as styles from "./Cell.module.scss"
 
@@ -93,6 +94,7 @@ export const Cell = Object.assign(CellComponent, {
     Part: CellPart,
     Text: CellText,
     Editable: EditableCell,
+    Switch: SwitchCell,
 })
 
 export default Cell

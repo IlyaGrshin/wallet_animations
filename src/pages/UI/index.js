@@ -3,7 +3,6 @@ import TransitionLink from "../../components/Link"
 import Page from "../../components/Page"
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cells"
-import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
 
 const UI = () => {
@@ -91,15 +90,9 @@ const UI = () => {
                         <Cell>
                             <Cell.Text title="Label" bold />
                         </Cell>
-                        <Cell
-                            end={
-                                <Cell.Part type="Switch">
-                                    <Switch />
-                                </Cell.Part>
-                            }
-                        >
+                        <Cell.Switch>
                             <Cell.Text title="Wi-Fi" />
-                        </Cell>
+                        </Cell.Switch>
                         <Cell
                             end={
                                 <Cell.Part type="Dropdown">
