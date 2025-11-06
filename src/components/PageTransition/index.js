@@ -1,58 +1,68 @@
 import PropTypes from "prop-types"
-import * as m from "motion/react-m"
+import { motion, AnimatePresence } from "motion/react"
+import { useLocation } from "wouter"
 import { EASING } from "../../utils/animations"
-import { useApple } from "../../hooks/DeviceProvider"
 
-export let pageTransitionDuration = 0.2
+const PageTransition = ({ children }) => {
+    const [location] = useLocation()
 
-if (typeof window !== "undefined") {
-    window.pageTransitionDuration = pageTransitionDuration
-}
-
-const blurValue = useApple ? "blur(2px)" : "blur(0px)"
-
-const PageTransition = ({ children, slide = "none" }) => {
-    const pageVariants = {
+    const variants = {
         initial: {
             opacity: 0,
             scale: 1.006,
-            filter: blurValue,
         },
-        in: {
+        animate: {
             opacity: 1,
             scale: 1,
-            filter: "blur(0px)",
         },
-        out: {
+        exit: {
             opacity: 0,
             scale: 1.01,
-            filter: blurValue,
         },
     }
 
-    const pageTransition = {
-        get duration() {
-            return window.pageTransitionDuration || 0.2
-        },
+    const transition = {
+        duration: 0.3,
         ease: EASING.MATERIAL_STANDARD,
-        delay: 0,
     }
 
     return (
-        <m.div
-            initial="initial"
-            animate="in"
-            exit="out"
-            variants={pageVariants}
-            transition={pageTransition}
+        <div
+            style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                width: "100%",
+                height: "100vh",
+                overflow: "hidden",
+            }}
         >
-            {children}
-        </m.div>
+            <AnimatePresence mode="popLayout">
+                <motion.div
+                    key={location}
+                    variants={variants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    transition={transition}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        overflowY: "auto",
+                        willChange: "transform, opacity",
+                    }}
+                >
+                    {children}
+                </motion.div>
+            </AnimatePresence>
+        </div>
     )
 }
 
 PageTransition.propTypes = {
     children: PropTypes.node,
-    slide: PropTypes.string,
 }
+
 export default PageTransition

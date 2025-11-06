@@ -7,7 +7,6 @@ import Cell from "../../../components/Cells"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
-import NativePageTransition from "../../../components/NativePageTransition"
 
 import Picker from "../../../components/Picker"
 import Collapsible from "../../../components/Collapsible"
@@ -108,7 +107,6 @@ const BottomBar = () => {
     return (
         <Page>
             <BackButton />
-            <NativePageTransition />
             <SectionList>
                 <SectionList.Item header="Bottom Bar">
                     <Cell>

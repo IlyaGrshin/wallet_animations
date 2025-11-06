@@ -1,7 +1,6 @@
 import { Suspense, lazy } from "react"
 
 import Page from "../../../components/Page"
-import NativePageTransition from "../../../components/NativePageTransition"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
 
@@ -20,21 +19,19 @@ const ModalPages = () => {
         <>
             <Page>
                 <BackButton />
-                <NativePageTransition>
-                    <SectionList>
-                        <SectionList.Item>
-                            <Cell onClick={handlers.modal1.open}>
-                                <Cell.Text type="Accent" title="Open Modal" />
-                            </Cell>
-                            <Cell onClick={handlers.modal2.open}>
-                                <Cell.Text
-                                    type="Accent"
-                                    title="Open Modal (CSS)"
-                                />
-                            </Cell>
-                        </SectionList.Item>
-                    </SectionList>
-                </NativePageTransition>
+                <SectionList>
+                    <SectionList.Item>
+                        <Cell onClick={handlers.modal1.open}>
+                            <Cell.Text type="Accent" title="Open Modal" />
+                        </Cell>
+                        <Cell onClick={handlers.modal2.open}>
+                            <Cell.Text
+                                type="Accent"
+                                title="Open Modal (CSS)"
+                            />
+                        </Cell>
+                    </SectionList.Item>
+                </SectionList>
             </Page>
             <Suspense>
                 <Modals modals={modals} handlers={handlers} />

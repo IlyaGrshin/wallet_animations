@@ -1,31 +1,16 @@
 import { forwardRef } from "react"
 import PropTypes from "prop-types"
 import { Link } from "wouter"
-import { useLocation } from "wouter"
-import { performViewTransition } from "../../utils/viewTransition"
 
 const TransitionLink = forwardRef(
     ({ to, onClick, children, ...props }, ref) => {
-        const [, navigate] = useLocation()
-
-        const handleClick = async (event) => {
+        const handleClick = (event) => {
             if (onClick) {
                 onClick(event)
             }
 
             if (event.defaultPrevented) {
                 return
-            }
-
-            event.preventDefault()
-
-            try {
-                await performViewTransition(() => {
-                    navigate(to)
-                })
-            } catch (error) {
-                console.warn("Transition failed, falling back:", error)
-                navigate(to)
             }
         }
 
@@ -44,4 +29,5 @@ TransitionLink.propTypes = {
     onClick: PropTypes.func,
     children: PropTypes.node,
 }
+
 export default TransitionLink

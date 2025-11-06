@@ -3,7 +3,6 @@ import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 
 import Page from "../../../components/Page"
-import NativePageTransition from "../../../components/NativePageTransition"
 import TextField from "../../../components/TextField"
 import GlassContainer from "../../../components/GlassEffect"
 import GradientBackground from "../../../components/GradientBackground"
@@ -44,22 +43,22 @@ function InputPage() {
             />
             <motion.div
                 className={styles.container}
+                initial={{ height: viewportHeight }}
                 animate={{ height: viewportHeight }}
                 transition={{
                     type: "spring",
                     bounce: 0,
                     damping: 35,
                     stiffness: 500,
+                    delay: 0.2,
                 }}
             >
                 <BackButton />
-                <NativePageTransition>
-                    <div className={styles.input}>
-                        <GlassContainer style={{ borderRadius: "36px" }}>
-                            <TextField label="Message" />
-                        </GlassContainer>
-                    </div>
-                </NativePageTransition>
+                <div className={styles.input}>
+                    <GlassContainer style={{ borderRadius: "36px" }}>
+                        <TextField label="Message" />
+                    </GlassContainer>
+                </div>
             </motion.div>
         </Page>
     )

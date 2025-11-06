@@ -5,12 +5,10 @@ import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cells"
 import Switch from "../../components/Switch"
 import DropdownMenu from "../../components/DropdownMenu"
-import NativePageTransition from "../../components/NativePageTransition"
 
 const UI = () => {
     return (
-        <NativePageTransition>
-            <Page>
+        <Page>
                 <SectionList>
                     <SectionList.Item header="Components">
                         <Cell
@@ -120,7 +118,6 @@ const UI = () => {
                     </SectionList.Item>
                 </SectionList>
             </Page>
-        </NativePageTransition>
     )
 }
 

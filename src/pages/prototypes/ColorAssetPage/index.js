@@ -3,7 +3,6 @@ import { use } from "react"
 import { BackButton } from "@twa-dev/sdk/react"
 
 import Page from "../../../components/Page"
-import NativePageTransition from "../../../components/NativePageTransition"
 
 import ImageAvatar from "../../../components/ImageAvatar"
 import Text from "../../../components/Text"
@@ -174,26 +173,24 @@ function ColorAssetPage() {
         <>
             <BackButton />
             <Page>
-                <NativePageTransition>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "8px",
-                        }}
-                    >
-                        {assets.map((asset, index) => (
-                            <AssetSection
-                                mode="trade"
-                                image={asset.image}
-                                name={asset.name}
-                                price={asset.current_price}
-                                ticker={asset.symbol?.toUpperCase()}
-                                key={index}
-                            />
-                        ))}
-                    </div>
-                </NativePageTransition>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "8px",
+                    }}
+                >
+                    {assets.map((asset, index) => (
+                        <AssetSection
+                            mode="trade"
+                            image={asset.image}
+                            name={asset.name}
+                            price={asset.current_price}
+                            ticker={asset.symbol?.toUpperCase()}
+                            key={index}
+                        />
+                    ))}
+                </div>
             </Page>
         </>
     )

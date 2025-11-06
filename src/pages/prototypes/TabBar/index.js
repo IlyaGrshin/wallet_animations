@@ -4,7 +4,6 @@ import { AnimatePresence } from "motion/react"
 import { TRANSITIONS } from "../../../utils/animations"
 
 import TabBar from "../../../components/TabBar"
-import NativePageTransition from "../../../components/NativePageTransition"
 
 import * as styles from "./TabBarPage.module.scss"
 
@@ -139,7 +138,7 @@ const TabBarPage = () => {
     }, [])
 
     return (
-        <NativePageTransition>
+        <>
             <BackButton />
             <div className={styles.container}>
                 <AnimatePresence
@@ -161,7 +160,7 @@ const TabBarPage = () => {
                 </AnimatePresence>
             </div>
             <TabBar tabs={tabs} onChange={handleTabChange} />
-        </NativePageTransition>
+        </>
     )
 }
 

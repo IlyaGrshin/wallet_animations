@@ -7,7 +7,6 @@ import Text from "../../../components/Text"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
-import NativePageTransition from "../../../components/NativePageTransition"
 
 const NavigationBar = () => {
     const [isFullscreen, setIsFullscreen] = useState(false)
@@ -62,9 +61,8 @@ const NavigationBar = () => {
 
     return (
         <Page>
-            <NativePageTransition>
-                <BackButton />
-                <SectionList>
+            <BackButton />
+            <SectionList>
                     <SectionList.Item header="Navigation Bar">
                         <Cell
                             onClick={handleColorClick}
@@ -121,7 +119,6 @@ const NavigationBar = () => {
                         </Cell>
                     </SectionList.Item>
                 </SectionList>
-            </NativePageTransition>
         </Page>
     )
 }

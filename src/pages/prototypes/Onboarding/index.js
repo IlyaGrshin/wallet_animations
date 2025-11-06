@@ -6,7 +6,6 @@ import Gallery from "../../../components/Gallery"
 import SectionHeader from "../../../components/SectionHeader"
 import StartView from "../../../components/StartView"
 import { RegularButton } from "../../../components/Button"
-import NativePageTransition from "../../../components/NativePageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -71,8 +70,7 @@ const Onboarding = () => {
     }, [])
 
     return (
-        <NativePageTransition>
-            <Page headerColor="131314">
+        <Page headerColor="131314">
                 <BackButton />
                 <Gallery onPageChange={handlePageChange}>
                     {GalleryPages.map(
@@ -105,7 +103,6 @@ const Onboarding = () => {
                     />
                 </div>
             </Page>
-        </NativePageTransition>
     )
 }
 

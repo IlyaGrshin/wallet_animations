@@ -6,7 +6,6 @@ import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Picker from "../../../components/Picker"
 import Cell from "../../../components/Cells"
-import NativePageTransition from "../../../components/NativePageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -37,8 +36,7 @@ const PickerPage = () => {
         <>
             <BackButton />
             <Page>
-                <NativePageTransition>
-                    <SectionList>
+                <SectionList>
                         <SectionList.Item>
                             <Cell
                                 end={
@@ -55,7 +53,6 @@ const PickerPage = () => {
                             />
                         </SectionList.Item>
                     </SectionList>
-                </NativePageTransition>
             </Page>
         </>
     )

@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 import { RegularButton } from "../../../components/Button"
-import NativePageTransition from "../../../components/NativePageTransition"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -34,22 +33,20 @@ function ColorChanging() {
     return (
         <>
             <BackButton />
-            <NativePageTransition>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: "100vh",
-                    }}
-                >
-                    <RegularButton
-                        variant="filled"
-                        label="Change Color"
-                        onClick={switchColors}
-                    />
-                </div>
-            </NativePageTransition>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100vh",
+                }}
+            >
+                <RegularButton
+                    variant="filled"
+                    label="Change Color"
+                    onClick={switchColors}
+                />
+            </div>
         </>
     )
 }

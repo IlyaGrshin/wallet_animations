@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { Router, Switch, Route } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
 import { useLocation } from "wouter"
+import PageTransition from "../components/PageTransition"
 
 import UI from "../pages/UI"
 import Wallet from "../pages/prototypes/Wallet"
@@ -56,7 +57,9 @@ const Routes = () => (
 export default function AppRouter() {
     return (
         <Router hook={useHashLocation}>
-            <Routes />
+            <PageTransition>
+                <Routes />
+            </PageTransition>
         </Router>
     )
 }
