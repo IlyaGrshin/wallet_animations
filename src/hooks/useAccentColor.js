@@ -1,9 +1,16 @@
 import ColorThief from "colorthief"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 import { rgbTohex, normalizeHex } from "../utils/common"
 
+const colorCache = new Map()
+
 export async function getAccentHex(source, quality = 10) {
+    const cacheKey = `${source}_${quality}`
+    if (colorCache.has(cacheKey)) {
+        return colorCache.get(cacheKey)
+    }
+
     let blob, mime
     if (source instanceof Blob) {
         blob = source
@@ -31,7 +38,9 @@ export async function getAccentHex(source, quality = 10) {
             const accent = Object.entries(freq).sort(
                 (a, b) => b[1] - a[1]
             )[0][0]
-            return normalizeHex(accent)
+            const result = normalizeHex(accent)
+            colorCache.set(cacheKey, result)
+            return result
         }
     }
 
@@ -48,11 +57,15 @@ export async function getAccentHex(source, quality = 10) {
             try {
                 const thief = new ColorThief()
                 const [r, g, b] = thief.getColor(img, quality)
-                resolve(rgbTohex(r, g, b))
+                const result = rgbTohex(r, g, b)
+                colorCache.set(cacheKey, result)
+                resolve(result)
             } catch (err) {
                 reject(err)
             } finally {
-                URL.revokeObjectURL(url)
+                if (source instanceof Blob) {
+                    URL.revokeObjectURL(url)
+                }
             }
         }
         img.onerror = reject
@@ -84,4 +97,61 @@ export function useAccentColor(src, quality = 10) {
     }, [src, quality])
 
     return src ? hex : null
+}
+
+export function useAccentColorLazy(src, quality = 10, options = {}) {
+    const [hex, setHex] = useState(null)
+    const [isVisible, setIsVisible] = useState(false)
+    const elementRef = useRef(null)
+
+    const {
+        rootMargin = "50px",
+        threshold = 0.01,
+    } = options
+
+    useEffect(() => {
+        if (!src || !elementRef.current) return
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setIsVisible(true)
+                        observer.unobserve(entry.target)
+                    }
+                })
+            },
+            {
+                rootMargin,
+                threshold,
+            }
+        )
+
+        observer.observe(elementRef.current)
+
+        return () => {
+            if (elementRef.current) {
+                observer.unobserve(elementRef.current)
+            }
+        }
+    }, [src, rootMargin, threshold])
+
+    useEffect(() => {
+        if (!src || !isVisible) {
+            setHex(null)
+            return
+        }
+
+        let canceled = false
+
+        getAccentHex(src, quality)
+            .then((c) => !canceled && setHex(c))
+            .catch(() => !canceled && setHex(null))
+
+        return () => {
+            canceled = true
+        }
+    }, [src, quality, isVisible])
+
+    return { hex: src ? hex : null, ref: elementRef }
 }

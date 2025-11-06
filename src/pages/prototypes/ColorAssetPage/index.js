@@ -8,7 +8,7 @@ import ImageAvatar from "../../../components/ImageAvatar"
 import Text from "../../../components/Text"
 import { RegularButton, MultilineButton } from "../../../components/Button"
 
-import { useAccentColor } from "../../../hooks/useAccentColor"
+import { useAccentColorLazy } from "../../../hooks/useAccentColor"
 
 import ArrowUpCircleFill from "../../../icons/28/Arrow Up Circle Fill.svg?react"
 import ArrowDownCircleFill from "../../../icons/28/Arrow Down Circle Fill.svg?react"
@@ -119,19 +119,23 @@ ActionButtons.propTypes = {
 }
 
 function AssetSection({ mode, image, name, price, ticker }) {
-    const accentColor = useAccentColor(image)
+    const { hex: accentColor, ref } = useAccentColorLazy(image, 10, {
+        rootMargin: "100px",
+    })
 
     return (
         <section
+            ref={ref}
             className={styles.root}
             style={{
-                backgroundColor: `oklch(from ${accentColor} calc(l * .9) c h)`,
+                backgroundColor: accentColor
+                    ? `oklch(from ${accentColor} calc(l * .9) c h)`
+                    : undefined,
             }}
         >
             {mode === "trade" ? <Banner name={name} /> : null}
             <div className={styles.body}>
                 <ImageAvatar size={72} src={image} />
-                {/* Add MaterialSize to ImageAvatar ?*/}
                 <div className={styles.data}>
                     <Text
                         apple={{ variant: "title3", weight: "semibold" }}

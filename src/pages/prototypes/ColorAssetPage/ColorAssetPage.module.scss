@@ -1,5 +1,6 @@
 .root {
     background-color: var(--tg-theme-section-bg-color);
+    transition: background-color 0.3s ease-in-out;
 
     .body {
         display: flex;
