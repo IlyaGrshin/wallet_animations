@@ -5,7 +5,7 @@ import Page from "../../../components/Page"
 import "./index.css"
 import WebApp from "@twa-dev/sdk"
 
-function TonSpaceSkeleton() {
+function TonWalletSkeleton() {
     useEffect(() => {
         if (WebApp.initData) {
             WebApp.setHeaderColor("#131314")
@@ -23,4 +23,4 @@ function TonSpaceSkeleton() {
     )
 }
 
-export default TonSpaceSkeleton
+export default TonWalletSkeleton

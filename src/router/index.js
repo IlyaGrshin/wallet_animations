@@ -7,7 +7,7 @@ import PageTransition from "../components/PageTransition"
 
 import UI from "../pages/UI"
 import Wallet from "../pages/prototypes/Wallet"
-import TONSpace from "../pages/prototypes/TS"
+import TONWallet from "../pages/prototypes/TS"
 import Onboarding from "../pages/prototypes/Onboarding"
 import NewNavigation from "../pages/prototypes/NewNavigation"
 import ColorChanging from "../pages/prototypes/ColorChanging"
@@ -36,7 +36,7 @@ const Routes = () => (
     <Switch>
         <Route path="/" component={UI} />
         <Route path="/wallet" component={Wallet} />
-        <Route path="/tonspace" component={TONSpace} />
+        <Route path="/tonwallet" component={TONWallet} />
         <Route path="/onboarding" component={Onboarding} />
         <Route path="/newnavigation" component={NewNavigation} />
         <Route path="/colorchanging" component={ColorChanging} />

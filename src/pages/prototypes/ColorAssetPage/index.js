@@ -25,7 +25,7 @@ const fetchAssets = async () => {
 const assetsResource = fetchAssets()
 
 function Banner({ name }) {
-    const BannerText = `Currently, ${name} can only be purchased, held and sold within Wallet. It is not possible to transfer, receive or withdraw ${name} externally.`
+    const BannerText = `Currently, ${name} can only be purchased, held and sold within Crypto Wallet. It is not possible to transfer, receive or withdraw ${name} externally.`
     return (
         <div className={styles.bannerContainer}>
             <Text

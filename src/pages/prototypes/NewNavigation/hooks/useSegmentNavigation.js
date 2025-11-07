@@ -18,7 +18,7 @@ export const useSegmentNavigation = () => {
     })
 
     const handleSegmentChange = (index) => {
-        const newView = index === 1 ? "tonspace" : "wallet"
+        const newView = index === 1 ? "tonwallet" : "wallet"
 
         setView(newView)
         setActiveSegment(index)

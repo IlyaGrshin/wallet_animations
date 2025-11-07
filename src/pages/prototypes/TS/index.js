@@ -1,4 +1,3 @@
-
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 
@@ -9,7 +8,7 @@ import Collectibles from "./components/Collectibles"
 import Activity from "./components/Activity"
 import FAQ from "./components/FAQ"
 
-function TONSpace() {
+function TONWallet() {
     return (
         <Page headerColor="131314" backgroundColor="131314">
             <div className="ton-space">
@@ -26,4 +25,4 @@ function TONSpace() {
     )
 }
 
-export default TONSpace
+export default TONWallet

@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import { motion, AnimatePresence } from "motion/react"
 import * as styles from "./PageContent.module.scss"
 import Wallet from "../../../Wallet"
-import TONSpace from "../../../TS"
+import TONWallet from "../../../TS"
 
 export default function PageContent({ view }) {
     let content
@@ -10,8 +10,8 @@ export default function PageContent({ view }) {
         case "wallet":
             content = <Wallet />
             break
-        case "tonspace":
-            content = <TONSpace />
+        case "tonwallet":
+            content = <TONWallet />
             break
         default:
             content = <Wallet />

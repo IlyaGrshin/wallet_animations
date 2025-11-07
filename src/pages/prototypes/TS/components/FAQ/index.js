@@ -3,9 +3,9 @@ import SectionList from "../../../../../components/SectionList"
 
 export default function FAQ() {
     const questions = [
-        "What is Wallet Earn? How does it work?",
+        "What is Crypto Wallet Earn? How does it work?",
         "How are rewards assigned? Can I withdraw them early?",
-        "Can I withdraw only a part of my USDT from Wallet Earn and continue to use it?",
+        "Can I withdraw only a part of my USDT from Crypto Wallet Earn and continue to use it?",
     ]
 
     return (
