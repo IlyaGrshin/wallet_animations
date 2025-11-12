@@ -69,6 +69,11 @@
         will-change: clip-path;
         z-index: 10;
         overflow: hidden;
+        // Создаём отдельный слой композиции для правильного ретина-сглаживания
+        transform: translateZ(0);
+        isolation: isolate;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
 
         span {
             color: var(--tg-theme-accent-text-color) !important;
