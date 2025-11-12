@@ -27,7 +27,7 @@ import { BackButton } from "@twa-dev/sdk/react"
 
 const tabs = [
     {
-        label: "Crypto Wallet",
+        label: "Wallet",
         path: "/tabbar/",
         icon: <WalletIcon />,
         view: <Wallet />,
