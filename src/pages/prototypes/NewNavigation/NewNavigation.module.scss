@@ -20,3 +20,21 @@
         height: calc(-56px - env(safe-area-inset-bottom) + 100vh);
     }
 }
+
+.navigationWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    pointer-events: none;
+}
+
+.tabBarWrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    pointer-events: none;
+}

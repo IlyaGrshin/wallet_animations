@@ -2,10 +2,13 @@
     position: absolute;
     width: 100%;
     display: flex;
-    z-index: 1;
+    z-index: 200;
     justify-content: space-between;
     align-items: center;
-    padding: 0 14px;
+    padding: 12px 14px;
+    min-height: 60px;
+    top: 0;
+    left: 0;
 
     :global(body.material) & {
         padding-top: 14px;
@@ -19,7 +22,7 @@
     right: 0;
     bottom: 0;
     background-color: rgb(0 0 0 / 0.12);
-    z-index: 9;
+    z-index: 199;
     will-change: opacity;
 }
 
@@ -33,7 +36,7 @@
     align-items: center;
     transition: background-color 0.2s ease;
     position: relative;
-    z-index: 3;
+    z-index: 201;
     will-change: background-color;
 
     .avatar {
@@ -57,12 +60,12 @@
 .dropdownWrapper {
     position: absolute;
     left: 50%;
-    top: 0;
+    top: 12px;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     will-change: transform;
-    z-index: 10;
+    z-index: 202;
 }
 
 .dropdownControl {
@@ -73,7 +76,7 @@
     background-color: rgba(from var(--tg-theme-section-bg-color) r g b / 0.7);
     overflow: hidden;
     will-change: width, height, border-radius;
-    z-index: 10;
+    z-index: 202;
 }
 
 .contentWrapper {

@@ -12,7 +12,6 @@ import Onboarding from "../pages/prototypes/Onboarding"
 import NewNavigation from "../pages/prototypes/NewNavigation"
 import ColorChanging from "../pages/prototypes/ColorChanging"
 import TextPage from "../pages/prototypes/TextPage"
-import TabBar from "../pages/prototypes/TabBar"
 import Picker from "../pages/prototypes/Picker"
 import ModalPages from "../pages/prototypes/ModalPages"
 import ColorAssetPage from "../pages/prototypes/ColorAssetPage"
@@ -41,7 +40,6 @@ const Routes = () => (
         <Route path="/newnavigation" component={NewNavigation} />
         <Route path="/colorchanging" component={ColorChanging} />
         <Route path="/textpage" component={TextPage} />
-        <Route path="/tabbar" component={TabBar} />
         <Route path="/picker" component={Picker} />
         <Route path="/modalpages" component={ModalPages} />
         <Route path="/colorassetpage" component={ColorAssetPage} />
