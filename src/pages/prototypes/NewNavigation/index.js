@@ -236,22 +236,19 @@ function NewNavigation() {
                         <div
                             style={{ position: "relative", minHeight: "100%" }}
                         >
+                            {isFirstTab && (
+                                <div className={styles.navigationWrapper}>
+                                    <NavigationPanel
+                                        avatarUrl={avatarUrl}
+                                        activeSegment={activeSegment}
+                                        onSegmentChange={handleSegmentChange}
+                                    />
+                                </div>
+                            )}
                             {currentView}
                         </div>
                     </m.div>
                 </AnimatePresence>
-
-                {isFirstTab && (
-                    <div className={styles.navigationWrapper}>
-                        <div style={{ pointerEvents: "auto" }}>
-                            <NavigationPanel
-                                avatarUrl={avatarUrl}
-                                activeSegment={activeSegment}
-                                onSegmentChange={handleSegmentChange}
-                            />
-                        </div>
-                    </div>
-                )}
             </div>
 
             <div className={styles.tabBarWrapper}>
