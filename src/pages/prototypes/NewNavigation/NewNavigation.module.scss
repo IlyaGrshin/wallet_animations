@@ -22,12 +22,8 @@
 }
 
 .navigationWrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: relative;
     z-index: 200;
-    pointer-events: none;
 }
 
 .tabBarWrapper {
