@@ -35,8 +35,6 @@ const ModalView = ({
                 }, 10)
             } else {
                 WebApp.enableVerticalSwipes()
-                WebApp.BackButton.hide()
-                WebApp.MainButton.hide()
                 WebApp.setHeaderColor(headerColor)
                 const timer = setTimeout(() => setAnimate(false), 0)
                 return () => clearTimeout(timer)
@@ -47,8 +45,6 @@ const ModalView = ({
                 WebApp.disableVerticalSwipes()
             } else {
                 WebApp.enableVerticalSwipes()
-                WebApp.BackButton.hide()
-                WebApp.MainButton.hide()
                 WebApp.setHeaderColor(headerColor)
             }
         }

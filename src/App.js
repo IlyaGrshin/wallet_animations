@@ -4,8 +4,34 @@ import {
     initializeViewTransitions,
     cleanupViewTransitions,
 } from "./utils/viewTransition"
+import WebApp from "@twa-dev/sdk"
 
 import "./index.css"
+
+// Патч BackButton с ref-counting для корректной работы при переходах страниц
+const patchBackButton = () => {
+    const original = {
+        show: WebApp.BackButton.show.bind(WebApp.BackButton),
+        hide: WebApp.BackButton.hide.bind(WebApp.BackButton),
+    }
+    let count = 0
+
+    WebApp.BackButton.show = () => {
+        count++
+        if (count === 1) {
+            original.show()
+        }
+    }
+
+    WebApp.BackButton.hide = () => {
+        count = Math.max(0, count - 1)
+        if (count === 0) {
+            original.hide()
+        }
+    }
+}
+
+patchBackButton()
 
 function App() {
     useEffect(() => {
