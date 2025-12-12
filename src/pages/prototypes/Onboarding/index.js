@@ -71,38 +71,38 @@ const Onboarding = () => {
 
     return (
         <Page headerColor="131314">
-                <BackButton />
-                <Gallery onPageChange={handlePageChange}>
-                    {GalleryPages.map(
-                        ({ imageClass, title, description }, index) => (
-                            <GalleryPage
-                                key={index}
-                                imageClass={imageClass}
-                                title={title}
-                                description={description}
-                            />
-                        )
-                    )}
-                </Gallery>
-                <div className={styles.BottomButtons}>
-                    <RegularButton
-                        variant="filled"
-                        label="Start exploring TON"
-                        isFill
-                        isShine
-                    />
-                    <RegularButton
-                        variant="tinted"
-                        label="Add Existing Wallet"
-                        isFill
-                    />
-                    <SectionHeader
-                        type="Footer"
-                        title="By continuing you agree to Terms of Service and User Agreement."
-                        style={{ textAlign: "center" }}
-                    />
-                </div>
-            </Page>
+            <BackButton />
+            <Gallery onPageChange={handlePageChange}>
+                {GalleryPages.map(
+                    ({ imageClass, title, description }, index) => (
+                        <GalleryPage
+                            key={index}
+                            imageClass={imageClass}
+                            title={title}
+                            description={description}
+                        />
+                    )
+                )}
+            </Gallery>
+            <div className={styles.BottomButtons}>
+                <RegularButton
+                    variant="filled"
+                    label="Start exploring TON"
+                    isFill
+                    isShine
+                />
+                <RegularButton
+                    variant="tinted"
+                    label="Add Existing Wallet"
+                    isFill
+                />
+                <SectionHeader
+                    type="Footer"
+                    title="By continuing you agree to Terms of Service and User Agreement."
+                    style={{ textAlign: "center" }}
+                />
+            </div>
+        </Page>
     )
 }
 

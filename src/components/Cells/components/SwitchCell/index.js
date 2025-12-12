@@ -56,4 +56,3 @@ SwitchCell.propTypes = {
 }
 
 export default SwitchCell
-

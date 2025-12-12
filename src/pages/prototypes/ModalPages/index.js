@@ -25,10 +25,7 @@ const ModalPages = () => {
                             <Cell.Text type="Accent" title="Open Modal" />
                         </Cell>
                         <Cell onClick={handlers.modal2.open}>
-                            <Cell.Text
-                                type="Accent"
-                                title="Open Modal (CSS)"
-                            />
+                            <Cell.Text type="Accent" title="Open Modal (CSS)" />
                         </Cell>
                     </SectionList.Item>
                 </SectionList>

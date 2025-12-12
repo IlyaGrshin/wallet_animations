@@ -22,7 +22,8 @@ const Gallery = ({ children, onPageChange, onScrollProgress }) => {
         const container = containerRef.current
         if (container) {
             container.addEventListener("scroll", handleScrollEvent)
-            return () => container.removeEventListener("scroll", handleScrollEvent)
+            return () =>
+                container.removeEventListener("scroll", handleScrollEvent)
         }
     }, [])
 

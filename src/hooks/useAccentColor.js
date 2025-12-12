@@ -104,10 +104,7 @@ export function useAccentColorLazy(src, quality = 10, options = {}) {
     const [isVisible, setIsVisible] = useState(false)
     const elementRef = useRef(null)
 
-    const {
-        rootMargin = "50px",
-        threshold = 0.01,
-    } = options
+    const { rootMargin = "50px", threshold = 0.01 } = options
 
     useEffect(() => {
         if (!src || !elementRef.current) return

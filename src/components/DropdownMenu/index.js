@@ -1,9 +1,4 @@
-import {
-    useState,
-    useEffect,
-    useRef,
-    useLayoutEffect,
-} from "react"
+import { useState, useEffect, useRef, useLayoutEffect } from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"

@@ -37,22 +37,22 @@ const PickerPage = () => {
             <BackButton />
             <Page>
                 <SectionList>
-                        <SectionList.Item>
-                            <Cell
-                                end={
-                                    <Cell.Part type="Picker">
-                                        {months[pickerIndex]}
-                                    </Cell.Part>
-                                }
-                            >
-                                <Cell.Text title="Picker" />
-                            </Cell>
-                            <Picker
-                                items={months}
-                                onPickerIndex={handlePickerIndex}
-                            />
-                        </SectionList.Item>
-                    </SectionList>
+                    <SectionList.Item>
+                        <Cell
+                            end={
+                                <Cell.Part type="Picker">
+                                    {months[pickerIndex]}
+                                </Cell.Part>
+                            }
+                        >
+                            <Cell.Text title="Picker" />
+                        </Cell>
+                        <Picker
+                            items={months}
+                            onPickerIndex={handlePickerIndex}
+                        />
+                    </SectionList.Item>
+                </SectionList>
             </Page>
         </>
     )
