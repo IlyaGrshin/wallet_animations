@@ -29,6 +29,9 @@ MaterialText.propTypes = {
         rounded: PropTypes.bool,
         caps: PropTypes.bool,
         chevron: PropTypes.bool,
+        arrow: PropTypes.shape({
+            direction: PropTypes.oneOf(["up", "down"]),
+        }),
     }),
     children: PropTypes.node,
 }

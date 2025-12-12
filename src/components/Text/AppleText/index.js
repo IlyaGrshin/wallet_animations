@@ -1,6 +1,7 @@
 import { createElement } from "react"
 import PropTypes from "prop-types"
 import { getChevronRight } from "./ChevronRight"
+import { getArrow } from "./Arrow"
 import "./AppleText.scss"
 
 const AppleText = ({
@@ -21,12 +22,25 @@ const AppleText = ({
             ? getChevronRight(textProps.variant, textProps.weight)
             : null
 
+    const ArrowIconComponent = textProps?.arrow?.direction
+        ? getArrow(
+              textProps.arrow.direction,
+              textProps.variant,
+              textProps.weight
+          )
+        : null
+
     return (
         <Component
             {...dynamicProps}
             {...props}
             data-has-chevron={!!ChevronIconComponent}
+            data-has-arrow={!!ArrowIconComponent}
         >
+            {ArrowIconComponent &&
+                createElement(ArrowIconComponent, {
+                    className: "arrow-icon",
+                })}
             {children}
             {ChevronIconComponent &&
                 createElement(ChevronIconComponent, {
@@ -44,6 +58,9 @@ AppleText.propTypes = {
         rounded: PropTypes.bool,
         caps: PropTypes.bool,
         chevron: PropTypes.any,
+        arrow: PropTypes.shape({
+            direction: PropTypes.oneOf(["up", "down"]),
+        }),
     }),
     children: PropTypes.node,
 }
