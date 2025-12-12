@@ -53,6 +53,27 @@ body.apple {
     [data-rounded] {
         font-family: ui-rounded, apple-system, system-ui, sans-serif;
     }
+
+    [data-has-chevron="true"] {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+
+        .chevron-icon {
+            display: inline-flex;
+            flex-shrink: 0;
+            align-items: center;
+            line-height: 1;
+            vertical-align: middle;
+        }
+
+        &[variant="subheadline2"],
+        &[variant="footnote"],
+        &[variant="caption1"],
+        &[variant="caption2"] {
+            gap: 1px;
+        }
+    }
 }
 
 [data-caps] {

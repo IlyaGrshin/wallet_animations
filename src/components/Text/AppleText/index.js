@@ -1,4 +1,6 @@
+import { createElement } from "react"
 import PropTypes from "prop-types"
+import { getChevronRight } from "./ChevronRight"
 import "./AppleText.scss"
 
 const AppleText = ({
@@ -14,9 +16,22 @@ const AppleText = ({
         ...(textProps.caps && { "data-caps": true }),
     }
 
+    const ChevronIconComponent =
+        textProps && "chevron" in textProps
+            ? getChevronRight(textProps.variant, textProps.weight)
+            : null
+
     return (
-        <Component {...dynamicProps} {...props}>
+        <Component
+            {...dynamicProps}
+            {...props}
+            data-has-chevron={!!ChevronIconComponent}
+        >
             {children}
+            {ChevronIconComponent &&
+                createElement(ChevronIconComponent, {
+                    className: "chevron-icon",
+                })}
         </Component>
     )
 }
@@ -28,6 +43,7 @@ AppleText.propTypes = {
         weight: PropTypes.string,
         rounded: PropTypes.bool,
         caps: PropTypes.bool,
+        chevron: PropTypes.any,
     }),
     children: PropTypes.node,
 }

@@ -28,6 +28,7 @@ MaterialText.propTypes = {
         weight: PropTypes.string,
         rounded: PropTypes.bool,
         caps: PropTypes.bool,
+        chevron: PropTypes.bool,
     }),
     children: PropTypes.node,
 }
