@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
+import Train from "../../../../../components/Train"
 
 import * as styles from "./Profile.module.scss"
 import * as ButtonStyles from "../../../../../components/Button/MultilineButton/MultilineButton.module.scss"
@@ -35,8 +36,8 @@ export default function Profile() {
             <div className={styles.data}>
                 <Text
                     apple={{
-                        variant: "body",
-                        weight: "regular",
+                        variant: "subheadline2",
+                        weight: "semibold",
                     }}
                     material={{
                         variant: "body1",
@@ -65,6 +66,34 @@ export default function Profile() {
                         }}
                     />
                 </Spoiler>
+                <Train divider="space">
+                    <Text
+                        apple={{ variant: "subheadline2", weight: "semibold" }}
+                        style={{ color: "var(--text-confirm-color)" }}
+                    >
+                        +0.82
+                    </Text>
+                    <Text.Badge
+                        apple={{
+                            variant: "subheadline2",
+                            weight: "semibold",
+                            arrow: { direction: "up" },
+                        }}
+                        variant="tinted"
+                        circled
+                        style={{
+                            color: "var(--text-confirm-color)",
+                        }}
+                    >
+                        0.11%
+                    </Text.Badge>
+                    <Text
+                        apple={{ variant: "subheadline2", weight: "semibold" }}
+                        style={{ color: "var(--tg-theme-subtitle-text-color)" }}
+                    >
+                        Today
+                    </Text>
+                </Train>
             </div>
             <div className={styles.buttons}>
                 <MultilineButton

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
+import Train from "../../../../../components/Train"
 
 import * as styles from "./Balance.module.scss"
 import Text from "../../../../../components/Text"
@@ -28,8 +29,8 @@ export default function Balance() {
         <div className={styles.balance}>
             <Text
                 apple={{
-                    variant: "body",
-                    weight: "regular",
+                    variant: "subheadline2",
+                    weight: "semibold",
                 }}
                 material={{
                     variant: "body1",
@@ -37,7 +38,7 @@ export default function Balance() {
                 }}
                 className={styles.label}
             >
-                Total Balance
+                Balance
             </Text>
             <Spoiler
                 className={styles.amount}
@@ -58,6 +59,34 @@ export default function Balance() {
                     }}
                 />
             </Spoiler>
+            <Train divider="space">
+                <Text
+                    apple={{ variant: "subheadline2", weight: "semibold" }}
+                    style={{ color: "var(--text-confirm-color)" }}
+                >
+                    +0.82
+                </Text>
+                <Text.Badge
+                    apple={{
+                        variant: "subheadline2",
+                        weight: "semibold",
+                        arrow: { direction: "up" },
+                    }}
+                    variant="tinted"
+                    circled
+                    style={{
+                        color: "var(--text-confirm-color)",
+                    }}
+                >
+                    0.11%
+                </Text.Badge>
+                <Text
+                    apple={{ variant: "subheadline2", weight: "semibold" }}
+                    style={{ color: "var(--tg-theme-subtitle-text-color)" }}
+                >
+                    Today
+                </Text>
+            </Train>
         </div>
     )
 }
