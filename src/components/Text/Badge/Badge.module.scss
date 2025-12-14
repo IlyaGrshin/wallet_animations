@@ -1,0 +1,135 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+
+    // Общие стили padding и border-radius для Apple
+    :global(body.apple) & {
+        padding: 4px 8px;
+        border-radius: 6px;
+
+        &[variant="title1"],
+        &[variant="title2"],
+        &[variant="title3"] {
+            padding: 6px 12px;
+        }
+
+        &[variant="footnote"] {
+            border-radius: 4px;
+        }
+    }
+
+    // Общие стили padding и border-radius для Material
+    :global(body.material) & {
+        padding: 4px 8px;
+        border-radius: 4px;
+
+        &[variant="headline5"],
+        &[variant="headline6"] {
+            padding: 6px 12px;
+        }
+    }
+
+    // Варианты бейджей — только цвета
+    &.filled {
+        background-color: var(--badge-background, var(--tg-theme-button-color));
+        color: var(--badge-text-color, var(--tg-theme-button-text-color));
+    }
+
+    &.tinted {
+        background-color: rgb(from var(--badge-background) r g b / 0.1);
+        color: var(--badge-text-color, var(--tg-theme-accent-text-color));
+    }
+
+    &.gray {
+        background-color: var(--tertiary-fill-background);
+        color: var(--tg-theme-text-color);
+    }
+
+    &.media {
+        background-color: var(--tg-theme-section-bg-color);
+        color: var(--tg-theme-text-color);
+    }
+
+    &.outlined {
+        background-color: transparent;
+        color: var(--tg-theme-text-color);
+        border: 0.5px solid var(--tg-theme-section-separator-color);
+    }
+
+    // Circled — переопределяет padding и border-radius
+    &[data-circled="true"] {
+        :global(body.apple) & {
+            padding: 4px 4px;
+            border-radius: 8px;
+
+            &[variant="footnote"] {
+                padding: 4px 7px;
+                border-radius: 11px;
+            }
+
+            &[variant="subheadline1"],
+            &[variant="subheadline2"],
+            &[variant="body"] {
+                padding: 4px 7px;
+                border-radius: 13px;
+            }
+
+            &[variant="title1"],
+            &[variant="title2"],
+            &[variant="title3"] {
+                padding: 6px 7px;
+                border-radius: 13px;
+            }
+        }
+
+        :global(body.material) & {
+            padding: 4px 4px;
+            border-radius: 8px;
+
+            &[variant="subtitle2"],
+            &[variant="subtitle1"],
+            &[variant="button1"],
+            &[variant="body1"] {
+                padding: 4px 7px;
+                border-radius: 13px;
+            }
+
+            &[variant="headline5"],
+            &[variant="headline6"] {
+                padding: 6px 7px;
+                border-radius: 13px;
+            }
+        }
+    }
+
+    // Squared — переопределяет padding и border-radius
+    &[data-squared="true"] {
+        :global(body.apple) & {
+            padding: 4px 4px;
+            border-radius: 6px;
+
+            &[variant="footnote"] {
+                border-radius: 4px;
+            }
+
+            &[variant="title1"],
+            &[variant="title2"],
+            &[variant="title3"] {
+                padding: 6px 4px;
+            }
+        }
+
+        :global(body.material) & {
+            padding: 4px 4px;
+            border-radius: 6px;
+
+            &[variant="headline5"],
+            &[variant="headline6"] {
+                padding: 6px 4px;
+            }
+        }
+    }
+}
