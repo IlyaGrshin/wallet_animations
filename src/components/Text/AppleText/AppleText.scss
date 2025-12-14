@@ -67,6 +67,11 @@ body.apple {
             align-items: center;
             line-height: 1;
             vertical-align: middle;
+            color: inherit;
+
+            svg, path {
+                fill: currentColor !important;
+            }
         }
 
         &[variant="subheadline2"],

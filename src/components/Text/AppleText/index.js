@@ -40,11 +40,13 @@ const AppleText = ({
             {ArrowIconComponent &&
                 createElement(ArrowIconComponent, {
                     className: "arrow-icon",
+                    fill: "currentColor",
                 })}
             {children}
             {ChevronIconComponent &&
                 createElement(ChevronIconComponent, {
                     className: "chevron-icon",
+                    fill: "currentColor",
                 })}
         </Component>
     )
