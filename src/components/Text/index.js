@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 
 import AppleText from "./AppleText"
 import MaterialText from "./MaterialText"
+import Badge from "./Badge"
 
 const Text = ({
     apple: appleProps,
@@ -30,4 +31,7 @@ Text.propTypes = {
     material: PropTypes.object,
     children: PropTypes.node,
 }
+
+Text.Badge = Badge
+
 export default Text
