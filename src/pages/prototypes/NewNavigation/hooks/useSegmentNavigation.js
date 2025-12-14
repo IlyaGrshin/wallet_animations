@@ -11,11 +11,8 @@ export const useSegmentNavigation = () => {
                 WebApp.setHeaderColor("secondary_bg_color")
                 WebApp.setBackgroundColor("secondary_bg_color")
             })
-        } else {
-            document.body.style.backgroundColor =
-                "var(--tg-theme-secondary-bg-color)"
         }
-    })
+    }, [])
 
     const handleSegmentChange = (index) => {
         const newView = index === 1 ? "tonwallet" : "wallet"
