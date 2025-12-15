@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react"
+import PropTypes from "prop-types"
 import NumberFlow, { continuous } from "@number-flow/react"
 import { Spoiler } from "spoiled"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 
 import Train from "../../../../../components/Train"
 import Text from "../../../../../components/Text"
@@ -9,9 +12,29 @@ import { DURATION, COMPLEX_EASING } from "../../../../../utils/animations"
 
 import * as styles from "./BalanceCard.module.scss"
 
+const CHANGE_DATA = {
+    today: {
+        value: "+0.82",
+        percent: "0.11%",
+        label: "Today",
+        arrowDirection: "up",
+    },
+    allTime: {
+        value: "+124.56",
+        percent: "12.34%",
+        label: "All Time",
+        arrowDirection: "up",
+    },
+}
+
+const crossFadeTransition = {
+    duration: 0.1,
+    ease: [0.32, 0, 0.67, 0],
+}
+
 /**
  * BalanceCard - универсальный компонент для отображения баланса
- * 
+ *
  * @param {string} label - Текст лейбла (например, "Balance" или "TON Wallet Balance")
  * @param {string} initialBalance - Начальное значение баланса
  * @param {"default" | "overlay"} variant - Визуальный вариант: default (светлый фон) или overlay (для тёмного фона)
@@ -27,6 +50,9 @@ export default function BalanceCard({
 }) {
     const [balance, setBalance] = useState(initialBalance)
     const [hidden, setHidden] = useState(false)
+    const [isToday, setIsToday] = useState(true)
+
+    const changeData = isToday ? CHANGE_DATA.today : CHANGE_DATA.allTime
 
     useEffect(() => {
         const updateBalance = () => {
@@ -41,15 +67,14 @@ export default function BalanceCard({
         return () => clearInterval(interval)
     }, [hidden])
 
-    const variantClass = variant === "overlay" ? styles.cardOverlay : styles.cardDefault
+    const variantClass =
+        variant === "overlay" ? styles.cardOverlay : styles.cardDefault
 
     return (
         <div
-            className={[
-                styles.card,
-                variantClass,
-                className
-            ].filter(Boolean).join(" ")}
+            className={[styles.card, variantClass, className]
+                .filter(Boolean)
+                .join(" ")}
         >
             <div className={styles.data}>
                 <Text
@@ -85,36 +110,88 @@ export default function BalanceCard({
                         }}
                     />
                 </Spoiler>
-                <Train divider="space">
-                    <Text
-                        apple={{ variant: "subheadline2", weight: "semibold" }}
-                        style={{ color: "var(--text-confirm-color)" }}
-                    >
-                        +0.82
-                    </Text>
-                    <Text.Badge
-                        apple={{
-                            variant: "subheadline2",
-                            weight: "semibold",
-                            arrow: { direction: "up" },
-                        }}
-                        variant="tinted"
-                        circled
-                        style={{
-                            color: "var(--text-confirm-color)",
-                        }}
-                    >
-                        0.11%
-                    </Text.Badge>
-                    <Text
-                        apple={{ variant: "subheadline2", weight: "semibold" }}
-                        style={{ color: "var(--tg-theme-subtitle-text-color)" }}
-                    >
-                        Today
-                    </Text>
+                <Train
+                    divider="space"
+                    onClick={() => setIsToday((prev) => !prev)}
+                    style={{ cursor: "pointer" }}
+                >
+                    <AnimatePresence mode="wait" initial={false}>
+                        <m.span
+                            key={`value-${isToday}`}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={crossFadeTransition}
+                        >
+                            <Text
+                                apple={{
+                                    variant: "subheadline2",
+                                    weight: "semibold",
+                                }}
+                                style={{ color: "var(--text-confirm-color)" }}
+                            >
+                                {changeData.value}
+                            </Text>
+                        </m.span>
+                    </AnimatePresence>
+                    <AnimatePresence mode="wait" initial={false}>
+                        <m.span
+                            key={`percent-${isToday}`}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={crossFadeTransition}
+                        >
+                            <Text.Badge
+                                apple={{
+                                    variant: "subheadline2",
+                                    weight: "semibold",
+                                    arrow: {
+                                        direction: changeData.arrowDirection,
+                                    },
+                                }}
+                                variant="tinted"
+                                circled
+                                style={{
+                                    color: "var(--text-confirm-color)",
+                                }}
+                            >
+                                {changeData.percent}
+                            </Text.Badge>
+                        </m.span>
+                    </AnimatePresence>
+                    <AnimatePresence mode="wait" initial={false}>
+                        <m.span
+                            key={`label-${isToday}`}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={crossFadeTransition}
+                        >
+                            <Text
+                                apple={{
+                                    variant: "subheadline2",
+                                    weight: "semibold",
+                                }}
+                                style={{
+                                    color: "var(--tg-theme-subtitle-text-color)",
+                                }}
+                            >
+                                {changeData.label}
+                            </Text>
+                        </m.span>
+                    </AnimatePresence>
                 </Train>
             </div>
             {actions && <div className={styles.actions}>{actions}</div>}
         </div>
     )
+}
+
+BalanceCard.propTypes = {
+    label: PropTypes.string.isRequired,
+    initialBalance: PropTypes.string,
+    variant: PropTypes.oneOf(["default", "overlay"]),
+    actions: PropTypes.node,
+    className: PropTypes.string,
 }
