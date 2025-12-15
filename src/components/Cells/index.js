@@ -31,10 +31,11 @@ const CellStart = ({ type, src = null, iconType = null }) => {
     switch (type) {
         case "Image":
             content = (
-                <div
+                <img
+                    src={src}
+                    alt=""
                     className={styles.image}
-                    style={{ backgroundImage: `url(${src})` }}
-                ></div>
+                />
             )
             break
         case "Icon":

@@ -10,6 +10,7 @@ import HiddenEye from "../../../../../icons/avatars/HiddenEyeIcon.svg"
 export default function AnimatedCellMoreButton({ onClick, state }) {
     const transition = TRANSITIONS.MATERIAL_STANDARD
 
+    const iconSize = useApple ? 40 : 42
     const jettonsSize = useApple
         ? { position: "relative", width: "40px", height: "40px" }
         : {
@@ -19,68 +20,32 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
               marginLeft: "-6px",
           }
 
-    const jettonsMotion = useApple
-        ? [
-              {
-                  src: getAssetIcon("HMSTR"),
-                  variants: {
-                      collapsed: { scale: 0.6, top: "-6px", left: "-6px" },
-                      expanded: { scale: 1, opacity: 0, top: 0, left: 0 },
-                  },
-              },
-              {
-                  src: getAssetIcon("NOT"),
-                  variants: {
-                      collapsed: {
-                          scale: 0.6,
-                          opacity: 1,
-                          top: "6px",
-                          left: "6px",
-                      },
-                      expanded: { scale: 0, opacity: 0, top: 0, left: 0 },
-                  },
-              },
-          ]
-        : [
-              {
-                  src: getAssetIcon("HMSTR"),
-                  variants: {
-                      collapsed: { scale: 0.6, top: "-6px", left: 0 },
-                      expanded: { scale: 1, top: 0, left: "6px" },
-                  },
-              },
-              {
-                  src: getAssetIcon("NOT"),
-                  variants: {
-                      collapsed: {
-                          scale: 0.6,
-                          opacity: 1,
-                          top: "6px",
-                          left: "12px",
-                      },
-                      expanded: { scale: 0, opacity: 0, top: 0, left: "18px" },
-                  },
-              },
-          ]
-
-    const HiddenEyeMotion = useApple
+    // HMSTR иконка — при expanded исчезает
+    const hmstrStyles = useApple
         ? {
-              variants: {
-                  collapsed: {
-                      scale: 0.6,
-                      opacity: 0,
-                      top: "-6px",
-                      left: "-6px",
-                  },
-                  expanded: { scale: 1, opacity: 1, top: 0, left: 0 },
-              },
+              collapsed: { scale: 0.6, top: "-6px", left: "-6px", opacity: 1 },
+              expanded: { scale: 1, top: 0, left: 0, opacity: 0 },
           }
         : {
-              variants: {
-                  collapsed: { scale: 0.6, opacity: 0, top: "-6px", left: 0 },
-                  expanded: { scale: 1, opacity: 1, top: 0, left: "6px" },
-              },
+              collapsed: { scale: 0.6, top: "-6px", left: 0, opacity: 1 },
+              expanded: { scale: 1, top: 0, left: "6px", opacity: 0 },
           }
+
+    // NOT иконка — при expanded исчезает
+    const notStyles = useApple
+        ? {
+              collapsed: { scale: 0.6, top: "6px", left: "6px", opacity: 1 },
+              expanded: { scale: 0, top: 0, left: 0, opacity: 0 },
+          }
+        : {
+              collapsed: { scale: 0.6, top: "6px", left: "12px", opacity: 1 },
+              expanded: { scale: 0, top: 0, left: "18px", opacity: 0 },
+          }
+
+    const jettons = [
+        { src: getAssetIcon("HMSTR"), styles: hmstrStyles, zIndex: 2 },
+        { src: getAssetIcon("NOT"), styles: notStyles, zIndex: 1 },
+    ]
 
     const variants = {
         TextMoreAssets: {
@@ -98,34 +63,52 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
             <div className={cellStyles.root}>
                 <div className={cellStyles.start}>
                     <div className="assetIcon" style={jettonsSize}>
-                        <m.div
+                        <img
+                            src={HiddenEye}
+                            alt=""
                             className={cellStyles.image}
-                            variants={HiddenEyeMotion.variants}
-                            transition={transition}
-                            animate={state ? "expanded" : "collapsed"}
                             style={{
-                                backgroundImage: `url(${HiddenEye})`,
                                 position: "absolute",
                                 zIndex: 3,
+                                width: iconSize,
+                                height: iconSize,
+                                top: state ? 0 : "-6px",
+                                left: useApple
+                                    ? state
+                                        ? 0
+                                        : "-6px"
+                                    : state
+                                      ? "6px"
+                                      : 0,
+                                opacity: state ? 1 : 0,
+                                transform: `scale(${state ? 1 : 0.6})`,
+                                transition: "all 0.3s ease",
                             }}
-                            key={`stack-asset-3`}
-                            initial={false}
-                        ></m.div>
-                        {jettonsMotion.map((jetton, index) => (
-                            <m.div
-                                className={cellStyles.image}
-                                variants={jetton.variants}
-                                transition={transition}
-                                animate={state ? "expanded" : "collapsed"}
-                                style={{
-                                    backgroundImage: `url(${jetton.src})`,
-                                    position: "absolute",
-                                    zIndex: 2 - index,
-                                }}
-                                key={`stack-asset-${index}`}
-                                initial={false}
-                            ></m.div>
-                        ))}
+                        />
+                        {jettons.map((jetton, index) => {
+                            const s = state
+                                ? jetton.styles.expanded
+                                : jetton.styles.collapsed
+                            return (
+                                <img
+                                    src={jetton.src}
+                                    alt=""
+                                    className={cellStyles.image}
+                                    style={{
+                                        position: "absolute",
+                                        zIndex: jetton.zIndex,
+                                        width: iconSize,
+                                        height: iconSize,
+                                        top: s.top,
+                                        left: s.left,
+                                        opacity: s.opacity,
+                                        transform: `scale(${s.scale})`,
+                                        transition: "all 0.3s ease",
+                                    }}
+                                    key={`stack-asset-${index}`}
+                                />
+                            )
+                        })}
                     </div>
                 </div>
                 <div
