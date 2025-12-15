@@ -1,0 +1,138 @@
+:root {
+    --number-flow-mask-height: 0.05em;
+}
+
+// Базовые стили карточки
+.card {
+    z-index: 1;
+}
+
+.data {
+    position: relative;
+    display: flex;
+    padding: 72px 0 48px;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    align-self: stretch;
+    text-align: center;
+    z-index: 1;
+}
+
+.amount span {
+    font-family: ui-rounded, -apple-system, system-ui, sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    font-variant-numeric: lining-nums tabular-nums;
+
+    number-flow-react::part(prefix) {
+        color: var(--tg-theme-subtitle-text-color);
+    }
+}
+
+.actions {
+    position: relative;
+    background-color: transparent !important;
+    display: flex;
+    padding: 0 16px 16px;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+    z-index: 1;
+}
+
+// ============================================
+// Variant: default (светлый фон, theme colors)
+// ============================================
+.cardDefault {
+    color: var(--tg-theme-text-color);
+    background: var(--tg-theme-section-bg-color);
+
+    .label {
+        :global(body.apple) & {
+            color: var(--tg-theme-text-color);
+        }
+
+        :global(body.material) & {
+            color: var(--tg-theme-subtitle-text-color);
+        }
+    }
+
+    .amount span {
+        color: var(--tg-theme-text-color);
+    }
+
+    :global(body.material) & {
+        background-color: var(--tg-theme-section-bg-color);
+
+        .data {
+            padding: 92px 0 31px;
+        }
+
+        .amount {
+            font-family: Roboto, system-ui, sans-serif;
+            font-size: 44px;
+            font-weight: 500;
+        }
+    }
+}
+
+// ============================================
+// Variant: overlay (прозрачный фон, белый текст)
+// Force dark mode — переопределяем переменные для вложенных компонентов
+// ============================================
+.cardOverlay {
+    // Force dark context — все CSS переменные для вложенных компонентов
+    --tg-theme-text-color: #fff;
+    --tg-theme-subtitle-text-color: rgba(255, 255, 255, 0.55);
+    --tg-theme-accent-text-color: #fff;
+    --tg-theme-section-bg-color: transparent;
+    --text-confirm-color: #30D158;
+
+    color: white;
+
+    .label {
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+    .amount span {
+        color: #FFF;
+    }
+
+    // NumberFlow использует Shadow DOM, нужен ::part для стилизации
+    .amount :global(number-flow-react)::part(integer),
+    .amount :global(number-flow-react)::part(fraction),
+    .amount :global(number-flow-react)::part(suffix) {
+        color: #FFF;
+    }
+
+    // Prefix ($) — приглушённый цвет, как subtitle
+    .amount :global(number-flow-react)::part(prefix) {
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+    :global(body.material) & {
+        .data {
+            padding: 92px 0 31px;
+        }
+
+        .amount {
+            font-family: Roboto, system-ui, sans-serif;
+            font-size: 44px;
+            font-weight: 500;
+        }
+    }
+}
+
+// Стиль для кнопок в overlay варианте (экспортируется отдельно для использования в actions)
+.overlayButton {
+    background: 
+      linear-gradient(rgb(255 255 255 / 7%), rgb(255 255 255 / 7%)),
+      rgb(255 255 255 / 3%) !important;
+    background-blend-mode: plus-lighter, normal;
+    color: white !important;
+
+    svg, path {
+        fill: white !important;
+    }
+}
