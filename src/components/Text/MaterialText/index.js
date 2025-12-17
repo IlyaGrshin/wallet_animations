@@ -10,8 +10,8 @@ const MaterialText = ({
     const dynamicProps = {
         ...(textProps?.variant && { variant: textProps.variant }),
         ...(textProps?.weight && { weight: textProps.weight }),
-        ...(textProps.rounded && { "data-rounded": true }),
-        ...(textProps.caps && { "data-caps": true }),
+        ...(textProps?.rounded && { "data-rounded": true }),
+        ...(textProps?.caps && { "data-caps": true }),
     }
 
     return (

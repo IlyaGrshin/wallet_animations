@@ -13,20 +13,20 @@ const AppleText = ({
     const dynamicProps = {
         ...(textProps?.variant && { variant: textProps.variant }),
         ...(textProps?.weight && { weight: textProps.weight }),
-        ...(textProps.rounded && { "data-rounded": true }),
-        ...(textProps.caps && { "data-caps": true }),
+        ...(textProps?.rounded && { "data-rounded": true }),
+        ...(textProps?.caps && { "data-caps": true }),
     }
 
     const ChevronIconComponent =
         textProps && "chevron" in textProps
-            ? getChevronRight(textProps.variant, textProps.weight)
+            ? getChevronRight(textProps?.variant, textProps?.weight)
             : null
 
     const ArrowIconComponent = textProps?.arrow?.direction
         ? getArrow(
-              textProps.arrow.direction,
-              textProps.variant,
-              textProps.weight
+              textProps?.arrow?.direction,
+              textProps?.variant,
+              textProps?.weight
           )
         : null
 
