@@ -1,6 +1,8 @@
 import { use, Suspense } from "react"
 import { formatPercentage } from "../../../utils/number"
+import { ErrorBoundary } from "react-error-boundary"
 
+import Text from "../../../components/Text"
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
@@ -16,7 +18,6 @@ const assetsResource = fetchAssets()
 
 const AssetsList = () => {
     const assets = use(assetsResource)
-
     return (
         <SectionList>
             <SectionList.Item header="Today's lists">
@@ -45,11 +46,10 @@ const AssetsList = () => {
     )
 }
 
-// No need for memo with React 19's automatic memoization
 function Trading() {
     return (
         <Page>
-            <Suspense
+            <ErrorBoundary
                 fallback={
                     <div
                         style={{
@@ -59,12 +59,35 @@ function Trading() {
                             height: "100vh",
                         }}
                     >
-                        <Spinner />
+                        <Text
+                            apple={{ variant: "body" }}
+                            material={{ variant: "body1" }}
+                            style={{
+                                color: "var(--tg-theme-subtitle-text-color)",
+                            }}
+                        >
+                            Error loading assets
+                        </Text>
                     </div>
                 }
             >
-                <AssetsList />
-            </Suspense>
+                <Suspense
+                    fallback={
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                height: "100vh",
+                            }}
+                        >
+                            <Spinner />
+                        </div>
+                    }
+                >
+                    <AssetsList />
+                </Suspense>
+            </ErrorBoundary>
         </Page>
     )
 }
