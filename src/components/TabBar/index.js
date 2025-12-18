@@ -15,16 +15,13 @@ const TabBarOverlay = ({
     onSnapToSame,
     playKey,
 }) => {
-    const spring = { type: "spring", stiffness: 800, damping: 50 }
     const { overlayRef, animate, transition, handlers } = useIndicatorDrag({
         tabsLength: tabs.length,
         activeIndex,
-        spring,
+        spring: { type: "spring", stiffness: 800, damping: 50 },
         onSnapToSame,
         onSnapToNew: onChange,
     })
-
-    const animateProps = { opacity: 1, ...animate }
 
     return (
         <motion.div
@@ -32,7 +29,7 @@ const TabBarOverlay = ({
             ref={overlayRef}
             {...handlers}
             initial={{ opacity: 0 }}
-            animate={animateProps}
+            animate={{ opacity: 1, ...animate }}
             exit={{ opacity: 0 }}
             transition={{
                 default: { duration: 0.2 },
@@ -44,11 +41,9 @@ const TabBarOverlay = ({
                     key={index}
                     isActive={index === activeIndex}
                     onClick={() => onChange(index)}
-                    label={tab.label}
-                    icon={tab.icon}
-                    lottieIcon={tab.lottieIcon}
                     playKey={playKey}
                     data-overlay
+                    {...tab}
                 />
             ))}
         </motion.div>
@@ -140,27 +135,24 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                             key={index}
                             isActive={index === activeIndex}
                             onClick={() => handleSegmentClick(index)}
-                            label={tab.label}
-                            icon={tab.icon}
-                            lottieIcon={tab.lottieIcon}
                             playKey={playKey}
+                            {...tab}
                         />
                     ))}
                 </motion.div>
             </AnimatePresence>
+            <AnimatePresence mode="wait" initial={false}>
+                <TabBarOverlay
+                    key={tabsKey}
+                    tabs={tabs}
+                    activeIndex={activeIndex}
+                    onChange={onChange}
+                    onSnapToSame={() => setReplayNonce((n) => n + 1)}
+                    playKey={playKey}
+                />
+            </AnimatePresence>
 
             <Activity mode={useApple ? "visible" : "hidden"}>
-                <AnimatePresence mode="wait" initial={false}>
-                    <TabBarOverlay
-                        key={tabsKey}
-                        tabs={tabs}
-                        activeIndex={activeIndex}
-                        onChange={onChange}
-                        onSnapToSame={() => setReplayNonce((n) => n + 1)}
-                        playKey={playKey}
-                    />
-                </AnimatePresence>
-
                 <GlassContainer />
                 <GradientMask
                     width={windowWidth - (maskInsets.left + maskInsets.right)}
