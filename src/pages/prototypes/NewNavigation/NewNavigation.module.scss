@@ -10,14 +10,15 @@
         :global(body.apple) & {
             padding-bottom: 80px;
         }
+
+        :global(body.material) & {
+            padding-bottom: 88px;
+        }
     }
 
-    :global(body.apple) & {
-        height: 100vh !important;
-    }
-
+    :global(body.apple) &,
     :global(body.material) & {
-        height: calc(-56px - env(safe-area-inset-bottom) + 100vh);
+        height: 100vh;
     }
 }
 
