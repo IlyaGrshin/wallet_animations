@@ -46,45 +46,30 @@ const AssetsList = () => {
     )
 }
 
+const centerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100vh",
+}
+
 function Trading() {
     return (
         <Page>
             <ErrorBoundary
                 fallback={
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: "100vh",
-                        }}
-                    >
+                    <div style={centerStyle}>
                         <Text
                             apple={{ variant: "body" }}
                             material={{ variant: "body1" }}
-                            style={{
-                                color: "var(--tg-theme-subtitle-text-color)",
-                            }}
+                            style={{ color: "var(--tg-theme-subtitle-text-color)" }}
                         >
                             Error loading assets
                         </Text>
                     </div>
                 }
             >
-                <Suspense
-                    fallback={
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                height: "100vh",
-                            }}
-                        >
-                            <Spinner />
-                        </div>
-                    }
-                >
+                <Suspense fallback={<div style={centerStyle}><Spinner /></div>}>
                     <AssetsList />
                 </Suspense>
             </ErrorBoundary>
