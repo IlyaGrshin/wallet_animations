@@ -8,26 +8,17 @@
     text-decoration: none;
     font-weight: 500;
 
+    color: var(--tg-theme-text-color);
+
     :global(body.apple) & {
         padding: 4px 0 6px;
-        color: var(--tg-theme-text-color);
         font-size: 10px;
         line-height: 12px;
-        opacity: 0.85 !important;
+        opacity: 0.85;
         position: relative;
         z-index: 2;
-        gap: 2px;
-
-        :global(.wallet-lottie_fill-color) path {
-            fill: var(--tg-theme-text-color);
-        }
-
-        :global(.wallet-lottie_stroke-color) path {
-            stroke: var(--tg-theme-text-color);
-        }
 
         svg, path {
-            fill: var(--tg-theme-text-color);
             height: 32px;
         }
 
@@ -37,20 +28,28 @@
     }
 
     :global(body.material) & {
-        padding: 6px 0 3px;
-        color: var(--tg-theme-subtitle-text-color);
-        font-size: 13px;
-        line-height: 16px;
-        gap: 3px;
+        padding: 4px 0;
+        font-size: 11px;
+        line-height: 12px;
+        gap: 0;
+        opacity: 0.44;
 
         svg, path {
-            fill: var(--tg-theme-subtitle-text-color);
             height: 28px;
         }
 
         .icon {
             height: 28px;
         }
+    }
+
+    svg, path,
+    :global(.wallet-lottie_fill-color) path {
+        fill: var(--tg-theme-text-color);
+    }
+
+    :global(.wallet-lottie_stroke-color) path {
+        stroke: var(--tg-theme-text-color);
     }
 
     :global(body.apple) &:not(:first-child) {
@@ -61,19 +60,10 @@
 .active {
     :global(body.apple) & {
         opacity: 1;
-        font-weight: 500;
         border-radius: 100px;
 
         svg, path {
             fill: var(--tg-theme-accent-text-color);
-        }
-    }
-
-    :global(body.material) & {
-        color: var(--tg-theme-text-color);
-
-        svg, path {
-            fill: var(--tg-theme-text-color);
         }
     }
 }
