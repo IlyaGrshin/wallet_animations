@@ -21,10 +21,10 @@ import WalletIcon from "../../../icons/tabbar/Wallet.svg?react"
 import TradeIcon from "../../../icons/tabbar/Chartline.svg?react"
 import HistoryIcon from "../../../icons/tabbar/Clock.svg?react"
 
-import lottieIconWallet from ".././../../icons/lottie/wallet.json"
-import lottieIconTrade from ".././../../icons/lottie/trade.json"
-import lottieIconEarn from ".././../../icons/lottie/earn.json"
-import lottieIconHistory from ".././../../icons/lottie/history.json"
+import lottieIconWallet from "../../../icons/lottie/wallet"
+import lottieIconChartline from "../../../icons/lottie/chartline"
+import lottieIconBag from "../../../icons/lottie/bag"
+import lottieIconClock from "../../../icons/lottie/clock"
 
 import * as styles from "./NewNavigation.module.scss"
 
@@ -36,23 +36,27 @@ const TABS_CONFIG = {
             icon: <WalletIcon />,
             view: <Wallet />,
             lottieIcon: lottieIconWallet,
+            activeSegment: [0, 50],
         },
         {
             label: "Trade",
             icon: <TradeIcon />,
             view: <Trading />,
-            lottieIcon: lottieIconTrade,
+            lottieIcon: lottieIconChartline,
+            activeSegment: [0, 50],
         },
         {
             label: "Earn",
             view: <Trading />,
-            lottieIcon: lottieIconEarn,
+            lottieIcon: lottieIconBag,
+            activeSegment: [0, 45],
         },
         {
             label: "History",
             icon: <HistoryIcon />,
             view: <History />,
-            lottieIcon: lottieIconHistory,
+            lottieIcon: lottieIconClock,
+            activeSegment: [0, 80],
         },
     ],
     ton: [
@@ -66,13 +70,13 @@ const TABS_CONFIG = {
             label: "Activity",
             icon: <HistoryIcon />,
             view: <History />,
-            lottieIcon: lottieIconHistory,
+            lottieIcon: lottieIconClock,
         },
         {
             label: "Browser",
             icon: <TradeIcon />,
             view: <Trading />,
-            lottieIcon: lottieIconTrade,
+            lottieIcon: lottieIconChartline,
         },
     ],
 }
