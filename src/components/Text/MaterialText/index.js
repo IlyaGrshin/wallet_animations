@@ -7,11 +7,13 @@ const MaterialText = ({
     children,
     ...props
 }) => {
+    if (!textProps) return <Component {...props}>{children}</Component>
+    
     const dynamicProps = {
-        ...(textProps?.variant && { variant: textProps.variant }),
-        ...(textProps?.weight && { weight: textProps.weight }),
-        ...(textProps?.rounded && { "data-rounded": true }),
-        ...(textProps?.caps && { "data-caps": true }),
+        ...(textProps.variant && { variant: textProps.variant }),
+        ...(textProps.weight && { weight: textProps.weight }),
+        ...(textProps.rounded && { "data-rounded": true }),
+        ...(textProps.caps && { "data-caps": true }),
     }
 
     return (

@@ -19,14 +19,14 @@ const AppleText = ({
 
     const ChevronIconComponent =
         textProps && "chevron" in textProps
-            ? getChevronRight(textProps?.variant, textProps?.weight)
+            ? getChevronRight(textProps.variant, textProps.weight)
             : null
 
     const ArrowIconComponent = textProps?.arrow?.direction
         ? getArrow(
-              textProps?.arrow?.direction,
-              textProps?.variant,
-              textProps?.weight
+              textProps.arrow.direction,
+              textProps.variant,
+              textProps.weight
           )
         : null
 
