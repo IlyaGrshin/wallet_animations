@@ -4,24 +4,61 @@
     align-items: flex-start;
     align-self: stretch;
     box-shadow: 0 -0.33px 0 0 var(--separator-non-opaque);
-    background: var(--tg-theme-bottom-bar-bg-color);
     padding-bottom: env(safe-area-inset-bottom);
 
     :global(body.apple) & {
         position: absolute;
         left: 21px;
         right: 21px;
-        margin: 0;
         bottom: 21px;
         border-radius: 100px;
         padding: 4px;
+        margin: 0;
         background: rgba(from var(--tg-theme-section-bg-color) r g b / 0.7);
-        box-shadow: none !important;
+        box-shadow: none;
     }
 
     :global(body.material) & {
-        box-shadow: 0 -0.5px 0 0 var(--tg-theme-section-separator-color), 
-            0 1px 3px 0 rgb(0 0 0 / 6%);
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        border-radius: 100px;
+        padding: 4px;
+        width: calc(100% - 32px);
+        background: rgba(from var(--tg-theme-section-bg-color) r g b / 0.84);
+        backdrop-filter: blur(30px) saturate(10);
+        box-shadow: 
+            0 1px 2px 0 rgba(0, 0, 0, 0.08), 
+            0 2px 16px 1px rgba(0, 0, 0, 0.10);
+    }
+
+    &:before,
+    &:after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+    }
+
+    &:before {
+        background: rgba(from var(--quaternary-fill-background) r g b / 0.04);
+        z-index: 0;
+    }
+
+    &:after {
+        border-top: 1px solid #FFF;
+        border-bottom: 0.5px solid #FFF;
+        mix-blend-mode: saturation;
+        z-index: 2;
+    }
+
+    .content {
+        display: flex;
+        position: relative;
+        width: 100%;
+        z-index: 1;
     }
 
     .gradient {
@@ -44,7 +81,6 @@
         left: 0;
         width: 50%;
         height: 100%;
-        background-color: var(--tg-theme-accent-text-color);
         border-radius: 2px 2px 0 0;
         z-index: 2;
         will-change: left;
@@ -58,6 +94,10 @@
             margin-left: 4px;
             margin-right: 4px;
         }
+
+        :global(body.material) & {
+            background-color: var(--tg-theme-text-color);
+        }
     }
 
     .clipPathContainer {
@@ -69,25 +109,32 @@
         will-change: clip-path;
         z-index: 10;
         overflow: hidden;
-        // Создаём отдельный слой композиции для правильного ретина-сглаживания
         transform: translateZ(0);
         isolation: isolate;
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
 
+        :global(body.apple) & {
+            --active-color: var(--tg-theme-accent-text-color);
+        }
+
+        :global(body.material) & {
+            --active-color: var(--tg-theme-text-color);
+        }
+
         span {
-            color: var(--tg-theme-accent-text-color) !important;
+            color: var(--active-color) !important;
         }
 
         :global(.wallet-lottie_fill-color) path {
-            fill: var(--tg-theme-accent-text-color) !important;
+            fill: var(--active-color) !important;
         }
 
         :global(.wallet-lottie_stroke-color) path {
-            stroke: var(--tg-theme-accent-text-color) !important;
+            stroke: var(--active-color) !important;
         }
 
-        // Target Tab components rendered inside overlay (attribute comes from TabBar)
+
         [data-overlay] {
             opacity: 1 !important;
         }
