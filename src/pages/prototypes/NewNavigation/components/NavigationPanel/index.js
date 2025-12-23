@@ -15,7 +15,7 @@ export default function NavigationPanel({
     onSegmentChange,
 }) {
     const [view, setView] = useState("collapsed")
-    const colorScheme = useColorScheme(activeSegment === 1 ? "dark" : "light")
+    const colorScheme = useColorScheme(activeSegment === 1 ? "dark" : null)
 
     const handleToggle = () => {
         const newView = view === "collapsed" ? "expanded" : "collapsed"
@@ -23,7 +23,7 @@ export default function NavigationPanel({
     }
 
     useEffect(() => {
-        const cw_color = WebApp.themeParams.secondary_bg_color || "#EFEFF4"
+        const cw_color = WebApp.themeParams.section_bg_color || "#FFFFFF"
         const tw_color = "#131314"
 
         const headerColor = activeSegment === 1 ? tw_color : cw_color
@@ -41,7 +41,16 @@ export default function NavigationPanel({
     }, [view, activeSegment])
 
     return (
-        <div className={styles.navPanel} data-color-scheme={colorScheme}>
+        <div
+            className={styles.navPanel}
+            data-color-scheme={colorScheme}
+            style={{
+                backgroundColor:
+                    activeSegment === 1
+                        ? "#131314"
+                        : "var(--tg-theme-section-bg-color)",
+            }}
+        >
             <motion.div
                 className={styles.overlay}
                 initial={false}
