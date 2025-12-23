@@ -3,6 +3,7 @@ import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
+import Page from "../../../components/Page"
 
 import NavigationPanel from "./components/NavigationPanel"
 import { useAvatarUrl } from "./hooks/useAvatarUrl"
@@ -218,7 +219,7 @@ function NewNavigation() {
     )
 
     return (
-        <>
+        <Page headerColor={WebApp.themeParams.section_bg_color.slice(1)}>
             <BackButton />
 
             <div className={styles.container}>
@@ -264,7 +265,7 @@ function NewNavigation() {
                     />
                 </div>
             </div>
-        </>
+        </Page>
     )
 }
 
