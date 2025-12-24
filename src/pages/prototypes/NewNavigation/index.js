@@ -219,7 +219,7 @@ function NewNavigation() {
     )
 
     return (
-        <Page headerColor={WebApp.themeParams.section_bg_color.slice(1)}>
+        <Page headerColor={WebApp.themeParams.section_bg_color?.slice(1)}>
             <BackButton />
 
             <div className={styles.container}>

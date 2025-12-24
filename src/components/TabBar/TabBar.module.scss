@@ -48,9 +48,9 @@
     }
 
     &:after {
-        border-top: 1px solid #FFF;
-        border-bottom: 0.5px solid #FFF;
-        mix-blend-mode: saturation;
+        box-shadow: inset 0 1px 0 0 #FFF, 
+            inset 0 -0.5px 0 0 #FFF;
+        mix-blend-mode: soft-light;
         z-index: 2;
     }
 
