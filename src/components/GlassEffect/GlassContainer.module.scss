@@ -11,7 +11,6 @@
     z-index: 0;
     will-change: transform;
     transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 
     @supports (-apple-visual-effect: -apple-system-glass-material) {
@@ -26,7 +25,7 @@
     border-radius: inherit;
     pointer-events: none;
     z-index: 1;
-    box-shadow: 0 0 10px 0 rgba(0 0 0 / 0.1);
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
     will-change: transform;
     transform: translateZ(0);
 }

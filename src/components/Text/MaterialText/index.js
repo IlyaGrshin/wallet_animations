@@ -8,7 +8,7 @@ const MaterialText = ({
     ...props
 }) => {
     if (!textProps) return <Component {...props}>{children}</Component>
-    
+
     const dynamicProps = {
         ...(textProps.variant && { variant: textProps.variant }),
         ...(textProps.weight && { weight: textProps.weight }),

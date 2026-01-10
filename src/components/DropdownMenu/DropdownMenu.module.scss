@@ -29,19 +29,6 @@
         } */
     }
 
-    :global(body.apple) & {
-        border-radius: 36px;
-        padding: 16px;
-        
-        .item { 
-            padding: 9px 8px;
-
-            &:last-child {
-                border-bottom: 0;
-            }
-        }
-    }
-
     :global(body.material) & {
         background-color: var(--tg-theme-section-bg-color);
         box-shadow: 0 0.33px 1px 0.5px rgb(0 0 0 / 12%);
@@ -50,6 +37,19 @@
         .item {
             border-bottom: 0;
             padding: 10px 16px;
+        }
+    }
+
+    :global(body.apple) & {
+        border-radius: 36px;
+        padding: 16px;
+
+        .item {
+            padding: 9px 8px;
+
+            &:last-child {
+                border-bottom: 0;
+            }
         }
     }
 }

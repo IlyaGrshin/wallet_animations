@@ -62,14 +62,22 @@ function Trading() {
                         <Text
                             apple={{ variant: "body" }}
                             material={{ variant: "body1" }}
-                            style={{ color: "var(--tg-theme-subtitle-text-color)" }}
+                            style={{
+                                color: "var(--tg-theme-subtitle-text-color)",
+                            }}
                         >
                             Error loading assets
                         </Text>
                     </div>
                 }
             >
-                <Suspense fallback={<div style={centerStyle}><Spinner /></div>}>
+                <Suspense
+                    fallback={
+                        <div style={centerStyle}>
+                            <Spinner />
+                        </div>
+                    }
+                >
                     <AssetsList />
                 </Suspense>
             </ErrorBoundary>

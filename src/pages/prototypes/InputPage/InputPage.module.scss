@@ -41,7 +41,7 @@
     
     & input {
         border-radius: 36px;
-        background: rgba(from var(--tg-theme-section-bg-color) r g b / 0.7);
+        background: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
 
         &::placeholder {
             color: var(--tg-theme-subtitle-text-color);

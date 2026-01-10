@@ -30,13 +30,7 @@ const CellStart = ({ type, src = null, iconType = null }) => {
 
     switch (type) {
         case "Image":
-            content = (
-                <img
-                    src={src}
-                    alt=""
-                    className={styles.image}
-                />
-            )
+            content = <img src={src} alt="" className={styles.image} />
             break
         case "Icon":
             content = <div className={styles.icon}>{iconType}</div>

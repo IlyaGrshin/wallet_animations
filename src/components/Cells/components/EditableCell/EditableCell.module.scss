@@ -18,6 +18,17 @@
     }
 }
 
+.clearButtonIcon {
+    opacity: 1;
+    inset-inline-end: 0;
+    margin-top: -12px;
+    height: 22px;
+    transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+}
+
 .empty .clearButtonIcon {
     opacity: 0;
     height: 0;
@@ -27,24 +38,16 @@
         opacity 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 }
 
+/* stylelint-disable-next-line no-duplicate-selectors */
+.clearButtonIcon {
+    :global(body.apple) & {
+        inset-inline-end: -4px;
+    }
+}
+
 .icon {
     position: absolute;
     z-index: 1;
     color: var(--tg-theme-subtitle-text-color);
     top: 12px;
-}
-
-.clearButtonIcon {
-    opacity: 1;
-    inset-inline-end: 0px;
-    margin-top: -12px;
-    height: 22px;
-    transition: opacity 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-    background-color: transparent;
-    border: 0;
-    padding: 0;
-
-    :global(body.apple) & {
-        inset-inline-end: -4px;
-    }
 }

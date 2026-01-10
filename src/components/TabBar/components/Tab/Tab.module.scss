@@ -7,8 +7,17 @@
     flex: 1 0 0;
     text-decoration: none;
     font-weight: 500;
-
     color: var(--tg-theme-text-color);
+
+    svg,
+    path,
+    :global(.wallet-lottie_fill-color) path {
+        fill: var(--tg-theme-text-color);
+    }
+
+    :global(.wallet-lottie_stroke-color) path {
+        stroke: var(--tg-theme-text-color);
+    }
 
     :global(body.apple) & {
         padding: 4px 0 6px;
@@ -18,7 +27,8 @@
         position: relative;
         z-index: 2;
 
-        svg, path {
+        svg,
+        path {
             height: 32px;
         }
 
@@ -34,22 +44,14 @@
         gap: 0;
         opacity: 0.44;
 
-        svg, path {
+        svg,
+        path {
             height: 28px;
         }
 
         .icon {
             height: 28px;
         }
-    }
-
-    svg, path,
-    :global(.wallet-lottie_fill-color) path {
-        fill: var(--tg-theme-text-color);
-    }
-
-    :global(.wallet-lottie_stroke-color) path {
-        stroke: var(--tg-theme-text-color);
     }
 
     :global(body.apple) &:not(:first-child) {
@@ -62,7 +64,8 @@
         opacity: 1;
         border-radius: 100px;
 
-        svg, path {
+        svg,
+        path {
             fill: var(--tg-theme-accent-text-color);
         }
     }

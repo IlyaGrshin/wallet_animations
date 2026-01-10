@@ -39,7 +39,7 @@
     }
 
     &.tinted {
-        background-color: rgb(from var(--badge-background) r g b / 0.1);
+        background-color: rgb(from var(--badge-background) r g b / 10%);
         color: var(--badge-text-color, var(--tg-theme-accent-text-color));
     }
 
@@ -62,7 +62,7 @@
     // Circled — переопределяет padding и border-radius
     &[data-circled="true"] {
         :global(body.apple) & {
-            padding: 4px 4px;
+            padding: 4px;
             border-radius: 8px;
 
             &[variant="footnote"] {
@@ -86,7 +86,7 @@
         }
 
         :global(body.material) & {
-            padding: 4px 4px;
+            padding: 4px;
             border-radius: 8px;
 
             &[variant="subtitle2"],
@@ -108,7 +108,7 @@
     // Squared — переопределяет padding и border-radius
     &[data-squared="true"] {
         :global(body.apple) & {
-            padding: 4px 4px;
+            padding: 4px;
             border-radius: 6px;
 
             &[variant="footnote"] {
@@ -123,7 +123,7 @@
         }
 
         :global(body.material) & {
-            padding: 4px 4px;
+            padding: 4px;
             border-radius: 6px;
 
             &[variant="headline5"],
