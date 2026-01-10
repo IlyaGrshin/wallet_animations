@@ -1,6 +1,6 @@
 import { use, Suspense } from "react"
 import { formatPercentage } from "../../../utils/number"
-import { ErrorBoundary } from "react-error-boundary"
+import ErrorBoundary from "../../../components/ErrorBoundary"
 
 import Text from "../../../components/Text"
 import Page from "../../../components/Page"
