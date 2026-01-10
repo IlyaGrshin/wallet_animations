@@ -22,7 +22,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "./deploy.sh",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'"
+    "lint": "npm run lint:js && npm run lint:scss",
+    "lint:js": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint:scss": "stylelint 'src/**/*.scss'"
   },
   "eslintConfig": {
     "extends": [
