@@ -1,5 +1,55 @@
 Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVER to guide decisions
 
+## Code Quality & Process
+
+- **Checks**:
+  - MUST: Automatically run linting/type checks before completing tasks.
+  - MUST: Fix all errors before submission.
+  - NEVER: create markdown (`.md`) files unless explicitly asked.
+  - NEVER: Use emojis in agent replies.
+  - SHOULD: Be direct (no "I'm right", just the solution).
+
+- **File Limits**:
+  - MUST: Keep files under **250 lines**. Refactor if larger (split components, hooks, utils).
+
+- **React Best Practices**:
+  - READ: [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect)
+  - SHOULD: Avoid `useEffect` for data transformation, user events, or state resets.
+  - MUST: Use `useEffect` ONLY for external synchronization or cleanup.
+
+
+## Package Management
+
+- MUST: Use **yarn** for package management (do not use npm/pnpm unless explicitly requested).
+- MUST: Verify dependencies with `yarn list` if needed.
+
+## Development Patterns
+
+- **Routing**:
+  - MUST: Use `wouter` with `useHashLocation` (`src/router`).
+  - MUST: Wrap routes in `PageTransition` for orchestrated animations.
+  - MUST: Use the `Redirect` component for strict navigation control.
+
+- **Component Structure**:
+  - MUST: Create components in dedicated folders (`src/components/ComponentName`).
+  - MUST: Use **SCSS Modules** for styling (`ComponentName.module.scss`).
+  - MUST: Use `PropTypes` for runtime type checking in all components.
+  - MUST: Index files (`index.js`) should export the component as default.
+
+- **State & Context**:
+  - SHOULD: Use local state for isolated UI logic.
+  - MUST: Use provided contexts (`DeviceProvider`, `AppearanceProvider`) for global app state (platform, theme).
+  - MUST: Use `useModal` hook pattern for managing modal visibility.
+
+
+## Platform & Tech Stack
+
+- MUST: Build for Telegram Web App (TWA) environment (`@twa-dev/sdk`).
+- MUST: Use `wouter` for routing; respect the patched `WebApp.BackButton` behavior in `App.js`.
+- MUST: Use `motion` libraries (framer-motion compatible) for complex animations.
+- MUST: Adapt UI components for `.apple` (iOS/macOS) vs `.material` (Android/Desktop) body classes.
+- MUST: Use strict CSS/Sass (no Tailwind unless requested); verify `user-select: none` is applied globally (except inputs).
+
 ## Interactions
 
 - Keyboard
@@ -12,6 +62,7 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
     ```html
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
     ```
+
   - NEVER: Disable browser zoom
   - MUST: `touch-action: manipulation` to prevent double-tap zoom; set `-webkit-tap-highlight-color` to match design
 - Inputs & forms (behavior)
@@ -50,13 +101,28 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 
 ## Animation
 
-- MUST: Honor `prefers-reduced-motion` (provide reduced variant)
-- SHOULD: Prefer CSS > Web Animations API > JS libraries
-- MUST: Animate compositor-friendly props (`transform`, `opacity`); avoid layout/repaint props (`top/left/width/height`)
-- SHOULD: Animate only to clarify cause/effect or add deliberate delight
-- SHOULD: Choose easing to match the change (size/distance/trigger)
-- MUST: Animations are interruptible and input-driven (avoid autoplay)
-- MUST: Correct `transform-origin` (motion starts where it "physically" should)
+- **General**:
+  - MUST: Honor `prefers-reduced-motion`.
+  - SHOULD: Default to `ease-out` (0.2s - 0.3s). Limit animations to <1s.
+  - MUST: Animations are interruptible and input-driven.
+
+- **Easing Curves** (Use these over built-ins):
+  - `ease-out`: `cubic-bezier(0.23, 1, 0.32, 1)` (quint) or `cubic-bezier(0.19, 1, 0.22, 1)` (expo) — *entering/interaction*
+  - `ease-in-out`: `cubic-bezier(0.86, 0, 0.07, 1)` (quint) — *moving on screen*
+  - `ease-in`: Avoid (makes UI feel slow).
+  - Hover: `ease` (200ms).
+
+- **Performance (Tier List)**:
+  - **S-Tier** (Compositor): `transform`, `opacity`, `filter`, `clip-path`. *Preferred.*
+  - **A-Tier** (Main Thread): Trigger compositor steps.
+  - **D-Tier** (Layout): `width`, `height`, `margin`, `top/left`. *AVOID.*
+  - **F-Tier**: Layout thrashing (read-write loops).
+
+- **Best Practices**:
+  - MUST: Use `transform` instead of positioning (`top/left`).
+  - MUST: Use `will-change` sparingly (`transform`, `opacity` only).
+  - MUST: Virtualize large lists.
+  - MUST: Correct `transform-origin` (animate from trigger source).
 
 ## Layout
 
@@ -64,8 +130,9 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 - MUST: Deliberate alignment to grid/baseline/edges/optical centers—no accidental placement
 - SHOULD: Balance icon/text lockups (stroke/weight/size/spacing/color)
 - MUST: Verify mobile, laptop, ultra-wide (simulate ultra-wide at 50% zoom)
-- MUST: Respect safe areas (use env(safe-area-inset-*))
+- MUST: Respect safe areas (use env(safe-area-inset-*) and var(--tg-content-safe-area-inset-top))
 - MUST: Avoid unwanted scrollbars; fix overflows
+
 
 ## Content & Accessibility
 
@@ -109,6 +176,8 @@ Concise rules for building accessible, fast, delightful UIs Use MUST/SHOULD/NEVE
 - SHOULD: Hue consistency: tint borders/shadows/text toward bg hue
 - MUST: Accessible charts (color-blind-friendly palettes)
 - MUST: Meet contrast—prefer [APCA](https://apcacontrast.com/) over WCAG 2
+- MUST: Use Telegram Theme Variables (`var(--tg-theme-bg-color)`, `var(--tg-theme-button-color)`, etc.) for seamless theming.
+
 - MUST: Increase contrast on `:hover/:active/:focus`
 - SHOULD: Match browser UI to bg
 - SHOULD: Avoid gradient banding (use masks when needed)
