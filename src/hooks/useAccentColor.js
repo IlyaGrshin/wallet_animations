@@ -107,7 +107,8 @@ export function useAccentColorLazy(src, quality = 10, options = {}) {
     const { rootMargin = "50px", threshold = 0.01 } = options
 
     useEffect(() => {
-        if (!src || !elementRef.current) return
+        const node = elementRef.current
+        if (!src || !node) return
 
         const observer = new IntersectionObserver(
             (entries) => {
@@ -124,19 +125,19 @@ export function useAccentColorLazy(src, quality = 10, options = {}) {
             }
         )
 
-        observer.observe(elementRef.current)
+        observer.observe(node)
 
         return () => {
-            if (elementRef.current) {
-                observer.unobserve(elementRef.current)
+            if (node) {
+                observer.unobserve(node)
             }
         }
     }, [src, rootMargin, threshold])
 
     useEffect(() => {
         if (!src || !isVisible) {
-            setHex(null)
-            return
+            const timer = setTimeout(() => setHex(null), 0)
+            return () => clearTimeout(timer)
         }
 
         let canceled = false

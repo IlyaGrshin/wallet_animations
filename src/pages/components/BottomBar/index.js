@@ -45,7 +45,7 @@ const BottomBar = () => {
     const position = ["Left", "Top", "Right", "Bottom"]
 
     const handlePickerIndex = (page) => {
-        SecondaryButton.position = position[page].toLowerCase()
+        SecondaryButton.setParams({ position: position[page].toLowerCase() })
         setPickerValue(page)
     }
 
