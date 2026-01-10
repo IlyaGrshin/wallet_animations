@@ -2,6 +2,10 @@
   "name": "wallet_animations",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "resolutions": {
+    "baseline-browser-mapping": "^2.9.14"
+  },
   "homepage": ".",
   "dependencies": {
     "@babel/runtime": "^7.28.4",
@@ -55,6 +59,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "babel-plugin-react-compiler": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "baseline-browser-mapping": "^2.9.14",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
