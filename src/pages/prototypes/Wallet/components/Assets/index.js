@@ -26,15 +26,17 @@ export default function Assets() {
     const largeAssets = [
         ...priorityAssets,
         ...otherAssets
+            .values()
             .filter((asset) => asset.rate * asset.value >= 1)
+            .toArray()
             .sort((a, b) => b.rate * b.value - a.rate * a.value),
     ]
 
-    const smallAssets = [
-        ...otherAssets
-            .filter((asset) => asset.rate * asset.value < 1)
-            .sort((a, b) => b.rate * b.value - a.rate * a.value),
-    ]
+    const smallAssets = otherAssets
+        .values()
+        .filter((asset) => asset.rate * asset.value < 1)
+        .toArray()
+        .sort((a, b) => b.rate * b.value - a.rate * a.value)
 
     return (
         <SectionList.Item ref={AssetsRef}>

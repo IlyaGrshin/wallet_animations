@@ -26,11 +26,11 @@ export async function getAccentHex(source, quality = 10) {
         (typeof source === "string" && source.endsWith(".svg"))
     ) {
         const text = await blob.text()
-        const fills = [
-            ...text.matchAll(/(?:fill|stroke)=(?:"|')([^"']+)(?:"|')/g),
-        ]
+        const fills = text
+            .matchAll(/(?:fill|stroke)=(?:"|')([^"']+)(?:"|')/g)
             .map((m) => m[1])
             .filter((c) => c !== "none" && !c.startsWith("url("))
+            .toArray()
 
         if (fills.length) {
             const freq = {}
@@ -54,19 +54,20 @@ export async function getAccentHex(source, quality = 10) {
         img.src = url
 
         img.onload = () => {
-            try {
+            Promise.try(() => {
                 const thief = new ColorThief()
                 const [r, g, b] = thief.getColor(img, quality)
                 const result = rgbTohex(r, g, b)
                 colorCache.set(cacheKey, result)
-                resolve(result)
-            } catch (err) {
-                reject(err)
-            } finally {
-                if (source instanceof Blob) {
-                    URL.revokeObjectURL(url)
-                }
-            }
+                return result
+            })
+                .then(resolve)
+                .catch(reject)
+                .finally(() => {
+                    if (source instanceof Blob) {
+                        URL.revokeObjectURL(url)
+                    }
+                })
         }
         img.onerror = reject
     })

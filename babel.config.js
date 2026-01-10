@@ -4,7 +4,7 @@ export default {
       "@babel/preset-env",
       {
         modules: false,
-        useBuiltIns: "entry",
+        useBuiltIns: "usage",
         corejs: 3,
         targets: {
           browsers: ["cover 95.5%", "not dead", "not op_mini all"],

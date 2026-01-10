@@ -119,7 +119,7 @@ export const useCache = (key, fetchFn, ttl = CACHE_TTL) => {
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = () => {
             // Проверяем, есть ли валидные кешированные данные
             const now = Date.now()
             if (
@@ -133,24 +133,26 @@ export const useCache = (key, fetchFn, ttl = CACHE_TTL) => {
                 return
             }
 
-            try {
-                setLoading(true)
-                const result = await fetchFn()
+            setLoading(true)
 
-                // Обновляем глобальный кеш и состояние компонента
-                cacheStore[key] = {
-                    data: result,
-                    timestamp: now,
-                }
+            Promise.try(() => fetchFn())
+                .then((result) => {
+                    // Обновляем глобальный кеш и состояние компонента
+                    cacheStore[key] = {
+                        data: result,
+                        timestamp: now,
+                    }
 
-                setData(result)
-                setError(null)
-            } catch (err) {
-                setError(err)
-                console.error(`Error fetching data for key ${key}:`, err)
-            } finally {
-                setLoading(false)
-            }
+                    setData(result)
+                    setError(null)
+                })
+                .catch((err) => {
+                    setError(err)
+                    console.error(`Error fetching data for key ${key}:`, err)
+                })
+                .finally(() => {
+                    setLoading(false)
+                })
         }
 
         fetchData()
