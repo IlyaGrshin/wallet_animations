@@ -17,7 +17,7 @@ function ColorChanging() {
                 WebApp.setHeaderColor("secondary_bg_color")
                 WebApp.setBackgroundColor("secondary_bg_color")
             }
-            setIsSecondaryColor(!isSecondaryColor)
+            setIsSecondaryColor((prev) => !prev)
             WebApp.HapticFeedback.impactOccurred("light")
         } else {
             if (isSecondaryColor) {
@@ -26,7 +26,7 @@ function ColorChanging() {
                 document.body.style.backgroundColor =
                     "var(--tg-theme-secondary-bg-color)"
             }
-            setIsSecondaryColor(!isSecondaryColor)
+            setIsSecondaryColor((prev) => !prev)
         }
     }
 

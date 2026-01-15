@@ -16,14 +16,27 @@ const SwitchCell = ({
     const [uncontrolled, setUncontrolled] = useState(defaultValue)
     const checked = isControlled ? value : uncontrolled
 
-    const setChecked = (next) => {
-        if (!isControlled) setUncontrolled(next)
+    const emitChange = (next) => {
         if (onChange) onChange(next)
+    }
+
+    const handleChange = (next) => {
+        if (!isControlled) setUncontrolled(next)
+        emitChange(next)
     }
 
     const handleClick = () => {
         if (disabled) return
-        setChecked(!checked)
+        if (isControlled) {
+            handleChange(!checked)
+            return
+        }
+
+        setUncontrolled((prev) => {
+            const next = !prev
+            emitChange(next)
+            return next
+        })
     }
 
     return (
@@ -33,7 +46,7 @@ const SwitchCell = ({
                 <Cell.Part type="Switch">
                     <Switch
                         value={checked}
-                        onChange={setChecked}
+                        onChange={handleChange}
                         disabled={disabled}
                     />
                 </Cell.Part>

@@ -13,13 +13,26 @@ function Switch({
     const [uncontrolled, setUncontrolled] = useState(defaultValue)
     const checked = isControlled ? value : uncontrolled
 
-    const setChecked = (next) => {
-        if (!isControlled) setUncontrolled(next)
+    const emitChange = (next) => {
         if (onChange) onChange(next)
     }
 
+    const setChecked = (next) => {
+        if (!isControlled) setUncontrolled(next)
+        emitChange(next)
+    }
+
     const toggle = () => {
-        setChecked(!checked)
+        if (isControlled) {
+            emitChange(!checked)
+            return
+        }
+
+        setUncontrolled((prev) => {
+            const next = !prev
+            emitChange(next)
+            return next
+        })
     }
 
     const handleClick = (e) => {
