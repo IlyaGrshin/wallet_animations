@@ -3,10 +3,13 @@
     border-radius: 16px;
     justify-content: flex-start;
     align-items: center;
-    transition: all ease 250ms;
+    transition: background-color 250ms ease;
 
     &::after {
-        transition: all ease 250ms;
+        transition:
+            transform 250ms ease,
+            border-color 250ms ease,
+            opacity 250ms ease;
         content: '';
         background-color: white;
         border-radius: 50%;
