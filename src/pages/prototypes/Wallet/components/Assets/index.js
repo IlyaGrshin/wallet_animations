@@ -29,14 +29,14 @@ export default function Assets() {
             .values()
             .filter((asset) => asset.rate * asset.value >= 1)
             .toArray()
-            .sort((a, b) => b.rate * b.value - a.rate * a.value),
+            .toSorted((a, b) => b.rate * b.value - a.rate * a.value),
     ]
 
     const smallAssets = otherAssets
         .values()
         .filter((asset) => asset.rate * asset.value < 1)
         .toArray()
-        .sort((a, b) => b.rate * b.value - a.rate * a.value)
+        .toSorted((a, b) => b.rate * b.value - a.rate * a.value)
 
     return (
         <SectionList.Item ref={AssetsRef}>

@@ -35,7 +35,7 @@ export async function getAccentHex(source, quality = 10) {
         if (fills.length) {
             const freq = {}
             fills.forEach((c) => (freq[c] = (freq[c] || 0) + 1))
-            const accent = Object.entries(freq).sort(
+            const accent = Object.entries(freq).toSorted(
                 (a, b) => b[1] - a[1]
             )[0][0]
             const result = normalizeHex(accent)
