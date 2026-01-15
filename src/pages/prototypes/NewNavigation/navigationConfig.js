@@ -78,7 +78,7 @@ export const pageVariants = {
                 x: 0,
             }
         }
-        return { opacity: 0, x: `${3 * direction}%`, scale: 1 }
+        return { opacity: 0, x: `${-3 * direction}%`, scale: 1 }
     },
     animate: ({ isSegmentSwitch, isApple }) => {
         if (isSegmentSwitch) {
