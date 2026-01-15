@@ -34,11 +34,11 @@ export const SPRING = {
 export const TRANSITIONS = {
     MATERIAL_STANDARD: {
         ease: EASING.MATERIAL_STANDARD,
-        duration: DURATION.NORMAL,
+        duration: DURATION.NORMAL / 1000,
     },
     APPLE_STANDARD: {
         ease: EASING.APPLE_STANDARD,
-        duration: DURATION.NORMAL,
+        duration: DURATION.NORMAL / 1000,
     },
     MORPH: {
         duration: 0.25,
