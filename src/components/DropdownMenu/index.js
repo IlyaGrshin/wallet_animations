@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react"
+import { useState, useRef } from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
@@ -6,12 +6,9 @@ import { AnimatePresence } from "motion/react"
 import { SPRING } from "../../utils/animations"
 import Text from "../Text"
 import { GlassContainer } from "../GlassEffect"
+import { useClickOutside, useDropdownPosition } from "./dropdownUtils"
 
 import * as styles from "./DropdownMenu.module.scss"
-
-const DROPDOWN_WIDTH = 250
-const DROPDOWN_OFFSET = 24
-const GAP = 1
 
 const DROPDOWN_VARIANTS = {
     hidden: {
@@ -28,77 +25,6 @@ const DROPDOWN_VARIANTS = {
         opacity: 0,
         transition: { duration: 0.25 },
     },
-}
-
-const calculatePosition = (buttonRect, dropdownRect) => {
-    const viewportHeight = window.innerHeight
-    const spaceBelow = viewportHeight - buttonRect.bottom
-    const spaceAbove = buttonRect.top
-
-    const openUpwards =
-        spaceBelow < dropdownRect.height && spaceAbove > spaceBelow
-
-    return {
-        top: openUpwards
-            ? buttonRect.top - dropdownRect.height - GAP
-            : buttonRect.bottom + GAP,
-        left: buttonRect.right - dropdownRect.width + DROPDOWN_OFFSET,
-        openUpwards,
-    }
-}
-
-const useDropdownPosition = (isOpen, buttonRef, dropdownRef) => {
-    const [position, setPosition] = useState({
-        top: 0,
-        left: 0,
-        openUpwards: false,
-    })
-    const [isPositioned, setIsPositioned] = useState(false)
-
-    useLayoutEffect(() => {
-        if (!isOpen || !buttonRef.current || isPositioned) return
-
-        const buttonRect = buttonRef.current.getBoundingClientRect()
-
-        if (!dropdownRef.current) {
-            setPosition({
-                top: buttonRect.bottom + GAP,
-                left: buttonRect.right - DROPDOWN_WIDTH,
-                openUpwards: false,
-            })
-            return
-        }
-
-        const dropdownRect = dropdownRef.current.getBoundingClientRect()
-        setPosition(calculatePosition(buttonRect, dropdownRect))
-        setIsPositioned(true)
-    }, [isOpen, isPositioned, buttonRef, dropdownRef])
-
-    return {
-        position,
-        isPositioned,
-        resetPosition: () => setIsPositioned(false),
-    }
-}
-
-const useClickOutside = (isOpen, refs, onClose) => {
-    useEffect(() => {
-        if (!isOpen) return
-
-        const handleClickOutside = (event) => {
-            const isOutside = refs.every(
-                (ref) => ref.current && !ref.current.contains(event.target)
-            )
-
-            if (isOutside) {
-                onClose()
-            }
-        }
-
-        document.addEventListener("mousedown", handleClickOutside)
-        return () =>
-            document.removeEventListener("mousedown", handleClickOutside)
-    }, [isOpen, refs, onClose])
 }
 
 const MenuItem = ({ item, isSelected, onClick }) => (
