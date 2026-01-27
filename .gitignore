@@ -27,3 +27,5 @@ deploy.sh
 
 /coingeckoApi
 .cursor
+.codex
+.agents

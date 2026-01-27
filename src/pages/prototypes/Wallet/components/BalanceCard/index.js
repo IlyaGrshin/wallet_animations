@@ -83,8 +83,8 @@ export default function BalanceCard({
                         weight: "semibold",
                     }}
                     material={{
-                        variant: "body1",
-                        weight: "regular",
+                        variant: "subtitle2",
+                        weight: "medium",
                     }}
                     className={styles.label}
                 >
@@ -128,6 +128,10 @@ export default function BalanceCard({
                                     variant: "subheadline2",
                                     weight: "semibold",
                                 }}
+                                material={{
+                                    variant: "subtitle2",
+                                    weight: "medium",
+                                }}
                                 style={{ color: "var(--text-confirm-color)" }}
                             >
                                 {changeData.value}
@@ -146,6 +150,13 @@ export default function BalanceCard({
                                 apple={{
                                     variant: "subheadline2",
                                     weight: "semibold",
+                                    arrow: {
+                                        direction: changeData.arrowDirection,
+                                    },
+                                }}
+                                material={{
+                                    variant: "subtitle2",
+                                    weight: "medium",
                                     arrow: {
                                         direction: changeData.arrowDirection,
                                     },
@@ -172,6 +183,10 @@ export default function BalanceCard({
                                 apple={{
                                     variant: "subheadline2",
                                     weight: "semibold",
+                                }}
+                                material={{
+                                    variant: "subtitle2",
+                                    weight: "medium",
                                 }}
                                 style={{
                                     color: "var(--tg-theme-subtitle-text-color)",

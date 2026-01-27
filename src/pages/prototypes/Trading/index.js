@@ -23,7 +23,11 @@ const AssetsList = () => {
             <SectionList.Item header="Today's lists">
                 {assets.map((asset) => (
                     <Cell
-                        start={<ImageAvatar src={asset.image} />}
+                        start={
+                            <ImageAvatar
+                                src={`https://s3-symbol-logo.tradingview.com/crypto/XTVC${asset.symbol?.toUpperCase()}--big.svg`}
+                            />
+                        }
                         end={
                             <Cell.Text
                                 title={`$${asset.current_price}`}
