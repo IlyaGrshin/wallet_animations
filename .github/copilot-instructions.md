@@ -1,39 +1,34 @@
-# Code Style Conventions
+# Copilot Instructions
 
-## Code Quality Checks
+**Refer to `AGENTS.md` in project root for comprehensive guidelines.**
 
-**ALWAYS run the following commands before completing any task:**
+## Critical Rules
 
-1. Automatically use the IDE's built-in diagnostics tool to check for linting and type errors:
-   - Fix any linting or type errors before considering the task complete
-   - Do this for any file you create or modify
+- MUST: Run linting/type checks before completing tasks
+- MUST: Fix all errors before submission
+- MUST: Use **yarn** (not npm/pnpm)
+- MUST: Keep files under **250 lines**
+- MUST: Use **SCSS Modules** for styling
+- MUST: Use **PropTypes** for type checking
+- NEVER: Create markdown files unless explicitly asked
+- NEVER: Use emojis in replies
 
-2. NEVER create markdown (.md) after you're done.
-3. NEVER use emojies in your replies.
-4. I know i'm absolutely right. No need to mention that.
-5. Always use yarn instead of npm.
+## Tech Stack
 
-This is a CRITICAL step that must NEVER be skipped when working on any code-related task
+- Platform: Telegram Web App (@twa-dev/sdk)
+- Routing: wouter with useHashLocation
+- Animation: motion (framer-motion compatible)
+- Styling: SCSS Modules (ComponentName.module.scss)
 
-## File Size Limits
+## React Guidelines
 
-- **Maximum 250 lines per file** - If a file exceeds this limit:
-  - Extract large sections into separate component files
-  - Move related functionality into dedicated modules
-  - Split complex components into smaller, focused components
-- This ensures maintainability and better code organization
-
-
-### React useEffect Guidelines
-
-**Before using `useEffect` read:** [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect)
-
-Common cases where `useEffect` is NOT needed:
-- Transforming data for rendering (use variables or useMemo instead)
-- Handling user events (use event handlers instead)
-- Resetting state when props change (use key prop or calculate during render)
-- Updating state based on props/state changes (calculate during render)
+Read: [You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect)
 
 Only use `useEffect` for:
-- Synchronizing with external systems (APIs, DOM, third-party libraries)
-- Cleanup that must happen when component unmounts
+- External system synchronization (APIs, DOM, third-party libs)
+- Cleanup on unmount
+
+NOT for:
+- Data transformation (use variables/useMemo)
+- User events (use event handlers)
+- State resets on prop change (use key prop)
