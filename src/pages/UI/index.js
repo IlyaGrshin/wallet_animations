@@ -70,6 +70,13 @@ const UI = () => {
                     </Cell>
                     <Cell
                         as={TransitionLink}
+                        to="/wheel"
+                        end={<Cell.Part type="Chevron" />}
+                    >
+                        <Cell.Text title="Wheel" />
+                    </Cell>
+                    <Cell
+                        as={TransitionLink}
                         to="/modalpages"
                         end={<Cell.Part type="Chevron" />}
                     >

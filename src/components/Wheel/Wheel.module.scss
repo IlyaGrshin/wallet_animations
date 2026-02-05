@@ -1,0 +1,195 @@
+:root {
+    --wheel-height: 140px;
+    --tick-width: 50px;
+    --tick-spacing: 16px;
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+
+    &[data-disabled] {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--side-padding);
+    gap: 12px;
+}
+
+.button {
+    padding: 10px 24px;
+    border-radius: 8px;
+    background-color: var(--quaternary-fill-background);
+    border: none;
+    color: var(--tg-theme-accent-text-color);
+    font-size: 17px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:active {
+        background-color: var(--tertiary-fill-background);
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    :global(body.apple) & {
+        border-radius: 12px;
+        font-weight: 600;
+    }
+
+    :global(body.material) & {
+        border-radius: 8px;
+        font-weight: 500;
+    }
+}
+
+.wheelContainer {
+    position: relative;
+    width: 100%;
+    height: var(--wheel-height);
+    overflow: hidden;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        width: 30%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    &::before {
+        left: 0;
+        background: linear-gradient(
+            to right,
+            var(--tg-theme-section-bg-color),
+            transparent
+        );
+    }
+
+    &::after {
+        right: 0;
+        background: linear-gradient(
+            to left,
+            var(--tg-theme-section-bg-color),
+            transparent
+        );
+    }
+}
+
+.centerIndicator {
+    position: absolute;
+    width: var(--tick-width);
+    height: 100%;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    background-color: var(--quaternary-fill-background);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 0;
+
+    :global(body.apple) & {
+        border-radius: 12px;
+    }
+
+    :global(body.material) & {
+        border-radius: 8px;
+    }
+}
+
+.currentValue {
+    font-size: 48px;
+    font-weight: 700;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--tg-theme-text-color);
+    text-align: center;
+    user-select: none;
+    padding: 0 var(--side-padding);
+
+    :global(body.apple) & {
+        font-weight: 700;
+    }
+
+    :global(body.material) & {
+        font-weight: 600;
+    }
+}
+
+.scrollContainer {
+    display: flex;
+    gap: var(--tick-spacing);
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    height: 100%;
+    scroll-padding-left: calc(50% - var(--tick-width) / 2);
+    scroll-padding-right: calc(50% - var(--tick-width) / 2);
+    padding-left: calc(50% - var(--tick-width) / 2);
+    padding-right: calc(50% - var(--tick-width) / 2);
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    will-change: scroll-position;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.tick {
+    flex-shrink: 0;
+    width: var(--tick-width);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    scroll-snap-align: center;
+    padding-bottom: 16px;
+    transform: translateZ(0);
+}
+
+.tickNumber {
+    font-size: 14px;
+    font-weight: 500;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--tg-theme-hint-color);
+    margin-bottom: 4px;
+    user-select: none;
+
+    :global(body.apple) & {
+        font-weight: 500;
+    }
+
+    :global(body.material) & {
+        font-weight: 400;
+    }
+}
+
+.tickMark {
+    display: block;
+    width: 2px;
+    height: 8px;
+    background-color: var(--separator-non-opaque);
+    border-radius: 1px;
+}
