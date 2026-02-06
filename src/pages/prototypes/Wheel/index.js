@@ -69,11 +69,7 @@ const WheelPage = () => {
                             />
                         </Cell>
                         <div className={styles.wheelWrapper}>
-                            <Wheel
-                                defaultValue={50}
-                                max={100}
-                                formatter={(v) => `${v}%`}
-                            />
+                            <Wheel defaultValue={50} max={100} suffix="%" />
                         </div>
                     </SectionList.Item>
 

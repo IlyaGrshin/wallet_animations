@@ -1,7 +1,7 @@
 :root {
     --wheel-height: 140px;
-    --tick-width: 50px;
-    --tick-spacing: 16px;
+    --tick-width: 32px;
+    --tick-spacing: 8px;
 }
 
 .root {
@@ -131,28 +131,21 @@
     }
 }
 
-.scrollContainer {
+.ticksContainer {
     display: flex;
     gap: var(--tick-spacing);
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
     height: 100%;
-    scroll-padding-left: calc(50% - var(--tick-width) / 2);
-    scroll-padding-right: calc(50% - var(--tick-width) / 2);
     padding-left: calc(50% - var(--tick-width) / 2);
     padding-right: calc(50% - var(--tick-width) / 2);
     align-items: center;
     position: relative;
     z-index: 1;
-    will-change: scroll-position;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
-    &:focus {
-        outline: none;
+    &:active {
+        cursor: grabbing;
     }
 }
 
@@ -164,9 +157,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    scroll-snap-align: center;
     padding-bottom: 16px;
-    transform: translateZ(0);
 }
 
 .tickNumber {

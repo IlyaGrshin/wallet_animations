@@ -29,6 +29,16 @@ export const SPRING = {
         stiffness: 500,
         damping: 32,
     },
+    SNAP: {
+        type: "spring",
+        stiffness: 120,
+        damping: 20,
+    },
+    GENTLE: {
+        type: "spring",
+        stiffness: 500,
+        damping: 40,
+    },
 }
 
 export const TRANSITIONS = {
