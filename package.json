@@ -28,7 +28,10 @@
     "deploy": "./deploy.sh",
     "lint": "npm run lint:js && npm run lint:scss",
     "lint:js": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "lint:scss": "stylelint 'src/**/*.scss'"
+    "lint:scss": "stylelint 'src/**/*.scss'",
+    "screenshot:story": "node scripts/screenshot-story.js",
+    "story-server": "node scripts/story-server.js",
+    "pw:install": "npx playwright install chromium"
   },
   "eslintConfig": {
     "extends": [
@@ -66,6 +69,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-19-upgrade": "^1.7.0",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "playwright": "^1.58.2",
     "prettier": "^3.7.4",
     "prop-types": "^15.8.1",
     "rollup-plugin-webpack-stats": "^2.1.9",

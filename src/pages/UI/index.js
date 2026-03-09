@@ -1,9 +1,11 @@
+import WebApp from "@twa-dev/sdk"
 import TransitionLink from "../../components/Link"
 
 import Page from "../../components/Page"
 import SectionList from "../../components/SectionList"
 import Cell from "../../components/Cells"
 import DropdownMenu from "../../components/DropdownMenu"
+import { shareStory } from "../../components/StoryCard/shareStory"
 
 const UI = () => {
     return (
@@ -30,6 +32,14 @@ const UI = () => {
                         end={<Cell.Part type="Chevron" />}
                     >
                         <Cell.Text title="Input Page" />
+                    </Cell>
+                </SectionList.Item>
+                <SectionList.Item>
+                    <Cell
+                        onClick={() => shareStory(WebApp)}
+                        end={<Cell.Part type="Chevron" />}
+                    >
+                        <Cell.Text type="Accent" title="Share Story" />
                     </Cell>
                 </SectionList.Item>
                 <SectionList.Item header="Prototypes">

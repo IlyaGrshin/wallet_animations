@@ -29,3 +29,10 @@ deploy.sh
 .cursor
 .codex
 .agents
+
+# story screenshots (CLI output & orphaned temp files)
+story.png
+tmp-*.png
+
+# environment
+.env.production

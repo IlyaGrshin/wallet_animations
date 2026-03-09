@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, lazy, Suspense } from "react"
 import PropTypes from "prop-types"
 import { Router, Switch, Route } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
@@ -19,6 +19,8 @@ import ColorAssetPage from "../pages/prototypes/ColorAssetPage"
 import NavigationBar from "../pages/components/NavigationBar"
 import BottomBar from "../pages/components/BottomBar"
 import InputPage from "../pages/prototypes/InputPage"
+
+const StoryPage = lazy(() => import("../pages/story"))
 
 function Redirect({ to }) {
     const [, navigate] = useLocation()
@@ -54,12 +56,28 @@ const Routes = () => (
     </Switch>
 )
 
+function AppRoutes() {
+    const [location] = useLocation()
+
+    if (location === "/story" || location.startsWith("/story?")) {
+        return (
+            <Suspense fallback={null}>
+                <StoryPage />
+            </Suspense>
+        )
+    }
+
+    return (
+        <PageTransition>
+            <Routes />
+        </PageTransition>
+    )
+}
+
 export default function AppRouter() {
     return (
         <Router hook={useHashLocation}>
-            <PageTransition>
-                <Routes />
-            </PageTransition>
+            <AppRoutes />
         </Router>
     )
 }
