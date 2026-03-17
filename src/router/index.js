@@ -19,6 +19,7 @@ import ColorAssetPage from "../pages/prototypes/ColorAssetPage"
 import NavigationBar from "../pages/components/NavigationBar"
 import BottomBar from "../pages/components/BottomBar"
 import InputPage from "../pages/prototypes/InputPage"
+import Stories from "../pages/prototypes/Stories"
 
 function Redirect({ to }) {
     const [, navigate] = useLocation()
@@ -48,6 +49,7 @@ const Routes = () => (
         <Route path="/components/header" component={NavigationBar} />
         <Route path="/components/bottombar" component={BottomBar} />
         <Route path="/inputpage" component={InputPage} />
+        <Route path="/stories" component={Stories} />
         <Route>
             <Redirect to="/" />
         </Route>

@@ -82,6 +82,13 @@ const UI = () => {
                     >
                         <Cell.Text title="Modal Pages" />
                     </Cell>
+                    <Cell
+                        as={TransitionLink}
+                        to="/stories"
+                        end={<Cell.Part type="Chevron" />}
+                    >
+                        <Cell.Text title="Stories" />
+                    </Cell>
                 </SectionList.Item>
                 <SectionList.Item>
                     <Cell>
