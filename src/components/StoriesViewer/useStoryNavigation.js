@@ -8,6 +8,7 @@ const useStoryNavigation = ({ storiesCount, onComplete, duration = 5000 }) => {
     const remainingRef = useRef(duration)
     const onCompleteRef = useRef(onComplete)
     const indexRef = useRef(0)
+    const frozenRef = useRef(false)
     onCompleteRef.current = onComplete
 
     const clearTimer = useCallback(() => {
@@ -39,12 +40,21 @@ const useStoryNavigation = ({ storiesCount, onComplete, duration = 5000 }) => {
     }, [clearTimer])
 
     const resume = useCallback(() => {
+        if (frozenRef.current) return
+        clearTimer()
         setIsPaused(false)
         startTimeRef.current = Date.now()
         timeoutRef.current = setTimeout(goNext, remainingRef.current)
-    }, [goNext])
+    }, [goNext, clearTimer])
+
+    const freeze = useCallback(() => {
+        frozenRef.current = true
+        clearTimer()
+        setIsPaused(true)
+    }, [clearTimer])
 
     useEffect(() => {
+        if (frozenRef.current) return
         setIsPaused(false)
         remainingRef.current = duration
         startTimeRef.current = Date.now()
@@ -52,7 +62,7 @@ const useStoryNavigation = ({ storiesCount, onComplete, duration = 5000 }) => {
         return clearTimer
     }, [currentIndex, duration, goNext, clearTimer])
 
-    return { currentIndex, isPaused, goNext, goPrev, pause, resume }
+    return { currentIndex, isPaused, goNext, goPrev, pause, resume, freeze }
 }
 
 export default useStoryNavigation

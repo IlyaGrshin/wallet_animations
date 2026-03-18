@@ -11,7 +11,7 @@ import useStoryNavigation from "./useStoryNavigation"
 const LONG_PRESS_DELAY = 200
 
 const StoriesViewer = ({ stories, onClose, duration = 5000 }) => {
-    const { currentIndex, isPaused, goNext, goPrev, pause, resume } =
+    const { currentIndex, isPaused, goNext, goPrev, pause, resume, freeze } =
         useStoryNavigation({
             storiesCount: stories.length,
             onComplete: onClose,
@@ -96,6 +96,7 @@ const StoriesViewer = ({ stories, onClose, duration = 5000 }) => {
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
+            onContextMenu={(e) => { e.preventDefault(); freeze() }}
         >
             <BackButton onClick={onClose} />
 
