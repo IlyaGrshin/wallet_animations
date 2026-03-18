@@ -28,7 +28,7 @@ const demoStories = [
         focalImage: {
             type: "lottie",
             src: () => import("./assets/Stories_2_opt.json"),
-            haptics: [{ frame: 85, style: "rigid" }],
+            haptics: [{ frame: 84, style: "rigid" }],
         },
     },
     {
@@ -39,7 +39,7 @@ const demoStories = [
         focalImage: {
             type: "lottie",
             src: () => import("./assets/Stories_3_opt.json"),
-            haptics: [{ frame: 85, style: "rigid" }],
+            haptics: [{ frame: 84, style: "rigid" }],
         },
     },
     {
@@ -59,8 +59,8 @@ const demoStories = [
                 "lottie-subtitle-text_Potential": "Potential",
             },
             haptics: [
-                { frame: 35, style: "rigid" },
-                { frame: 100, style: "rigid" },
+                { frame: 34, style: "rigid" },
+                { frame: 99, style: "rigid" },
             ],
         },
     },
@@ -74,9 +74,9 @@ const demoStories = [
             type: "lottie",
             src: () => import("./assets/Stories_5_opt.json"),
             haptics: [
-                { frame: 10, style: "rigid" },
-                { frame: 80, style: "rigid" },
-                { frame: 140, style: "rigid" },
+                { frame: 9, style: "rigid" },
+                { frame: 79, style: "rigid" },
+                { frame: 139, style: "rigid" },
             ],
         },
     },
@@ -96,8 +96,8 @@ const demoStories = [
                 "lottie-subtitle-text_position": "Position",
             },
             haptics: [
-                { frame: 22, style: "rigid" },
-                { frame: 75, style: "rigid" },
+                { frame: 21, style: "rigid" },
+                { frame: 74, style: "rigid" },
             ],
         },
     },
