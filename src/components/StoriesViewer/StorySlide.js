@@ -20,7 +20,6 @@ const StorySlide = ({ story, onButtonClick }) => {
     } = story
     const lottieRef = useRef(null)
     const firedFramesRef = useRef(new Set())
-    const hapticsEnabledRef = useRef(false)
     const [animationData, setAnimationData] = useState(
         typeof focalImage?.src === "function" ? null : focalImage?.src
     )
@@ -40,11 +39,6 @@ const StorySlide = ({ story, onButtonClick }) => {
 
     const handleEnterFrame = useCallback(
         (e) => {
-            if (!hapticsEnabledRef.current) {
-                hapticsEnabledRef.current = e.currentTime
-                return
-            }
-            if (e.currentTime - hapticsEnabledRef.current < 30) return
             const frame = Math.round(e.currentTime)
             if (firedFramesRef.current.has(frame)) return
             const style = hapticMap.get(frame)
