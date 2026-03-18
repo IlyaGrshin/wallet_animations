@@ -49,6 +49,15 @@
     height: auto;
 }
 
+.lottieLabel {
+    fill: inherit;
+    font-size: 15px;
+    line-height: 18px;
+    font-family: ui-rounded, Roboto, system-ui, sans-serif;
+    font-weight: 600;
+    text-anchor: middle;
+}
+
 .textArea {
     flex-shrink: 0;
     margin-bottom: 20px;

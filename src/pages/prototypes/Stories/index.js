@@ -24,8 +24,7 @@ const demoStories = [
         ...defaults,
         id: "long-position",
         title: "Think the price will rise? Open a long position",
-        description:
-            "As the price increases, so does your potential profit.",
+        description: "As the price increases, so does your potential profit.",
         focalImage: {
             type: "lottie",
             src: () => import("./assets/Stories_2_opt.json"),
@@ -36,8 +35,7 @@ const demoStories = [
         ...defaults,
         id: "short-position",
         title: "Think the price will fall? Open a short position",
-        description:
-            "If the price falls, your potential profits will rise.",
+        description: "If the price falls, your potential profits will rise.",
         focalImage: {
             type: "lottie",
             src: () => import("./assets/Stories_3_opt.json"),
@@ -53,6 +51,13 @@ const demoStories = [
         focalImage: {
             type: "lottie",
             src: () => import("./assets/Stories_4_opt.json"),
+            labels: {
+                "lottie-title-text_Price": "Price",
+                "lottie-subtitle-text_Change": "Change",
+                "lottie-title-text_Profit": "Profit",
+                "lottie-title-text_Loss": "Loss",
+                "lottie-subtitle-text_Potential": "Potential",
+            },
             haptics: [
                 { frame: 35, style: "rigid" },
                 { frame: 100, style: "rigid" },
@@ -84,6 +89,12 @@ const demoStories = [
         focalImage: {
             type: "lottie",
             src: () => import("./assets/Stories_6_opt.json"),
+            labels: {
+                "lottie-title-text_Close": "Close",
+                "lottie-subtitle-text_Position": "Position",
+                "lottie-title-text_open": "Open",
+                "lottie-subtitle-text_position": "Position",
+            },
             haptics: [
                 { frame: 22, style: "rigid" },
                 { frame: 75, style: "rigid" },

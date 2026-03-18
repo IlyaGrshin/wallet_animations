@@ -7,6 +7,7 @@ import * as styles from "./StorySlide.module.scss"
 
 const Lottie = lazy(() => import("lottie-react"))
 
+const SVG_NS = "http://www.w3.org/2000/svg"
 const buttonStyle = { backgroundColor: "#fff", color: "#000" }
 const stopPropagation = (e) => e.stopPropagation()
 
@@ -19,6 +20,7 @@ const StorySlide = ({ story, onButtonClick }) => {
         focalImage,
     } = story
     const lottieRef = useRef(null)
+    const containerRef = useRef(null)
     const firedFramesRef = useRef(new Set())
     const [animationData, setAnimationData] = useState(
         typeof focalImage?.src === "function" ? null : focalImage?.src
@@ -29,6 +31,31 @@ const StorySlide = ({ story, onButtonClick }) => {
             focalImage.src().then((mod) => setAnimationData(mod.default))
         }
     }, [focalImage?.src])
+
+    const replaceLabels = useCallback(() => {
+        if (!focalImage?.labels) return
+        const el = containerRef.current
+        if (!el) return
+        Object.entries(focalImage.labels).forEach(([cls, text]) => {
+            el.querySelectorAll(`.${cls}`).forEach((g) => {
+                const firstChar = g.querySelector("text[transform]")
+                if (!firstChar) return
+                // Get y from first character's transform
+                const m = firstChar.getAttribute("transform")?.match(
+                    /matrix\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,([^)]+)\)/
+                )
+                const y = m ? parseFloat(m[1]) : 0
+                // Remove all character <text> elements
+                g.querySelectorAll("text").forEach((t) => t.remove())
+                // Insert single <text>, styled via CSS
+                const textEl = document.createElementNS(SVG_NS, "text")
+                textEl.classList.add(styles.lottieLabel)
+                textEl.setAttribute("y", y)
+                textEl.textContent = text
+                g.appendChild(textEl)
+            })
+        })
+    }, [focalImage?.labels])
 
     const hapticMap = useMemo(() => {
         if (!focalImage?.haptics) return null
@@ -67,7 +94,10 @@ const StorySlide = ({ story, onButtonClick }) => {
             />
 
             <div className={styles.content}>
-                <div className={`${styles.focalArea} ${animationData ? styles.loaded : ""}`}>
+                <div
+                    ref={containerRef}
+                    className={`${styles.focalArea} ${animationData ? styles.loaded : ""}`}
+                >
                     {focalImage?.type === "lottie" && animationData ? (
                         <Suspense fallback={null}>
                             <Lottie
@@ -77,6 +107,7 @@ const StorySlide = ({ story, onButtonClick }) => {
                                 autoplay
                                 className={styles.focalImage}
                                 onEnterFrame={hapticMap ? handleEnterFrame : undefined}
+                                onDOMLoaded={replaceLabels}
                             />
                         </Suspense>
                     ) : focalImage?.src ? (
@@ -135,6 +166,7 @@ StorySlide.propTypes = {
             type: PropTypes.oneOf(["lottie", "image"]),
             src: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
             loop: PropTypes.bool,
+            labels: PropTypes.objectOf(PropTypes.string),
             haptics: PropTypes.arrayOf(
                 PropTypes.shape({
                     frame: PropTypes.number.isRequired,

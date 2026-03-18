@@ -135,7 +135,7 @@ StoriesViewer.propTypes = {
             headerColor: PropTypes.string,
             focalImage: PropTypes.shape({
                 type: PropTypes.oneOf(["lottie", "image"]),
-                src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+                src: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
                 loop: PropTypes.bool,
             }),
         })
