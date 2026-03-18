@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { useIsPresent } from "motion/react"
 import PropTypes from "prop-types"
 import WebApp from "@twa-dev/sdk"
 
@@ -11,6 +12,7 @@ const Page = ({
     backgroundColor,
     expandOnMount,
 }) => {
+    const isPresent = useIsPresent()
     const tgColorMapping = {
         primary: "bg_color",
         secondary: "secondary_bg_color",
@@ -36,13 +38,14 @@ const Page = ({
     }, [expandOnMount])
 
     useEffect(() => {
+        if (!isPresent) return
         if (WebApp.initData) {
             setBackgroundColor(tgBackgroundColor)
             setHeaderColor(tgHeaderColor)
         } else {
             document.body.style.backgroundColor = CSSBackgroundColor
         }
-    }, [tgBackgroundColor, tgHeaderColor, CSSBackgroundColor])
+    }, [isPresent, tgBackgroundColor, tgHeaderColor, CSSBackgroundColor])
 
     return <>{children}</>
 }

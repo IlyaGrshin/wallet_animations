@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from "react"
+import { useEffect, useLayoutEffect, useCallback, useRef } from "react"
 import PropTypes from "prop-types"
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
@@ -34,7 +34,7 @@ const StoriesViewer = ({ stories, onClose, duration = 5000 }) => {
             clearTimeout(pressTimerRef.current)
             WebApp.enableVerticalSwipes()
             const color = prevHeaderColorRef.current
-            if (color && WebApp.initData) {
+            if (color) {
                 WebApp.setHeaderColor(
                     color.startsWith("#") ? color : `#${color}`
                 )
@@ -42,12 +42,12 @@ const StoriesViewer = ({ stories, onClose, duration = 5000 }) => {
         }
     }, [])
 
-    // Set header color per story
-    useEffect(() => {
-        if (story?.headerColor && WebApp.initData) {
+    // Set header color per story (layout effect to avoid flash)
+    useLayoutEffect(() => {
+        if (story?.headerColor) {
             WebApp.setHeaderColor(story.headerColor)
         }
-    }, [story?.headerColor])
+    }, [story?.headerColor, currentIndex])
 
     const handlePointerDown = useCallback(() => {
         pointerActiveRef.current = true

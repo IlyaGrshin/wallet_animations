@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useEffect } from "react"
+import { lazy, Suspense, useRef, useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { RegularButton } from "../Button"
 import Text from "../Text"
@@ -18,6 +18,15 @@ const StorySlide = ({ story, onButtonClick }) => {
         focalImage,
     } = story
     const lottieRef = useRef(null)
+    const [animationData, setAnimationData] = useState(
+        typeof focalImage?.src === "function" ? null : focalImage?.src
+    )
+
+    useEffect(() => {
+        if (typeof focalImage?.src === "function") {
+            focalImage.src().then((mod) => setAnimationData(mod.default))
+        }
+    }, [focalImage?.src])
 
     useEffect(() => {
         lottieRef.current?.play?.()
@@ -37,11 +46,11 @@ const StorySlide = ({ story, onButtonClick }) => {
 
             <div className={styles.content}>
                 <div className={styles.focalArea}>
-                    {focalImage?.type === "lottie" ? (
+                    {focalImage?.type === "lottie" && animationData ? (
                         <Suspense fallback={null}>
                             <Lottie
                                 lottieRef={lottieRef}
-                                animationData={focalImage.src}
+                                animationData={animationData}
                                 loop={Boolean(focalImage.loop)}
                                 autoplay
                                 className={styles.focalImage}
@@ -101,7 +110,7 @@ StorySlide.propTypes = {
         background: PropTypes.string,
         focalImage: PropTypes.shape({
             type: PropTypes.oneOf(["lottie", "image"]),
-            src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+            src: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
             loop: PropTypes.bool,
         }),
     }).isRequired,
