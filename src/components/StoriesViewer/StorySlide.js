@@ -1,5 +1,6 @@
-import { lazy, Suspense, useRef, useState, useEffect } from "react"
+import { lazy, Suspense, useRef, useState, useEffect, useMemo, useCallback } from "react"
 import PropTypes from "prop-types"
+import WebApp from "@twa-dev/sdk"
 import { RegularButton } from "../Button"
 import Text from "../Text"
 import * as styles from "./StorySlide.module.scss"
@@ -18,6 +19,7 @@ const StorySlide = ({ story, onButtonClick }) => {
         focalImage,
     } = story
     const lottieRef = useRef(null)
+    const firedFramesRef = useRef(new Set())
     const [animationData, setAnimationData] = useState(
         typeof focalImage?.src === "function" ? null : focalImage?.src
     )
@@ -27,6 +29,26 @@ const StorySlide = ({ story, onButtonClick }) => {
             focalImage.src().then((mod) => setAnimationData(mod.default))
         }
     }, [focalImage?.src])
+
+    const hapticMap = useMemo(() => {
+        if (!focalImage?.haptics) return null
+        const map = new Map()
+        focalImage.haptics.forEach((h) => map.set(h.frame, h.style || "medium"))
+        return map
+    }, [focalImage?.haptics])
+
+    const handleEnterFrame = useCallback(
+        (e) => {
+            const frame = Math.round(e.currentTime)
+            if (firedFramesRef.current.has(frame)) return
+            const style = hapticMap.get(frame)
+            if (style) {
+                firedFramesRef.current.add(frame)
+                WebApp.HapticFeedback.impactOccurred(style)
+            }
+        },
+        [hapticMap]
+    )
 
     useEffect(() => {
         lottieRef.current?.play?.()
@@ -54,6 +76,7 @@ const StorySlide = ({ story, onButtonClick }) => {
                                 loop={Boolean(focalImage.loop)}
                                 autoplay
                                 className={styles.focalImage}
+                                onEnterFrame={hapticMap ? handleEnterFrame : undefined}
                             />
                         </Suspense>
                     ) : focalImage?.src ? (
@@ -112,6 +135,14 @@ StorySlide.propTypes = {
             type: PropTypes.oneOf(["lottie", "image"]),
             src: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]),
             loop: PropTypes.bool,
+            haptics: PropTypes.arrayOf(
+                PropTypes.shape({
+                    frame: PropTypes.number.isRequired,
+                    style: PropTypes.oneOf([
+                        "light", "medium", "heavy", "rigid", "soft",
+                    ]),
+                })
+            ),
         }),
     }).isRequired,
     onButtonClick: PropTypes.func,
