@@ -49,6 +49,14 @@ const StoriesViewer = ({ stories, onClose, duration = 5000 }) => {
         }
     }, [story?.headerColor, currentIndex])
 
+    // Preload next story's Lottie data
+    useEffect(() => {
+        const next = stories[currentIndex + 1]
+        if (typeof next?.focalImage?.src === "function") {
+            next.focalImage.src()
+        }
+    }, [currentIndex, stories])
+
     const handlePointerDown = useCallback(() => {
         pointerActiveRef.current = true
         didLongPressRef.current = false

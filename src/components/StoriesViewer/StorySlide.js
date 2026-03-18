@@ -67,7 +67,7 @@ const StorySlide = ({ story, onButtonClick }) => {
             />
 
             <div className={styles.content}>
-                <div className={styles.focalArea}>
+                <div className={`${styles.focalArea} ${animationData ? styles.loaded : ""}`}>
                     {focalImage?.type === "lottie" && animationData ? (
                         <Suspense fallback={null}>
                             <Lottie
