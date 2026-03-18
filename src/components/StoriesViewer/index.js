@@ -25,7 +25,9 @@ const StoriesViewer = ({ stories, onClose, duration = 5000 }) => {
     const pointerActiveRef = useRef(false)
 
     // Save original colors on mount, restore on unmount
-    useEffect(() => {
+    // Must be useLayoutEffect so StrictMode's cleanup/re-mount cycle
+    // runs synchronously with the per-story color effect
+    useLayoutEffect(() => {
         prevHeaderColorRef.current =
             WebApp.themeParams.secondary_bg_color || "#EFEFF4"
         WebApp.disableVerticalSwipes()
