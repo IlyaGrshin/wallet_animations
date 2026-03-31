@@ -1,7 +1,7 @@
-import ColorThief from "colorthief"
+import { getColor } from "colorthief"
 import { useState, useEffect, useRef } from "react"
 
-import { rgbTohex, normalizeHex } from "../utils/common"
+import { normalizeHex } from "../utils/common"
 
 const colorCache = new Map()
 
@@ -46,31 +46,27 @@ export async function getAccentHex(source, quality = 10) {
 
     const url = source instanceof Blob ? URL.createObjectURL(blob) : source
 
-    return new Promise((resolve, reject) => {
+    try {
         const img = new Image()
         img.crossOrigin = "anonymous"
         img.decoding = "async"
         img.loading = "eager"
         img.src = url
 
-        img.onload = () => {
-            Promise.try(() => {
-                const thief = new ColorThief()
-                const [r, g, b] = thief.getColor(img, quality)
-                const result = rgbTohex(r, g, b)
-                colorCache.set(cacheKey, result)
-                return result
-            })
-                .then(resolve)
-                .catch(reject)
-                .finally(() => {
-                    if (source instanceof Blob) {
-                        URL.revokeObjectURL(url)
-                    }
-                })
+        await new Promise((resolve, reject) => {
+            img.onload = resolve
+            img.onerror = reject
+        })
+
+        const color = await getColor(img, { quality })
+        const result = color.hex()
+        colorCache.set(cacheKey, result)
+        return result
+    } finally {
+        if (source instanceof Blob) {
+            URL.revokeObjectURL(url)
         }
-        img.onerror = reject
-    })
+    }
 }
 
 export function useAccentColor(src, quality = 10) {

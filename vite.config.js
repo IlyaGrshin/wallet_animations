@@ -2,35 +2,38 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
+import babel from '@rolldown/plugin-babel';
 
 export default defineConfig(({ mode }) => ({
   base: './',
   plugins: [
-    react({
-      babel: {
-        plugins: [
-          'babel-plugin-react-compiler',
-          ['transform-react-remove-prop-types', { removeImport: true, additionalLibraries: ['prop-types'] }],
-          '@babel/plugin-transform-runtime'
-        ],
-        presets: [
-          [
-            '@babel/preset-env',
-            {
-              modules: false,
-              useBuiltIns: 'entry',
-              corejs: 3,
-              targets: {
-                browsers: ['cover 95.5%', 'not dead', 'not op_mini all']
-              }
+    react(),
+    babel({
+      babelrc: false,
+      configFile: false,
+      include: /src\/.*\.[jt]sx?$/,
+      plugins: [
+        'babel-plugin-react-compiler',
+        ['transform-react-remove-prop-types', { removeImport: true, additionalLibraries: ['prop-types'] }],
+        '@babel/plugin-transform-runtime'
+      ],
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            modules: false,
+            useBuiltIns: 'entry',
+            corejs: 3,
+            targets: {
+              browsers: ['cover 95.5%', 'not dead', 'not op_mini all']
             }
-          ],
-          [
-            '@babel/preset-react',
-            { runtime: 'automatic', importSource: 'react' }
-          ]
+          }
+        ],
+        [
+          '@babel/preset-react',
+          { runtime: 'automatic', importSource: 'react' }
         ]
-      }
+      ]
     }),
     svgr({
       svgrOptions: {
@@ -52,14 +55,13 @@ export default defineConfig(({ mode }) => ({
       filename: './build/webpack-stats.json',
     })
   ],
-  esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.js$/
+  oxc: {
+    jsx: 'automatic'
   },
   optimizeDeps: {
-    esbuildOptions: {
-      loader: {
-        '.js': 'jsx'
+    rolldownOptions: {
+      transform: {
+        jsx: 'automatic'
       }
     }
   },
@@ -72,7 +74,7 @@ export default defineConfig(({ mode }) => ({
     outDir: 'build',
     assetsDir: '',
     sourcemap: mode === 'development' ? 'inline' : true,
-    rollupOptions: {
+    rolldownOptions: {
       output: {
         assetFileNames: 'assets/[name].[hash][extname]',
         chunkFileNames: 'assets/[name].[hash].js',
