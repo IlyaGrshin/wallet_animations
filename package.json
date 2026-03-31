@@ -11,7 +11,7 @@
     "@babel/runtime": "^7.28.4",
     "@number-flow/react": "^0.5.10",
     "@twa-dev/sdk": "^8.0.1",
-    "colorthief": "^2.6.0",
+    "colorthief": "^3.3.1",
     "core-js": "^3.47.0",
     "lottie-react": "^2.4.1",
     "motion": "^12.25.0",
@@ -28,7 +28,9 @@
     "deploy": "./deploy.sh",
     "lint": "npm run lint:js && npm run lint:scss",
     "lint:js": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "lint:scss": "stylelint 'src/**/*.scss'"
+    "lint:scss": "stylelint 'src/**/*.scss'",
+    "screenshot:story": "node scripts/screenshot-story.js",
+    "story-server": "node scripts/story-server.js"
   },
   "eslintConfig": {
     "extends": [
@@ -50,17 +52,19 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
-    "@babel/eslint-parser": "^7.28.4",
+    "@babel/eslint-parser": "^7.28.6",
     "@babel/plugin-transform-private-property-in-object": "^7.25.9",
     "@babel/plugin-transform-runtime": "^7.28.3",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.26.3",
     "@relative-ci/agent": "^4.3.1",
-    "@vitejs/plugin-react": "^5.1.2",
+    "@resvg/resvg-js": "^2.6.2",
+    "@rolldown/plugin-babel": "^0.2.2",
+    "@vitejs/plugin-react": "^6.0.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "baseline-browser-mapping": "^2.9.14",
-    "eslint": "^9.39.2",
+    "eslint": "9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
@@ -68,11 +72,12 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "prettier": "^3.7.4",
     "prop-types": "^15.8.1",
-    "rollup-plugin-webpack-stats": "^2.1.9",
+    "rollup-plugin-webpack-stats": "^3.1.0",
     "sass": "^1.97.2",
-    "stylelint": "^16.26.1",
-    "stylelint-config-standard-scss": "^16.0.0",
-    "vite": "^7.3.1",
-    "vite-plugin-svgr": "^4.5.0"
+    "satori": "^0.26.0",
+    "stylelint": "^17.6.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "vite": "^8.0.3",
+    "vite-plugin-svgr": "^5.0.0"
   }
 }

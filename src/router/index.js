@@ -56,12 +56,18 @@ const Routes = () => (
     </Switch>
 )
 
+function AppRoutes() {
+    return (
+        <PageTransition>
+            <Routes />
+        </PageTransition>
+    )
+}
+
 export default function AppRouter() {
     return (
         <Router hook={useHashLocation}>
-            <PageTransition>
-                <Routes />
-            </PageTransition>
+            <AppRoutes />
         </Router>
     )
 }
