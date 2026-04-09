@@ -3,7 +3,7 @@ import SectionList from "../SectionList"
 import Cell from "../Cells"
 import Spinner from "../Spinner"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const SpinnerShowcase = () => (
     <>

@@ -7,8 +7,7 @@ import SectionHeader from "../../../components/SectionHeader"
 import StartView from "../../../components/StartView"
 import { RegularButton } from "../../../components/Button"
 
-import WebApp from "@twa-dev/sdk"
-import { BackButton } from "@twa-dev/sdk/react"
+import WebApp, { BackButton } from "../../../lib/twa"
 
 import * as styles from "./Onboarding.module.scss"
 

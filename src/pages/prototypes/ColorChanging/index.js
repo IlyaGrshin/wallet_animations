@@ -2,8 +2,7 @@ import { useState } from "react"
 
 import { RegularButton } from "../../../components/Button"
 
-import WebApp from "@twa-dev/sdk"
-import { BackButton } from "@twa-dev/sdk/react"
+import WebApp, { BackButton } from "../../../lib/twa"
 
 function ColorChanging() {
     const [isSecondaryColor, setIsSecondaryColor] = useState(true)

@@ -7,7 +7,7 @@ import Cell from "../Cells"
 import Gallery from "../Gallery"
 import Text from "../Text"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const colors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4"]
 

@@ -4,8 +4,7 @@ import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import * as styles from "./ModalView.module.scss"
 
-import WebApp from "@twa-dev/sdk"
-import { BackButton } from "@twa-dev/sdk/react"
+import WebApp, { BackButton } from "../../lib/twa"
 
 import { blendColors } from "../../utils/common"
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import * as styles from "./Picker.module.scss"
 
-import WebApp from "@twa-dev/sdk"
+import WebApp from "../../lib/twa"
 
 const Picker = ({ items, onPickerIndex }) => {
     const pickerRef = useRef(null)

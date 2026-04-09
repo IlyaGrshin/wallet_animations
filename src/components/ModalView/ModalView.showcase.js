@@ -7,7 +7,7 @@ import Cell from "../Cells"
 import useModal from "../../hooks/useModal"
 const Modals = lazy(() => import("./Modals"))
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const ModalPages = () => {
     const { modals, handlers } = useModal({

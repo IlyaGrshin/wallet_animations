@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { use } from "react"
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../../lib/twa"
 
 import Page from "../../../components/Page"
 

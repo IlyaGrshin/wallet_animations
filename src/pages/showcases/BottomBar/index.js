@@ -5,8 +5,7 @@ import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
 
-import WebApp from "@twa-dev/sdk"
-import { BackButton } from "@twa-dev/sdk/react"
+import WebApp, { BackButton } from "../../../lib/twa"
 
 import Picker from "../../../components/Picker"
 import Collapsible from "../../../components/Collapsible"

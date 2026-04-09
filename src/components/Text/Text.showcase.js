@@ -6,7 +6,7 @@ import Cell from "../Cells"
 import Text from "../Text"
 import Picker from "../Picker"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const VARIANTS = [
     "title1",

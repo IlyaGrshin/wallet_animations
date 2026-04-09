@@ -535,7 +535,7 @@ const addItems = useCallback((newItems: Item[]) => {
 
 ## Platform & Tech Stack
 
-- MUST: Build for Telegram Web App (TWA) environment (`@twa-dev/sdk`).
+- MUST: Build for Telegram Web App (TWA) environment (official script in `index.html`, `src/lib/twa.js` wrapper, `src/components/BackButton`).
 - MUST: Use `wouter` for routing; respect the patched `WebApp.BackButton` behavior in `App.js`.
 - MUST: Use `motion` libraries (framer-motion compatible) for complex animations.
 - MUST: Adapt UI components for `.apple` (iOS/macOS) vs `.material` (Android/Desktop) body classes.

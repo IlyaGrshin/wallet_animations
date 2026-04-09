@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import WebApp from "@twa-dev/sdk"
+import WebApp from "../../../../lib/twa"
 
 export const useSegmentNavigation = () => {
     const [activeSegment, setActiveSegment] = useState(0)

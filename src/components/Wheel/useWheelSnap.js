@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { useMotionValue, animate } from "motion/react"
-import WebApp from "@twa-dev/sdk"
+import WebApp from "../../lib/twa"
 import { SPRING } from "../../utils/animations"
 
 const TICK_WIDTH = 32

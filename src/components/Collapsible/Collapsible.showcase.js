@@ -5,7 +5,7 @@ import SectionList from "../SectionList"
 import Cell from "../Cells"
 import Collapsible from "../Collapsible"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const CollapsibleShowcase = () => {
     const [open1, setOpen1] = useState(false)

@@ -4,7 +4,7 @@ import {
     initializeViewTransitions,
     cleanupViewTransitions,
 } from "./utils/viewTransition"
-import WebApp from "@twa-dev/sdk"
+import WebApp from "./lib/twa"
 
 import "./index.css"
 

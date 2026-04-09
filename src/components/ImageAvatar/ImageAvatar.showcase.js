@@ -4,7 +4,7 @@ import Cell from "../Cells"
 import ImageAvatar from "../ImageAvatar"
 
 import { getAssetIcon } from "../../utils/AssetsMap"
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const ImageAvatarShowcase = () => (
     <>

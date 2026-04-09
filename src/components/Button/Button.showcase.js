@@ -2,7 +2,7 @@ import Page from "../Page"
 import SectionList from "../SectionList"
 import { RegularButton, MultilineButton } from "../Button"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 import ArrowUpIcon from "../../icons/28/Arrow Up Circle Fill.svg?react"
 import PlusIcon from "../../icons/28/Plus Circle Fill.svg?react"

@@ -1,6 +1,5 @@
 import { motion } from "motion/react"
-import WebApp from "@twa-dev/sdk"
-import { BackButton } from "@twa-dev/sdk/react"
+import WebApp, { BackButton } from "../../lib/twa"
 
 import Page from "../Page"
 import TextField from "../TextField"

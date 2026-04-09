@@ -7,7 +7,7 @@ import Cell from "../../Cells"
 import ImageAvatar from "../../ImageAvatar"
 
 import { getAssetIcon } from "../../../utils/AssetsMap"
-import { MainButton } from "@twa-dev/sdk/react"
+import { MainButton } from "../../../lib/twa"
 import InitialsAvatar from "../../InitialsAvatar"
 
 const Modals = ({ modals, handlers }) => {

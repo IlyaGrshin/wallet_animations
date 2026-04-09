@@ -2,7 +2,7 @@ import Page from "../Page"
 import SectionList from "../SectionList"
 import Cell from "../Cells"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const SectionListShowcase = () => (
     <>

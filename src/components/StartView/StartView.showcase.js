@@ -2,7 +2,7 @@ import Page from "../Page"
 import SectionList from "../SectionList"
 import StartView from "../StartView"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const StartViewShowcase = () => (
     <>

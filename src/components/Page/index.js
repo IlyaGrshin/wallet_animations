@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import PropTypes from "prop-types"
-import WebApp from "@twa-dev/sdk"
+import WebApp from "../../lib/twa"
 
 const { setHeaderColor, setBackgroundColor } = WebApp
 

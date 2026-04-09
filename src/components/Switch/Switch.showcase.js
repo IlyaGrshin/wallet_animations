@@ -5,7 +5,7 @@ import SectionList from "../SectionList"
 import Cell from "../Cells"
 import Switch from "../Switch"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const SwitchShowcase = () => {
     const [controlled, setControlled] = useState(true)

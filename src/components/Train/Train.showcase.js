@@ -3,7 +3,7 @@ import SectionList from "../SectionList"
 import Text from "../Text"
 import Train from "../Train"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const TrainShowcase = () => (
     <>

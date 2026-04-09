@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from "react"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
-import WebApp from "@twa-dev/sdk"
-import { BackButton } from "@twa-dev/sdk/react"
+import WebApp, { BackButton } from "../../../lib/twa"
 import Page from "../../../components/Page"
 
 import NavigationPanel from "./components/NavigationPanel"

@@ -8,7 +8,7 @@ import InitialsAvatar from "../InitialsAvatar"
 import DropdownMenu from "../DropdownMenu"
 
 import { getAssetIcon } from "../../utils/AssetsMap"
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const CellsShowcase = () => {
     const [switchValue, setSwitchValue] = useState(true)

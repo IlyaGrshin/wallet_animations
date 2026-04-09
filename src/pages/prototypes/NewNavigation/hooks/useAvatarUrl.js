@@ -1,4 +1,4 @@
-import WebApp from "@twa-dev/sdk"
+import WebApp from "../../../../lib/twa"
 import DefaultAvatar from "../../../../icons/avatars/IlyaG.jpg"
 
 export const useAvatarUrl = () => {

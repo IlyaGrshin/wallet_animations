@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { createContext, useEffect, useState } from "react"
-import WebApp from "@twa-dev/sdk"
+import WebApp from "../../lib/twa"
 
 export const AppearanceContext = createContext({
     colorScheme: "light",

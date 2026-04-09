@@ -1,7 +1,7 @@
 import { useState, useRef } from "react"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
-import WebApp from "@twa-dev/sdk"
+import WebApp from "../../../../../lib/twa"
 
 import * as styles from "./Assets.module.scss"
 import SectionList from "../../../../../components/SectionList"

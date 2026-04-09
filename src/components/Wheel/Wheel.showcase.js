@@ -7,7 +7,7 @@ import SectionList from "../SectionList"
 import Wheel from "../Wheel"
 import Cell from "../Cells"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 const WheelPage = () => {
     const [wheelValue, setWheelValue] = useState(20)

@@ -2,7 +2,7 @@ import Page from "../Page"
 import SectionList from "../SectionList"
 import TabBar from "../TabBar"
 
-import { BackButton } from "@twa-dev/sdk/react"
+import { BackButton } from "../../lib/twa"
 
 import WalletIcon from "../../icons/tabbar/Wallet.svg?react"
 import ChartlineIcon from "../../icons/tabbar/Chartline.svg?react"

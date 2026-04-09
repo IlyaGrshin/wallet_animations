@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import { useState, useEffect } from "react"
 import { motion } from "motion/react"
-import WebApp from "@twa-dev/sdk"
+import WebApp from "../../../../../lib/twa"
 
 import { useColorScheme } from "../../../../../hooks/useColorScheme"
 import { blendColors } from "../../../../../utils/common"
