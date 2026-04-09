@@ -1,4 +1,8 @@
 body.material {
+    [variant] {
+        color: var(--tg-theme-text-color);
+    }
+
     [variant="headline5"] {
         font-size: 24px;
         line-height: 28px;

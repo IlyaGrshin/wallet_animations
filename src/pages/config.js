@@ -6,47 +6,124 @@ const config = [
         pages: [
             {
                 title: "Cell",
-                slug: "cell",
                 component: lazy(
                     () => import("../components/Cells/Cells.showcase")
                 ),
             },
             {
                 title: "Navigation Bar",
-                slug: "navigation-bar",
                 component: lazy(() => import("./showcases/NavigationBar")),
             },
             {
                 title: "Bottom Bar",
-                slug: "bottom-bar",
                 component: lazy(() => import("./showcases/BottomBar")),
             },
             {
-                title: "Input Page",
-                slug: "input-page",
-                component: lazy(
-                    () => import("../components/TextField/TextField.showcase")
-                ),
-            },
-            {
                 title: "Picker",
-                slug: "picker",
                 component: lazy(
                     () => import("../components/Picker/Picker.showcase")
                 ),
             },
             {
                 title: "Wheel",
-                slug: "wheel",
                 component: lazy(
                     () => import("../components/Wheel/Wheel.showcase")
                 ),
             },
             {
                 title: "Modal Pages",
-                slug: "modal-pages",
                 component: lazy(
                     () => import("../components/ModalView/ModalView.showcase")
+                ),
+            },
+            {
+                title: "Spinner",
+                component: lazy(
+                    () => import("../components/Spinner/Spinner.showcase")
+                ),
+            },
+            {
+                title: "Train",
+                component: lazy(
+                    () => import("../components/Train/Train.showcase")
+                ),
+            },
+            {
+                title: "Start View",
+                component: lazy(
+                    () => import("../components/StartView/StartView.showcase")
+                ),
+            },
+            {
+                title: "Section List",
+                component: lazy(
+                    () =>
+                        import("../components/SectionList/SectionList.showcase")
+                ),
+            },
+            {
+                title: "Image Avatar",
+                component: lazy(
+                    () =>
+                        import("../components/ImageAvatar/ImageAvatar.showcase")
+                ),
+            },
+            {
+                title: "Initials Avatar",
+                component: lazy(
+                    () =>
+                        import("../components/InitialsAvatar/InitialsAvatar.showcase")
+                ),
+            },
+            {
+                title: "Switch",
+                component: lazy(
+                    () => import("../components/Switch/Switch.showcase")
+                ),
+            },
+            {
+                title: "Collapsible",
+                component: lazy(
+                    () =>
+                        import("../components/Collapsible/Collapsible.showcase")
+                ),
+            },
+            {
+                title: "Button",
+                component: lazy(
+                    () => import("../components/Button/Button.showcase")
+                ),
+            },
+            {
+                title: "Segmented Control",
+                component: lazy(
+                    () =>
+                        import("../components/SegmentedControl/SegmentedControl.showcase")
+                ),
+            },
+            {
+                title: "Dropdown Menu",
+                component: lazy(
+                    () =>
+                        import("../components/DropdownMenu/DropdownMenu.showcase")
+                ),
+            },
+            {
+                title: "Text",
+                component: lazy(
+                    () => import("../components/Text/Text.showcase")
+                ),
+            },
+            {
+                title: "Gallery",
+                component: lazy(
+                    () => import("../components/Gallery/Gallery.showcase")
+                ),
+            },
+            {
+                title: "TabBar",
+                component: lazy(
+                    () => import("../components/TabBar/TabBar.showcase")
                 ),
             },
         ],
@@ -55,24 +132,26 @@ const config = [
         category: "Prototypes",
         pages: [
             {
+                title: "Input Page",
+                component: lazy(
+                    () => import("../components/TextField/TextField.showcase")
+                ),
+            },
+            {
                 title: "Navigation",
-                slug: "navigation",
                 component: lazy(() => import("./prototypes/NewNavigation")),
                 routeSuffix: "/:rest*?",
             },
             {
                 title: "Color Asset Page",
-                slug: "color-asset-page",
                 component: lazy(() => import("./prototypes/ColorAssetPage")),
             },
             {
                 title: "Onboarding",
-                slug: "onboarding",
                 component: lazy(() => import("./prototypes/Onboarding")),
             },
             {
                 title: "Background Tests",
-                slug: "background-tests",
                 component: lazy(() => import("./prototypes/ColorChanging")),
             },
         ],

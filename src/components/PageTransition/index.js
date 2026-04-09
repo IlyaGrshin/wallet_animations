@@ -3,28 +3,19 @@ import { motion, AnimatePresence } from "motion/react"
 import { useLocation } from "wouter"
 import { EASING } from "../../utils/animations"
 
+const variants = {
+    initial: { opacity: 0, scale: 1.006 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 1.01 },
+}
+
+const transition = {
+    duration: 0.3,
+    ease: EASING.MATERIAL_STANDARD,
+}
+
 const PageTransition = ({ children }) => {
     const [location] = useLocation()
-
-    const variants = {
-        initial: {
-            opacity: 0,
-            scale: 1.006,
-        },
-        animate: {
-            opacity: 1,
-            scale: 1,
-        },
-        exit: {
-            opacity: 0,
-            scale: 1.01,
-        },
-    }
-
-    const transition = {
-        duration: 0.3,
-        ease: EASING.MATERIAL_STANDARD,
-    }
 
     return (
         <div
