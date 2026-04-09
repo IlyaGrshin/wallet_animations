@@ -1,11 +1,11 @@
 import { useState } from "react"
 
-import * as styles from "./WheelPage.module.scss"
+import * as styles from "./Wheel.showcase.module.scss"
 
-import Page from "../../../components/Page"
-import SectionList from "../../../components/SectionList"
-import Wheel from "../../../components/Wheel"
-import Cell from "../../../components/Cells"
+import Page from "../Page"
+import SectionList from "../SectionList"
+import Wheel from "../Wheel"
+import Cell from "../Cells"
 
 import { BackButton } from "@twa-dev/sdk/react"
 

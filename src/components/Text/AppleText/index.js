@@ -1,4 +1,4 @@
-import { createElement } from "react"
+import { createElement, Suspense } from "react"
 import PropTypes from "prop-types"
 import { getChevronRight } from "./ChevronRight"
 import { getArrow } from "./Arrow"
@@ -37,17 +37,23 @@ const AppleText = ({
             data-has-chevron={!!ChevronIconComponent}
             data-has-arrow={!!ArrowIconComponent}
         >
-            {ArrowIconComponent &&
-                createElement(ArrowIconComponent, {
-                    className: "arrow-icon",
-                    fill: "currentColor",
-                })}
+            {ArrowIconComponent && (
+                <Suspense>
+                    {createElement(ArrowIconComponent, {
+                        className: "arrow-icon",
+                        fill: "currentColor",
+                    })}
+                </Suspense>
+            )}
             {children}
-            {ChevronIconComponent &&
-                createElement(ChevronIconComponent, {
-                    className: "chevron-icon",
-                    fill: "currentColor",
-                })}
+            {ChevronIconComponent && (
+                <Suspense>
+                    {createElement(ChevronIconComponent, {
+                        className: "chevron-icon",
+                        fill: "currentColor",
+                    })}
+                </Suspense>
+            )}
         </Component>
     )
 }

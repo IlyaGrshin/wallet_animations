@@ -6,17 +6,29 @@ import SpinnerIcon from "../../images/spinner.svg?react"
 
 import * as styles from "./Spinner.module.scss"
 
-const Spinner = (props) => {
+const Spinner = ({ centered, className, size, ...rest }) => {
     const Icon = useApple ? SpinnerAppleIcon : SpinnerIcon
 
-    const combinedClassName = [styles.spinner, props.className]
+    const combinedClassName = [styles.spinner, className]
         .filter(Boolean)
         .join(" ")
 
-    return <Icon {...props} className={combinedClassName} />
+    const sizeStyle = size ? { width: size, height: size } : undefined
+
+    const icon = (
+        <Icon {...rest} className={combinedClassName} style={sizeStyle} />
+    )
+
+    if (centered) {
+        return <div className={styles.centered}>{icon}</div>
+    }
+
+    return icon
 }
 
 Spinner.propTypes = {
+    centered: PropTypes.bool,
     className: PropTypes.string,
+    size: PropTypes.number,
 }
 export default Spinner

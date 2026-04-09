@@ -1,14 +1,14 @@
 import PropTypes from "prop-types"
 
-import ModalView from "../../../../components/ModalView"
-import PanelHeader from "../../../../components/PanelHeader"
-import SectionList from "../../../../components/SectionList"
-import Cell from "../../../../components/Cells"
-import ImageAvatar from "../../../../components/ImageAvatar"
+import ModalView from "../../ModalView"
+import PanelHeader from "../../PanelHeader"
+import SectionList from "../../SectionList"
+import Cell from "../../Cells"
+import ImageAvatar from "../../ImageAvatar"
 
-import { getAssetIcon } from "../../../../utils/AssetsMap"
+import { getAssetIcon } from "../../../utils/AssetsMap"
 import { MainButton } from "@twa-dev/sdk/react"
-import InitialsAvatar from "../../../../components/InitialsAvatar"
+import InitialsAvatar from "../../InitialsAvatar"
 
 const Modals = ({ modals, handlers }) => {
     return (

@@ -2,7 +2,7 @@ import { TRANSITIONS } from "../../../utils/animations"
 import Wallet from "../Wallet"
 import TONWallet from "../TS"
 import Trading from "../Trading"
-import History from "../History"
+import History from "./History"
 
 import WalletIcon from "../../../icons/tabbar/Wallet.svg?react"
 import TradeIcon from "../../../icons/tabbar/Chartline.svg?react"

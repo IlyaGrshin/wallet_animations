@@ -2,16 +2,16 @@ import { motion } from "motion/react"
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"
 
-import Page from "../../../components/Page"
-import TextField from "../../../components/TextField"
-import GlassContainer from "../../../components/GlassEffect"
-import GradientBackground from "../../../components/GradientBackground"
+import Page from "../Page"
+import TextField from "../TextField"
+import GlassContainer from "../GlassEffect"
+import GradientBackground from "../GradientBackground"
 
-import patternSvg from "../../../images/pattern.svg"
-import { useColorScheme } from "../../../hooks/useColorScheme"
+import patternSvg from "../../images/pattern.svg"
+import { useColorScheme } from "../../hooks/useColorScheme"
 import { useViewportHeight } from "./useViewportHeight"
 import { usePreventScroll } from "./usePreventScroll"
-import * as styles from "./InputPage.module.scss"
+import * as styles from "./TextField.showcase.module.scss"
 
 function InputPage() {
     const viewportHeight = useViewportHeight()

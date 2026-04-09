@@ -1,11 +1,11 @@
 import { useState } from "react"
 
-import * as styles from "./PickerPage.module.scss"
+import * as styles from "./Picker.showcase.module.scss"
 
-import Page from "../../../components/Page"
-import SectionList from "../../../components/SectionList"
-import Picker from "../../../components/Picker"
-import Cell from "../../../components/Cells"
+import Page from "../Page"
+import SectionList from "../SectionList"
+import Picker from "../Picker"
+import Cell from "../Cells"
 
 import WebApp from "@twa-dev/sdk"
 import { BackButton } from "@twa-dev/sdk/react"

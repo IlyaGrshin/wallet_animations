@@ -1,10 +1,10 @@
 import { Suspense, lazy } from "react"
 
-import Page from "../../../components/Page"
-import SectionList from "../../../components/SectionList"
-import Cell from "../../../components/Cells"
+import Page from "../Page"
+import SectionList from "../SectionList"
+import Cell from "../Cells"
 
-import useModal from "../../../hooks/useModal"
+import useModal from "../../hooks/useModal"
 const Modals = lazy(() => import("./Modals"))
 
 import { BackButton } from "@twa-dev/sdk/react"

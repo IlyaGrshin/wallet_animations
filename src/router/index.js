@@ -1,24 +1,16 @@
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
 import PropTypes from "prop-types"
 import { Router, Switch, Route } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
 import { useLocation } from "wouter"
 import PageTransition from "../components/PageTransition"
+import Spinner from "../components/Spinner"
 
-import UI from "../pages/UI"
-import Wallet from "../pages/prototypes/Wallet"
-import TONWallet from "../pages/prototypes/TS"
-import Onboarding from "../pages/prototypes/Onboarding"
-import NewNavigation from "../pages/prototypes/NewNavigation"
-import ColorChanging from "../pages/prototypes/ColorChanging"
-import TextPage from "../pages/prototypes/TextPage"
-import Picker from "../pages/prototypes/Picker"
-import Wheel from "../pages/prototypes/Wheel"
-import ModalPages from "../pages/prototypes/ModalPages"
-import ColorAssetPage from "../pages/prototypes/ColorAssetPage"
-import NavigationBar from "../pages/components/NavigationBar"
-import BottomBar from "../pages/components/BottomBar"
-import InputPage from "../pages/prototypes/InputPage"
+import config from "../pages/config"
+import { flattenRoutes } from "../pages/configHelpers"
+import CatalogPage from "../pages/CatalogPage"
+
+const routes = flattenRoutes(config)
 
 function Redirect({ to }) {
     const [, navigate] = useLocation()
@@ -34,20 +26,14 @@ Redirect.propTypes = {
 
 const Routes = () => (
     <Switch>
-        <Route path="/" component={UI} />
-        <Route path="/wallet" component={Wallet} />
-        <Route path="/tonwallet" component={TONWallet} />
-        <Route path="/onboarding" component={Onboarding} />
-        <Route path="/newnavigation" component={NewNavigation} />
-        <Route path="/colorchanging" component={ColorChanging} />
-        <Route path="/textpage" component={TextPage} />
-        <Route path="/picker" component={Picker} />
-        <Route path="/wheel" component={Wheel} />
-        <Route path="/modalpages" component={ModalPages} />
-        <Route path="/colorassetpage" component={ColorAssetPage} />
-        <Route path="/components/header" component={NavigationBar} />
-        <Route path="/components/bottombar" component={BottomBar} />
-        <Route path="/inputpage" component={InputPage} />
+        <Route path="/" component={CatalogPage} />
+        {routes.map(({ path, component: Component }) => (
+            <Route key={path} path={path}>
+                <Suspense fallback={<Spinner centered size={48} />}>
+                    <Component />
+                </Suspense>
+            </Route>
+        ))}
         <Route>
             <Redirect to="/" />
         </Route>
