@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import PropTypes from "prop-types"
-import NumberFlow, { continuous } from "@number-flow/react"
+import { Calligraph } from "calligraph"
 import { Spoiler } from "spoiled"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -8,7 +8,6 @@ import { AnimatePresence } from "motion/react"
 import Train from "../../../../../components/Train"
 import Text from "../../../../../components/Text"
 import { generateRandomBalance } from "../../../../../utils/number"
-import { DURATION, COMPLEX_EASING } from "../../../../../utils/animations"
 
 import * as styles from "./BalanceCard.module.scss"
 
@@ -95,20 +94,10 @@ export default function BalanceCard({
                     hidden={hidden}
                     onClick={() => setHidden((s) => !s)}
                 >
-                    <NumberFlow
-                        value={balance}
-                        prefix="$"
-                        willChange
-                        plugins={[continuous]}
-                        style={{ color: "inherit" }}
-                        spinTiming={{
-                            duration: DURATION.BALANCE_ANIMATION,
-                            easing: COMPLEX_EASING,
-                        }}
-                        opacityTiming={{
-                            duration: DURATION.OPACITY,
-                        }}
-                    />
+                    <span className={styles.prefix}>$</span>
+                    <Calligraph variant="number" animation="smooth">
+                        {balance}
+                    </Calligraph>
                 </Spoiler>
                 <Train
                     divider="space"

@@ -1,9 +1,8 @@
 import PropTypes from "prop-types"
 import { motion } from "motion/react"
-import NumberFlow from "@number-flow/react"
+import { Calligraph } from "calligraph"
 import * as styles from "./Wheel.module.scss"
 
-import { DURATION } from "../../utils/animations"
 import useHorizontalDrag from "./useHorizontalDrag"
 import useWheelSnap from "./useWheelSnap"
 
@@ -29,7 +28,6 @@ const Wheel = ({
 
     const {
         currentValue,
-        shouldAnimate,
         x,
         handleDrag,
         handleDragEnd,
@@ -89,23 +87,15 @@ const Wheel = ({
             </div>
 
             <div className={styles.currentValue}>
-                <NumberFlow
-                    value={currentValue}
-                    format={{ notation: "standard" }}
-                    prefix={prefix}
-                    suffix={suffix}
-                    animated={shouldAnimate}
-                    willChange
+                {prefix}
+                <Calligraph
+                    variant="number"
+                    animation="snappy"
                     style={{ color: "inherit", fontSize: "inherit" }}
-                    spinTiming={{
-                        duration: DURATION.FAST,
-                        easing: "ease-out",
-                    }}
-                    opacityTiming={{
-                        duration: DURATION.FAST / 2,
-                        easing: "ease-out",
-                    }}
-                />
+                >
+                    {currentValue}
+                </Calligraph>
+                {suffix}
             </div>
 
             <div

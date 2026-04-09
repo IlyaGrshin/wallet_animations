@@ -1,7 +1,3 @@
-:root {
-    --number-flow-mask-height: 0.05em;
-}
-
 // Базовые стили карточки
 .card {
     z-index: 1;
@@ -24,10 +20,10 @@
     font-size: 48px;
     font-weight: 700;
     font-variant-numeric: lining-nums tabular-nums;
+}
 
-    number-flow-react::part(prefix) {
-        color: var(--tg-theme-subtitle-text-color);
-    }
+.prefix {
+    color: var(--tg-theme-subtitle-text-color);
 }
 
 .cardOverlay .amount span {
@@ -73,15 +69,7 @@
         color: rgb(255 255 255 / 55%);
     }
 
-    // NumberFlow использует Shadow DOM, нужен ::part для стилизации
-    .amount :global(number-flow-react)::part(integer),
-    .amount :global(number-flow-react)::part(fraction),
-    .amount :global(number-flow-react)::part(suffix) {
-        color: #FFF;
-    }
-
-    // Prefix ($) — приглушённый цвет, как subtitle
-    .amount :global(number-flow-react)::part(prefix) {
+    .prefix {
         color: rgb(255 255 255 / 55%);
     }
 

@@ -9,7 +9,7 @@
   "homepage": ".",
   "dependencies": {
     "@babel/runtime": "^7.28.4",
-    "@number-flow/react": "^0.5.10",
+    "calligraph": "^1.4.1",
     "colorthief": "^3.3.1",
     "core-js": "^3.47.0",
     "lottie-react": "^2.4.1",
