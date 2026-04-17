@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import PropTypes from "prop-types"
-import WebApp from "./index"
+import WebApp from "./webApp"
 
 const defaultColor = WebApp.themeParams.bottom_bar_bg_color
 

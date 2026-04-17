@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import WebApp from "./index"
+import WebApp from "./webApp"
 
 const { button_color, button_text_color, bottom_bar_bg_color } =
     WebApp.themeParams
