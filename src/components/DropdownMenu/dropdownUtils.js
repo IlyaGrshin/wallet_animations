@@ -1,24 +1,54 @@
-import { useEffect, useLayoutEffect, useState } from "react"
+import {
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react"
 
 export const DROPDOWN_WIDTH = 250
 export const DROPDOWN_OFFSET = 24
 export const GAP = 1
+export const VIEWPORT_PADDING = 8
 
-const calculatePosition = (buttonRect, dropdownRect) => {
-    const viewportHeight = window.innerHeight
-    const spaceBelow = viewportHeight - buttonRect.bottom
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
+
+const calculatePosition = (buttonRect, dropdownSize) => {
+    const { innerHeight, innerWidth } = window
+    const spaceBelow = innerHeight - buttonRect.bottom
     const spaceAbove = buttonRect.top
 
     const openUpwards =
-        spaceBelow < dropdownRect.height && spaceAbove > spaceBelow
+        spaceBelow < dropdownSize.height && spaceAbove > spaceBelow
 
-    return {
-        top: openUpwards
-            ? buttonRect.top - dropdownRect.height - GAP
-            : buttonRect.bottom + GAP,
-        left: buttonRect.right - dropdownRect.width + DROPDOWN_OFFSET,
-        openUpwards,
-    }
+    const rawLeft = buttonRect.right - dropdownSize.width + DROPDOWN_OFFSET
+    const left = clamp(
+        rawLeft,
+        VIEWPORT_PADDING,
+        Math.max(
+            VIEWPORT_PADDING,
+            innerWidth - dropdownSize.width - VIEWPORT_PADDING
+        )
+    )
+
+    const rawTop = openUpwards
+        ? buttonRect.top - dropdownSize.height - GAP
+        : buttonRect.bottom + GAP
+    const top = clamp(
+        rawTop,
+        VIEWPORT_PADDING,
+        Math.max(
+            VIEWPORT_PADDING,
+            innerHeight - dropdownSize.height - VIEWPORT_PADDING
+        )
+    )
+
+    const buttonCenterX = buttonRect.left + buttonRect.width / 2
+    const originXPx = clamp(buttonCenterX - left, 0, dropdownSize.width)
+    const originX = `${(originXPx / dropdownSize.width) * 100}%`
+    const originY = openUpwards ? "100%" : "0%"
+
+    return { top, left, openUpwards, originX, originY }
 }
 
 export const useDropdownPosition = (isOpen, buttonRef, dropdownRef) => {
@@ -26,51 +56,74 @@ export const useDropdownPosition = (isOpen, buttonRef, dropdownRef) => {
         top: 0,
         left: 0,
         openUpwards: false,
+        originX: "100%",
+        originY: "0%",
     })
     const [isPositioned, setIsPositioned] = useState(false)
+    const dropdownSizeRef = useRef(null)
+
+    const resetPosition = useCallback(() => {
+        setIsPositioned(false)
+        dropdownSizeRef.current = null
+    }, [])
 
     useLayoutEffect(() => {
-        if (!isOpen || !buttonRef.current || isPositioned) return
+        if (!isOpen || isPositioned) return
+        if (!buttonRef.current || !dropdownRef.current) return
 
         const buttonRect = buttonRef.current.getBoundingClientRect()
-
-        if (!dropdownRef.current) {
-            setPosition({
-                top: buttonRect.bottom + GAP,
-                left: buttonRect.right - DROPDOWN_WIDTH,
-                openUpwards: false,
-            })
-            return
-        }
-
-        const dropdownRect = dropdownRef.current.getBoundingClientRect()
-        setPosition(calculatePosition(buttonRect, dropdownRect))
+        const { width, height } = dropdownRef.current.getBoundingClientRect()
+        dropdownSizeRef.current = { width, height }
+        setPosition(calculatePosition(buttonRect, { width, height }))
         setIsPositioned(true)
     }, [isOpen, isPositioned, buttonRef, dropdownRef])
 
-    return {
-        position,
-        isPositioned,
-        resetPosition: () => setIsPositioned(false),
-    }
+    useEffect(() => {
+        if (!isOpen || !isPositioned) return
+
+        let frame = null
+        const reposition = () => {
+            frame = null
+            if (!buttonRef.current || !dropdownSizeRef.current) return
+            const rect = buttonRef.current.getBoundingClientRect()
+            setPosition(calculatePosition(rect, dropdownSizeRef.current))
+        }
+        const schedule = () => {
+            if (frame !== null) return
+            frame = requestAnimationFrame(reposition)
+        }
+
+        window.addEventListener("scroll", schedule, true)
+        window.addEventListener("resize", schedule)
+        return () => {
+            if (frame !== null) cancelAnimationFrame(frame)
+            window.removeEventListener("scroll", schedule, true)
+            window.removeEventListener("resize", schedule)
+        }
+    }, [isOpen, isPositioned, buttonRef])
+
+    return { position, isPositioned, resetPosition }
 }
 
-export const useClickOutside = (isOpen, refs, onClose) => {
+export const useClickOutside = (isOpen, onClose, ...refs) => {
+    const onCloseRef = useRef(onClose)
+    useEffect(() => {
+        onCloseRef.current = onClose
+    })
+
     useEffect(() => {
         if (!isOpen) return
 
         const handleClickOutside = (event) => {
             const isOutside = refs.every(
-                (ref) => ref.current && !ref.current.contains(event.target)
+                (ref) => !ref.current || !ref.current.contains(event.target)
             )
-
-            if (isOutside) {
-                onClose()
-            }
+            if (isOutside) onCloseRef.current()
         }
 
         document.addEventListener("mousedown", handleClickOutside)
         return () =>
             document.removeEventListener("mousedown", handleClickOutside)
-    }, [isOpen, refs, onClose])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen, ...refs])
 }

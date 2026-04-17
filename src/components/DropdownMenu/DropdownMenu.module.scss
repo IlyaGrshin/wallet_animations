@@ -9,10 +9,9 @@
 }
 
 .root {
-    position: absolute;
+    position: relative;
     width: 250px;
     overflow: hidden;
-    z-index: 1000;
 
     .item {
         cursor: pointer;
@@ -23,10 +22,6 @@
             background-color: rgb(120 120 128 / 12%);
             border-radius: 50px;
         }
-
-        /* &.selected {
-            background-color: rgba(120, 120, 128, 0.12);
-        } */
     }
 
     :global(body.material) & {
@@ -43,6 +38,13 @@
     :global(body.apple) & {
         border-radius: 36px;
         padding: 16px;
+        backdrop-filter: saturate(300%) blur(8px);
+        box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+
+        @supports (-apple-visual-effect: -apple-system-glass-material) {
+            -apple-visual-effect: -apple-system-glass-material;
+            backdrop-filter: none;
+        }
 
         .item {
             padding: 9px 8px;
