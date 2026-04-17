@@ -1,5 +1,4 @@
 import Page from "../Page"
-import SectionList from "../SectionList"
 import TabBar from "../TabBar"
 
 import { BackButton } from "../../lib/twa"
@@ -14,17 +13,24 @@ const tabs = [
     { label: "History", icon: <ClockIcon /> },
 ]
 
+const wrapperStyle = {
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    pointerEvents: "none",
+}
+
 const TabBarShowcase = () => (
     <>
         <BackButton />
-        <Page>
-            <SectionList>
-                <SectionList.Item header="TabBar">
-                    <div style={{ position: "relative", height: 80 }}>
-                        <TabBar tabs={tabs} />
-                    </div>
-                </SectionList.Item>
-            </SectionList>
+        <Page backgroundColor="E86A5D" headerColor="E86A5D">
+            <div style={wrapperStyle}>
+                <div style={{ pointerEvents: "auto" }}>
+                    <TabBar tabs={tabs} />
+                </div>
+            </div>
         </Page>
     </>
 )

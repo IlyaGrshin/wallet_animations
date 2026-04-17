@@ -52,7 +52,6 @@ const TabBarOverlay = ({
 
 const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
-    const userInteractedRef = useRef(false)
     const [replayNonce, setReplayNonce] = useState(0)
 
     useEffect(() => {
@@ -60,7 +59,6 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     }, [defaultIndex])
 
     const handleSegmentClick = (index) => {
-        userInteractedRef.current = true
         if (index === activeIndex) {
             setReplayNonce((n) => n + 1)
         } else {
@@ -73,17 +71,18 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
 
     const rootRef = useRef(null)
 
-    const [windowWidth, setWindowWidth] = useState(
-        typeof window !== "undefined" ? window.innerWidth : 0
-    )
+    const [rootWidth, setRootWidth] = useState(0)
 
     useEffect(() => {
-        const update = () => {
-            setWindowWidth(window.innerWidth)
-        }
-        window.addEventListener("resize", update)
-        update()
-        return () => window.removeEventListener("resize", update)
+        const el = rootRef.current
+        if (!el) return
+        const ro = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                setRootWidth(entry.contentRect.width)
+            }
+        })
+        ro.observe(el)
+        return () => ro.disconnect()
     }, [])
 
     const tabsKey = tabs.map((t) => t.label).join("-")
@@ -146,7 +145,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                     key={tabsKey}
                     tabs={tabs}
                     activeIndex={activeIndex}
-                    onChange={onChange}
+                    onChange={handleSegmentClick}
                     onSnapToSame={() => setReplayNonce((n) => n + 1)}
                     playKey={playKey}
                 />
@@ -155,7 +154,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             <Activity mode={useApple ? "visible" : "hidden"}>
                 <GlassContainer />
                 <GradientMask
-                    width={windowWidth - (maskInsets.left + maskInsets.right)}
+                    width={rootWidth}
                     height={64}
                     insets={maskInsets}
                 />

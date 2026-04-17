@@ -24,6 +24,9 @@ function GradientMask({
     const gradId = `grad-${uid}`
     const maskId = `mask-${uid}`
 
+    const overlayPaddingX = Math.max(left, right)
+    const overlayPaddingY = Math.max(top, bottom)
+
     return (
         <svg
             width={overlayWidth}
@@ -32,6 +35,10 @@ function GradientMask({
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
             className={[styles.gradient, className].filter(Boolean).join(" ")}
+            style={{
+                "--overlay-padding-x": `${overlayPaddingX}px`,
+                "--overlay-padding-y": `${overlayPaddingY}px`,
+            }}
             aria-hidden
         >
             <defs>

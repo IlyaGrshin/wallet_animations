@@ -65,14 +65,15 @@
         --mask-color: var(--tg-theme-secondary-bg-color);
         --mask-opacity-top: 0;
         --mask-opacity-bottom: 0.9;
-        --padding: 21px;
+        --overlay-padding-x: 21px;
+        --overlay-padding-y: 21px;
 
         position: absolute;
         inset: 0;
-        width: calc(100% + var(--padding) * 2);
-        height: calc(64px + var(--padding) * 2);
+        width: calc(100% + var(--overlay-padding-x) * 2);
+        height: calc(64px + var(--overlay-padding-y) * 2);
         z-index: 0;
-        margin: calc(var(--padding) * -1);
+        margin: calc(var(--overlay-padding-y) * -1) calc(var(--overlay-padding-x) * -1);
     }
 
     .activeIndicator {
@@ -125,6 +126,8 @@
             color: var(--active-color) !important;
         }
 
+        svg,
+        path,
         :global(.wallet-lottie_fill-color) path {
             fill: var(--active-color) !important;
         }

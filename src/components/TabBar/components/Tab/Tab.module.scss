@@ -63,10 +63,5 @@
     :global(body.apple) & {
         opacity: 1;
         border-radius: 100px;
-
-        svg,
-        path {
-            fill: var(--tg-theme-accent-text-color);
-        }
     }
 }
