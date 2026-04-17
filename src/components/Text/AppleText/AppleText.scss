@@ -23,6 +23,11 @@ body.apple {
         line-height: 22px;
     }
     
+    [variant="subheadline1"] {
+        font-size: 15px;
+        line-height: 20px;
+    }
+
     [variant="subheadline2"] {
         font-size: 14px;
         line-height: 18px;
@@ -78,6 +83,7 @@ body.apple {
             }
         }
 
+        &[variant="subheadline1"],
         &[variant="subheadline2"],
         &[variant="footnote"],
         &[variant="caption1"],

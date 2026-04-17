@@ -127,6 +127,12 @@ const config = [
                 ),
             },
             {
+                title: "Tabs",
+                component: lazy(
+                    () => import("../components/Tabs/Tabs.showcase")
+                ),
+            },
+            {
                 title: "Snackbar",
                 component: lazy(
                     () => import("../components/Snackbar/Snackbar.showcase")

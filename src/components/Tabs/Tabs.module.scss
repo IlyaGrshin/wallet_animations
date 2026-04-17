@@ -1,0 +1,129 @@
+.list {
+    --tabs-side-padding: 16px;
+
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+    min-width: 0;
+    padding: 16px var(--tabs-side-padding) 8px;
+    margin: 0;
+    list-style: none;
+    touch-action: pan-x;
+
+    &.scrollable {
+        overflow: auto hidden;
+        scroll-padding-inline: var(--tabs-side-padding);
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        mask-image: linear-gradient(
+            to right,
+            transparent 0,
+            #000 var(--tabs-side-padding),
+            #000 calc(100% - var(--tabs-side-padding)),
+            transparent 100%
+        );
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    &:not(.scrollable) {
+        overflow: hidden;
+    }
+
+    &.compact {
+        padding: 12px var(--tabs-side-padding) 6px;
+    }
+
+    &.glassList {
+        --tabs-side-padding: 12px;
+
+        align-items: center;
+        padding: 0;
+        border-radius: inherit;
+
+        &.scrollable {
+            mask-image: none;
+        }
+
+        &:not(.scrollable) {
+            overflow: hidden;
+        }
+    }
+}
+
+.glassRoot {
+    position: relative;
+    isolation: isolate;
+    padding: 3px;
+    border-radius: 100px;
+    border: 0.67px solid rgb(0 0 0 / 8%);
+}
+
+.tab {
+    position: relative;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    background: transparent;
+    border: 0;
+    border-radius: 16px;
+    cursor: pointer;
+    color: var(--tg-theme-subtitle-text-color);
+    transition: color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--tg-theme-accent-text-color);
+        outline-offset: 2px;
+    }
+
+    &.active {
+        color: var(--tg-theme-accent-text-color);
+    }
+}
+
+.compact .tab {
+    padding: 4px 10px;
+    border-radius: 14px;
+}
+
+.glassList .tab {
+    padding: 7px 14px;
+    border-radius: 18px;
+    z-index: 3;
+    color: var(--tg-theme-text-color);
+
+    &.active {
+        color: var(--tg-theme-text-color);
+    }
+}
+
+.glassList .indicator {
+    background-color: var(--tertiary-fill-background);
+    border-radius: inherit;
+}
+
+.indicator {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(from var(--tg-theme-accent-text-color) r g b / 10%);
+    border-radius: inherit;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.label {
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+}
