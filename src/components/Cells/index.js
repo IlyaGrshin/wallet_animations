@@ -45,21 +45,23 @@ const CellStart = ({ type, src = null, iconType = null }) => {
 
 const CellEnd = ({ label, caption }) => (
     <>
-        <Text
-            apple={{ variant: "body", weight: "regular" }}
-            material={{ variant: "body1", weight: "regular" }}
-            className={styles.label}
-        >
-            {label}
-        </Text>
-        {caption && (
+        <div className={styles.label}>
             <Text
-                apple={{ variant: "subheadline2", weight: "regular" }}
-                material={{ variant: "subtitle2", weight: "regular" }}
-                className={styles.caption}
+                apple={{ variant: "body", weight: "regular" }}
+                material={{ variant: "body1", weight: "regular" }}
             >
-                {caption}
+                {label}
             </Text>
+        </div>
+        {caption && (
+            <div className={styles.caption}>
+                <Text
+                    apple={{ variant: "subheadline2", weight: "regular" }}
+                    material={{ variant: "subtitle2", weight: "regular" }}
+                >
+                    {caption}
+                </Text>
+            </div>
         )}
     </>
 )
