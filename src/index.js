@@ -5,6 +5,7 @@ import App from "./App"
 import AppearanceProvider from "./hooks/AppearanceProvider"
 import DeviceProvider from "./hooks/DeviceProvider"
 import MotionProvider from "./components/MotionProvider"
+import { SnackbarProvider } from "./components/Snackbar"
 
 const root = createRoot(document.getElementById("root"))
 root.render(
@@ -12,7 +13,9 @@ root.render(
         <MotionProvider>
             <DeviceProvider />
             <AppearanceProvider>
-                <App />
+                <SnackbarProvider>
+                    <App />
+                </SnackbarProvider>
             </AppearanceProvider>
         </MotionProvider>
     </StrictMode>

@@ -126,6 +126,12 @@ const config = [
                     () => import("../components/TabBar/TabBar.showcase")
                 ),
             },
+            {
+                title: "Snackbar",
+                component: lazy(
+                    () => import("../components/Snackbar/Snackbar.showcase")
+                ),
+            },
         ],
     },
     {

@@ -1,0 +1,140 @@
+.root {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 16px;
+    border-radius: 26px;
+    background: var(--toast-background);
+    backdrop-filter: blur(25px);
+    color: var(--toast-text);
+
+    :global(body.material) & {
+        padding: 10px 16px;
+    }
+}
+
+.icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
+    color: var(--toast-text);
+
+    svg {
+        display: block;
+        width: 28px;
+        height: 28px;
+    }
+
+    svg path {
+        fill: currentcolor;
+    }
+
+    :global(body.material) & {
+        margin-right: 10px;
+    }
+}
+
+.content {
+    flex: 1 0 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: var(--toast-text);
+
+    :global(body.material) & {
+        gap: 2px;
+    }
+}
+
+.title,
+.description {
+    margin: 0;
+    color: var(--toast-text);
+}
+
+%trigger {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    color: var(--toast-link);
+    cursor: pointer;
+    touch-action: manipulation;
+
+    &:focus-visible {
+        outline: 2px solid var(--toast-link);
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+}
+
+.link {
+    @extend %trigger;
+
+    text-align: left;
+}
+
+.action {
+    @extend %trigger;
+
+    flex-shrink: 0;
+    margin-left: 12px;
+    white-space: nowrap;
+
+    :global(body.material) & {
+        margin-left: 10px;
+    }
+}
+
+.host {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 9000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    pointer-events: none;
+}
+
+.host_top {
+    top: calc(env(safe-area-inset-top) + 12px);
+}
+
+.host_bottom {
+    bottom: calc(env(safe-area-inset-bottom) + 12px);
+    flex-direction: column-reverse;
+}
+
+.item {
+    pointer-events: auto;
+    width: 100%;
+    border-radius: 26px;
+    background: var(--toast-background);
+    backdrop-filter: blur(25px);
+    touch-action: pan-y;
+    cursor: grab;
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    > .root {
+        background: transparent;
+        backdrop-filter: none;
+    }
+
+    :global(body.material) & {
+        border-radius: 28px;
+        backdrop-filter: none;
+    }
+}

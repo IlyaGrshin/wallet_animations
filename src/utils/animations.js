@@ -39,6 +39,11 @@ export const SPRING = {
         stiffness: 500,
         damping: 40,
     },
+    SNACKBAR: {
+        type: "spring",
+        stiffness: 280,
+        damping: 26,
+    },
 }
 
 export const TRANSITIONS = {

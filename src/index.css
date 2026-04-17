@@ -43,6 +43,14 @@
     --background-material-regular-color-2: rgb(255 255 255 / 0.6);
     --background-material-regular-blend-mode-1: plus-lighter;
     --background-material-regular-blend-mode-2: normal;
+    --toast-background: rgb(45 45 45 / 0.8);
+    --toast-text: #FFFFFF;
+    --toast-link: #5AC8FA;
+}
+
+body.material {
+    --toast-background: rgb(40 48 57 / 0.92);
+    --toast-link: #85CAFF;
 }
 
 @media (prefers-color-scheme: dark) {
