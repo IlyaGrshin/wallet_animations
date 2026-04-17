@@ -11,14 +11,6 @@ const config = [
                 ),
             },
             {
-                title: "Navigation Bar",
-                component: lazy(() => import("./showcases/NavigationBar")),
-            },
-            {
-                title: "Bottom Bar",
-                component: lazy(() => import("./showcases/BottomBar")),
-            },
-            {
                 title: "Picker",
                 component: lazy(
                     () => import("../components/Picker/Picker.showcase")
@@ -137,6 +129,19 @@ const config = [
                 component: lazy(
                     () => import("../components/Snackbar/Snackbar.showcase")
                 ),
+            },
+        ],
+    },
+    {
+        category: "Telegram",
+        pages: [
+            {
+                title: "Navigation Bar",
+                component: lazy(() => import("./showcases/NavigationBar")),
+            },
+            {
+                title: "Bottom Bar",
+                component: lazy(() => import("./showcases/BottomBar")),
             },
         ],
     },

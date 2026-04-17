@@ -1,5 +1,6 @@
 const PREFIX_MAP = {
     Components: "showcase",
+    Telegram: "telegram",
     Prototypes: "prototype",
 }
 
