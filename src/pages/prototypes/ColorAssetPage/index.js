@@ -28,13 +28,14 @@ function Banner({ name }) {
     const BannerText = `Currently, ${name} can only be purchased, held and sold within Crypto Wallet. It is not possible to transfer, receive or withdraw ${name} externally.`
     return (
         <div className={styles.bannerContainer}>
-            <Text
-                apple={{ variant: "subheadline2" }}
-                material={{ variant: "subtitle2" }}
-                className={styles.banner}
-            >
-                {BannerText}
-            </Text>
+            <div className={styles.banner}>
+                <Text
+                    apple={{ variant: "subheadline2" }}
+                    material={{ variant: "subtitle2" }}
+                >
+                    {BannerText}
+                </Text>
+            </div>
         </div>
     )
 }
