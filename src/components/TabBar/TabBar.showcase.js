@@ -1,17 +1,26 @@
+import { useState } from "react"
+
 import Page from "../Page"
 import TabBar from "../TabBar"
+import SectionList from "../SectionList"
+import Cell from "../Cells"
+import Picker from "../Picker"
 
 import { BackButton } from "../../lib/twa"
 
 import WalletIcon from "../../icons/tabbar/Wallet.svg?react"
 import ChartlineIcon from "../../icons/tabbar/Chartline.svg?react"
 import ClockIcon from "../../icons/tabbar/Clock.svg?react"
+import MagnifyIcon from "../../icons/tabbar/Magnify.svg?react"
 
-const tabs = [
+const allTabs = [
     { label: "Wallet", icon: <WalletIcon /> },
     { label: "Trade", icon: <ChartlineIcon /> },
     { label: "History", icon: <ClockIcon /> },
+    { label: "Search", icon: <MagnifyIcon /> },
 ]
+
+const tabCounts = ["2", "3", "4"]
 
 const wrapperStyle = {
     position: "fixed",
@@ -22,17 +31,40 @@ const wrapperStyle = {
     pointerEvents: "none",
 }
 
-const TabBarShowcase = () => (
-    <>
-        <BackButton />
-        <Page backgroundColor="E86A5D" headerColor="E86A5D">
-            <div style={wrapperStyle}>
-                <div style={{ pointerEvents: "auto" }}>
-                    <TabBar tabs={tabs} />
+const TabBarShowcase = () => {
+    const [pickerIndex, setPickerIndex] = useState(0)
+    const count = parseInt(tabCounts[pickerIndex], 10)
+    const tabs = allTabs.slice(0, count)
+
+    return (
+        <>
+            <BackButton />
+            <Page>
+                <SectionList>
+                    <SectionList.Item>
+                        <Cell
+                            end={
+                                <Cell.Part type="Picker">
+                                    {tabCounts[pickerIndex]}
+                                </Cell.Part>
+                            }
+                        >
+                            <Cell.Text title="Number of tabs" />
+                        </Cell>
+                        <Picker
+                            items={tabCounts}
+                            onPickerIndex={setPickerIndex}
+                        />
+                    </SectionList.Item>
+                </SectionList>
+                <div style={wrapperStyle}>
+                    <div style={{ pointerEvents: "auto" }}>
+                        <TabBar tabs={tabs} />
+                    </div>
                 </div>
-            </div>
-        </Page>
-    </>
-)
+            </Page>
+        </>
+    )
+}
 
 export default TabBarShowcase

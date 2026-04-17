@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, Activity } from "react"
 import PropTypes from "prop-types"
-import { motion, AnimatePresence } from "motion/react"
+import { motion } from "motion/react"
 import { useApple } from "../../hooks/DeviceProvider"
 import { GlassBorder } from "../GlassEffect"
 import * as styles from "./TabBar.module.scss"
@@ -30,7 +30,6 @@ const TabBarOverlay = ({
             {...handlers}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, ...animate }}
-            exit={{ opacity: 0 }}
             transition={{
                 default: { duration: 0.2 },
                 clipPath: transition.clipPath,
@@ -58,6 +57,10 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
         setActiveIndex(defaultIndex)
     }, [defaultIndex])
 
+    useEffect(() => {
+        setActiveIndex((prev) => Math.min(prev, tabs.length - 1))
+    }, [tabs.length])
+
     const handleSegmentClick = (index) => {
         if (index === activeIndex) {
             setReplayNonce((n) => n + 1)
@@ -84,8 +87,6 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
         ro.observe(el)
         return () => ro.disconnect()
     }, [])
-
-    const tabsKey = tabs.map((t) => t.label).join("-")
 
     const isThreeTabs = tabs.length === 3
     const marginX = isThreeTabs ? 54 : 21
@@ -115,41 +116,31 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             style={rootStyle}
             layout
         >
-            <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                    key={tabsKey}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    style={{
-                        display: "flex",
-                        width: "100%",
-                        position: "relative",
-                        zIndex: 1,
-                    }}
-                >
-                    {tabs.map((tab, index) => (
-                        <Tab
-                            key={index}
-                            isActive={index === activeIndex}
-                            onClick={() => handleSegmentClick(index)}
-                            playKey={playKey}
-                            {...tab}
-                        />
-                    ))}
-                </motion.div>
-            </AnimatePresence>
-            <AnimatePresence mode="wait" initial={false}>
-                <TabBarOverlay
-                    key={tabsKey}
-                    tabs={tabs}
-                    activeIndex={activeIndex}
-                    onChange={handleSegmentClick}
-                    onSnapToSame={() => setReplayNonce((n) => n + 1)}
-                    playKey={playKey}
-                />
-            </AnimatePresence>
+            <div
+                style={{
+                    display: "flex",
+                    width: "100%",
+                    position: "relative",
+                    zIndex: 1,
+                }}
+            >
+                {tabs.map((tab, index) => (
+                    <Tab
+                        key={index}
+                        isActive={index === activeIndex}
+                        onClick={() => handleSegmentClick(index)}
+                        playKey={playKey}
+                        {...tab}
+                    />
+                ))}
+            </div>
+            <TabBarOverlay
+                tabs={tabs}
+                activeIndex={activeIndex}
+                onChange={handleSegmentClick}
+                onSnapToSame={() => setReplayNonce((n) => n + 1)}
+                playKey={playKey}
+            />
 
             <Activity mode={useApple ? "visible" : "hidden"}>
                 <GlassBorder />
