@@ -15,7 +15,13 @@
         padding: 4px;
         margin: 0;
         background: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
-        box-shadow: none;
+        backdrop-filter: saturate(300%) blur(8px);
+        box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+
+        @supports (-apple-visual-effect: -apple-system-glass-material) {
+            -apple-visual-effect: -apple-system-glass-material;
+            backdrop-filter: none;
+        }
     }
 
     :global(body.material) & {

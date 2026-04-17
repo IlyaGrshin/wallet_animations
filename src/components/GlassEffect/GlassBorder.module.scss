@@ -7,9 +7,6 @@
     mix-blend-mode: overlay;
     z-index: 2;
     pointer-events: none;
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
     mask: linear-gradient(rgb(0 0 0) 0, rgb(0 0 0) 0) content-box,
         linear-gradient(rgb(0 0 0) 0, rgb(0 0 0) 0);
     mask-composite: exclude;

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, Activity } from "react"
 import PropTypes from "prop-types"
 import { motion, AnimatePresence } from "motion/react"
 import { useApple } from "../../hooks/DeviceProvider"
-import { GlassContainer } from "../GlassEffect"
+import { GlassBorder } from "../GlassEffect"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
 import { useIndicatorDrag } from "./useIndicatorDrag"
@@ -152,7 +152,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             </AnimatePresence>
 
             <Activity mode={useApple ? "visible" : "hidden"}>
-                <GlassContainer />
+                <GlassBorder />
                 <GradientMask
                     width={rootWidth}
                     height={64}
