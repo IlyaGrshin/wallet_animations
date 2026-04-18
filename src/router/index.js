@@ -27,23 +27,26 @@ Redirect.propTypes = {
     to: PropTypes.string,
 }
 
-const Routes = () => (
-    <ErrorBoundary fallback={<RouteErrorFallback />}>
-        <Switch>
-            <Route path="/" component={CatalogPage} />
-            {routes.map(({ path, component: Component }) => (
-                <Route key={path} path={path}>
-                    <Suspense fallback={<Spinner centered size={48} />}>
-                        <Component />
-                    </Suspense>
+const Routes = () => {
+    const [location] = useLocation()
+    return (
+        <ErrorBoundary fallback={<RouteErrorFallback />} resetKeys={[location]}>
+            <Switch>
+                <Route path="/" component={CatalogPage} />
+                {routes.map(({ path, component: Component }) => (
+                    <Route key={path} path={path}>
+                        <Suspense fallback={<Spinner centered size={48} />}>
+                            <Component />
+                        </Suspense>
+                    </Route>
+                ))}
+                <Route>
+                    <Redirect to="/" />
                 </Route>
-            ))}
-            <Route>
-                <Redirect to="/" />
-            </Route>
-        </Switch>
-    </ErrorBoundary>
-)
+            </Switch>
+        </ErrorBoundary>
+    )
+}
 
 function AppRoutes() {
     const [location] = useLocation()
