@@ -1,1 +1,16 @@
-// empty
+.root {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+}
+
+.scroll {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    will-change: transform, opacity;
+}
+
+.withBottomInset {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 64px);
+}

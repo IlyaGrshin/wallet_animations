@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "motion/react"
 import { useLocation } from "wouter"
 import { EASING } from "../../utils/animations"
 
+import * as styles from "./PageTransition.module.scss"
+
 const variants = {
     initial: { opacity: 0, scale: 1.006 },
     animate: { opacity: 1, scale: 1 },
@@ -14,36 +16,20 @@ const transition = {
     ease: EASING.MATERIAL_STANDARD,
 }
 
-const PageTransition = ({ children }) => {
+const PageTransition = ({ children, bottomInset = false }) => {
     const [location] = useLocation()
 
     return (
-        <div
-            style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                width: "100%",
-                height: "100vh",
-                overflow: "hidden",
-            }}
-        >
+        <div className={styles.root}>
             <AnimatePresence mode="popLayout">
                 <motion.div
                     key={location}
+                    className={`${styles.scroll} ${bottomInset ? styles.withBottomInset : ""}`}
                     variants={variants}
                     initial="initial"
                     animate="animate"
                     exit="exit"
                     transition={transition}
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        overflowY: "auto",
-                        willChange: "transform, opacity",
-                    }}
                 >
                     {children}
                 </motion.div>
@@ -54,6 +40,7 @@ const PageTransition = ({ children }) => {
 
 PageTransition.propTypes = {
     children: PropTypes.node,
+    bottomInset: PropTypes.bool,
 }
 
 export default PageTransition

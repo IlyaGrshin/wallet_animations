@@ -5,6 +5,7 @@ import { useHashLocation } from "wouter/use-hash-location"
 import { useLocation } from "wouter"
 import PageTransition from "../components/PageTransition"
 import Spinner from "../components/Spinner"
+import SkinSwitcher from "../components/SkinSwitcher"
 
 import config from "../pages/config"
 import { flattenRoutes } from "../pages/configHelpers"
@@ -41,10 +42,16 @@ const Routes = () => (
 )
 
 function AppRoutes() {
+    const [location] = useLocation()
+    const showSkinSwitcher = location !== "/"
+
     return (
-        <PageTransition>
-            <Routes />
-        </PageTransition>
+        <>
+            <PageTransition bottomInset={showSkinSwitcher}>
+                <Routes />
+            </PageTransition>
+            {showSkinSwitcher && <SkinSwitcher />}
+        </>
     )
 }
 
