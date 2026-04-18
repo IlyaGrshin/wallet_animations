@@ -46,7 +46,7 @@ MenuItem.propTypes = {
     ]),
 }
 
-const DropdownMenu = ({ items }) => {
+const DropdownMenu = ({ items, trigger }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
     const [activeIndex, setActiveIndex] = useState(-1)
@@ -159,7 +159,7 @@ const DropdownMenu = ({ items }) => {
     return (
         <div className={styles.container}>
             <div
-                className={styles.selected}
+                className={trigger ? styles.trigger : styles.selected}
                 onClick={toggleDropdown}
                 onKeyDown={handleButtonKeyDown}
                 ref={buttonRef}
@@ -168,7 +168,7 @@ const DropdownMenu = ({ items }) => {
                 aria-haspopup="menu"
                 aria-expanded={isOpen}
             >
-                {selectedItem}
+                {trigger ?? selectedItem}
             </div>
             {createPortal(
                 <>
@@ -239,5 +239,6 @@ const DropdownMenu = ({ items }) => {
 
 DropdownMenu.propTypes = {
     items: PropTypes.arrayOf(PropTypes.string).isRequired,
+    trigger: PropTypes.node,
 }
 export default DropdownMenu

@@ -7,7 +7,6 @@ import {
 } from "react"
 
 export const DROPDOWN_WIDTH = 250
-export const DROPDOWN_OFFSET = 24
 export const GAP = 1
 export const VIEWPORT_PADDING = 8
 
@@ -21,7 +20,8 @@ const calculatePosition = (buttonRect, dropdownSize) => {
     const openUpwards =
         spaceBelow < dropdownSize.height && spaceAbove > spaceBelow
 
-    const rawLeft = buttonRect.right - dropdownSize.width + DROPDOWN_OFFSET
+    const buttonCenterX = buttonRect.left + buttonRect.width / 2
+    const rawLeft = buttonCenterX - dropdownSize.width / 2
     const left = clamp(
         rawLeft,
         VIEWPORT_PADDING,
@@ -43,7 +43,6 @@ const calculatePosition = (buttonRect, dropdownSize) => {
         )
     )
 
-    const buttonCenterX = buttonRect.left + buttonRect.width / 2
     const originXPx = clamp(buttonCenterX - left, 0, dropdownSize.width)
     const originX = `${(originXPx / dropdownSize.width) * 100}%`
     const originY = openUpwards ? "100%" : "0%"
