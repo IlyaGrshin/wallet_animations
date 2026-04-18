@@ -3,18 +3,12 @@ import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
-import { SPRING } from "../../utils/animations"
+import { POPOVER_VARIANTS } from "../../utils/animations"
 import Text from "../Text"
 import { GlassBorder } from "../GlassEffect"
 import { useClickOutside, useDropdownPosition } from "./dropdownUtils"
 
 import * as styles from "./DropdownMenu.module.scss"
-
-const DROPDOWN_VARIANTS = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: SPRING.DROPDOWN },
-    exit: { scale: 0, opacity: 0, transition: { duration: 0.25 } },
-}
 
 const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
     <div
@@ -199,7 +193,7 @@ const DropdownMenu = ({ items, trigger }) => {
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
-                                variants={DROPDOWN_VARIANTS}
+                                variants={POPOVER_VARIANTS}
                                 style={{
                                     position: "fixed",
                                     top: position.top,

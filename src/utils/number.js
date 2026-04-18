@@ -9,3 +9,5 @@ export function generateRandomBalance(max = 2000) {
 export function formatPercentage(percentage) {
     return `${percentage?.toFixed(2)}%`
 }
+
+export const clamp = (value, min, max) => Math.min(Math.max(value, min), max)

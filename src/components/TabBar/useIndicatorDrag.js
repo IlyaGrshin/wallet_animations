@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-const clamp = (v, min, max) => Math.min(Math.max(v, min), max)
+import { clamp } from "../../utils/number"
 
 export function useIndicatorDrag({
     tabsLength,

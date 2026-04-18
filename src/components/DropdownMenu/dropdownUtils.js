@@ -6,11 +6,13 @@ import {
     useState,
 } from "react"
 
+import { clamp } from "../../utils/number"
+
+export { useClickOutside } from "../../hooks/useClickOutside"
+
 export const DROPDOWN_WIDTH = 250
 export const GAP = 1
 export const VIEWPORT_PADDING = 8
-
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
 
 const calculatePosition = (buttonRect, dropdownSize) => {
     const { innerHeight, innerWidth } = window
@@ -102,27 +104,4 @@ export const useDropdownPosition = (isOpen, buttonRef, dropdownRef) => {
     }, [isOpen, isPositioned, buttonRef])
 
     return { position, isPositioned, resetPosition }
-}
-
-export const useClickOutside = (isOpen, onClose, ...refs) => {
-    const onCloseRef = useRef(onClose)
-    useEffect(() => {
-        onCloseRef.current = onClose
-    })
-
-    useEffect(() => {
-        if (!isOpen) return
-
-        const handleClickOutside = (event) => {
-            const isOutside = refs.every(
-                (ref) => !ref.current || !ref.current.contains(event.target)
-            )
-            if (isOutside) onCloseRef.current()
-        }
-
-        document.addEventListener("mousedown", handleClickOutside)
-        return () =>
-            document.removeEventListener("mousedown", handleClickOutside)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOpen, ...refs])
 }
