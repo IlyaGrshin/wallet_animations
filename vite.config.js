@@ -45,6 +45,40 @@ export default defineConfig(({ command }) => ({
     }),
     webpackStatsPlugin({
       filename: './build/webpack-stats.json',
+      transform: (stats, _sources, bundle) => {
+        // Strip source maps: with sourcemap: "hidden" they never ship to
+        // the client, so counting them in RelativeCI's totals is noise.
+        stats.assets = (stats.assets || []).filter(
+          (a) => !a.name.endsWith('.map')
+        );
+        stats.chunks = (stats.chunks || []).map((chunk) => ({
+          ...chunk,
+          files: chunk.files.filter((f) => !f.endsWith('.map')),
+        }));
+
+        // Vite emits CSS as Rollup assets, not chunk files, so default
+        // stats leave chunk.files without any .css entries and RelativeCI
+        // classifies Initial CSS as 0 B. Reattach each chunk's imported
+        // CSS via chunk.viteMetadata.importedCss.
+        if (bundle) {
+          const chunkByFile = new Map();
+          stats.chunks.forEach((chunk) => {
+            chunk.files.forEach((file) => chunkByFile.set(file, chunk));
+          });
+          Object.values(bundle).forEach((entry) => {
+            if (entry.type !== 'chunk') return;
+            const css = entry.viteMetadata?.importedCss;
+            if (!css || css.size === 0) return;
+            const target = chunkByFile.get(entry.fileName);
+            if (!target) return;
+            css.forEach((cssFile) => {
+              if (!target.files.includes(cssFile)) target.files.push(cssFile);
+            });
+          });
+        }
+
+        return stats;
+      },
     })
   ],
   esbuild: {
