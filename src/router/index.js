@@ -43,7 +43,7 @@ const Routes = () => (
 
 function AppRoutes() {
     const [location] = useLocation()
-    const showSkinSwitcher = location !== "/"
+    const showSkinSwitcher = location.startsWith("/showcase/")
 
     return (
         <>
