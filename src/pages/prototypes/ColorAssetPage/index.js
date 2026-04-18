@@ -29,12 +29,7 @@ function Banner({ name }) {
     return (
         <div className={styles.bannerContainer}>
             <div className={styles.banner}>
-                <Text
-                    apple={{ variant: "subheadline2" }}
-                    material={{ variant: "subheadline2" }}
-                >
-                    {BannerText}
-                </Text>
+                <Text variant="subheadline2">{BannerText}</Text>
             </div>
         </div>
     )
@@ -138,10 +133,7 @@ function AssetSection({ mode, image, name, price, ticker }) {
             <div className={styles.body}>
                 <ImageAvatar size={72} src={image} />
                 <div className={styles.data}>
-                    <Text
-                        apple={{ variant: "title3", weight: "semibold" }}
-                        material={{ variant: "title3" }}
-                    >
+                    <Text variant="title3" weight="semibold">
                         {name}
                     </Text>
                     <Text

@@ -64,8 +64,7 @@ function Trading() {
                 fallback={
                     <div style={centerStyle}>
                         <Text
-                            apple={{ variant: "body" }}
-                            material={{ variant: "body" }}
+                            variant="body"
                             style={{
                                 color: "var(--tg-theme-subtitle-text-color)",
                             }}

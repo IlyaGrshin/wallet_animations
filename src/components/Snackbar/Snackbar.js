@@ -16,14 +16,9 @@ const Snackbar = ({ icon, title, description, link, action }) => {
                 <Text
                     as="p"
                     className={styles.title}
-                    apple={{
-                        variant: "subheadline2",
-                        ...(hasDescription && { weight: "semibold" }),
-                    }}
-                    material={{
-                        variant: "subheadline2",
-                        weight: "medium",
-                    }}
+                    variant="subheadline2"
+                    apple={hasDescription ? { weight: "semibold" } : undefined}
+                    material={{ weight: "medium" }}
                 >
                     {title}
                 </Text>
@@ -31,8 +26,7 @@ const Snackbar = ({ icon, title, description, link, action }) => {
                     <Text
                         as="p"
                         className={styles.description}
-                        apple={{ variant: "subheadline2" }}
-                        material={{ variant: "subheadline2" }}
+                        variant="subheadline2"
                     >
                         {description}
                     </Text>
@@ -43,11 +37,7 @@ const Snackbar = ({ icon, title, description, link, action }) => {
                         className={styles.link}
                         onClick={link.onClick}
                     >
-                        <Text
-                            as="span"
-                            apple={{ variant: "subheadline2" }}
-                            material={{ variant: "subheadline2" }}
-                        >
+                        <Text as="span" variant="subheadline2">
                             {link.label}
                         </Text>
                     </button>

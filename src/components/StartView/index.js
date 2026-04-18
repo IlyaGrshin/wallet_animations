@@ -6,26 +6,10 @@ import * as styles from "./StartView.module.scss"
 const StartView = ({ title, description }) => {
     return (
         <div className={styles.root}>
-            <Text
-                apple={{
-                    variant: "title1",
-                    weight: "bold",
-                }}
-                material={{
-                    variant: "title1",
-                }}
-            >
+            <Text variant="title1" weight="bold">
                 {title}
             </Text>
-            <Text
-                apple={{
-                    variant: "body",
-                    weight: "regular",
-                }}
-                material={{
-                    variant: "body",
-                }}
-            >
+            <Text variant="body" weight="regular">
                 {description}
             </Text>
         </div>

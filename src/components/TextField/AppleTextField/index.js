@@ -32,7 +32,8 @@ export const AppleTextField = forwardRef(
 
         return (
             <AppleText
-                apple={{ variant: "body", weight: "regular" }}
+                variant="body"
+                weight="regular"
                 className={[
                     styles.root,
                     className,

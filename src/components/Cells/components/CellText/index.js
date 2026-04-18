@@ -9,22 +9,13 @@ const CellText = ({ type, title, description, bold }) => {
     return (
         <>
             <div className={name}>
-                <Text
-                    apple={{ variant: "body", weight: weight }}
-                    material={{ variant: "body", weight: weight }}
-                >
+                <Text variant="body" weight={weight}>
                     {title}
                 </Text>
             </div>
             {description && (
                 <div className={styles.caption}>
-                    <Text
-                        apple={{ variant: "subheadline2", weight: "regular" }}
-                        material={{
-                            variant: "subheadline2",
-                            weight: "regular",
-                        }}
-                    >
+                    <Text variant="subheadline2" weight="regular">
                         {description}
                     </Text>
                 </div>

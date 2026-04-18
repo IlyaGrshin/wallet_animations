@@ -1,26 +1,20 @@
-import { useApple } from "../../hooks/DeviceProvider"
 import PropTypes from "prop-types"
 
+import { useApple } from "../../hooks/DeviceProvider"
 import AppleText from "./AppleText"
 import MaterialText from "./MaterialText"
 import Badge from "./Badge"
 
-const Text = ({
-    apple: appleProps,
-    material: materialProps,
-    children,
-    ...props
-}) => {
+const Text = ({ apple, material, children, ...rest }) => {
     if (useApple) {
         return (
-            <AppleText apple={appleProps} {...props}>
+            <AppleText {...rest} {...apple}>
                 {children}
             </AppleText>
         )
     }
-
     return (
-        <MaterialText material={materialProps} {...props}>
+        <MaterialText {...rest} {...material}>
             {children}
         </MaterialText>
     )

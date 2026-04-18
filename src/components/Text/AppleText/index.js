@@ -6,33 +6,28 @@ import "./AppleText.scss"
 
 const AppleText = ({
     as: Component = "div",
-    apple: textProps,
+    variant,
+    weight,
+    rounded,
+    caps,
+    chevron,
+    arrow,
     children,
     ...props
 }) => {
-    const dynamicProps = {
-        ...(textProps?.variant && { variant: textProps.variant }),
-        ...(textProps?.weight && { weight: textProps.weight }),
-        ...(textProps?.rounded && { "data-rounded": true }),
-        ...(textProps?.caps && { "data-caps": true }),
-    }
-
-    const ChevronIconComponent =
-        textProps && "chevron" in textProps
-            ? getChevronRight(textProps.variant, textProps.weight)
-            : null
-
-    const ArrowIconComponent = textProps?.arrow?.direction
-        ? getArrow(
-              textProps.arrow.direction,
-              textProps.variant,
-              textProps.weight
-          )
+    const ChevronIconComponent = chevron
+        ? getChevronRight(variant, weight)
+        : null
+    const ArrowIconComponent = arrow?.direction
+        ? getArrow(arrow.direction, variant, weight)
         : null
 
     return (
         <Component
-            {...dynamicProps}
+            {...(variant && { variant })}
+            {...(weight && { weight })}
+            {...(rounded && { "data-rounded": true })}
+            {...(caps && { "data-caps": true })}
             {...props}
             data-has-chevron={!!ChevronIconComponent}
             data-has-arrow={!!ArrowIconComponent}
@@ -60,15 +55,13 @@ const AppleText = ({
 
 AppleText.propTypes = {
     as: PropTypes.elementType,
-    apple: PropTypes.shape({
-        variant: PropTypes.string,
-        weight: PropTypes.string,
-        rounded: PropTypes.bool,
-        caps: PropTypes.bool,
-        chevron: PropTypes.any,
-        arrow: PropTypes.shape({
-            direction: PropTypes.oneOf(["up", "down"]),
-        }),
+    variant: PropTypes.string,
+    weight: PropTypes.string,
+    rounded: PropTypes.bool,
+    caps: PropTypes.bool,
+    chevron: PropTypes.bool,
+    arrow: PropTypes.shape({
+        direction: PropTypes.oneOf(["up", "down"]),
     }),
     children: PropTypes.node,
 }

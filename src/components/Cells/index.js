@@ -46,19 +46,13 @@ const CellStart = ({ type, src = null, iconType = null }) => {
 const CellEnd = ({ label, caption }) => (
     <>
         <div className={styles.label}>
-            <Text
-                apple={{ variant: "body", weight: "regular" }}
-                material={{ variant: "body", weight: "regular" }}
-            >
+            <Text variant="body" weight="regular">
                 {label}
             </Text>
         </div>
         {caption && (
             <div className={styles.caption}>
-                <Text
-                    apple={{ variant: "subheadline2", weight: "regular" }}
-                    material={{ variant: "subheadline2", weight: "regular" }}
-                >
+                <Text variant="subheadline2" weight="regular">
                     {caption}
                 </Text>
             </div>

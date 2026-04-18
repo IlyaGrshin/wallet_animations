@@ -13,8 +13,8 @@ const EditableCell = forwardRef(
 
         return (
             <Text
-                apple={{ variant: "body", weight: "regular" }}
-                material={{ variant: "body", weight: "regular" }}
+                variant="body"
+                weight="regular"
                 className={[styles.root, !value && styles.empty]
                     .filter(Boolean)
                     .join(" ")}

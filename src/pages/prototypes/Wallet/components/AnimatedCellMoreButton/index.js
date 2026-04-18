@@ -124,10 +124,7 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
                             position: "absolute",
                         }}
                     >
-                        <Text
-                            apple={{ variant: "body", weight: "medium" }}
-                            material={{ variant: "body", weight: "medium" }}
-                        >
+                        <Text variant="body" weight="medium">
                             More Assets
                         </Text>
                     </m.div>
@@ -141,10 +138,7 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
                             position: "absolute",
                         }}
                     >
-                        <Text
-                            apple={{ variant: "body", weight: "medium" }}
-                            material={{ variant: "body", weight: "medium" }}
-                        >
+                        <Text variant="body" weight="medium">
                             Hide Low Balances
                         </Text>
                     </m.div>

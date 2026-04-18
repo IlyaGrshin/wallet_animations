@@ -16,10 +16,7 @@ export const CellPart = ({
     if (type === "Picker") {
         return (
             <div className={styles.picker}>
-                <Text
-                    apple={{ variant: "body", weight: "regular" }}
-                    material={{ variant: "body", weight: "regular" }}
-                >
+                <Text variant="body" weight="regular">
                     {children}
                 </Text>
             </div>
@@ -40,10 +37,7 @@ export const CellPart = ({
                 />
                 {showValue && (
                     <label htmlFor={inputId}>
-                        <Text
-                            apple={{ variant: "body", weight: "regular" }}
-                            material={{ variant: "body", weight: "regular" }}
-                        >
+                        <Text variant="body" weight="regular">
                             {value}
                         </Text>
                     </label>

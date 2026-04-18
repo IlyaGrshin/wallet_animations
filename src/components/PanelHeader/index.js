@@ -8,27 +8,13 @@ const PanelHeader = ({ children }) => {
         <div className={`${styles.root} ${styles.modalHeight}`}>
             <div className={styles.body}>
                 <div className={styles.left}>
-                    <Text
-                        apple={{
-                            variant: "body",
-                        }}
-                        material={{
-                            variant: "body",
-                        }}
-                    >
-                        Close
-                    </Text>
+                    <Text variant="body">Close</Text>
                 </div>
                 <div className={styles.right}>
                     <Text
-                        apple={{
-                            variant: "body",
-                            weight: "semibold",
-                        }}
-                        material={{
-                            variant: "body",
-                            weight: "medium",
-                        }}
+                        variant="body"
+                        apple={{ weight: "semibold" }}
+                        material={{ weight: "medium" }}
                     >
                         Done
                     </Text>
@@ -36,13 +22,8 @@ const PanelHeader = ({ children }) => {
             </div>
             <div className={styles.middle}>
                 <Text
-                    apple={{
-                        variant: "body",
-                        weight: "semibold",
-                    }}
-                    material={{
-                        variant: "title2",
-                    }}
+                    apple={{ variant: "body", weight: "semibold" }}
+                    material={{ variant: "title2" }}
                 >
                     {children}
                 </Text>

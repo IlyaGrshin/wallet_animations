@@ -25,11 +25,7 @@ const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
         onMouseEnter={onMouseEnter}
         className={`${styles.item} ${isSelected ? styles.selected : ""}`}
     >
-        <Text
-            apple={{ variant: "body" }}
-            material={{ variant: "body" }}
-            style={{ padding: "2px 0" }}
-        >
+        <Text variant="body" style={{ padding: "2px 0" }}>
             {item}
         </Text>
     </div>

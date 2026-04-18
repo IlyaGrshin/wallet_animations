@@ -13,31 +13,13 @@ const TrainShowcase = () => (
                 <SectionList.Item header="Space Divider">
                     <div style={{ padding: "12px var(--side-padding)" }}>
                         <Train divider="space">
-                            <Text
-                                apple={{ variant: "body", weight: "regular" }}
-                                material={{
-                                    variant: "body",
-                                    weight: "regular",
-                                }}
-                            >
+                            <Text variant="body" weight="regular">
                                 First
                             </Text>
-                            <Text
-                                apple={{ variant: "body", weight: "regular" }}
-                                material={{
-                                    variant: "body",
-                                    weight: "regular",
-                                }}
-                            >
+                            <Text variant="body" weight="regular">
                                 Second
                             </Text>
-                            <Text
-                                apple={{ variant: "body", weight: "regular" }}
-                                material={{
-                                    variant: "body",
-                                    weight: "regular",
-                                }}
-                            >
+                            <Text variant="body" weight="regular">
                                 Third
                             </Text>
                         </Train>
@@ -47,40 +29,13 @@ const TrainShowcase = () => (
                 <SectionList.Item header="Dot Divider">
                     <div style={{ padding: "12px var(--side-padding)" }}>
                         <Train divider="dot">
-                            <Text
-                                apple={{
-                                    variant: "subheadline2",
-                                    weight: "regular",
-                                }}
-                                material={{
-                                    variant: "subheadline2",
-                                    weight: "regular",
-                                }}
-                            >
+                            <Text variant="subheadline2" weight="regular">
                                 Label
                             </Text>
-                            <Text
-                                apple={{
-                                    variant: "subheadline2",
-                                    weight: "regular",
-                                }}
-                                material={{
-                                    variant: "subheadline2",
-                                    weight: "regular",
-                                }}
-                            >
+                            <Text variant="subheadline2" weight="regular">
                                 Value
                             </Text>
-                            <Text
-                                apple={{
-                                    variant: "subheadline2",
-                                    weight: "regular",
-                                }}
-                                material={{
-                                    variant: "subheadline2",
-                                    weight: "regular",
-                                }}
-                            >
+                            <Text variant="subheadline2" weight="regular">
                                 Extra
                             </Text>
                         </Train>

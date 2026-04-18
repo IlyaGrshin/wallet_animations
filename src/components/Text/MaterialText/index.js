@@ -3,21 +3,21 @@ import "./MaterialText.scss"
 
 const MaterialText = ({
     as: Component = "div",
-    material: textProps,
+    variant,
+    weight,
+    rounded,
+    caps,
     children,
     ...props
 }) => {
-    if (!textProps) return <Component {...props}>{children}</Component>
-
-    const dynamicProps = {
-        ...(textProps.variant && { variant: textProps.variant }),
-        ...(textProps.weight && { weight: textProps.weight }),
-        ...(textProps.rounded && { "data-rounded": true }),
-        ...(textProps.caps && { "data-caps": true }),
-    }
-
     return (
-        <Component {...dynamicProps} {...props}>
+        <Component
+            {...(variant && { variant })}
+            {...(weight && { weight })}
+            {...(rounded && { "data-rounded": true })}
+            {...(caps && { "data-caps": true })}
+            {...props}
+        >
             {children}
         </Component>
     )
@@ -25,16 +25,10 @@ const MaterialText = ({
 
 MaterialText.propTypes = {
     as: PropTypes.elementType,
-    material: PropTypes.shape({
-        variant: PropTypes.string,
-        weight: PropTypes.string,
-        rounded: PropTypes.bool,
-        caps: PropTypes.bool,
-        chevron: PropTypes.bool,
-        arrow: PropTypes.shape({
-            direction: PropTypes.oneOf(["up", "down"]),
-        }),
-    }),
+    variant: PropTypes.string,
+    weight: PropTypes.string,
+    rounded: PropTypes.bool,
+    caps: PropTypes.bool,
     children: PropTypes.node,
 }
 

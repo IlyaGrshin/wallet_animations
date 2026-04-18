@@ -23,11 +23,7 @@ const GalleryPage = ({ color, label }) => (
             borderRadius: 12,
         }}
     >
-        <Text
-            apple={{ variant: "title2", weight: "bold" }}
-            material={{ variant: "title2" }}
-            style={{ color: "#fff" }}
-        >
+        <Text variant="title2" weight="bold" style={{ color: "#fff" }}>
             {label}
         </Text>
     </div>

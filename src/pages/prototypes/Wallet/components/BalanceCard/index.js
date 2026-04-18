@@ -77,14 +77,9 @@ export default function BalanceCard({
         >
             <div className={styles.data}>
                 <Text
-                    apple={{
-                        variant: "subheadline2",
-                        weight: "semibold",
-                    }}
-                    material={{
-                        variant: "subheadline2",
-                        weight: "medium",
-                    }}
+                    variant="subheadline2"
+                    apple={{ weight: "semibold" }}
+                    material={{ weight: "medium" }}
                     className={styles.label}
                 >
                     {label}
@@ -113,14 +108,9 @@ export default function BalanceCard({
                             transition={crossFadeTransition}
                         >
                             <Text
-                                apple={{
-                                    variant: "subheadline2",
-                                    weight: "semibold",
-                                }}
-                                material={{
-                                    variant: "subheadline2",
-                                    weight: "medium",
-                                }}
+                                variant="subheadline2"
+                                apple={{ weight: "semibold" }}
+                                material={{ weight: "medium" }}
                                 style={{ color: "var(--text-confirm-color)" }}
                             >
                                 {changeData.value}
@@ -139,16 +129,13 @@ export default function BalanceCard({
                                 apple={{
                                     variant: "subheadline2",
                                     weight: "semibold",
-                                    arrow: {
-                                        direction: changeData.arrowDirection,
-                                    },
                                 }}
                                 material={{
                                     variant: "subheadline2",
                                     weight: "medium",
-                                    arrow: {
-                                        direction: changeData.arrowDirection,
-                                    },
+                                }}
+                                arrow={{
+                                    direction: changeData.arrowDirection,
                                 }}
                                 variant="tinted"
                                 circled
@@ -169,14 +156,9 @@ export default function BalanceCard({
                             transition={crossFadeTransition}
                         >
                             <Text
-                                apple={{
-                                    variant: "subheadline2",
-                                    weight: "semibold",
-                                }}
-                                material={{
-                                    variant: "subheadline2",
-                                    weight: "medium",
-                                }}
+                                variant="subheadline2"
+                                apple={{ weight: "semibold" }}
+                                material={{ weight: "medium" }}
                                 style={{
                                     color: "var(--tg-theme-subtitle-text-color)",
                                 }}
