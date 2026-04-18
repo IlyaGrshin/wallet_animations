@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { useState, useEffect } from "react"
-import { motion } from "motion/react"
+import * as m from "motion/react-m"
 import WebApp from "../../../../../lib/twa"
 
 import { useColorScheme } from "../../../../../hooks/useColorScheme"
@@ -51,7 +51,7 @@ export default function NavigationPanel({
                         : "var(--tg-theme-section-bg-color)",
             }}
         >
-            <motion.div
+            <m.div
                 className={styles.overlay}
                 initial={false}
                 animate={{

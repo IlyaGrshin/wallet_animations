@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import { motion } from "motion/react"
+import * as m from "motion/react-m"
 import { Calligraph } from "calligraph"
 import * as styles from "./Wheel.module.scss"
 
@@ -68,22 +68,22 @@ const Wheel = ({
     return (
         <div className={cx} data-disabled={disabled || undefined}>
             <div className={styles.header}>
-                <motion.button
+                <m.button
                     className={styles.button}
                     onClick={() => animateToValue(min)}
                     disabled={disabled}
                     whileTap={!disabled ? { scale: 0.95 } : undefined}
                 >
                     Min
-                </motion.button>
-                <motion.button
+                </m.button>
+                <m.button
                     className={styles.button}
                     onClick={() => animateToValue(max)}
                     disabled={disabled}
                     whileTap={!disabled ? { scale: 0.95 } : undefined}
                 >
                     Max
-                </motion.button>
+                </m.button>
             </div>
 
             <div className={styles.currentValue}>
@@ -111,7 +111,7 @@ const Wheel = ({
             >
                 {CenterIndicator}
 
-                <motion.div
+                <m.div
                     className={styles.ticksContainer}
                     style={{ x }}
                     drag={disabled ? false : "x"}
@@ -133,7 +133,7 @@ const Wheel = ({
                             <span className={styles.tickMark} />
                         </div>
                     ))}
-                </motion.div>
+                </m.div>
             </div>
         </div>
     )

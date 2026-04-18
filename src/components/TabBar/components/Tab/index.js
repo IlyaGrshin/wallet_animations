@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
-import { motion } from "motion/react"
+import * as m from "motion/react-m"
 
 import * as styles from "./Tab.module.scss"
 
@@ -75,14 +75,14 @@ const Tab = ({
     }, [isActive, playKey, showLottie, activeFrame, totalFrames])
 
     return (
-        <motion.div
+        <m.div
             layout
             transition={{ type: "spring", stiffness: 800, damping: 50 }}
             {...rest}
             className={`${styles.tab} ${isActive ? styles.active : ""} ${className}`.trim()}
             onClick={onClick}
         >
-            <motion.div layout className={styles.icon}>
+            <m.div layout className={styles.icon}>
                 {showLottie ? (
                     <Suspense fallback={icon || null}>
                         <Lottie
@@ -95,11 +95,11 @@ const Tab = ({
                 ) : (
                     icon
                 )}
-            </motion.div>
-            <motion.span layout style={{ display: "inline-block" }}>
+            </m.div>
+            <m.span layout style={{ display: "inline-block" }}>
                 {label}
-            </motion.span>
-        </motion.div>
+            </m.span>
+        </m.div>
     )
 }
 

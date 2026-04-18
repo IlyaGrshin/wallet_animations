@@ -1,5 +1,6 @@
 import PropTypes from "prop-types"
-import { motion, AnimatePresence } from "motion/react"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 import * as styles from "./PageContent.module.scss"
 import Wallet from "../../../Wallet"
 import TONWallet from "../../../TS"
@@ -24,7 +25,7 @@ export default function PageContent({ view }) {
             custom={view}
             inherit={false}
         >
-            <motion.div
+            <m.div
                 initial={{ opacity: 0, scale: 1.006 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 1.01 }}
@@ -36,7 +37,7 @@ export default function PageContent({ view }) {
                 className={styles.pageView}
             >
                 {content}
-            </motion.div>
+            </m.div>
         </AnimatePresence>
     )
 }

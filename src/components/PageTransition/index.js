@@ -1,5 +1,6 @@
 import PropTypes from "prop-types"
-import { motion, AnimatePresence } from "motion/react"
+import * as m from "motion/react-m"
+import { AnimatePresence } from "motion/react"
 import { useLocation } from "wouter"
 import { EASING } from "../../utils/animations"
 
@@ -22,7 +23,7 @@ const PageTransition = ({ children, bottomInset = false }) => {
     return (
         <div className={styles.root}>
             <AnimatePresence mode="popLayout">
-                <motion.div
+                <m.div
                     key={location}
                     className={`${styles.scroll} ${bottomInset ? styles.withBottomInset : ""}`}
                     variants={variants}
@@ -32,7 +33,7 @@ const PageTransition = ({ children, bottomInset = false }) => {
                     transition={transition}
                 >
                     {children}
-                </motion.div>
+                </m.div>
             </AnimatePresence>
         </div>
     )

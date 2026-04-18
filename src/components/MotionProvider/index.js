@@ -1,8 +1,12 @@
 import PropTypes from "prop-types"
-import { LazyMotion, domAnimation } from "motion/react"
+import { LazyMotion, domMax } from "motion/react"
 
 const MotionProvider = ({ children }) => {
-    return <LazyMotion features={domAnimation}>{children}</LazyMotion>
+    return (
+        <LazyMotion features={domMax} strict>
+            {children}
+        </LazyMotion>
+    )
 }
 
 MotionProvider.propTypes = {

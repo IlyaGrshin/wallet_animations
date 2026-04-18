@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import { motion, useReducedMotion } from "motion/react"
+import * as m from "motion/react-m"
+import { useReducedMotion } from "motion/react"
 import WebApp from "../../lib/twa"
 import { SPRING } from "../../utils/animations"
 import Snackbar, { triggerShape } from "./Snackbar"
@@ -105,7 +106,7 @@ const SnackbarItem = ({ item, onDismiss }) => {
     }
 
     return (
-        <motion.div
+        <m.div
             className={styles.item}
             initial={initial}
             animate={animate}
@@ -125,7 +126,7 @@ const SnackbarItem = ({ item, onDismiss }) => {
                 link={wrapTrigger(link)}
                 action={wrapTrigger(action)}
             />
-        </motion.div>
+        </m.div>
     )
 }
 

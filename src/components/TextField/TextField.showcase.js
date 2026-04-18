@@ -1,4 +1,4 @@
-import { motion } from "motion/react"
+import * as m from "motion/react-m"
 import WebApp, { BackButton } from "../../lib/twa"
 
 import Page from "../Page"
@@ -40,7 +40,7 @@ function InputPage() {
                 rotation={0}
                 intensity={1}
             />
-            <motion.div
+            <m.div
                 className={styles.container}
                 initial={{ height: viewportHeight }}
                 animate={{ height: viewportHeight }}
@@ -58,7 +58,7 @@ function InputPage() {
                         <TextField label="Message" />
                     </GlassContainer>
                 </div>
-            </motion.div>
+            </m.div>
         </Page>
     )
 }

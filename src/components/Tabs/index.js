@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useRef } from "react"
 import PropTypes from "prop-types"
-import { animate, motion, useReducedMotion } from "motion/react"
+import * as m from "motion/react-m"
+import { animate, useReducedMotion } from "motion/react"
 import Text from "../Text"
 import { GlassContainer } from "../GlassEffect"
 
@@ -110,7 +111,7 @@ const Tabs = ({
                 onClick={() => handleClick(index)}
             >
                 {isActive && (
-                    <motion.span
+                    <m.span
                         aria-hidden="true"
                         layoutId={layoutId}
                         className={styles.indicator}

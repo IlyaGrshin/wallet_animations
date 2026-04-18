@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import { motion } from "motion/react"
+import * as m from "motion/react-m"
 import { GlassContainer } from "../../../../../components/GlassEffect"
 import * as styles from "./NavigationPanel.module.scss"
 import CollapsedView from "./CollapsedView"
@@ -27,7 +27,7 @@ export default function DropdownControl({
     }
 
     return (
-        <motion.div
+        <m.div
             layout
             layoutDependency={view}
             className={styles.dropdownControl}
@@ -43,7 +43,7 @@ export default function DropdownControl({
             data-expanded={view === "expanded"}
         >
             <GlassContainer />
-            <motion.div
+            <m.div
                 className={styles.contentWrapper}
                 initial={{ opacity: 0 }}
                 animate={{
@@ -57,8 +57,8 @@ export default function DropdownControl({
                 key={`${view}-${view === "collapsed" ? activeSegment : ""}`}
             >
                 {content}
-            </motion.div>
-        </motion.div>
+            </m.div>
+        </m.div>
     )
 }
 
