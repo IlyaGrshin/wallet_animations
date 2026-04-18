@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -7,6 +7,7 @@ import * as styles from "./ModalView.module.scss"
 import WebApp, { BackButton } from "../../lib/twa"
 
 import { blendColors } from "../../utils/common"
+import { useFocusTrap } from "../../hooks/useFocusTrap"
 
 const CSS_CLOSE_DURATION = 550
 
@@ -21,11 +22,14 @@ const ModalView = ({
 }) => {
     const [shouldRender, setShouldRender] = useState(isOpen)
     const [animate, setAnimate] = useState(isOpen)
+    const modalRef = useRef(null)
 
     if (isOpen && !shouldRender) setShouldRender(true)
     if (!isOpen && animate && useCssAnimation) setAnimate(false)
 
     const actualShouldRender = isOpen || shouldRender
+
+    useFocusTrap(modalRef, isOpen)
 
     useEffect(() => {
         const headerColor = getHeaderColor()
@@ -92,6 +96,9 @@ const ModalView = ({
                         onClick={onClose}
                     >
                         <div
+                            ref={modalRef}
+                            role="dialog"
+                            aria-modal="true"
                             className={`${styles.root} ${styles.animation} ${animate ? styles.open : ""}`}
                             onClick={(e) => e.stopPropagation()}
                             {...props}
@@ -118,6 +125,9 @@ const ModalView = ({
                         onClick={onClose}
                     >
                         <m.div
+                            ref={modalRef}
+                            role="dialog"
+                            aria-modal="true"
                             className={styles.root}
                             variants={modalAnimation}
                             initial="hidden"
