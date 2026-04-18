@@ -143,6 +143,10 @@ const config = [
                 title: "Bottom Bar",
                 component: lazy(() => import("./showcases/BottomBar")),
             },
+            {
+                title: "Haptic Feedback",
+                component: lazy(() => import("./showcases/HapticFeedback")),
+            },
         ],
     },
     {
