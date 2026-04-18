@@ -1,4 +1,4 @@
-import { useApple, useMaterial } from "../../hooks/DeviceProvider"
+import { useSkin } from "../../hooks/DeviceProvider"
 import PropTypes from "prop-types"
 
 import { isUnicode } from "../../utils/common"
@@ -16,12 +16,13 @@ const bgColors = [
 ]
 
 const InitialsAvatar = ({ size = 40, userId, name }) => {
+    const { isApple, isMaterial } = useSkin()
     const bgIndex = userId % 7
 
     const [color, topColor, bottomColor] = bgColors[bgIndex]
     const [firstName = "", lastName = ""] = name.split(" ")
 
-    if (useMaterial) size = 42
+    if (isMaterial) size = 42
 
     return (
         <div
@@ -29,7 +30,7 @@ const InitialsAvatar = ({ size = 40, userId, name }) => {
             style={{
                 width: size,
                 height: size,
-                background: useApple
+                background: isApple
                     ? `linear-gradient(180deg, ${topColor} 0%, ${bottomColor} 100%)`
                     : color,
                 "--font_size": `${Math.round(size / 2.2)}px`,

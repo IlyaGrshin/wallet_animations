@@ -1,6 +1,7 @@
+import { useEffect } from "react"
 import SegmentedControl from "../SegmentedControl"
 import GlassContainer from "../GlassEffect/GlassContainer"
-import { currentSkin, setSkinOverride } from "../../hooks/DeviceProvider"
+import { ensureRobotoFlex, useSkin } from "../../hooks/DeviceProvider"
 
 import * as styles from "./SkinSwitcher.module.scss"
 
@@ -10,14 +11,19 @@ const SKINS = [
 ]
 
 const SkinSwitcher = () => {
+    const { skin, setSkin } = useSkin()
     const defaultIndex = Math.max(
         0,
-        SKINS.findIndex((s) => s.value === currentSkin)
+        SKINS.findIndex((s) => s.value === skin)
     )
+
+    useEffect(() => {
+        ensureRobotoFlex()
+    }, [])
 
     const handleChange = (index) => {
         const next = SKINS[index].value
-        if (next !== currentSkin) setSkinOverride(next)
+        if (next !== skin) setSkin(next)
     }
 
     return (

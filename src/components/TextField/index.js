@@ -1,13 +1,14 @@
 import { forwardRef } from "react"
 import PropTypes from "prop-types"
 
-import { useApple } from "../../hooks/DeviceProvider"
+import { useSkin } from "../../hooks/DeviceProvider"
 
 import { AppleTextField } from "./AppleTextField"
 // import { MaterialTextField } from "./MaterialTextField"
 
 export const TextField = forwardRef((props, ref) => {
-    if (useApple) {
+    const { isApple } = useSkin()
+    if (isApple) {
         return <AppleTextField {...props} ref={ref} />
     }
 

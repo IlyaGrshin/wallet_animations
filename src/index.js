@@ -11,12 +11,13 @@ const root = createRoot(document.getElementById("root"))
 root.render(
     <StrictMode>
         <MotionProvider>
-            <DeviceProvider />
-            <AppearanceProvider>
-                <SnackbarProvider>
-                    <App />
-                </SnackbarProvider>
-            </AppearanceProvider>
+            <DeviceProvider>
+                <AppearanceProvider>
+                    <SnackbarProvider>
+                        <App />
+                    </SnackbarProvider>
+                </AppearanceProvider>
+            </DeviceProvider>
         </MotionProvider>
     </StrictMode>
 )

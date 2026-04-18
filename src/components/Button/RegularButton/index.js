@@ -1,10 +1,10 @@
 import PropTypes from "prop-types"
-import { motion } from "motion/react"
+import * as m from "motion/react-m"
 
 import { GlassBorder } from "../../GlassEffect"
 import Text from "../../Text"
 import * as styles from "./RegularButton.module.scss"
-import { useApple } from "../../../hooks/DeviceProvider"
+import { useSkin } from "../../../hooks/DeviceProvider"
 
 export const RegularButton = ({
     variant,
@@ -13,15 +13,16 @@ export const RegularButton = ({
     isFill = false,
     ...props
 }) => {
+    const { isApple } = useSkin()
     const dynamicProps = {
         ...(isFill && { "data-fill": true }),
         ...(variant === "filled" && isShine && { "data-shine": true }),
     }
 
     return (
-        <motion.div
+        <m.div
             className={`${styles.button} ${styles[variant]}`}
-            {...(useApple && { whileTap: { scale: 1.02 } })}
+            {...(isApple && { whileTap: { scale: 1.02 } })}
             {...dynamicProps}
             {...props}
         >
@@ -32,7 +33,7 @@ export const RegularButton = ({
             >
                 {label}
             </Text>
-        </motion.div>
+        </m.div>
     )
 }
 

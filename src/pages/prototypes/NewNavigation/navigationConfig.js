@@ -13,33 +13,33 @@ import lottieIconChartline from "../../../icons/lottie/chartline"
 import lottieIconBag from "../../../icons/lottie/bag"
 import lottieIconClock from "../../../icons/lottie/clock"
 
-export const TABS_CONFIG = {
+export const getTabsConfig = (skin) => ({
     wallet: [
         {
             label: "Wallet",
             icon: <WalletIcon />,
             view: <Wallet />,
-            lottieIcon: lottieIconWallet,
+            lottieIcon: lottieIconWallet(skin),
             activeSegment: [0, 50],
         },
         {
             label: "Trade",
             icon: <TradeIcon />,
             view: <Trading />,
-            lottieIcon: lottieIconChartline,
+            lottieIcon: lottieIconChartline(skin),
             activeSegment: [0, 50],
         },
         {
             label: "Earn",
             view: <Trading />,
-            lottieIcon: lottieIconBag,
+            lottieIcon: lottieIconBag(skin),
             activeSegment: [0, 45],
         },
         {
             label: "History",
             icon: <HistoryIcon />,
             view: <History />,
-            lottieIcon: lottieIconClock,
+            lottieIcon: lottieIconClock(skin),
             activeSegment: [0, 80],
         },
     ],
@@ -48,22 +48,22 @@ export const TABS_CONFIG = {
             label: "TON Space",
             icon: <WalletIcon />,
             view: <TONWallet />,
-            lottieIcon: lottieIconWallet,
+            lottieIcon: lottieIconWallet(skin),
         },
         {
             label: "Activity",
             icon: <HistoryIcon />,
             view: <History />,
-            lottieIcon: lottieIconClock,
+            lottieIcon: lottieIconClock(skin),
         },
         {
             label: "Browser",
             icon: <TradeIcon />,
             view: <Trading />,
-            lottieIcon: lottieIconChartline,
+            lottieIcon: lottieIconChartline(skin),
         },
     ],
-}
+})
 
 export const pageVariants = {
     initial: ({ isSegmentSwitch, direction, isApple }) => {

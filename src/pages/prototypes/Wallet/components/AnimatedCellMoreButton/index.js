@@ -2,16 +2,17 @@ import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import * as cellStyles from "../../../../../components/Cells/Cell.module.scss"
 import Text from "../../../../../components/Text"
-import { useApple } from "../../../../../hooks/DeviceProvider"
+import { useSkin } from "../../../../../hooks/DeviceProvider"
 import { getAssetIcon } from "../../../../../utils/AssetsMap"
 import { TRANSITIONS } from "../../../../../utils/animations"
 import HiddenEye from "../../../../../icons/avatars/HiddenEyeIcon.svg"
 
 export default function AnimatedCellMoreButton({ onClick, state }) {
+    const { isApple } = useSkin()
     const transition = TRANSITIONS.MATERIAL_STANDARD
 
-    const iconSize = useApple ? 40 : 42
-    const jettonsSize = useApple
+    const iconSize = isApple ? 40 : 42
+    const jettonsSize = isApple
         ? { position: "relative", width: "40px", height: "40px" }
         : {
               position: "relative",
@@ -21,7 +22,7 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
           }
 
     // HMSTR иконка — при expanded исчезает
-    const hmstrStyles = useApple
+    const hmstrStyles = isApple
         ? {
               collapsed: { scale: 0.6, top: "-6px", left: "-6px", opacity: 1 },
               expanded: { scale: 1, top: 0, left: 0, opacity: 0 },
@@ -32,7 +33,7 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
           }
 
     // NOT иконка — при expanded исчезает
-    const notStyles = useApple
+    const notStyles = isApple
         ? {
               collapsed: { scale: 0.6, top: "6px", left: "6px", opacity: 1 },
               expanded: { scale: 0, top: 0, left: 0, opacity: 0 },
@@ -73,7 +74,7 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
                                 width: iconSize,
                                 height: iconSize,
                                 top: state ? 0 : "-6px",
-                                left: useApple
+                                left: isApple
                                     ? state
                                         ? 0
                                         : "-6px"

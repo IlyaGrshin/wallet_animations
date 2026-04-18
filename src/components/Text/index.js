@@ -1,12 +1,13 @@
 import PropTypes from "prop-types"
 
-import { useApple } from "../../hooks/DeviceProvider"
+import { useSkin } from "../../hooks/DeviceProvider"
 import AppleText from "./AppleText"
 import MaterialText from "./MaterialText"
 import Badge from "./Badge"
 
 const Text = ({ apple, material, children, ...rest }) => {
-    if (useApple) {
+    const { isApple } = useSkin()
+    if (isApple) {
         return (
             <AppleText {...rest} {...apple}>
                 {children}

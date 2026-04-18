@@ -9,16 +9,18 @@ import { useAvatarUrl } from "./hooks/useAvatarUrl"
 import { useSegmentNavigation } from "./hooks/useSegmentNavigation"
 
 import TabBar from "../../../components/TabBar"
-import { useApple } from "../../../hooks/DeviceProvider"
-import { TABS_CONFIG, pageVariants } from "./navigationConfig"
+import { useSkin } from "../../../hooks/DeviceProvider"
+import { getTabsConfig, pageVariants } from "./navigationConfig"
 
 import * as styles from "./NewNavigation.module.scss"
 
 function NewNavigation() {
+    const { isApple, skin } = useSkin()
     const { activeSegment, handleSegmentChange: originalHandleSegmentChange } =
         useSegmentNavigation()
     const avatarUrl = useAvatarUrl()
 
+    const tabsConfig = useMemo(() => getTabsConfig(skin), [skin])
     const currentPrefix = activeSegment === 0 ? "wallet" : "ton"
     const [prevPrefix, setPrevPrefix] = useState(currentPrefix)
     const segmentResetRef = useRef(null)
@@ -43,8 +45,7 @@ function NewNavigation() {
     const [tabIndices, setTabIndices] = useState({ wallet: 0, ton: 0 })
     const [prevIndices, setPrevIndices] = useState({ wallet: 0, ton: 0 })
 
-    const activeTabs =
-        activeSegment === 0 ? TABS_CONFIG.wallet : TABS_CONFIG.ton
+    const activeTabs = activeSegment === 0 ? tabsConfig.wallet : tabsConfig.ton
     const activeIndex = activeSegment === 0 ? tabIndices.wallet : tabIndices.ton
     const previousIndex =
         activeSegment === 0 ? prevIndices.wallet : prevIndices.ton
@@ -82,9 +83,9 @@ function NewNavigation() {
         () => ({
             isSegmentSwitch,
             direction,
-            isApple: useApple,
+            isApple,
         }),
-        [isSegmentSwitch, direction]
+        [isSegmentSwitch, direction, isApple]
     )
 
     return (

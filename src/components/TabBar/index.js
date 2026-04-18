@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, Activity } from "react"
 import PropTypes from "prop-types"
-import { motion } from "motion/react"
-import { useApple } from "../../hooks/DeviceProvider"
+import * as m from "motion/react-m"
+import { useSkin } from "../../hooks/DeviceProvider"
+import { useResizeObserver } from "../../hooks/useResizeObserver"
 import { GlassBorder } from "../GlassEffect"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
@@ -24,7 +25,7 @@ const TabBarOverlay = ({
     })
 
     return (
-        <motion.div
+        <m.div
             className={styles.clipPathContainer}
             ref={overlayRef}
             {...handlers}
@@ -45,11 +46,12 @@ const TabBarOverlay = ({
                     {...tab}
                 />
             ))}
-        </motion.div>
+        </m.div>
     )
 }
 
 const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
+    const { isApple } = useSkin()
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
     const [replayNonce, setReplayNonce] = useState(0)
 
@@ -76,21 +78,13 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
 
     const [rootWidth, setRootWidth] = useState(0)
 
-    useEffect(() => {
-        const el = rootRef.current
-        if (!el) return
-        const ro = new ResizeObserver((entries) => {
-            for (const entry of entries) {
-                setRootWidth(entry.contentRect.width)
-            }
-        })
-        ro.observe(el)
-        return () => ro.disconnect()
-    }, [])
+    useResizeObserver(rootRef, (entry) => {
+        setRootWidth(entry.contentRect.width)
+    })
 
     const isThreeTabs = tabs.length === 3
     const marginX = isThreeTabs ? 54 : 21
-    const rootStyle = useApple
+    const rootStyle = isApple
         ? {
               left: marginX,
               right: marginX,
@@ -106,7 +100,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     }
 
     return (
-        <motion.div
+        <m.div
             ref={rootRef}
             className={styles.root}
             whileTap={{ scale: 1.02 }}
@@ -142,7 +136,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                 playKey={playKey}
             />
 
-            <Activity mode={useApple ? "visible" : "hidden"}>
+            <Activity mode={isApple ? "visible" : "hidden"}>
                 <GlassBorder />
                 <GradientMask
                     width={rootWidth}
@@ -150,7 +144,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                     insets={maskInsets}
                 />
             </Activity>
-        </motion.div>
+        </m.div>
     )
 }
 
