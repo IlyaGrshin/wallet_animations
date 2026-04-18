@@ -161,7 +161,7 @@ body {
     }
 
     &.material {
-        font-family: Roboto, system-ui, sans-serif;
+        font-family: "Roboto Flex", Roboto, system-ui, sans-serif;
     }
 }
 

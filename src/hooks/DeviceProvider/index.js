@@ -35,6 +35,22 @@ export const useMaterial = platformClass === "material"
 
 export const currentSkin = platformClass
 
+const isAndroid =
+    telegramPlatform === "android" || telegramPlatform === "android_x"
+if (useMaterial && !isAndroid && typeof document !== "undefined") {
+    const preconnect = document.createElement("link")
+    preconnect.rel = "preconnect"
+    preconnect.href = "https://fonts.gstatic.com"
+    preconnect.crossOrigin = ""
+    document.head.appendChild(preconnect)
+
+    const stylesheet = document.createElement("link")
+    stylesheet.rel = "stylesheet"
+    stylesheet.href =
+        "https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400..700&display=swap"
+    document.head.appendChild(stylesheet)
+}
+
 export function setSkinOverride(skin) {
     try {
         window.localStorage.setItem(SKIN_STORAGE_KEY, skin)
