@@ -13,7 +13,7 @@ const PanelHeader = ({ children }) => {
                             variant: "body",
                         }}
                         material={{
-                            variant: "body1",
+                            variant: "body",
                         }}
                     >
                         Close
@@ -26,7 +26,7 @@ const PanelHeader = ({ children }) => {
                             weight: "semibold",
                         }}
                         material={{
-                            variant: "body1",
+                            variant: "body",
                             weight: "medium",
                         }}
                     >
@@ -41,7 +41,7 @@ const PanelHeader = ({ children }) => {
                         weight: "semibold",
                     }}
                     material={{
-                        variant: "headline6",
+                        variant: "title2",
                     }}
                 >
                     {children}

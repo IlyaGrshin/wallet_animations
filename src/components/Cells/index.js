@@ -48,7 +48,7 @@ const CellEnd = ({ label, caption }) => (
         <div className={styles.label}>
             <Text
                 apple={{ variant: "body", weight: "regular" }}
-                material={{ variant: "body1", weight: "regular" }}
+                material={{ variant: "body", weight: "regular" }}
             >
                 {label}
             </Text>
@@ -57,7 +57,7 @@ const CellEnd = ({ label, caption }) => (
             <div className={styles.caption}>
                 <Text
                     apple={{ variant: "subheadline2", weight: "regular" }}
-                    material={{ variant: "subtitle2", weight: "regular" }}
+                    material={{ variant: "subheadline2", weight: "regular" }}
                 >
                     {caption}
                 </Text>

@@ -26,8 +26,8 @@
         padding: 4px 8px;
         border-radius: 4px;
 
-        &[variant="headline5"],
-        &[variant="headline6"] {
+        &[variant="title1"],
+        &[variant="title2"] {
             padding: 6px 12px;
         }
     }
@@ -89,16 +89,15 @@
             padding: 4px;
             border-radius: 8px;
 
-            &[variant="subtitle2"],
-            &[variant="subtitle1"],
-            &[variant="button1"],
-            &[variant="body1"] {
+            &[variant="subheadline2"],
+            &[variant="subheadline1"],
+            &[variant="body"] {
                 padding: 4px 7px;
                 border-radius: 13px;
             }
 
-            &[variant="headline5"],
-            &[variant="headline6"] {
+            &[variant="title1"],
+            &[variant="title2"] {
                 padding: 6px 7px;
                 border-radius: 13px;
             }
@@ -126,8 +125,8 @@
             padding: 4px;
             border-radius: 6px;
 
-            &[variant="headline5"],
-            &[variant="headline6"] {
+            &[variant="title1"],
+            &[variant="title2"] {
                 padding: 6px 4px;
             }
         }

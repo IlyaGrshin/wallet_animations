@@ -27,7 +27,7 @@ const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
     >
         <Text
             apple={{ variant: "body" }}
-            material={{ variant: "body1" }}
+            material={{ variant: "body" }}
             style={{ padding: "2px 0" }}
         >
             {item}

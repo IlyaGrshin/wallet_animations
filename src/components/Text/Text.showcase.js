@@ -12,7 +12,6 @@ const VARIANTS = [
     "title1",
     "title2",
     "title3",
-    "headline",
     "body",
     "callout",
     "subheadline1",

@@ -65,7 +65,7 @@ function Trading() {
                     <div style={centerStyle}>
                         <Text
                             apple={{ variant: "body" }}
-                            material={{ variant: "body1" }}
+                            material={{ variant: "body" }}
                             style={{
                                 color: "var(--tg-theme-subtitle-text-color)",
                             }}

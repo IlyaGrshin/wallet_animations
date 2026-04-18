@@ -31,7 +31,7 @@ function Banner({ name }) {
             <div className={styles.banner}>
                 <Text
                     apple={{ variant: "subheadline2" }}
-                    material={{ variant: "subtitle2" }}
+                    material={{ variant: "subheadline2" }}
                 >
                     {BannerText}
                 </Text>
@@ -140,19 +140,19 @@ function AssetSection({ mode, image, name, price, ticker }) {
                 <div className={styles.data}>
                     <Text
                         apple={{ variant: "title3", weight: "semibold" }}
-                        material={{ variant: "headline7" }}
+                        material={{ variant: "title3" }}
                     >
                         {name}
                     </Text>
                     <Text
                         apple={{ variant: "title2", weight: "semibold" }}
-                        material={{ variant: "headline7" }}
+                        material={{ variant: "title3" }}
                     >
                         ${price}
                     </Text>
                     <Text
                         apple={{ variant: "subheadline1", weight: "regular" }}
-                        material={{ variant: "headline7" }}
+                        material={{ variant: "title3" }}
                     >
                         {ticker}
                     </Text>

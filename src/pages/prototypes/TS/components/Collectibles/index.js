@@ -11,7 +11,7 @@ export default function Collectibles() {
                         variant: "body",
                     }}
                     material={{
-                        variant: "body1",
+                        variant: "body",
                     }}
                 >
                     As you get collectibles, they will appear here.

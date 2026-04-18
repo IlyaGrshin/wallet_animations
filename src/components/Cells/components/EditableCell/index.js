@@ -14,7 +14,7 @@ const EditableCell = forwardRef(
         return (
             <Text
                 apple={{ variant: "body", weight: "regular" }}
-                material={{ variant: "body1", weight: "regular" }}
+                material={{ variant: "body", weight: "regular" }}
                 className={[styles.root, !value && styles.empty]
                     .filter(Boolean)
                     .join(" ")}

@@ -12,7 +12,7 @@ const StartView = ({ title, description }) => {
                     weight: "bold",
                 }}
                 material={{
-                    variant: "headline5",
+                    variant: "title1",
                 }}
             >
                 {title}
@@ -23,7 +23,7 @@ const StartView = ({ title, description }) => {
                     weight: "regular",
                 }}
                 material={{
-                    variant: "body1",
+                    variant: "body",
                 }}
             >
                 {description}

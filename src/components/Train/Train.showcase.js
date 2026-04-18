@@ -16,7 +16,7 @@ const TrainShowcase = () => (
                             <Text
                                 apple={{ variant: "body", weight: "regular" }}
                                 material={{
-                                    variant: "body1",
+                                    variant: "body",
                                     weight: "regular",
                                 }}
                             >
@@ -25,7 +25,7 @@ const TrainShowcase = () => (
                             <Text
                                 apple={{ variant: "body", weight: "regular" }}
                                 material={{
-                                    variant: "body1",
+                                    variant: "body",
                                     weight: "regular",
                                 }}
                             >
@@ -34,7 +34,7 @@ const TrainShowcase = () => (
                             <Text
                                 apple={{ variant: "body", weight: "regular" }}
                                 material={{
-                                    variant: "body1",
+                                    variant: "body",
                                     weight: "regular",
                                 }}
                             >
@@ -53,7 +53,7 @@ const TrainShowcase = () => (
                                     weight: "regular",
                                 }}
                                 material={{
-                                    variant: "subtitle2",
+                                    variant: "subheadline2",
                                     weight: "regular",
                                 }}
                             >
@@ -65,7 +65,7 @@ const TrainShowcase = () => (
                                     weight: "regular",
                                 }}
                                 material={{
-                                    variant: "subtitle2",
+                                    variant: "subheadline2",
                                     weight: "regular",
                                 }}
                             >
@@ -77,7 +77,7 @@ const TrainShowcase = () => (
                                     weight: "regular",
                                 }}
                                 material={{
-                                    variant: "subtitle2",
+                                    variant: "subheadline2",
                                     weight: "regular",
                                 }}
                             >

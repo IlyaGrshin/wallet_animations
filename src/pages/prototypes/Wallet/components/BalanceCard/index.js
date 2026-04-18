@@ -82,7 +82,7 @@ export default function BalanceCard({
                         weight: "semibold",
                     }}
                     material={{
-                        variant: "subtitle2",
+                        variant: "subheadline2",
                         weight: "medium",
                     }}
                     className={styles.label}
@@ -118,7 +118,7 @@ export default function BalanceCard({
                                     weight: "semibold",
                                 }}
                                 material={{
-                                    variant: "subtitle2",
+                                    variant: "subheadline2",
                                     weight: "medium",
                                 }}
                                 style={{ color: "var(--text-confirm-color)" }}
@@ -144,7 +144,7 @@ export default function BalanceCard({
                                     },
                                 }}
                                 material={{
-                                    variant: "subtitle2",
+                                    variant: "subheadline2",
                                     weight: "medium",
                                     arrow: {
                                         direction: changeData.arrowDirection,
@@ -174,7 +174,7 @@ export default function BalanceCard({
                                     weight: "semibold",
                                 }}
                                 material={{
-                                    variant: "subtitle2",
+                                    variant: "subheadline2",
                                     weight: "medium",
                                 }}
                                 style={{

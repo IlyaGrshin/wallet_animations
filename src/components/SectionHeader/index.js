@@ -14,7 +14,7 @@ function SectionHeader({ type, title, value, ...props }) {
                             weight: "bold",
                         }}
                         material={{
-                            variant: "headline6",
+                            variant: "title2",
                         }}
                     >
                         {title}
@@ -26,7 +26,7 @@ function SectionHeader({ type, title, value, ...props }) {
                                 weight: "bold",
                             }}
                             material={{
-                                variant: "body1",
+                                variant: "body",
                                 weight: "regular",
                             }}
                         >
@@ -43,7 +43,7 @@ function SectionHeader({ type, title, value, ...props }) {
                             variant: "footnote",
                         }}
                         material={{
-                            variant: "subtitle2",
+                            variant: "subheadline2",
                         }}
                     >
                         {title}
@@ -59,7 +59,8 @@ function SectionHeader({ type, title, value, ...props }) {
                             weight: "semibold",
                         }}
                         material={{
-                            variant: "button1",
+                            variant: "subheadline1",
+                            weight: "medium",
                         }}
                     >
                         {title}
@@ -70,7 +71,7 @@ function SectionHeader({ type, title, value, ...props }) {
                                 variant: "footnote",
                             }}
                             material={{
-                                variant: "subtitle1",
+                                variant: "subheadline1",
                                 weight: "regular",
                             }}
                         >

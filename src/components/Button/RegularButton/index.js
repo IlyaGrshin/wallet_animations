@@ -28,7 +28,7 @@ export const RegularButton = ({
             {variant === "filled" && <GlassBorder />}
             <Text
                 apple={{ variant: "body", weight: "semibold" }}
-                material={{ variant: "button1" }}
+                material={{ variant: "subheadline1", weight: "medium" }}
             >
                 {label}
             </Text>

@@ -38,7 +38,7 @@ const SegmentedControl = ({
                             weight: "semibold",
                         }}
                         material={{
-                            variant: "subtitle2",
+                            variant: "subheadline2",
                             weight: "medium",
                         }}
                     >

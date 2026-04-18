@@ -87,11 +87,11 @@ const Tabs = ({
     const textProps = isGlass
         ? {
               apple: { variant: "subheadline1", weight: "semibold" },
-              material: { variant: "subtitle1", weight: "medium" },
+              material: { variant: "subheadline1", weight: "medium" },
           }
         : {
               apple: { variant: "subheadline2", weight: "semibold" },
-              material: { variant: "subtitle2", weight: "medium" },
+              material: { variant: "subheadline2", weight: "medium" },
           }
 
     const tabButtons = tabs.map((label, index) => {

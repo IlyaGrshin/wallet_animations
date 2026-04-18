@@ -11,7 +11,7 @@ const CellText = ({ type, title, description, bold }) => {
             <div className={name}>
                 <Text
                     apple={{ variant: "body", weight: weight }}
-                    material={{ variant: "body1", weight: weight }}
+                    material={{ variant: "body", weight: weight }}
                 >
                     {title}
                 </Text>
@@ -20,7 +20,10 @@ const CellText = ({ type, title, description, bold }) => {
                 <div className={styles.caption}>
                     <Text
                         apple={{ variant: "subheadline2", weight: "regular" }}
-                        material={{ variant: "subtitle2", weight: "regular" }}
+                        material={{
+                            variant: "subheadline2",
+                            weight: "regular",
+                        }}
                     >
                         {description}
                     </Text>

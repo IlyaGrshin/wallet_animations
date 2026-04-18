@@ -25,7 +25,7 @@ const GalleryPage = ({ color, label }) => (
     >
         <Text
             apple={{ variant: "title2", weight: "bold" }}
-            material={{ variant: "headline6" }}
+            material={{ variant: "title2" }}
             style={{ color: "#fff" }}
         >
             {label}

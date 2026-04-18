@@ -14,7 +14,7 @@ export default function CollapsedView({ activeSegment }) {
                 weight: "semibold",
             }}
             material={{
-                variant: "button1",
+                variant: "subheadline1",
                 weight: "medium",
             }}
         >
