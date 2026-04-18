@@ -1,31 +1,20 @@
 import { useEffect } from "react"
 import PropTypes from "prop-types"
+import { useHashLocation } from "wouter/use-hash-location"
 import WebApp from "./webApp"
 
-const backButton = WebApp.BackButton
-
-let isButtonShown = false
-
-const BackButton = ({ onClick = () => window.history.back() }) => {
-    useEffect(() => {
-        backButton.show()
-        isButtonShown = true
-        return () => {
-            isButtonShown = false
-            setTimeout(() => {
-                if (!isButtonShown) {
-                    backButton.hide()
-                }
-            }, 10)
-        }
-    }, [])
+const BackButton = ({ onClick }) => {
+    const [, navigate] = useHashLocation()
 
     useEffect(() => {
-        WebApp.onEvent("backButtonClicked", onClick)
+        const handler = onClick ?? (() => navigate("/"))
+        WebApp.BackButton.onClick(handler)
+        WebApp.BackButton.show()
         return () => {
-            WebApp.offEvent("backButtonClicked", onClick)
+            WebApp.BackButton.offClick(handler)
+            WebApp.BackButton.hide()
         }
-    }, [onClick])
+    }, [onClick, navigate])
 
     return null
 }
