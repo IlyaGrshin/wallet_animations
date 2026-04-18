@@ -15,12 +15,10 @@
     }
 
     :global(body.material) & {
-        padding: 19px 20px 3px;
-        background-color: var(--tg-theme-section-bg-color);
+        padding: 15px 20px 7px;
 
         &.Footer {
             padding: 12px 20px;
-            background-color: transparent;
             color: var(--tg-theme-subtitle-text-color);
         }
     }

@@ -11,12 +11,16 @@
         flex-direction: column;
         align-self: stretch;
 
-        .container {
-            background-color: var(--tg-theme-section-bg-color);
+        .card {
             display: flex;
             flex-direction: column;
             align-self: stretch;
-            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-self: stretch;
         }
 
         .container > * {
@@ -31,17 +35,21 @@
         gap: 24px;
 
         section .container {
+            background-color: var(--tg-theme-section-bg-color);
             border-radius: 26px;
+            overflow: hidden;
         }
     }
 
     :global(body.material) & {
-        padding: 0;
+        padding: 12px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
         gap: 12px;
 
-        section .container {
-            border-radius: 0;
-            box-shadow: 0 0.33px 1px 0 rgb(0 0 0 / 6%);
+        section .card {
+            background-color: var(--tg-theme-section-bg-color);
+            border-radius: 16px;
+            overflow: hidden;
         }
     }
 }
