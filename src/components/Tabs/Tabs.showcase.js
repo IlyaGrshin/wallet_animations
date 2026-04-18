@@ -1,7 +1,9 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import PropTypes from "prop-types"
-import { AnimatePresence, motion, useReducedMotion } from "motion/react"
+import * as m from "motion/react-m"
+import { AnimatePresence, useReducedMotion } from "motion/react"
 
+import { useResizeObserver } from "../../hooks/useResizeObserver"
 import Page from "../Page"
 import SectionList from "../SectionList"
 import Cell from "../Cells"
@@ -40,15 +42,10 @@ const TabContent = ({ activeIndex, children }) => {
     const innerRef = useRef(null)
     const [height, setHeight] = useState(null)
 
-    useLayoutEffect(() => {
+    useResizeObserver(innerRef, () => {
         const el = innerRef.current
-        if (!el) return
-        const update = () => setHeight(el.offsetHeight)
-        update()
-        const ro = new ResizeObserver(update)
-        ro.observe(el)
-        return () => ro.disconnect()
-    }, [])
+        if (el) setHeight(el.offsetHeight)
+    })
 
     const slideTransition = reduceMotion
         ? { duration: 0 }
@@ -58,7 +55,7 @@ const TabContent = ({ activeIndex, children }) => {
         : { duration: 0.3, ease: [0.23, 1, 0.32, 1] }
 
     return (
-        <motion.div
+        <m.div
             style={{ overflow: "hidden" }}
             initial={false}
             animate={height == null ? undefined : { height }}
@@ -70,7 +67,7 @@ const TabContent = ({ activeIndex, children }) => {
                     initial={false}
                     custom={direction}
                 >
-                    <motion.div
+                    <m.div
                         key={activeIndex}
                         custom={direction}
                         variants={slideVariants}
@@ -80,10 +77,10 @@ const TabContent = ({ activeIndex, children }) => {
                         transition={slideTransition}
                     >
                         {children}
-                    </motion.div>
+                    </m.div>
                 </AnimatePresence>
             </div>
-        </motion.div>
+        </m.div>
     )
 }
 

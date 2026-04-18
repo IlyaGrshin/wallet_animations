@@ -1,5 +1,6 @@
-import { useRef, useState, useLayoutEffect, useEffect } from "react"
+import { useRef, useState, useLayoutEffect } from "react"
 import PropTypes from "prop-types"
+import { useResizeObserver } from "../../hooks/useResizeObserver"
 
 const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
     const contentRef = useRef(null)
@@ -32,20 +33,14 @@ const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
         }
         setHeight(0)
     }, [open, height])
-    useEffect(() => {
-        if (!open) return
-        const el = contentRef.current
-        if (!el) return
-
-        const update = () => {
-            const fullHeight = el.scrollHeight
-            setHeight(fullHeight)
-        }
-
-        const ro = new ResizeObserver(update)
-        ro.observe(el)
-        return () => ro.disconnect()
-    }, [open])
+    useResizeObserver(
+        contentRef,
+        () => {
+            const el = contentRef.current
+            if (el) setHeight(el.scrollHeight)
+        },
+        { enabled: open }
+    )
 
     const style = {
         width: "100%",
