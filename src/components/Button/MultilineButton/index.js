@@ -16,7 +16,7 @@ export function MultilineButton({ variant, icon, label, style, ...props }) {
                     weight: "semibold",
                 }}
                 material={{
-                    variant: "subtitle2",
+                    variant: "caption2",
                     weight: "medium",
                 }}
             >

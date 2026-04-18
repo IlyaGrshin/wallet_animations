@@ -65,9 +65,12 @@
     }
     
     :global(body.material) & {
+        gap: 1px;
+        border-radius: 16px;
+
         svg, path {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
         }
     }
 }
