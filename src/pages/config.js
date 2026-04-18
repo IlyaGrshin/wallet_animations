@@ -101,6 +101,12 @@ const config = [
                 ),
             },
             {
+                title: "Tooltip",
+                component: lazy(
+                    () => import("../components/Tooltip/Tooltip.showcase")
+                ),
+            },
+            {
                 title: "Text",
                 component: lazy(
                     () => import("../components/Text/Text.showcase")
