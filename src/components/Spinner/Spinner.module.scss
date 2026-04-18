@@ -20,7 +20,7 @@
     }
 
     :global(body.material) & {
-        stroke: var(--tg-theme-accent-text-color);
+        color: var(--tg-theme-accent-text-color);
     }
 }
   

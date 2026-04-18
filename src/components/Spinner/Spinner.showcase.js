@@ -11,11 +11,11 @@ const SpinnerShowcase = () => (
         <Page>
             <SectionList>
                 <SectionList.Item header="Size">
-                    <Cell start={<Spinner />}>
-                        <Cell.Text title="Default (24px)" />
-                    </Cell>
                     <Cell start={<Spinner size={16} />}>
                         <Cell.Text title="Small (16px)" />
+                    </Cell>
+                    <Cell start={<Spinner />}>
+                        <Cell.Text title="Default (24px)" />
                     </Cell>
                     <Cell start={<Spinner size={32} />}>
                         <Cell.Text title="Medium (32px)" />
