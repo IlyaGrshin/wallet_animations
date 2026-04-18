@@ -21,7 +21,7 @@ const Modals = ({ modals, handlers }) => {
                     backgroundColor: "var(--tg-theme-secondary-bg-color)",
                 }}
             >
-                <PanelHeader>Modal (Framer)</PanelHeader>
+                <PanelHeader>Modal (Motion)</PanelHeader>
                 <SectionList>
                     <SectionList.Item>
                         <Cell start={<ImageAvatar src={getAssetIcon("TON")} />}>

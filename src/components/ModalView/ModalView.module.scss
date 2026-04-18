@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -39,7 +39,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background: rgb(0 0 0 / 50%);
     display: flex;
     justify-content: center;
@@ -47,18 +47,18 @@
     z-index: 1000;
     will-change: opacity;
 }
-  
+
 .root {
     background: var(--tg-theme-section-bg-color);
     color: var(--tg-theme-text-color);
     border-radius: 12px 12px 0 0;
     width: 100%;
-    min-height: 65vh;
+    min-height: 65dvh;
     will-change: transform;
     overflow: hidden;
 
     &.animation {
-        transform: translateY(100vh);
+        transform: translateY(100dvh);
         transition-duration: 550ms;
         transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 

@@ -47,7 +47,6 @@
 
     :global(body.material) & {
         height: 56px;
-        background-color: var(--tg-theme-section-bg-color);
 
         &.modalHeight {
             height: 60px;

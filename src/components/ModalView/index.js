@@ -8,6 +8,10 @@ import WebApp, { BackButton } from "../../lib/twa"
 
 import { blendColors } from "../../utils/common"
 
+const CSS_CLOSE_DURATION = 550
+
+const getHeaderColor = () => WebApp.themeParams.secondary_bg_color || "#EFEFF4"
+
 const ModalView = ({
     isOpen,
     onClose,
@@ -17,37 +21,48 @@ const ModalView = ({
 }) => {
     const [shouldRender, setShouldRender] = useState(isOpen)
     const [animate, setAnimate] = useState(isOpen)
-    const actualShouldRender = isOpen ? true : shouldRender
+
+    if (isOpen && !shouldRender) setShouldRender(true)
+    if (!isOpen && animate && useCssAnimation) setAnimate(false)
+
+    const actualShouldRender = isOpen || shouldRender
 
     useEffect(() => {
-        document.body.style.overflow = isOpen ? "hidden" : "auto"
-
-        const headerColor = WebApp.themeParams.secondary_bg_color || "#EFEFF4"
+        const headerColor = getHeaderColor()
         const headerColorWithOverlay = `#${blendColors(headerColor, "#000000", 0.5)}`
 
-        if (useCssAnimation) {
-            if (isOpen) {
-                WebApp.disableVerticalSwipes()
-                setTimeout(() => {
-                    setAnimate(true)
-                    WebApp.setHeaderColor(headerColorWithOverlay)
-                }, 10)
-            } else {
-                WebApp.enableVerticalSwipes()
-                WebApp.setHeaderColor(headerColor)
-                const timer = setTimeout(() => setAnimate(false), 0)
-                return () => clearTimeout(timer)
-            }
+        if (isOpen) {
+            document.body.style.overflow = "hidden"
+            WebApp.disableVerticalSwipes()
+            WebApp.setHeaderColor(headerColorWithOverlay)
         } else {
-            if (isOpen) {
-                WebApp.setHeaderColor(headerColorWithOverlay)
-                WebApp.disableVerticalSwipes()
-            } else {
-                WebApp.enableVerticalSwipes()
-                WebApp.setHeaderColor(headerColor)
-            }
+            document.body.style.overflow = "auto"
+            WebApp.enableVerticalSwipes()
+            WebApp.setHeaderColor(headerColor)
         }
+
+        if (!useCssAnimation) return
+
+        if (isOpen) {
+            const timer = setTimeout(() => setAnimate(true), 10)
+            return () => clearTimeout(timer)
+        }
+
+        const timer = setTimeout(
+            () => setShouldRender(false),
+            CSS_CLOSE_DURATION
+        )
+        return () => clearTimeout(timer)
     }, [isOpen, useCssAnimation])
+
+    useEffect(
+        () => () => {
+            document.body.style.overflow = "auto"
+            WebApp.enableVerticalSwipes()
+            WebApp.setHeaderColor(getHeaderColor())
+        },
+        []
+    )
 
     const overlayAnimation = {
         hidden: { opacity: 0 },
@@ -67,24 +82,17 @@ const ModalView = ({
         },
     }
 
-    const onAnimationEnd = (e) => {
-        if (e.target === e.currentTarget && !animate) {
-            setShouldRender(false)
-        }
-    }
-
     if (useCssAnimation) {
         return (
             actualShouldRender && (
                 <>
                     <BackButton onClick={onClose} />
                     <div
-                        className={`${styles.overlay} ${styles.animation} ${animate ? `${styles.open}` : ""}`}
+                        className={`${styles.overlay} ${styles.animation} ${animate ? styles.open : ""}`}
                         onClick={onClose}
-                        onTransitionEnd={onAnimationEnd}
                     >
                         <div
-                            className={`${styles.root} ${styles.animation} ${animate ? `${styles.open}` : ""}`}
+                            className={`${styles.root} ${styles.animation} ${animate ? styles.open : ""}`}
                             onClick={(e) => e.stopPropagation()}
                             {...props}
                         >
