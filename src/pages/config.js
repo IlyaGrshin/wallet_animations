@@ -1,4 +1,4 @@
-import { lazy } from "react"
+import lazyWithPreload from "../utils/lazyWithPreload"
 
 const config = [
     {
@@ -6,133 +6,133 @@ const config = [
         pages: [
             {
                 title: "Cell",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Cells/Cells.showcase")
                 ),
             },
             {
                 title: "Picker",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Picker/Picker.showcase")
                 ),
             },
             {
                 title: "Wheel",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Wheel/Wheel.showcase")
                 ),
             },
             {
                 title: "Modal Pages",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/ModalView/ModalView.showcase")
                 ),
             },
             {
                 title: "Spinner",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Spinner/Spinner.showcase")
                 ),
             },
             {
                 title: "Train",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Train/Train.showcase")
                 ),
             },
             {
                 title: "Start View",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/StartView/StartView.showcase")
                 ),
             },
             {
                 title: "Section List",
-                component: lazy(
+                component: lazyWithPreload(
                     () =>
                         import("../components/SectionList/SectionList.showcase")
                 ),
             },
             {
                 title: "Image Avatar",
-                component: lazy(
+                component: lazyWithPreload(
                     () =>
                         import("../components/ImageAvatar/ImageAvatar.showcase")
                 ),
             },
             {
                 title: "Initials Avatar",
-                component: lazy(
+                component: lazyWithPreload(
                     () =>
                         import("../components/InitialsAvatar/InitialsAvatar.showcase")
                 ),
             },
             {
                 title: "Switch",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Switch/Switch.showcase")
                 ),
             },
             {
                 title: "Collapsible",
-                component: lazy(
+                component: lazyWithPreload(
                     () =>
                         import("../components/Collapsible/Collapsible.showcase")
                 ),
             },
             {
                 title: "Button",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Button/Button.showcase")
                 ),
             },
             {
                 title: "Segmented Control",
-                component: lazy(
+                component: lazyWithPreload(
                     () =>
                         import("../components/SegmentedControl/SegmentedControl.showcase")
                 ),
             },
             {
                 title: "Dropdown Menu",
-                component: lazy(
+                component: lazyWithPreload(
                     () =>
                         import("../components/DropdownMenu/DropdownMenu.showcase")
                 ),
             },
             {
                 title: "Tooltip",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Tooltip/Tooltip.showcase")
                 ),
             },
             {
                 title: "Text",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Text/Text.showcase")
                 ),
             },
             {
                 title: "Gallery",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Gallery/Gallery.showcase")
                 ),
             },
             {
                 title: "TabBar",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/TabBar/TabBar.showcase")
                 ),
             },
             {
                 title: "Tabs",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Tabs/Tabs.showcase")
                 ),
             },
             {
                 title: "Snackbar",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/Snackbar/Snackbar.showcase")
                 ),
             },
@@ -143,15 +143,21 @@ const config = [
         pages: [
             {
                 title: "Navigation Bar",
-                component: lazy(() => import("./showcases/NavigationBar")),
+                component: lazyWithPreload(
+                    () => import("./showcases/NavigationBar")
+                ),
             },
             {
                 title: "Bottom Bar",
-                component: lazy(() => import("./showcases/BottomBar")),
+                component: lazyWithPreload(
+                    () => import("./showcases/BottomBar")
+                ),
             },
             {
                 title: "Haptic Feedback",
-                component: lazy(() => import("./showcases/HapticFeedback")),
+                component: lazyWithPreload(
+                    () => import("./showcases/HapticFeedback")
+                ),
             },
         ],
     },
@@ -160,26 +166,34 @@ const config = [
         pages: [
             {
                 title: "Input Page",
-                component: lazy(
+                component: lazyWithPreload(
                     () => import("../components/TextField/TextField.showcase")
                 ),
             },
             {
                 title: "Navigation",
-                component: lazy(() => import("./prototypes/NewNavigation")),
+                component: lazyWithPreload(
+                    () => import("./prototypes/NewNavigation")
+                ),
                 routeSuffix: "/:rest*?",
             },
             {
                 title: "Color Asset Page",
-                component: lazy(() => import("./prototypes/ColorAssetPage")),
+                component: lazyWithPreload(
+                    () => import("./prototypes/ColorAssetPage")
+                ),
             },
             {
                 title: "Onboarding",
-                component: lazy(() => import("./prototypes/Onboarding")),
+                component: lazyWithPreload(
+                    () => import("./prototypes/Onboarding")
+                ),
             },
             {
                 title: "Background Tests",
-                component: lazy(() => import("./prototypes/ColorChanging")),
+                component: lazyWithPreload(
+                    () => import("./prototypes/ColorChanging")
+                ),
             },
         ],
     },

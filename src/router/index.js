@@ -6,6 +6,8 @@ import { useLocation } from "wouter"
 import PageTransition from "../components/PageTransition"
 import Spinner from "../components/Spinner"
 import SkinSwitcher from "../components/SkinSwitcher"
+import ErrorBoundary from "../components/ErrorBoundary"
+import RouteErrorFallback from "./RouteErrorFallback"
 
 import config from "../pages/config"
 import { flattenRoutes } from "../pages/configHelpers"
@@ -26,19 +28,21 @@ Redirect.propTypes = {
 }
 
 const Routes = () => (
-    <Switch>
-        <Route path="/" component={CatalogPage} />
-        {routes.map(({ path, component: Component }) => (
-            <Route key={path} path={path}>
-                <Suspense fallback={<Spinner centered size={48} />}>
-                    <Component />
-                </Suspense>
+    <ErrorBoundary fallback={<RouteErrorFallback />}>
+        <Switch>
+            <Route path="/" component={CatalogPage} />
+            {routes.map(({ path, component: Component }) => (
+                <Route key={path} path={path}>
+                    <Suspense fallback={<Spinner centered size={48} />}>
+                        <Component />
+                    </Suspense>
+                </Route>
+            ))}
+            <Route>
+                <Redirect to="/" />
             </Route>
-        ))}
-        <Route>
-            <Redirect to="/" />
-        </Route>
-    </Switch>
+        </Switch>
+    </ErrorBoundary>
 )
 
 function AppRoutes() {

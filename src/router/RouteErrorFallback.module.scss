@@ -1,0 +1,39 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 60vh;
+    padding: 24px;
+    text-align: center;
+    color: var(--tg-theme-text-color);
+}
+
+.title {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.description {
+    font-size: 15px;
+    color: var(--tg-theme-hint-color);
+    max-width: 280px;
+}
+
+.button {
+    margin-top: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: var(--tg-theme-button-color);
+    color: var(--tg-theme-button-text-color);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:focus-visible {
+        outline: 2px solid var(--tg-theme-link-color);
+        outline-offset: 2px;
+    }
+}
