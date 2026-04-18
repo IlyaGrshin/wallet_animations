@@ -88,7 +88,7 @@ export default defineConfig(({ command }) => ({
   build: {
     outDir: 'build',
     assetsDir: '',
-    sourcemap: true,
+    sourcemap: 'hidden',
     rollupOptions: {
       output: {
         assetFileNames: 'assets/[name].[hash][extname]',

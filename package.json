@@ -8,10 +8,8 @@
   },
   "homepage": ".",
   "dependencies": {
-    "@babel/runtime": "^7.28.4",
     "calligraph": "^1.4.1",
     "colorthief": "^3.3.1",
-    "core-js": "^3.47.0",
     "lottie-react": "^2.4.1",
     "motion": "^12.25.0",
     "react": "^19.2.3",
@@ -31,15 +29,15 @@
     "screenshot:story": "node scripts/screenshot-story.js",
     "story-server": "node scripts/story-server.js"
   },
-  "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "prettier"
-    ]
-  },
   "browserslist": {
     "production": [
-      "cover 95.5%",
+      "last 2 chrome versions",
+      "last 2 safari versions",
+      "last 2 firefox versions",
+      "last 2 edge versions",
+      "last 2 samsung versions",
+      "last 2 ios_saf versions",
+      "last 2 and_chr versions",
       "not dead",
       "not op_mini all"
     ],
@@ -52,9 +50,6 @@
   "devDependencies": {
     "@babel/core": "^7.28.4",
     "@babel/eslint-parser": "^7.28.6",
-    "@babel/plugin-transform-private-property-in-object": "^7.25.9",
-    "@babel/plugin-transform-runtime": "^7.28.3",
-    "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.26.3",
     "@relative-ci/agent": "^4.3.1",
     "@resvg/resvg-js": "^2.6.2",
