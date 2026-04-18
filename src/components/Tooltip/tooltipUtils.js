@@ -1,12 +1,7 @@
-import {
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react"
+import { useCallback } from "react"
 
 import { calculatePosition, samePosition } from "./tooltipPosition"
+import { useAnchoredPosition } from "../../hooks/useAnchoredPosition"
 
 export { useClickOutside } from "../../hooks/useClickOutside"
 
@@ -33,83 +28,25 @@ export const useTooltipPosition = (
     tailProtrusion,
     preferredPlacement
 ) => {
-    const [position, setPosition] = useState(INITIAL_POSITION)
-    const [isPositioned, setIsPositioned] = useState(false)
-    const bodySizeRef = useRef(null)
-
-    const resetPosition = useCallback(() => {
-        setIsPositioned(false)
-        bodySizeRef.current = null
-    }, [])
-
-    useLayoutEffect(() => {
-        if (!isOpen || isPositioned) return
-        if (!triggerRef.current || !tooltipRef.current) return
-
-        const triggerRect = triggerRef.current.getBoundingClientRect()
-        const { width, height } = tooltipRef.current.getBoundingClientRect()
-        bodySizeRef.current = { width, height }
-        setPosition(
+    const calculate = useCallback(
+        (triggerRect, contentSize) =>
             calculatePosition(
                 triggerRect,
-                { width, height },
+                contentSize,
                 tailVBreadth,
                 tailHBreadth,
                 tailProtrusion,
                 preferredPlacement
-            )
-        )
-        setIsPositioned(true)
-    }, [
+            ),
+        [tailVBreadth, tailHBreadth, tailProtrusion, preferredPlacement]
+    )
+
+    return useAnchoredPosition({
         isOpen,
-        isPositioned,
         triggerRef,
-        tooltipRef,
-        tailVBreadth,
-        tailHBreadth,
-        tailProtrusion,
-        preferredPlacement,
-    ])
-
-    useEffect(() => {
-        if (!isOpen || !isPositioned) return
-
-        let frame = null
-        const reposition = () => {
-            frame = null
-            if (!triggerRef.current || !bodySizeRef.current) return
-            const rect = triggerRef.current.getBoundingClientRect()
-            const next = calculatePosition(
-                rect,
-                bodySizeRef.current,
-                tailVBreadth,
-                tailHBreadth,
-                tailProtrusion,
-                preferredPlacement
-            )
-            setPosition((prev) => (samePosition(prev, next) ? prev : next))
-        }
-        const schedule = () => {
-            if (frame !== null) return
-            frame = requestAnimationFrame(reposition)
-        }
-
-        window.addEventListener("scroll", schedule, true)
-        window.addEventListener("resize", schedule)
-        return () => {
-            if (frame !== null) cancelAnimationFrame(frame)
-            window.removeEventListener("scroll", schedule, true)
-            window.removeEventListener("resize", schedule)
-        }
-    }, [
-        isOpen,
-        isPositioned,
-        triggerRef,
-        tailVBreadth,
-        tailHBreadth,
-        tailProtrusion,
-        preferredPlacement,
-    ])
-
-    return { position, isPositioned, resetPosition }
+        contentRef: tooltipRef,
+        initialPosition: INITIAL_POSITION,
+        calculate,
+        equals: samePosition,
+    })
 }
