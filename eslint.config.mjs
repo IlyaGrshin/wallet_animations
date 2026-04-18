@@ -44,6 +44,7 @@ export default [
             'react/prop-types': 'error',
             'react/display-name': 'off',
             'react/jsx-key': 'error',
+            'react-hooks/set-state-in-effect': 'off',
             'no-console': ['warn', { allow: ['warn', 'error'] }],
         },
     },
