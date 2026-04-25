@@ -15,6 +15,7 @@ import {
 } from "motion/react"
 
 import raysSrc from "@icons/others/Rays.svg"
+import WebApp from "@lib/twa"
 import Slot from "./Slot"
 import Chevron from "./Chevron"
 import { startCruise } from "./cruisePatterns"
@@ -90,6 +91,22 @@ const SpinReel = forwardRef(function SpinReel(
             pulseControls?.stop()
         }
     }, [phase, phaseFade, winnerPulse])
+
+    useEffect(() => {
+        if (phase !== PHASE.SPINNING) return undefined
+        let lastIndex = Math.round(
+            (centerOffsetRef.current - y.get()) / SLOT_HEIGHT
+        )
+        return y.on("change", (latest) => {
+            const index = Math.round(
+                (centerOffsetRef.current - latest) / SLOT_HEIGHT
+            )
+            if (index !== lastIndex) {
+                lastIndex = index
+                WebApp.HapticFeedback?.selectionChanged?.()
+            }
+        })
+    }, [phase, y])
 
     useImperativeHandle(ref, () => {
         const settle = () => {
