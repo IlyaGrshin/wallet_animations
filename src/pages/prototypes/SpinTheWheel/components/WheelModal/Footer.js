@@ -31,14 +31,14 @@ function FooterCopy({ title, description }) {
             >
                 {title}
             </Text>
-            <p className={styles.description}>
+            <div className={styles.description}>
                 <Text
                     apple={{ variant: "subheadline1", weight: "regular" }}
                     material={{ variant: "subheadline1", weight: "regular" }}
                 >
                     {description}
                 </Text>
-            </p>
+            </div>
         </div>
     )
 }
