@@ -9,7 +9,7 @@ This file exists to ensure Claude Code discovers the project instructions. The c
 - Package manager: **yarn** (not npm/pnpm)
 - Routing: **wouter** with `useHashLocation`
 - Styling: **SCSS Modules** (ComponentName.module.scss)
-- Platform: **Telegram Web App** (@twa-dev/sdk)
+- Platform: **Telegram Web App** (internal `@lib/twa` module)
 - Max file size: **250 lines**
 - Type checking: **PropTypes**
 
