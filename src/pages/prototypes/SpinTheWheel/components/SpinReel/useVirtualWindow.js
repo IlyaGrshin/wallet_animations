@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 function computeRange(latest, offset, step, count, buffer) {
     const index = Math.round((offset - latest) / step)
@@ -32,6 +32,13 @@ export default function useVirtualWindow({
     const [range, setRange] = useState(() =>
         computeRange(motionValue.get(), offset, step, count, buffer)
     )
+    const rangeRef = useRef(range)
+
+    const updateRange = useCallback((next) => {
+        if (sameRange(rangeRef.current, next)) return
+        rangeRef.current = next
+        setRange(next)
+    }, [])
 
     useEffect(() => {
         let rafId = 0
@@ -44,7 +51,7 @@ export default function useVirtualWindow({
                 countRef.current,
                 bufferRef.current
             )
-            setRange((prev) => (sameRange(prev, next) ? prev : next))
+            updateRange(next)
         }
         const schedule = () => {
             if (!rafId) rafId = requestAnimationFrame(apply)
@@ -55,7 +62,7 @@ export default function useVirtualWindow({
             if (rafId) cancelAnimationFrame(rafId)
             unsubscribe()
         }
-    }, [motionValue])
+    }, [motionValue, updateRange])
 
     useEffect(() => {
         const next = computeRange(
@@ -65,8 +72,8 @@ export default function useVirtualWindow({
             count,
             buffer
         )
-        setRange((prev) => (sameRange(prev, next) ? prev : next))
-    }, [offset, step, count, buffer, motionValue])
+        updateRange(next)
+    }, [offset, step, count, buffer, motionValue, updateRange])
 
     return range
 }

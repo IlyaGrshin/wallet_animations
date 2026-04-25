@@ -125,13 +125,6 @@
         outline-offset: 2px;
     }
 
-    @media (hover: none) {
-        &:focus,
-        &:focus-visible {
-            outline: none;
-        }
-    }
-
     &:active {
         transform: scale(0.94);
     }
@@ -160,6 +153,7 @@
     position: relative;
     flex: 1;
     overflow: hidden;
+    contain: layout paint style;
 }
 
 .starsLayer {
@@ -167,92 +161,5 @@
     inset: 0 0 var(--footer-height, 180px) 0;
     pointer-events: none;
     z-index: 2;
-}
-
-.footerArea {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    min-height: calc(180px + env(safe-area-inset-bottom));
-    z-index: 3;
-}
-
-.footerCard {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--surface);
-    border-radius: 26px 26px 0 0;
-    padding: 24px 24px calc(20px + env(safe-area-inset-bottom));
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    box-shadow: var(--shadow-card);
-    z-index: 2;
-    will-change: transform;
-}
-
-.speedUpLayer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 16px 24px calc(20px + env(safe-area-inset-bottom));
-    z-index: 1;
-}
-
-.copy {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    text-align: center;
-}
-
-.description {
-    margin: 0;
-    color: var(--hint);
-}
-
-.cta {
-    appearance: none;
-    border: none;
-    background: var(--tg-theme-button-color, oklch(65% 0.20 250deg));
-    color: var(--tg-theme-button-text-color, oklch(100% 0 0deg));
-    border-radius: 100px;
-    padding: 14px 20px;
-    font: inherit;
-    cursor: pointer;
-    text-align: center;
-    width: 100%;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-    transition: transform 150ms ease, opacity 200ms ease;
-
-    &:focus-visible {
-        outline: 2px solid var(--tg-theme-link-color);
-        outline-offset: 2px;
-    }
-
-    @media (hover: none) {
-        &:focus,
-        &:focus-visible {
-            outline: none;
-        }
-    }
-
-    &:active {
-        transform: scale(0.985);
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-}
-
-.ctaGhost {
-    background: var(--ghost);
-    color: var(--text);
+    contain: layout paint style;
 }

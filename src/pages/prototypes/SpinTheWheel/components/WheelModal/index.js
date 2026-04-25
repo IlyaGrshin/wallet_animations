@@ -17,7 +17,7 @@ import WebApp from "@lib/twa"
 import SpinReel, { SLOT_HEIGHT } from "../SpinReel"
 import Stars from "./Stars"
 import Footer from "./Footer"
-import { buildItems } from "../../utils"
+import { buildItems, preloadRewardImages } from "../../utils"
 import { PHASE, POINTS_BALANCE, SPIN_COST } from "../../mockData"
 import * as styles from "./WheelModal.module.scss"
 
@@ -31,6 +31,10 @@ const MAX_SPEED_UPS = 4
 const CRUISE_DURATION_MS = 4500
 const CENTER_LIFT_PX = 20
 const IDLE_NUDGE_INTERVAL_MS = 2300
+const DEFAULT_LAYOUT = { stageH: 460, footerH: 180, navH: 60 }
+
+const sameLayout = (a, b) =>
+    a.stageH === b.stageH && a.footerH === b.footerH && a.navH === b.navH
 
 function WheelModal({ isOpen, onClose }) {
     const [phase, setPhase] = useState(PHASE.IDLE)
@@ -38,20 +42,24 @@ function WheelModal({ isOpen, onClose }) {
     const [focusedIndex, setFocusedIndex] = useState(IDLE_INDEX)
     const [points, setPoints] = useState(POINTS_BALANCE)
     const [speedUps, setSpeedUps] = useState(0)
-    const [stageH, setStageH] = useState(460)
-    const [footerH, setFooterH] = useState(180)
-    const [navH, setNavH] = useState(60)
+    const [layout, setLayout] = useState(DEFAULT_LAYOUT)
     const reelRef = useRef(null)
     const stageRef = useRef(null)
     const footerRef = useRef(null)
     const navRef = useRef(null)
     const spinTokenRef = useRef(0)
     const focusedIndexRef = useRef(focusedIndex)
+    const { stageH, footerH, navH } = layout
+
     useEffect(() => {
         focusedIndexRef.current = focusedIndex
     }, [focusedIndex])
 
     const winner = items[focusedIndex]
+
+    useEffect(() => {
+        if (isOpen) preloadRewardImages()
+    }, [isOpen])
 
     useEffect(() => {
         if (!isOpen) {
@@ -76,17 +84,32 @@ function WheelModal({ isOpen, onClose }) {
     }, [isOpen, phase, items.length])
 
     useLayoutEffect(() => {
-        const measure = () => {
-            if (stageRef.current) setStageH(stageRef.current.offsetHeight)
-            if (footerRef.current) setFooterH(footerRef.current.offsetHeight)
-            if (navRef.current) setNavH(navRef.current.offsetHeight)
+        let frameId = 0
+        const measureNow = () => {
+            const next = {
+                stageH: stageRef.current?.offsetHeight ?? DEFAULT_LAYOUT.stageH,
+                footerH:
+                    footerRef.current?.offsetHeight ?? DEFAULT_LAYOUT.footerH,
+                navH: navRef.current?.offsetHeight ?? DEFAULT_LAYOUT.navH,
+            }
+            setLayout((current) => (sameLayout(current, next) ? current : next))
         }
-        measure()
-        const ro = new ResizeObserver(measure)
+        const scheduleMeasure = () => {
+            if (frameId) return
+            frameId = requestAnimationFrame(() => {
+                frameId = 0
+                measureNow()
+            })
+        }
+        measureNow()
+        const ro = new ResizeObserver(scheduleMeasure)
         if (stageRef.current) ro.observe(stageRef.current)
         if (footerRef.current) ro.observe(footerRef.current)
         if (navRef.current) ro.observe(navRef.current)
-        return () => ro.disconnect()
+        return () => {
+            if (frameId) cancelAnimationFrame(frameId)
+            ro.disconnect()
+        }
     }, [])
 
     const centerOffset = Math.max(

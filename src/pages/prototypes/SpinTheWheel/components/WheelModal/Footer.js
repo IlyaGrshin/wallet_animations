@@ -8,7 +8,7 @@ import Text from "@components/Text"
 
 import { formatPrice } from "../../utils"
 import { PHASE, PHASE_VALUES, SPIN_COST } from "../../mockData"
-import * as styles from "./WheelModal.module.scss"
+import * as styles from "./Footer.module.scss"
 
 const cardSlide = {
     initial: { y: "110%" },

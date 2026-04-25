@@ -5,7 +5,7 @@ import { useTransform } from "motion/react"
 
 import Text from "@components/Text"
 import Coin from "../Coin"
-import { formatPrice } from "../../utils"
+import { formatPrice, forceGpuTransform } from "../../utils"
 import * as styles from "./SpinReel.module.scss"
 
 const MIN_SCALE = 0.667
@@ -52,6 +52,7 @@ function Slot({
         <m.div
             className={styles.slot}
             style={{ scale, opacity, y: index * slotHeight }}
+            transformTemplate={forceGpuTransform}
         >
             <div className={styles.coinWrap}>
                 <Coin

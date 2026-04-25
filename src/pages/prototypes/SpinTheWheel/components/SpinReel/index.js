@@ -19,6 +19,7 @@ import Slot from "./Slot"
 import Chevron from "./Chevron"
 import { startCruise } from "./cruisePatterns"
 import useVirtualWindow from "./useVirtualWindow"
+import { forceGpuTransform } from "../../utils"
 import { PHASE, PHASE_VALUES } from "../../mockData"
 import * as styles from "./SpinReel.module.scss"
 
@@ -29,6 +30,7 @@ const MIN_DURATION_MS = 180
 const PHASE_FADE = { duration: 0.35, ease: "linear" }
 const ADVANCE_SPRING = { type: "spring", stiffness: 220, damping: 22 }
 const WIN_PULSE_KEYFRAMES = [1, 1.08, 1]
+const VISIBLE_SLOT_BUFFER = 3
 const WIN_PULSE_OPTIONS = {
     duration: 0.5,
     times: [0, 0.32, 1],
@@ -56,6 +58,7 @@ const SpinReel = forwardRef(function SpinReel(
         offset: centerOffset,
         step: SLOT_HEIGHT,
         count: items.length,
+        buffer: VISIBLE_SLOT_BUFFER,
     })
 
     useEffect(() => {
@@ -66,11 +69,25 @@ const SpinReel = forwardRef(function SpinReel(
     }, [centerOffset, y])
 
     useEffect(() => {
-        animate(phaseFade, phase === PHASE.RESULT ? 0 : 1, PHASE_FADE)
+        const fadeControls = animate(
+            phaseFade,
+            phase === PHASE.RESULT ? 0 : 1,
+            PHASE_FADE
+        )
+        let pulseControls
         if (phase === PHASE.RESULT) {
-            animate(winnerPulse, WIN_PULSE_KEYFRAMES, WIN_PULSE_OPTIONS)
+            pulseControls = animate(
+                winnerPulse,
+                WIN_PULSE_KEYFRAMES,
+                WIN_PULSE_OPTIONS
+            )
         } else {
             winnerPulse.set(1)
+        }
+
+        return () => {
+            fadeControls.stop()
+            pulseControls?.stop()
         }
     }, [phase, phaseFade, winnerPulse])
 
@@ -199,7 +216,11 @@ const SpinReel = forwardRef(function SpinReel(
                     {phase === PHASE.SPINNING && <Chevron side={side} />}
                 </AnimatePresence>
             ))}
-            <m.div className={styles.track} style={{ y }}>
+            <m.div
+                className={styles.track}
+                style={{ y }}
+                transformTemplate={forceGpuTransform}
+            >
                 {slots}
             </m.div>
         </div>
