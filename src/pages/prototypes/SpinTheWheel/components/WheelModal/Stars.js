@@ -2,7 +2,7 @@ import { memo, useMemo } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 
-const STAR_COLOR = "#C0D8FF"
+const STAR_FILL = "var(--star, #C0D8FF)"
 const STAR_PATH =
     "M11.7392 1.40658C12.3917 -0.468871 15.044 -0.468872 15.7041 1.40658L18.1193 8.26868C18.3227 8.84675 18.7682 9.30773 19.339 9.53088L26.1553 12.1957C27.9368 12.8922 27.9418 15.4112 26.1631 16.1077L19.3575 18.7726C18.7876 18.9957 18.344 19.4567 18.1428 20.0348L15.7551 26.8969C15.1025 28.7723 12.4502 28.7723 11.7901 26.8969L9.37496 20.0348C9.17151 19.4567 8.72605 18.9957 8.15526 18.7726L1.33897 16.1077C-0.442518 15.4112 -0.447555 12.8922 1.33115 12.1957L8.13678 9.53088C8.70668 9.30773 9.15029 8.84675 9.35144 8.26868L11.7392 1.40658Z"
 
@@ -110,7 +110,7 @@ const Star = memo(function Star({
                 fill="none"
                 aria-hidden="true"
             >
-                <path d={STAR_PATH} fill={STAR_COLOR} />
+                <path d={STAR_PATH} style={{ fill: STAR_FILL }} />
             </svg>
         </m.div>
     )

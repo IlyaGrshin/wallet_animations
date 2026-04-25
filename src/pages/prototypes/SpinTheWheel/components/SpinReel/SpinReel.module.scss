@@ -54,13 +54,14 @@ $coin-size: 180px;
     left: 50%;
     bottom: -2px;
     transform: translateX(-50%);
-    background: white;
+    background: var(--chip-bg, oklch(100% 0 0deg));
     padding: 4px 14px;
     border-radius: 100px;
     box-shadow:
-        0 2px 8px rgb(0 0 0 / 8%),
-        0 0 0 0.5px rgb(0 0 0 / 4%);
-    color: #1f1f1f;
+        0 2px 8px oklch(0% 0 0deg / 8%),
+        0 0 0 0.5px oklch(0% 0 0deg / 4%),
+        inset 0 0 0 1px var(--chip-border, transparent);
+    color: var(--text, oklch(18% 0.020 270deg));
     pointer-events: none;
     white-space: nowrap;
     z-index: 2;

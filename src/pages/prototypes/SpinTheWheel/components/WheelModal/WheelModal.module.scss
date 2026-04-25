@@ -1,10 +1,23 @@
-$bg: #f6f5ff;
-$footer-bg: #fff;
-
 .root {
+    --bg: oklch(97% 0.015 280deg);
+    --surface: oklch(100% 0 0deg);
+    --surface-glass: oklch(100% 0 0deg / 80%);
+    --surface-glass-strong: oklch(100% 0 0deg / 100%);
+    --ghost: oklch(55% 0.04 280deg / 12%);
+    --text: var(--tg-theme-text-color, oklch(18% 0.020 270deg));
+    --hint: var(--tg-theme-hint-color, oklch(50% 0.018 270deg));
+    --gem-from: oklch(78% 0.14 245deg);
+    --gem-to: oklch(58% 0.22 260deg);
+    --gem-shine: oklch(100% 0 0deg / 50%);
+    --chevron: oklch(70% 0.030 278deg);
+    --star: oklch(85% 0.08 250deg);
+    --chip-bg: var(--surface);
+    --chip-border: transparent;
+    --shadow-card: 0 -8px 24px oklch(0% 0 0deg / 4%);
+
     position: relative;
-    background: $bg;
-    color: var(--tg-theme-text-color);
+    background: var(--bg);
+    color: var(--text);
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -12,6 +25,26 @@ $footer-bg: #fff;
     max-height: 86dvh;
     overflow: hidden;
     border-radius: 12px 12px 0 0;
+}
+
+@media (prefers-color-scheme: dark) {
+    .root {
+        --bg: oklch(19% 0.020 280deg);
+        --surface: oklch(24% 0.018 278deg);
+        --surface-glass: oklch(32% 0.020 278deg / 55%);
+        --surface-glass-strong: oklch(36% 0.020 278deg);
+        --ghost: oklch(85% 0.04 280deg / 10%);
+        --text: var(--tg-theme-text-color, oklch(96% 0.008 270deg));
+        --hint: var(--tg-theme-hint-color, oklch(65% 0.015 280deg));
+        --gem-from: oklch(68% 0.16 245deg);
+        --gem-to: oklch(50% 0.22 260deg);
+        --gem-shine: oklch(100% 0 0deg / 18%);
+        --chevron: oklch(62% 0.025 278deg);
+        --star: oklch(78% 0.10 250deg);
+        --chip-bg: oklch(36% 0.022 280deg);
+        --chip-border: oklch(100% 0 0deg / 8%);
+        --shadow-card: 0 -8px 24px oklch(0% 0 0deg / 50%);
+    }
 }
 
 .nav {
@@ -40,9 +73,9 @@ $footer-bg: #fff;
     height: 120px;
     background: linear-gradient(
         180deg,
-        $bg 0%,
-        rgb(246 245 255 / 80%) 50%,
-        rgb(246 245 255 / 0%) 100%
+        var(--bg) 0%,
+        color-mix(in oklch, var(--bg) 80%, transparent) 50%,
+        color-mix(in oklch, var(--bg) 0%, transparent) 100%
     );
 }
 
@@ -51,16 +84,16 @@ $footer-bg: #fff;
     height: 140px;
     background: linear-gradient(
         0deg,
-        $bg 0%,
-        rgb(246 245 255 / 80%) 50%,
-        rgb(246 245 255 / 0%) 100%
+        var(--bg) 0%,
+        color-mix(in oklch, var(--bg) 80%, transparent) 50%,
+        color-mix(in oklch, var(--bg) 0%, transparent) 100%
     );
 }
 
 .closeBtn {
     appearance: none;
     border: none;
-    background: rgb(255 255 255 / 80%);
+    background: var(--surface-glass);
     backdrop-filter: blur(10px);
     width: 36px;
     height: 36px;
@@ -69,7 +102,7 @@ $footer-bg: #fff;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: var(--tg-theme-text-color);
+    color: var(--text);
     font-size: 22px;
     line-height: 1;
     padding: 0;
@@ -77,7 +110,7 @@ $footer-bg: #fff;
     touch-action: manipulation;
 
     &:hover {
-        background: rgb(255 255 255 / 100%);
+        background: var(--surface-glass-strong);
     }
 
     &:focus-visible {
@@ -94,20 +127,20 @@ $footer-bg: #fff;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgb(255 255 255 / 80%);
+    background: var(--surface-glass);
     backdrop-filter: blur(10px);
     padding: 6px 14px;
     border-radius: 20px;
-    color: var(--tg-theme-text-color);
+    color: var(--text);
 }
 
 .gem {
     width: 14px;
     height: 14px;
     border-radius: 3px;
-    background: linear-gradient(135deg, #7cb6ff 0%, #2f6fff 100%);
+    background: linear-gradient(135deg, var(--gem-from) 0%, var(--gem-to) 100%);
     transform: rotate(45deg);
-    box-shadow: inset 0 1px 1px rgb(255 255 255 / 50%);
+    box-shadow: inset 0 1px 1px var(--gem-shine);
 }
 
 .stage {
@@ -137,13 +170,13 @@ $footer-bg: #fff;
     bottom: 0;
     left: 0;
     right: 0;
-    background: $footer-bg;
+    background: var(--surface);
     border-radius: 26px 26px 0 0;
     padding: 24px 24px calc(20px + env(safe-area-inset-bottom));
     display: flex;
     flex-direction: column;
     gap: 16px;
-    box-shadow: 0 -8px 24px rgb(0 0 0 / 4%);
+    box-shadow: var(--shadow-card);
     z-index: 2;
     will-change: transform;
 }
@@ -166,14 +199,14 @@ $footer-bg: #fff;
 
 .description {
     margin: 0;
-    color: var(--tg-theme-hint-color, #6b6e83);
+    color: var(--hint);
 }
 
 .cta {
     appearance: none;
     border: none;
-    background: var(--tg-theme-button-color, #007aff);
-    color: var(--tg-theme-button-text-color, white);
+    background: var(--tg-theme-button-color, oklch(65% 0.20 250deg));
+    color: var(--tg-theme-button-text-color, oklch(100% 0 0deg));
     border-radius: 100px;
     padding: 14px 20px;
     font: inherit;
@@ -199,7 +232,7 @@ $footer-bg: #fff;
 }
 
 .ctaGhost {
-    background: rgb(109 112 167 / 12%);
-    color: var(--tg-theme-text-color);
+    background: var(--ghost);
+    color: var(--text);
     backdrop-filter: blur(20px);
 }
