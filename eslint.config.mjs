@@ -2,7 +2,6 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import react19 from 'eslint-plugin-react-19-upgrade';
 import prettierPlugin from 'eslint-plugin-prettier';
-import babelParser from '@babel/eslint-parser';
 
 export default [
     {
@@ -11,12 +10,8 @@ export default [
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'module',
-            parser: babelParser,
             parserOptions: {
-                requireConfigFile: true,
-                babelOptions: {
-                    rootMode: 'upward',
-                },
+                ecmaFeatures: { jsx: true },
             },
         },
         settings: {

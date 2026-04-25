@@ -49,7 +49,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
-    "@babel/eslint-parser": "^7.28.6",
     "@babel/preset-react": "^7.26.3",
     "@relative-ci/agent": "^4.3.1",
     "@resvg/resvg-js": "^2.6.2",
@@ -57,7 +56,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "baseline-browser-mapping": "^2.9.14",
-    "eslint": "9",
+    "eslint": "^9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
