@@ -2,6 +2,7 @@ import {
     useCallback,
     useEffect,
     useLayoutEffect,
+    useMemo,
     useRef,
     useState,
 } from "react"
@@ -128,15 +129,17 @@ function WheelModal({ isOpen, onClose }) {
 
     const canSpeedUp = phase === PHASE.SPINNING && speedUps < MAX_SPEED_UPS
 
+    const rootStyle = useMemo(
+        () => ({
+            "--footer-height": `${footerH}px`,
+            "--coin-center-y": `${centerOffset + SLOT_HEIGHT / 2}px`,
+        }),
+        [footerH, centerOffset]
+    )
+
     return (
         <ModalView isOpen={isOpen} onClose={onClose}>
-            <div
-                className={styles.root}
-                style={{
-                    "--footer-height": `${footerH}px`,
-                    "--coin-center-y": `${centerOffset + SLOT_HEIGHT / 2}px`,
-                }}
-            >
+            <div className={styles.root} style={rootStyle}>
                 <div className={styles.fadeTop} aria-hidden="true" />
                 <div className={styles.fadeBottom} aria-hidden="true" />
                 <div ref={navRef} className={styles.nav}>

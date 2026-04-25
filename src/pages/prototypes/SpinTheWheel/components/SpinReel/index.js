@@ -1,4 +1,10 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react"
+import {
+    forwardRef,
+    useEffect,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+} from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import {
@@ -169,6 +175,24 @@ const SpinReel = forwardRef(function SpinReel(
         }
     }, [y, reduceMotion])
 
+    const slots = useMemo(
+        () =>
+            items.map((item, index) => (
+                <Slot
+                    key={index}
+                    index={index}
+                    item={item}
+                    y={y}
+                    phaseFade={phaseFade}
+                    winnerPulse={winnerPulse}
+                    isWinner={index === focusedIndex}
+                    slotHeight={SLOT_HEIGHT}
+                    centerOffset={centerOffset}
+                />
+            )),
+        [items, focusedIndex, centerOffset, y, phaseFade, winnerPulse]
+    )
+
     return (
         <div className={styles.viewport}>
             <img
@@ -195,19 +219,7 @@ const SpinReel = forwardRef(function SpinReel(
                 </AnimatePresence>
             ))}
             <m.div className={styles.track} style={{ y }}>
-                {items.map((item, index) => (
-                    <Slot
-                        key={index}
-                        index={index}
-                        item={item}
-                        y={y}
-                        phaseFade={phaseFade}
-                        winnerPulse={winnerPulse}
-                        isWinner={index === focusedIndex}
-                        slotHeight={SLOT_HEIGHT}
-                        centerOffset={centerOffset}
-                    />
-                ))}
+                {slots}
             </m.div>
         </div>
     )

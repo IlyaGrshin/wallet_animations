@@ -1,4 +1,4 @@
-import { forwardRef } from "react"
+import { forwardRef, memo } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -152,4 +152,4 @@ Footer.propTypes = {
     onSpeedUp: PropTypes.func.isRequired,
 }
 
-export default Footer
+export default memo(Footer)

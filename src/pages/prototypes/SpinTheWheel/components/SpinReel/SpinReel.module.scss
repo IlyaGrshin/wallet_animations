@@ -41,7 +41,6 @@ $coin-size: 180px;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    will-change: transform, opacity;
     transform-origin: center;
 }
 
@@ -77,7 +76,6 @@ $coin-size: 180px;
     align-items: center;
     z-index: 4;
     pointer-events: none;
-    will-change: opacity;
 }
 
 .arrowLeft {
