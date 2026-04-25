@@ -3,7 +3,7 @@
     --surface: oklch(100% 0 0deg);
     --surface-glass: oklch(100% 0 0deg / 80%);
     --surface-glass-strong: oklch(100% 0 0deg / 100%);
-    --ghost: oklch(55% 0.04 280deg / 12%);
+    --ghost: oklch(55% 0.04 280deg / 24%);
     --text: var(--tg-theme-text-color, oklch(18% 0.020 270deg));
     --hint: var(--tg-theme-hint-color, oklch(50% 0.018 270deg));
     --gem-from: oklch(78% 0.14 245deg);
@@ -23,6 +23,13 @@
     height: 86dvh;
     overflow: hidden;
     border-radius: 12px 12px 0 0;
+
+    &:not([data-phase="spinning"]) {
+        .closeBtn,
+        .points {
+            backdrop-filter: blur(10px);
+        }
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,7 +38,7 @@
         --surface: oklch(24% 0.018 278deg);
         --surface-glass: oklch(32% 0.020 278deg / 55%);
         --surface-glass-strong: oklch(36% 0.020 278deg);
-        --ghost: oklch(85% 0.04 280deg / 10%);
+        --ghost: oklch(85% 0.04 280deg / 22%);
         --text: var(--tg-theme-text-color, oklch(96% 0.008 270deg));
         --hint: var(--tg-theme-hint-color, oklch(65% 0.015 280deg));
         --gem-from: oklch(68% 0.16 245deg);
@@ -92,7 +99,6 @@
     appearance: none;
     border: none;
     background: var(--surface-glass);
-    backdrop-filter: blur(10px);
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -136,7 +142,6 @@
     align-items: center;
     gap: 6px;
     background: var(--surface-glass);
-    backdrop-filter: blur(10px);
     padding: 6px 14px;
     border-radius: 20px;
     color: var(--text);
@@ -250,5 +255,4 @@
 .ctaGhost {
     background: var(--ghost);
     color: var(--text);
-    backdrop-filter: blur(20px);
 }

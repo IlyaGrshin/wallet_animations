@@ -139,7 +139,7 @@ function WheelModal({ isOpen, onClose }) {
 
     return (
         <ModalView isOpen={isOpen} onClose={onClose}>
-            <div className={styles.root} style={rootStyle}>
+            <div className={styles.root} style={rootStyle} data-phase={phase}>
                 <div className={styles.fadeTop} aria-hidden="true" />
                 <div className={styles.fadeBottom} aria-hidden="true" />
                 <div ref={navRef} className={styles.nav}>
