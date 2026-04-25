@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react"
-import { useMotionValueEvent } from "motion/react"
 
 function computeRange(latest, offset, step, count, buffer) {
     const index = Math.round((offset - latest) / step)
@@ -19,13 +18,44 @@ export default function useVirtualWindow({
     buffer = 5,
 }) {
     const offsetRef = useRef(offset)
+    const stepRef = useRef(step)
+    const countRef = useRef(count)
+    const bufferRef = useRef(buffer)
+
     useEffect(() => {
         offsetRef.current = offset
-    }, [offset])
+        stepRef.current = step
+        countRef.current = count
+        bufferRef.current = buffer
+    }, [offset, step, count, buffer])
 
     const [range, setRange] = useState(() =>
         computeRange(motionValue.get(), offset, step, count, buffer)
     )
+
+    useEffect(() => {
+        let rafId = 0
+        const apply = () => {
+            rafId = 0
+            const next = computeRange(
+                motionValue.get(),
+                offsetRef.current,
+                stepRef.current,
+                countRef.current,
+                bufferRef.current
+            )
+            setRange((prev) => (sameRange(prev, next) ? prev : next))
+        }
+        const schedule = () => {
+            if (!rafId) rafId = requestAnimationFrame(apply)
+        }
+        schedule()
+        const unsubscribe = motionValue.on("change", schedule)
+        return () => {
+            if (rafId) cancelAnimationFrame(rafId)
+            unsubscribe()
+        }
+    }, [motionValue])
 
     useEffect(() => {
         const next = computeRange(
@@ -36,18 +66,7 @@ export default function useVirtualWindow({
             buffer
         )
         setRange((prev) => (sameRange(prev, next) ? prev : next))
-    }, [motionValue, offset, step, count, buffer])
-
-    useMotionValueEvent(motionValue, "change", (latest) => {
-        const next = computeRange(
-            latest,
-            offsetRef.current,
-            step,
-            count,
-            buffer
-        )
-        setRange((prev) => (sameRange(prev, next) ? prev : next))
-    })
+    }, [offset, step, count, buffer, motionValue])
 
     return range
 }
