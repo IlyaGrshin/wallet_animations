@@ -16,17 +16,16 @@ import {
 
 import raysSrc from "@icons/others/Rays.svg"
 import Slot from "./Slot"
+import Chevron from "./Chevron"
+import { startCruise } from "./cruisePatterns"
 import { PHASE, PHASE_VALUES } from "../../mockData"
 import * as styles from "./SpinReel.module.scss"
 
 export const SLOT_HEIGHT = 180
 const SPIN_EASE = [0.42, 0, 0.58, 1]
 const ACCEL_EASE = [0, 0, 0.3, 1]
-const SETTLE_EASE = [0.34, 1, 0.64, 1]
 const MIN_DURATION_MS = 180
 const PHASE_FADE = { duration: 0.35, ease: "linear" }
-const CRUISE_OVERSHOOT_PX = 14
-const CRUISE_BOUNCE_RATIO = 0.18
 const ADVANCE_SPRING = { type: "spring", stiffness: 220, damping: 22 }
 const WIN_PULSE_KEYFRAMES = [1, 1.08, 1]
 const WIN_PULSE_OPTIONS = {
@@ -36,32 +35,6 @@ const WIN_PULSE_OPTIONS = {
 }
 
 const targetYFor = (index, centerOffset) => -index * SLOT_HEIGHT + centerOffset
-
-function Chevron({ flip }) {
-    return (
-        <svg
-            width="17"
-            height="27"
-            viewBox="0 0 17 27"
-            fill="none"
-            aria-hidden="true"
-            style={flip ? { transform: "scaleX(-1)" } : undefined}
-        >
-            <path
-                d="M15.6752 14.8889C16.5288 14.0975 16.5288 12.7471 15.6752 11.9557L3.35979 0.537348C2.07972 -0.649477 0 0.258365 0 2.00397V24.8406C0 26.5862 2.07972 27.4941 3.35979 26.3073L15.6752 14.8889Z"
-                fill="#A3A1C3"
-            />
-        </svg>
-    )
-}
-
-Chevron.propTypes = { flip: PropTypes.bool }
-
-const arrowAnim = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1, transition: { duration: 0.2 } },
-    exit: { opacity: 0, transition: { duration: 0.15 } },
-}
 
 const SpinReel = forwardRef(function SpinReel(
     { items, idleIndex, focusedIndex, phase, centerOffset },
@@ -145,11 +118,14 @@ const SpinReel = forwardRef(function SpinReel(
                 const target = targetY(targetIndexRef.current)
                 const dist = target - y.get()
                 if (Math.abs(dist) < 0.5) return
-                const overshoot = target + Math.sign(dist) * CRUISE_OVERSHOOT_PX
-                const cruiseMs = durationMs * (1 - CRUISE_BOUNCE_RATIO)
-                const bounceMs = durationMs * CRUISE_BOUNCE_RATIO
-                startTween(overshoot, cruiseMs, ACCEL_EASE, () => {
-                    startTween(target, bounceMs, SETTLE_EASE)
+                startCruise({
+                    durationMs,
+                    target,
+                    dist,
+                    y,
+                    startTween,
+                    settle,
+                    controlsRef,
                 })
             },
             advanceTo(index) {
@@ -203,19 +179,7 @@ const SpinReel = forwardRef(function SpinReel(
             />
             {["left", "right"].map((side) => (
                 <AnimatePresence key={side}>
-                    {phase === PHASE.SPINNING && (
-                        <m.span
-                            key={side}
-                            className={
-                                side === "left"
-                                    ? styles.arrowLeft
-                                    : styles.arrowRight
-                            }
-                            {...arrowAnim}
-                        >
-                            <Chevron flip={side === "right"} />
-                        </m.span>
-                    )}
+                    {phase === PHASE.SPINNING && <Chevron side={side} />}
                 </AnimatePresence>
             ))}
             <m.div className={styles.track} style={{ y }}>
