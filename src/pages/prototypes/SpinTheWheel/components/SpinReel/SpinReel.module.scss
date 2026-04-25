@@ -27,20 +27,19 @@ $coin-size: 180px;
     top: 0;
     left: 0;
     right: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
     will-change: transform;
     z-index: 1;
 }
 
 .slot {
+    position: absolute;
+    left: 0;
+    right: 0;
     height: $slot-height;
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
     transform-origin: center;
 }
 

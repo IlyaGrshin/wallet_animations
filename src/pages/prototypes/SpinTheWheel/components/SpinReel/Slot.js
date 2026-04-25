@@ -49,7 +49,10 @@ function Slot({
     )
 
     return (
-        <m.div className={styles.slot} style={{ scale, opacity }}>
+        <m.div
+            className={styles.slot}
+            style={{ scale, opacity, top: index * slotHeight }}
+        >
             <div className={styles.coinWrap}>
                 <Coin
                     ticker={item.token.ticker}

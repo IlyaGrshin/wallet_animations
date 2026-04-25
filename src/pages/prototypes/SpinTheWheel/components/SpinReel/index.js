@@ -18,6 +18,7 @@ import raysSrc from "@icons/others/Rays.svg"
 import Slot from "./Slot"
 import Chevron from "./Chevron"
 import { startCruise } from "./cruisePatterns"
+import useVirtualWindow from "./useVirtualWindow"
 import { PHASE, PHASE_VALUES } from "../../mockData"
 import * as styles from "./SpinReel.module.scss"
 
@@ -50,6 +51,12 @@ const SpinReel = forwardRef(function SpinReel(
     const durationRef = useRef(0)
     const centerOffsetRef = useRef(centerOffset)
     const reduceMotion = useReducedMotion()
+    const visibleRange = useVirtualWindow({
+        motionValue: y,
+        offset: centerOffset,
+        step: SLOT_HEIGHT,
+        count: items.length,
+    })
 
     useEffect(() => {
         centerOffsetRef.current = centerOffset
@@ -151,23 +158,33 @@ const SpinReel = forwardRef(function SpinReel(
         }
     }, [y, reduceMotion])
 
-    const slots = useMemo(
-        () =>
-            items.map((item, index) => (
+    const slots = useMemo(() => {
+        const list = []
+        for (let i = visibleRange.start; i < visibleRange.end; i += 1) {
+            list.push(
                 <Slot
-                    key={index}
-                    index={index}
-                    item={item}
+                    key={i}
+                    index={i}
+                    item={items[i]}
                     y={y}
                     phaseFade={phaseFade}
                     winnerPulse={winnerPulse}
-                    isWinner={index === focusedIndex}
+                    isWinner={i === focusedIndex}
                     slotHeight={SLOT_HEIGHT}
                     centerOffset={centerOffset}
                 />
-            )),
-        [items, focusedIndex, centerOffset, y, phaseFade, winnerPulse]
-    )
+            )
+        }
+        return list
+    }, [
+        items,
+        visibleRange,
+        focusedIndex,
+        centerOffset,
+        y,
+        phaseFade,
+        winnerPulse,
+    ])
 
     return (
         <div className={styles.viewport}>
