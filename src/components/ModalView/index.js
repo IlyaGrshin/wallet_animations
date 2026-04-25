@@ -10,8 +10,59 @@ import { blendColors } from "../../utils/common"
 import { useFocusTrap } from "../../hooks/useFocusTrap"
 
 const CSS_CLOSE_DURATION = 550
+const OVERLAY_ALPHA = 0.5
 
-const getHeaderColor = () => WebApp.themeParams.secondary_bg_color || "#EFEFF4"
+const normalizeHex = (input) => {
+    if (!input) return null
+    if (input.startsWith("#")) return input
+    const themed = WebApp.themeParams?.[input]
+    return themed || null
+}
+
+const getPageBgColor = () =>
+    normalizeHex(WebApp.backgroundColor) ||
+    WebApp.themeParams.bg_color ||
+    WebApp.themeParams.secondary_bg_color ||
+    "#EFEFF4"
+
+const activeModals = new Set()
+let appliedHeader = null
+let pendingHeader = false
+
+const flushHeader = () => {
+    if (pendingHeader) return
+    pendingHeader = true
+    queueMicrotask(() => {
+        pendingHeader = false
+        const next =
+            activeModals.size > 0
+                ? `#${blendColors(getPageBgColor(), "#000000", OVERLAY_ALPHA)}`
+                : getPageBgColor()
+        if (next === appliedHeader) return
+        appliedHeader = next
+        WebApp.setHeaderColor(next)
+    })
+}
+
+const enterModalMode = (id) => {
+    const wasEmpty = activeModals.size === 0
+    activeModals.add(id)
+    if (wasEmpty) {
+        document.body.style.overflow = "hidden"
+        WebApp.disableVerticalSwipes()
+    }
+    flushHeader()
+}
+
+const leaveModalMode = (id) => {
+    if (!activeModals.has(id)) return
+    activeModals.delete(id)
+    if (activeModals.size === 0) {
+        document.body.style.overflow = "auto"
+        WebApp.enableVerticalSwipes()
+        flushHeader()
+    }
+}
 
 const ModalView = ({
     isOpen,
@@ -32,41 +83,32 @@ const ModalView = ({
     useFocusTrap(modalRef, isOpen)
 
     useEffect(() => {
-        const headerColor = getHeaderColor()
-        const headerColorWithOverlay = `#${blendColors(headerColor, "#000000", 0.5)}`
-
-        if (isOpen) {
-            document.body.style.overflow = "hidden"
-            WebApp.disableVerticalSwipes()
-            WebApp.setHeaderColor(headerColorWithOverlay)
-        } else {
-            document.body.style.overflow = "auto"
-            WebApp.enableVerticalSwipes()
-            WebApp.setHeaderColor(headerColor)
+        if (!isOpen) {
+            let timer
+            if (useCssAnimation) {
+                timer = setTimeout(
+                    () => setShouldRender(false),
+                    CSS_CLOSE_DURATION
+                )
+            }
+            return () => {
+                if (timer) clearTimeout(timer)
+            }
         }
 
-        if (!useCssAnimation) return
+        const id = Symbol("ModalView")
+        enterModalMode(id)
 
-        if (isOpen) {
-            const timer = setTimeout(() => setAnimate(true), 10)
-            return () => clearTimeout(timer)
+        let timer
+        if (useCssAnimation) {
+            timer = setTimeout(() => setAnimate(true), 10)
         }
 
-        const timer = setTimeout(
-            () => setShouldRender(false),
-            CSS_CLOSE_DURATION
-        )
-        return () => clearTimeout(timer)
+        return () => {
+            if (timer) clearTimeout(timer)
+            leaveModalMode(id)
+        }
     }, [isOpen, useCssAnimation])
-
-    useEffect(
-        () => () => {
-            document.body.style.overflow = "auto"
-            WebApp.enableVerticalSwipes()
-            WebApp.setHeaderColor(getHeaderColor())
-        },
-        []
-    )
 
     const overlayAnimation = {
         hidden: { opacity: 0 },
