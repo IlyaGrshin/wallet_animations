@@ -195,6 +195,12 @@ const config = [
                     () => import("./prototypes/ColorChanging")
                 ),
             },
+            {
+                title: "Spin the Wheel",
+                component: lazyWithPreload(
+                    () => import("./prototypes/SpinTheWheel")
+                ),
+            },
         ],
     },
 ]

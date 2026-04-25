@@ -1,0 +1,89 @@
+$slot-height: 180px;
+$coin-size: 180px;
+
+.viewport {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    isolation: isolate;
+    user-select: none;
+    touch-action: none;
+}
+
+.rays {
+    position: absolute;
+    left: 50%;
+    top: var(--coin-center-y, 50%);
+    width: min(100%, 393px);
+    aspect-ratio: 393 / 546;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    will-change: transform;
+    z-index: 1;
+}
+
+.slot {
+    height: $slot-height;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    will-change: transform, opacity;
+    transform-origin: center;
+}
+
+.coinWrap {
+    position: relative;
+    width: $coin-size;
+    height: $coin-size;
+}
+
+.priceChip {
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    transform: translateX(-50%);
+    background: white;
+    padding: 4px 14px;
+    border-radius: 100px;
+    box-shadow:
+        0 2px 8px rgb(0 0 0 / 8%),
+        0 0 0 0.5px rgb(0 0 0 / 4%);
+    color: #1f1f1f;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.arrowLeft,
+.arrowRight {
+    position: absolute;
+    top: 0;
+    bottom: var(--footer-height, 180px);
+    display: flex;
+    align-items: center;
+    z-index: 4;
+    pointer-events: none;
+    will-change: opacity;
+}
+
+.arrowLeft {
+    left: 32px;
+}
+
+.arrowRight {
+    right: 32px;
+}

@@ -1,0 +1,205 @@
+$bg: #f6f5ff;
+$footer-bg: #fff;
+
+.root {
+    position: relative;
+    background: $bg;
+    color: var(--tg-theme-text-color);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 65dvh;
+    max-height: 86dvh;
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+}
+
+.nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 16px 8px;
+    z-index: 4;
+}
+
+.fadeTop,
+.fadeBottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.fadeTop {
+    top: 0;
+    height: 120px;
+    background: linear-gradient(
+        180deg,
+        $bg 0%,
+        rgb(246 245 255 / 80%) 50%,
+        rgb(246 245 255 / 0%) 100%
+    );
+}
+
+.fadeBottom {
+    bottom: 0;
+    height: 140px;
+    background: linear-gradient(
+        0deg,
+        $bg 0%,
+        rgb(246 245 255 / 80%) 50%,
+        rgb(246 245 255 / 0%) 100%
+    );
+}
+
+.closeBtn {
+    appearance: none;
+    border: none;
+    background: rgb(255 255 255 / 80%);
+    backdrop-filter: blur(10px);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--tg-theme-text-color);
+    font-size: 22px;
+    line-height: 1;
+    padding: 0;
+    transition: transform 150ms ease, background 200ms ease;
+    touch-action: manipulation;
+
+    &:hover {
+        background: rgb(255 255 255 / 100%);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--tg-theme-link-color);
+        outline-offset: 2px;
+    }
+
+    &:active {
+        transform: scale(0.94);
+    }
+}
+
+.points {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgb(255 255 255 / 80%);
+    backdrop-filter: blur(10px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    color: var(--tg-theme-text-color);
+}
+
+.gem {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: linear-gradient(135deg, #7cb6ff 0%, #2f6fff 100%);
+    transform: rotate(45deg);
+    box-shadow: inset 0 1px 1px rgb(255 255 255 / 50%);
+}
+
+.stage {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+}
+
+.starsLayer {
+    position: absolute;
+    inset: 0 0 var(--footer-height, 180px) 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.footerArea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: calc(180px + env(safe-area-inset-bottom));
+    z-index: 3;
+}
+
+.footerCard {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $footer-bg;
+    border-radius: 26px 26px 0 0;
+    padding: 24px 24px calc(20px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 -8px 24px rgb(0 0 0 / 4%);
+    z-index: 2;
+    will-change: transform;
+}
+
+.speedUpLayer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 16px 24px calc(20px + env(safe-area-inset-bottom));
+    z-index: 1;
+}
+
+.copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+}
+
+.description {
+    margin: 0;
+    color: var(--tg-theme-hint-color, #6b6e83);
+}
+
+.cta {
+    appearance: none;
+    border: none;
+    background: var(--tg-theme-button-color, #007aff);
+    color: var(--tg-theme-button-text-color, white);
+    border-radius: 100px;
+    padding: 14px 20px;
+    font: inherit;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    touch-action: manipulation;
+    transition: transform 150ms ease, opacity 200ms ease;
+
+    &:focus-visible {
+        outline: 2px solid var(--tg-theme-link-color);
+        outline-offset: 2px;
+    }
+
+    &:active {
+        transform: scale(0.985);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.ctaGhost {
+    background: rgb(109 112 167 / 12%);
+    color: var(--tg-theme-text-color);
+    backdrop-filter: blur(20px);
+}
