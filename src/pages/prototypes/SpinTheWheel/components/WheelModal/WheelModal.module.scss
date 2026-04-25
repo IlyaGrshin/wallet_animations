@@ -125,6 +125,13 @@
         outline-offset: 2px;
     }
 
+    @media (hover: none) {
+        &:focus,
+        &:focus-visible {
+            outline: none;
+        }
+    }
+
     &:active {
         transform: scale(0.94);
     }
