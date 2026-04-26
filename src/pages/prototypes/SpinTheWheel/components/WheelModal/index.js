@@ -18,21 +18,21 @@ import WebApp from "@lib/twa"
 import SpinReel, { SLOT_HEIGHT } from "../SpinReel"
 import Stars from "./Stars"
 import Footer from "./Footer"
+import {
+    SPIN_DURATION_MS,
+    SPEED_UP_FACTOR,
+    MAX_SPEED_UPS,
+    CRUISE_DURATION_MS,
+    SPIN_TURNS,
+    REEL_LENGTH,
+    IDLE_INDEX,
+    IDLE_NUDGE_INTERVAL_MS,
+    CENTER_LIFT_PX,
+    DEFAULT_LAYOUT,
+} from "./animationConfig"
 import { buildItems, preloadRewardImages } from "../../utils"
 import { PHASE, POINTS_BALANCE, SPIN_COST } from "../../mockData"
 import * as styles from "./WheelModal.module.scss"
-
-const LEAD_PADDING = 3
-const SPIN_TURNS = 40
-const REEL_LENGTH = 240
-const IDLE_INDEX = LEAD_PADDING
-const SPIN_DURATION_MS = 22000
-const SPEED_UP_FACTOR = 0.65
-const MAX_SPEED_UPS = 4
-const CRUISE_DURATION_MS = 4500
-const CENTER_LIFT_PX = 20
-const IDLE_NUDGE_INTERVAL_MS = 2300
-const DEFAULT_LAYOUT = { stageH: 460, footerH: 180, navH: 60 }
 
 const sameLayout = (a, b) =>
     a.stageH === b.stageH && a.footerH === b.footerH && a.navH === b.navH

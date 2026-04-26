@@ -1,9 +1,9 @@
 import { animate } from "motion/react"
 
+import { rand } from "../../utils"
+
 const ACCEL_EASE = [0, 0, 0.3, 1]
 const PULL_EASE = [0.2, 0, 0.4, 1]
-
-const rand = (min, max) => min + Math.random() * (max - min)
 
 export function startCruise({
     durationMs,

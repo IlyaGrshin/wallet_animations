@@ -20,25 +20,29 @@ import Slot from "./Slot"
 import Chevron from "./Chevron"
 import { startCruise } from "./cruisePatterns"
 import useVirtualWindow from "./useVirtualWindow"
+import {
+    SLOT_HEIGHT,
+    VISIBLE_SLOT_BUFFER,
+    targetYFor,
+    indexAtY,
+} from "./geometry"
 import { forceGpuTransform } from "../../utils"
 import { PHASE, PHASE_VALUES } from "../../mockData"
 import * as styles from "./SpinReel.module.scss"
 
-export const SLOT_HEIGHT = 180
+export { SLOT_HEIGHT } from "./geometry"
+
 const SPIN_EASE = [0.42, 0, 0.58, 1]
 const ACCEL_EASE = [0, 0, 0.3, 1]
 const MIN_DURATION_MS = 180
 const PHASE_FADE = { duration: 0.35, ease: "linear" }
 const ADVANCE_SPRING = { type: "spring", stiffness: 220, damping: 22 }
 const WIN_PULSE_KEYFRAMES = [1, 1.08, 1]
-const VISIBLE_SLOT_BUFFER = 3
 const WIN_PULSE_OPTIONS = {
     duration: 0.5,
     times: [0, 0.32, 1],
     ease: "easeOut",
 }
-
-const targetYFor = (index, centerOffset) => -index * SLOT_HEIGHT + centerOffset
 
 const SpinReel = forwardRef(function SpinReel(
     { items, idleIndex, focusedIndex, phase, centerOffset },
@@ -94,13 +98,9 @@ const SpinReel = forwardRef(function SpinReel(
 
     useEffect(() => {
         if (phase !== PHASE.SPINNING) return undefined
-        let lastIndex = Math.round(
-            (centerOffsetRef.current - y.get()) / SLOT_HEIGHT
-        )
+        let lastIndex = indexAtY(y.get(), centerOffsetRef.current)
         return y.on("change", (latest) => {
-            const index = Math.round(
-                (centerOffsetRef.current - latest) / SLOT_HEIGHT
-            )
+            const index = indexAtY(latest, centerOffsetRef.current)
             if (index !== lastIndex) {
                 lastIndex = index
                 WebApp.HapticFeedback?.selectionChanged?.()

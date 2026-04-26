@@ -6,6 +6,8 @@ const imagePreloadCache = new Map()
 export const forceGpuTransform = (_latest, generated) =>
     generated ? `${generated} translateZ(0)` : "translateZ(0)"
 
+export const rand = (min, max) => min + Math.random() * (max - min)
+
 export function pickPrizeAmount() {
     let roll = Math.random() * TOTAL_WEIGHT
     for (const tier of PRIZE_TIERS) {
