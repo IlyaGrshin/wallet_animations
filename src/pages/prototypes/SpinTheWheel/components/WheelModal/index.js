@@ -19,6 +19,7 @@ import {
     SPIN_TURNS,
     IDLE_INDEX,
     IDLE_NUDGE_INTERVAL_MS,
+    REEL_HARD_CAP,
 } from "./animationConfig"
 import useStageLayout from "./useStageLayout"
 import useReelItems from "./useReelItems"
@@ -42,11 +43,16 @@ function WheelModal({ isOpen, onClose }) {
     const reelRef = useRef(null)
     const spinTokenRef = useRef(0)
     const focusedIndexRef = useRef(focusedIndex)
+    const itemsLenRef = useRef(items.length)
     const { footerH } = layout
 
     useEffect(() => {
         focusedIndexRef.current = focusedIndex
     }, [focusedIndex])
+
+    useEffect(() => {
+        itemsLenRef.current = items.length
+    }, [items.length])
 
     const winner = items[focusedIndex]
 
@@ -69,6 +75,12 @@ function WheelModal({ isOpen, onClose }) {
         if (!isOpen || phase !== PHASE.IDLE) return undefined
         const id = setInterval(() => {
             const next = focusedIndexRef.current + 1
+            // Once the reel hits REEL_HARD_CAP, growForIdle can no longer
+            // extend the strip. Freeze the nudge so focusedIndex can't drift
+            // past items.length — otherwise growForSpin's slice clips and
+            // the post-spin items[targetIdx] read returns undefined.
+            const len = itemsLenRef.current
+            if (len >= REEL_HARD_CAP && next + SPIN_TURNS >= len) return
             growForIdle(next)
             reelRef.current?.advanceTo(next)
             setFocusedIndex(next)
