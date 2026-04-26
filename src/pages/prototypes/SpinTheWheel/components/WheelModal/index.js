@@ -125,11 +125,13 @@ function WheelModal({ isOpen, onClose }) {
     const startSpin = useCallback(async () => {
         const token = ++spinTokenRef.current
         const targetIdx = focusedIndex + SPIN_TURNS
-        setItems((curr) =>
-            targetIdx + LEAD_PADDING >= curr.length
-                ? [...curr, ...buildItems(REEL_LENGTH)]
-                : curr
-        )
+        // Preserve slots that may still be inside the reel's visible window
+        // (focused ± VISIBLE_SLOT_BUFFER), then regenerate everything beyond
+        // so each spin scrolls through fresh rewards.
+        setItems((curr) => [
+            ...curr.slice(0, focusedIndex + 4),
+            ...buildItems(SPIN_TURNS + REEL_LENGTH),
+        ])
         setPoints((p) => Math.max(0, p - SPIN_COST))
         setSpeedUps(0)
         setPhase(PHASE.SPINNING)
