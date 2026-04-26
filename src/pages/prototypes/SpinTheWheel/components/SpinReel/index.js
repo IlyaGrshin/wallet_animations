@@ -18,7 +18,8 @@ import raysSrc from "@icons/others/Rays.svg"
 import WebApp from "@lib/twa"
 import Slot from "./Slot"
 import Chevron from "./Chevron"
-import { startCruise } from "./cruisePatterns"
+import { pickCruiseProfile } from "./cruiseProfiles"
+import runSegments from "./runSegments"
 import useVirtualWindow from "./useVirtualWindow"
 import {
     SLOT_HEIGHT,
@@ -155,18 +156,20 @@ const SpinReel = forwardRef(function SpinReel(
                 startTween(target, newDuration, ACCEL_EASE)
             },
             cruise(durationMs) {
-                if (reduceMotion) return
                 const target = targetY(targetIndexRef.current)
                 const dist = target - y.get()
                 if (Math.abs(dist) < 0.5) return
-                startCruise({
-                    durationMs,
-                    target,
-                    dist,
+                const segments = pickCruiseProfile({
+                    direction: Math.sign(dist) || 1,
+                })
+                controlsRef.current?.stop()
+                controlsRef.current = runSegments({
                     y,
-                    startTween,
-                    settle,
-                    controlsRef,
+                    segments,
+                    target,
+                    totalMs: durationMs,
+                    onDone: settle,
+                    reduceMotion,
                 })
             },
             advanceTo(index) {
