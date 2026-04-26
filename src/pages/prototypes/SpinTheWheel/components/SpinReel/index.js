@@ -1,25 +1,13 @@
-import {
-    forwardRef,
-    useEffect,
-    useImperativeHandle,
-    useMemo,
-    useRef,
-} from "react"
+import { forwardRef, useEffect, useImperativeHandle, useMemo } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
-import {
-    AnimatePresence,
-    animate,
-    useMotionValue,
-    useReducedMotion,
-} from "motion/react"
+import { AnimatePresence, animate, useMotionValue } from "motion/react"
 
 import raysSrc from "@icons/others/Rays.svg"
 import WebApp from "@lib/twa"
 import Slot from "./Slot"
 import Chevron from "./Chevron"
-import { pickCruiseProfile } from "./cruiseProfiles"
-import runSegments from "./runSegments"
+import useReelController from "./useReelController"
 import useVirtualWindow from "./useVirtualWindow"
 import {
     SLOT_HEIGHT,
@@ -33,11 +21,7 @@ import * as styles from "./SpinReel.module.scss"
 
 export { SLOT_HEIGHT } from "./geometry"
 
-const SPIN_EASE = [0.42, 0, 0.58, 1]
-const ACCEL_EASE = [0, 0, 0.3, 1]
-const MIN_DURATION_MS = 180
 const PHASE_FADE = { duration: 0.35, ease: "linear" }
-const ADVANCE_SPRING = { type: "spring", stiffness: 220, damping: 22 }
 const WIN_PULSE_KEYFRAMES = [1, 1.08, 1]
 const WIN_PULSE_OPTIONS = {
     duration: 0.5,
@@ -52,13 +36,7 @@ const SpinReel = forwardRef(function SpinReel(
     const y = useMotionValue(targetYFor(idleIndex, centerOffset))
     const phaseFade = useMotionValue(1)
     const winnerPulse = useMotionValue(1)
-    const controlsRef = useRef(null)
-    const targetIndexRef = useRef(idleIndex)
-    const finishResolveRef = useRef(null)
-    const startedAtRef = useRef(0)
-    const durationRef = useRef(0)
-    const centerOffsetRef = useRef(centerOffset)
-    const reduceMotion = useReducedMotion()
+    const controller = useReelController({ y, idleIndex, centerOffset })
     const visibleRange = useVirtualWindow({
         motionValue: y,
         offset: centerOffset,
@@ -67,12 +45,7 @@ const SpinReel = forwardRef(function SpinReel(
         buffer: VISIBLE_SLOT_BUFFER,
     })
 
-    useEffect(() => {
-        centerOffsetRef.current = centerOffset
-        if (!controlsRef.current) {
-            y.set(targetYFor(targetIndexRef.current, centerOffset))
-        }
-    }, [centerOffset, y])
+    useImperativeHandle(ref, () => controller, [controller])
 
     useEffect(() => {
         const fadeControls = animate(
@@ -90,7 +63,6 @@ const SpinReel = forwardRef(function SpinReel(
         } else {
             winnerPulse.set(1)
         }
-
         return () => {
             fadeControls.stop()
             pulseControls?.stop()
@@ -99,101 +71,15 @@ const SpinReel = forwardRef(function SpinReel(
 
     useEffect(() => {
         if (phase !== PHASE.SPINNING) return undefined
-        let lastIndex = indexAtY(y.get(), centerOffsetRef.current)
+        let lastIndex = indexAtY(y.get(), centerOffset)
         return y.on("change", (latest) => {
-            const index = indexAtY(latest, centerOffsetRef.current)
+            const index = indexAtY(latest, centerOffset)
             if (index !== lastIndex) {
                 lastIndex = index
                 WebApp.HapticFeedback?.selectionChanged?.()
             }
         })
-    }, [phase, y])
-
-    useImperativeHandle(ref, () => {
-        const settle = () => {
-            const resolve = finishResolveRef.current
-            finishResolveRef.current = null
-            controlsRef.current = null
-            resolve?.()
-        }
-        const startTween = (target, durationMs, ease, onDone = settle) => {
-            startedAtRef.current = performance.now()
-            durationRef.current = durationMs
-            controlsRef.current?.stop()
-            controlsRef.current = animate(y, target, {
-                duration: durationMs / 1000,
-                ease,
-                onComplete: onDone,
-            })
-        }
-        const targetY = (index) => targetYFor(index, centerOffsetRef.current)
-        return {
-            spinTo({ targetIndex, duration }) {
-                targetIndexRef.current = targetIndex
-                const target = targetY(targetIndex)
-                if (reduceMotion) {
-                    y.set(target)
-                    return Promise.resolve()
-                }
-                return new Promise((resolve) => {
-                    finishResolveRef.current = resolve
-                    startTween(target, duration, SPIN_EASE)
-                })
-            },
-            accelerate(factor) {
-                if (reduceMotion) return
-                const target = targetY(targetIndexRef.current)
-                if (Math.abs(target - y.get()) < 0.5) return
-                const elapsed = performance.now() - startedAtRef.current
-                const remainingTime = Math.max(
-                    durationRef.current - elapsed,
-                    MIN_DURATION_MS
-                )
-                const newDuration = Math.max(
-                    remainingTime * factor,
-                    MIN_DURATION_MS
-                )
-                startTween(target, newDuration, ACCEL_EASE)
-            },
-            cruise(durationMs) {
-                const target = targetY(targetIndexRef.current)
-                const dist = target - y.get()
-                if (Math.abs(dist) < 0.5) return
-                const segments = pickCruiseProfile({
-                    direction: Math.sign(dist) || 1,
-                })
-                controlsRef.current?.stop()
-                controlsRef.current = runSegments({
-                    y,
-                    segments,
-                    target,
-                    totalMs: durationMs,
-                    onDone: settle,
-                    reduceMotion,
-                })
-            },
-            advanceTo(index) {
-                if (reduceMotion || controlsRef.current) return
-                targetIndexRef.current = index
-                const myControls = animate(y, targetY(index), {
-                    ...ADVANCE_SPRING,
-                    onComplete: () => {
-                        if (controlsRef.current === myControls) {
-                            controlsRef.current = null
-                        }
-                    },
-                })
-                controlsRef.current = myControls
-            },
-            snapTo(index) {
-                controlsRef.current?.stop()
-                controlsRef.current = null
-                targetIndexRef.current = index
-                y.set(targetY(index))
-                settle()
-            },
-        }
-    }, [y, reduceMotion])
+    }, [phase, y, centerOffset])
 
     const slots = useMemo(() => {
         const list = []
