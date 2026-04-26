@@ -1,11 +1,4 @@
-import {
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -27,15 +20,11 @@ import {
     REEL_LENGTH,
     IDLE_INDEX,
     IDLE_NUDGE_INTERVAL_MS,
-    CENTER_LIFT_PX,
-    DEFAULT_LAYOUT,
 } from "./animationConfig"
+import useStageLayout from "./useStageLayout"
 import { buildItems, preloadRewardImages } from "../../utils"
 import { PHASE, POINTS_BALANCE, SPIN_COST } from "../../mockData"
 import * as styles from "./WheelModal.module.scss"
-
-const sameLayout = (a, b) =>
-    a.stageH === b.stageH && a.footerH === b.footerH && a.navH === b.navH
 
 function WheelModal({ isOpen, onClose }) {
     const [phase, setPhase] = useState(PHASE.IDLE)
@@ -43,14 +32,12 @@ function WheelModal({ isOpen, onClose }) {
     const [focusedIndex, setFocusedIndex] = useState(IDLE_INDEX)
     const [points, setPoints] = useState(POINTS_BALANCE)
     const [speedUps, setSpeedUps] = useState(0)
-    const [layout, setLayout] = useState(DEFAULT_LAYOUT)
+    const { stageRef, footerRef, navRef, layout, centerOffset } =
+        useStageLayout()
     const reelRef = useRef(null)
-    const stageRef = useRef(null)
-    const footerRef = useRef(null)
-    const navRef = useRef(null)
     const spinTokenRef = useRef(0)
     const focusedIndexRef = useRef(focusedIndex)
-    const { stageH, footerH, navH } = layout
+    const { footerH } = layout
 
     useEffect(() => {
         focusedIndexRef.current = focusedIndex
@@ -87,40 +74,6 @@ function WheelModal({ isOpen, onClose }) {
         }, IDLE_NUDGE_INTERVAL_MS)
         return () => clearInterval(id)
     }, [isOpen, phase])
-
-    useLayoutEffect(() => {
-        let frameId = 0
-        const measureNow = () => {
-            const next = {
-                stageH: stageRef.current?.offsetHeight ?? DEFAULT_LAYOUT.stageH,
-                footerH:
-                    footerRef.current?.offsetHeight ?? DEFAULT_LAYOUT.footerH,
-                navH: navRef.current?.offsetHeight ?? DEFAULT_LAYOUT.navH,
-            }
-            setLayout((current) => (sameLayout(current, next) ? current : next))
-        }
-        const scheduleMeasure = () => {
-            if (frameId) return
-            frameId = requestAnimationFrame(() => {
-                frameId = 0
-                measureNow()
-            })
-        }
-        measureNow()
-        const ro = new ResizeObserver(scheduleMeasure)
-        if (stageRef.current) ro.observe(stageRef.current)
-        if (footerRef.current) ro.observe(footerRef.current)
-        if (navRef.current) ro.observe(navRef.current)
-        return () => {
-            if (frameId) cancelAnimationFrame(frameId)
-            ro.disconnect()
-        }
-    }, [])
-
-    const centerOffset = Math.max(
-        (stageH + navH - footerH - SLOT_HEIGHT) / 2 - CENTER_LIFT_PX,
-        navH
-    )
 
     const startSpin = useCallback(async () => {
         const token = ++spinTokenRef.current
