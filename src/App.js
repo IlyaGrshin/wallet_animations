@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { lazy, Suspense, useEffect } from "react"
 import AppRouter from "./router"
 import {
     initializeViewTransitions,
@@ -7,6 +7,10 @@ import {
 import WebApp from "./lib/twa"
 
 import "./index.css"
+
+const Agentation = import.meta.env.DEV
+    ? lazy(() => import("agentation").then((m) => ({ default: m.Agentation })))
+    : null
 
 // Патч BackButton с ref-counting для корректной работы при переходах страниц
 const patchBackButton = () => {
@@ -42,7 +46,16 @@ function App() {
         }
     }, [])
 
-    return <AppRouter />
+    return (
+        <>
+            <AppRouter />
+            {Agentation && (
+                <Suspense fallback={null}>
+                    <Agentation />
+                </Suspense>
+            )}
+        </>
+    )
 }
 
 export default App
