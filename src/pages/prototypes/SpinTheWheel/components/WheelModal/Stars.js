@@ -1,6 +1,7 @@
 import { memo, useMemo } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
+import { useReducedMotion } from "motion/react"
 
 import { rand } from "../../utils"
 
@@ -131,7 +132,11 @@ Star.propTypes = {
 }
 
 function Stars() {
+    const reduceMotion = useReducedMotion()
     const stars = useMemo(() => generateStars(), [])
+    // Win-card уже объявляет результат — бесконечно мигающие звёзды при
+    // включённом reduce-motion были бы прямым нарушением сигнала.
+    if (reduceMotion) return null
     return (
         <div style={containerStyle} aria-hidden="true">
             {stars.map((s) => (
