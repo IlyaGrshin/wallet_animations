@@ -1,6 +1,9 @@
 import { memo, useMemo } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
+import { useReducedMotion } from "motion/react"
+
+import { rand } from "../../utils"
 
 const STAR_FILL = "var(--star, #C0D8FF)"
 const STAR_PATH =
@@ -17,8 +20,6 @@ const containerStyle = {
     width: 0,
     height: 0,
 }
-
-const rand = (min, max) => min + Math.random() * (max - min)
 
 function generateStars() {
     const count = Math.round(rand(PARTICLE_COUNT_MIN, PARTICLE_COUNT_MAX))
@@ -131,7 +132,11 @@ Star.propTypes = {
 }
 
 function Stars() {
+    const reduceMotion = useReducedMotion()
     const stars = useMemo(() => generateStars(), [])
+    // The win-card already announces the result — infinitely pulsing
+    // stars under reduce-motion would directly violate the signal.
+    if (reduceMotion) return null
     return (
         <div style={containerStyle} aria-hidden="true">
             {stars.map((s) => (

@@ -1,11 +1,4 @@
-import {
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -18,39 +11,38 @@ import WebApp from "@lib/twa"
 import SpinReel, { SLOT_HEIGHT } from "../SpinReel"
 import Stars from "./Stars"
 import Footer from "./Footer"
-import { buildItems, preloadRewardImages } from "../../utils"
+import {
+    SPIN_DURATION_MS,
+    SPEED_UP_FACTOR,
+    MAX_SPEED_UPS,
+    CRUISE_DURATION_MS,
+    SPIN_TURNS,
+    IDLE_INDEX,
+    IDLE_NUDGE_INTERVAL_MS,
+} from "./animationConfig"
+import useStageLayout from "./useStageLayout"
+import useReelItems from "./useReelItems"
+import { preloadRewardImages } from "../../utils"
 import { PHASE, POINTS_BALANCE, SPIN_COST } from "../../mockData"
 import * as styles from "./WheelModal.module.scss"
 
-const LEAD_PADDING = 3
-const SPIN_TURNS = 40
-const REEL_LENGTH = 240
-const IDLE_INDEX = LEAD_PADDING
-const SPIN_DURATION_MS = 22000
-const SPEED_UP_FACTOR = 0.65
-const MAX_SPEED_UPS = 4
-const CRUISE_DURATION_MS = 4500
-const CENTER_LIFT_PX = 20
-const IDLE_NUDGE_INTERVAL_MS = 2300
-const DEFAULT_LAYOUT = { stageH: 460, footerH: 180, navH: 60 }
-
-const sameLayout = (a, b) =>
-    a.stageH === b.stageH && a.footerH === b.footerH && a.navH === b.navH
-
 function WheelModal({ isOpen, onClose }) {
     const [phase, setPhase] = useState(PHASE.IDLE)
-    const [items, setItems] = useState(() => buildItems(REEL_LENGTH))
     const [focusedIndex, setFocusedIndex] = useState(IDLE_INDEX)
     const [points, setPoints] = useState(POINTS_BALANCE)
     const [speedUps, setSpeedUps] = useState(0)
-    const [layout, setLayout] = useState(DEFAULT_LAYOUT)
+    const {
+        items,
+        reset: resetItems,
+        growForSpin,
+        growForIdle,
+    } = useReelItems()
+    const { stageRef, footerRef, navRef, layout, centerOffset } =
+        useStageLayout()
     const reelRef = useRef(null)
-    const stageRef = useRef(null)
-    const footerRef = useRef(null)
-    const navRef = useRef(null)
     const spinTokenRef = useRef(0)
     const focusedIndexRef = useRef(focusedIndex)
-    const { stageH, footerH, navH } = layout
+    const { footerH } = layout
 
     useEffect(() => {
         focusedIndexRef.current = focusedIndex
@@ -65,73 +57,29 @@ function WheelModal({ isOpen, onClose }) {
     useEffect(() => {
         if (!isOpen) {
             spinTokenRef.current += 1
-            setItems(buildItems(REEL_LENGTH))
+            resetItems()
             setFocusedIndex(IDLE_INDEX)
             setPhase(PHASE.IDLE)
             setSpeedUps(0)
             reelRef.current?.snapTo(IDLE_INDEX)
         }
-    }, [isOpen])
+    }, [isOpen, resetItems])
 
     useEffect(() => {
         if (!isOpen || phase !== PHASE.IDLE) return undefined
         const id = setInterval(() => {
             const next = focusedIndexRef.current + 1
-            setItems((curr) =>
-                next + SPIN_TURNS >= curr.length
-                    ? [...curr, ...buildItems(REEL_LENGTH)]
-                    : curr
-            )
+            growForIdle(next)
             reelRef.current?.advanceTo(next)
             setFocusedIndex(next)
         }, IDLE_NUDGE_INTERVAL_MS)
         return () => clearInterval(id)
-    }, [isOpen, phase])
-
-    useLayoutEffect(() => {
-        let frameId = 0
-        const measureNow = () => {
-            const next = {
-                stageH: stageRef.current?.offsetHeight ?? DEFAULT_LAYOUT.stageH,
-                footerH:
-                    footerRef.current?.offsetHeight ?? DEFAULT_LAYOUT.footerH,
-                navH: navRef.current?.offsetHeight ?? DEFAULT_LAYOUT.navH,
-            }
-            setLayout((current) => (sameLayout(current, next) ? current : next))
-        }
-        const scheduleMeasure = () => {
-            if (frameId) return
-            frameId = requestAnimationFrame(() => {
-                frameId = 0
-                measureNow()
-            })
-        }
-        measureNow()
-        const ro = new ResizeObserver(scheduleMeasure)
-        if (stageRef.current) ro.observe(stageRef.current)
-        if (footerRef.current) ro.observe(footerRef.current)
-        if (navRef.current) ro.observe(navRef.current)
-        return () => {
-            if (frameId) cancelAnimationFrame(frameId)
-            ro.disconnect()
-        }
-    }, [])
-
-    const centerOffset = Math.max(
-        (stageH + navH - footerH - SLOT_HEIGHT) / 2 - CENTER_LIFT_PX,
-        navH
-    )
+    }, [isOpen, phase, growForIdle])
 
     const startSpin = useCallback(async () => {
         const token = ++spinTokenRef.current
         const targetIdx = focusedIndex + SPIN_TURNS
-        // Preserve slots that may still be inside the reel's visible window
-        // (focused ± VISIBLE_SLOT_BUFFER), then regenerate everything beyond
-        // so each spin scrolls through fresh rewards.
-        setItems((curr) => [
-            ...curr.slice(0, focusedIndex + 4),
-            ...buildItems(SPIN_TURNS + REEL_LENGTH),
-        ])
+        growForSpin(focusedIndex)
         setPoints((p) => Math.max(0, p - SPIN_COST))
         setSpeedUps(0)
         setPhase(PHASE.SPINNING)
@@ -145,7 +93,7 @@ function WheelModal({ isOpen, onClose }) {
         setFocusedIndex(targetIdx)
         setPhase(PHASE.RESULT)
         WebApp.HapticFeedback?.notificationOccurred?.("success")
-    }, [focusedIndex])
+    }, [focusedIndex, growForSpin])
 
     const speedUp = useCallback(() => {
         setSpeedUps((c) => {

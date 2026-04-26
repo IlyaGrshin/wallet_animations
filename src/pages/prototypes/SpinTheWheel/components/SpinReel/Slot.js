@@ -6,23 +6,8 @@ import { useTransform } from "motion/react"
 import Text from "@components/Text"
 import Coin from "../Coin"
 import { formatPrice, forceGpuTransform } from "../../utils"
+import { slotPositionScale, slotPositionOpacity } from "./geometry"
 import * as styles from "./SpinReel.module.scss"
-
-const MIN_SCALE = 0.667
-const SCALE_RANGE = 1 - MIN_SCALE
-
-function getPositionScale(yVal, centerY, slotHeight) {
-    const dist = Math.abs(yVal - centerY)
-    if (dist >= slotHeight) return MIN_SCALE
-    return 1 - SCALE_RANGE * (dist / slotHeight)
-}
-
-function getPositionOpacity(yVal, centerY, slotHeight) {
-    const dist = Math.abs(yVal - centerY)
-    if (dist >= 3 * slotHeight) return 0
-    if (dist <= slotHeight) return 1 - 0.5 * (dist / slotHeight)
-    return 0.5 - 0.5 * ((dist - slotHeight) / (2 * slotHeight))
-}
 
 function Slot({
     index,
@@ -39,12 +24,13 @@ function Slot({
     const scale = useTransform(
         [y, winnerPulse],
         ([yVal, pulse]) =>
-            getPositionScale(yVal, centerY, slotHeight) * (isWinner ? pulse : 1)
+            slotPositionScale(yVal, centerY, slotHeight) *
+            (isWinner ? pulse : 1)
     )
     const opacity = useTransform(
         [y, phaseFade],
         ([yVal, fade]) =>
-            getPositionOpacity(yVal, centerY, slotHeight) *
+            slotPositionOpacity(yVal, centerY, slotHeight) *
             (isWinner ? 1 : fade)
     )
 

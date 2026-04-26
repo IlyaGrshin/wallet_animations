@@ -1,7 +1,7 @@
-import { forwardRef, memo } from "react"
+import { forwardRef, memo, useMemo } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
-import { AnimatePresence } from "motion/react"
+import { AnimatePresence, useReducedMotion } from "motion/react"
 
 import { RegularButton } from "@components/Button"
 import Text from "@components/Text"
@@ -10,7 +10,7 @@ import { formatPrice } from "../../utils"
 import { PHASE, PHASE_VALUES, SPIN_COST } from "../../mockData"
 import * as styles from "./Footer.module.scss"
 
-const cardSlide = {
+const CARD_SLIDE = {
     initial: { y: "110%" },
     animate: {
         y: 0,
@@ -20,6 +20,14 @@ const cardSlide = {
         y: "110%",
         transition: { duration: 0.32, ease: [0.55, 0, 0.85, 0.4] },
     },
+}
+
+// No travel, just a cross-fade — the card still reads as a state change
+// without sliding off-screen.
+const CARD_FADE = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.15 } },
+    exit: { opacity: 0, transition: { duration: 0.15 } },
 }
 
 function FooterCopy({ title, description }) {
@@ -92,6 +100,11 @@ const Footer = forwardRef(function Footer(
     { phase, winner, points, canSpeedUp, onSpin, onSpeedUp },
     ref
 ) {
+    const reduceMotion = useReducedMotion()
+    const cardVariants = useMemo(
+        () => (reduceMotion ? CARD_FADE : CARD_SLIDE),
+        [reduceMotion]
+    )
     const card = getCardContent({ phase, winner, points, onSpin })
     return (
         <div ref={ref} className={styles.footerArea}>
@@ -125,7 +138,7 @@ const Footer = forwardRef(function Footer(
                         initial="initial"
                         animate="animate"
                         exit="exit"
-                        variants={cardSlide}
+                        variants={cardVariants}
                     >
                         <FooterCopy
                             title={card.title}
