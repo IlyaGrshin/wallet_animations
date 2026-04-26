@@ -9,6 +9,7 @@ import {
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
+import { Calligraph } from "calligraph"
 
 import ModalView from "@components/ModalView"
 import Text from "@components/Text"
@@ -76,12 +77,16 @@ function WheelModal({ isOpen, onClose }) {
         if (!isOpen || phase !== PHASE.IDLE) return undefined
         const id = setInterval(() => {
             const next = focusedIndexRef.current + 1
-            if (next + SPIN_TURNS >= items.length) return
+            setItems((curr) =>
+                next + SPIN_TURNS >= curr.length
+                    ? [...curr, ...buildItems(REEL_LENGTH)]
+                    : curr
+            )
             reelRef.current?.advanceTo(next)
             setFocusedIndex(next)
         }, IDLE_NUDGE_INTERVAL_MS)
         return () => clearInterval(id)
-    }, [isOpen, phase, items.length])
+    }, [isOpen, phase])
 
     useLayoutEffect(() => {
         let frameId = 0
@@ -120,7 +125,11 @@ function WheelModal({ isOpen, onClose }) {
     const startSpin = useCallback(async () => {
         const token = ++spinTokenRef.current
         const targetIdx = focusedIndex + SPIN_TURNS
-        if (targetIdx >= items.length) return
+        setItems((curr) =>
+            targetIdx + LEAD_PADDING >= curr.length
+                ? [...curr, ...buildItems(REEL_LENGTH)]
+                : curr
+        )
         setPoints((p) => Math.max(0, p - SPIN_COST))
         setSpeedUps(0)
         setPhase(PHASE.SPINNING)
@@ -134,7 +143,7 @@ function WheelModal({ isOpen, onClose }) {
         setFocusedIndex(targetIdx)
         setPhase(PHASE.RESULT)
         WebApp.HapticFeedback?.notificationOccurred?.("success")
-    }, [focusedIndex, items.length])
+    }, [focusedIndex])
 
     const speedUp = useCallback(() => {
         setSpeedUps((c) => {
@@ -183,7 +192,9 @@ function WheelModal({ isOpen, onClose }) {
                             apple={{ variant: "body", weight: "semibold" }}
                             material={{ variant: "body", weight: "medium" }}
                         >
-                            {points.toLocaleString("en-US")}
+                            <Calligraph variant="number" animation="smooth">
+                                {points}
+                            </Calligraph>
                         </Text>
                     </div>
                 </div>
