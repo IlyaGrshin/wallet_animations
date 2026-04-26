@@ -1,12 +1,12 @@
 import { rand } from "../../utils"
 
-// Кривые ускорения для cruise-tween-ов.
+// Easing curves for cruise tweens.
 const ACCEL_EASE = [0, 0, 0.3, 1]
 const PULL_EASE = [0.2, 0, 0.4, 1]
 
-// Профиль «классический перелёт + пружина»: барабан проскакивает цель на
-// 10..50px и пружина возвращает его без ручной коррекции — самый частый и
-// мягкий вариант.
+// "Classic overshoot + spring": the drum overshoots the target by 10..50px
+// and a spring brings it back without a manual correction — the most
+// common and gentle profile.
 function buildOvershootSpring({ direction }) {
     return [
         {
@@ -23,8 +23,8 @@ function buildOvershootSpring({ direction }) {
     ]
 }
 
-// «Жёсткий перелёт-возврат»: проскок на 70..140px, потом доводка обратно
-// к цели — даёт ощущение упругого, но контролируемого торможения.
+// "Hard overshoot + return": overshoot by 70..140px, then pull back to
+// target — feels like a firm but controlled braking.
 function buildOvershootHard({ direction }) {
     return [
         {
@@ -42,9 +42,9 @@ function buildOvershootHard({ direction }) {
     ]
 }
 
-// «Мягкий перелёт + пружина»: едва заметный проскок на 2..10px, далее
-// пружина — ощущение «почти промахнулся», самый деликатный из перелётных
-// вариантов.
+// "Soft overshoot + spring": a barely visible 2..10px overshoot, then a
+// spring — feels like "almost missed", the most delicate of the overshoot
+// variants.
 function buildOvershootSoft({ direction }) {
     return [
         {
@@ -61,9 +61,9 @@ function buildOvershootSoft({ direction }) {
     ]
 }
 
-// «Недолёт-пауза-перелёт-пружина»: барабан недотягивает 40..90px, на
-// мгновение замирает, проскакивает на 6..18px и осаживается пружиной.
-// Самый драматичный «вот-вот остановится» сценарий.
+// "Undershoot + pause + overshoot + spring": the drum undershoots by
+// 40..90px, freezes for a beat, then overshoots by 6..18px before a
+// spring settles it. The most dramatic "about to stop" profile.
 function buildBackoffPunch({ direction }) {
     const undershoot = -direction * rand(40, 90)
     const overshoot = direction * rand(6, 18)
@@ -93,8 +93,8 @@ function buildBackoffPunch({ direction }) {
     ]
 }
 
-// Веса соответствуют исходным порогам (0.30 / 0.45 / 0.65 / 1.0) в
-// прежней процедурной реализации.
+// Weights mirror the original thresholds (0.30 / 0.45 / 0.65 / 1.0) from
+// the previous procedural implementation.
 const PROFILES = [
     { weight: 30, build: buildOvershootHard },
     { weight: 15, build: buildOvershootSoft },

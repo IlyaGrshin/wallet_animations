@@ -11,11 +11,11 @@ const WIN_PULSE_OPTIONS = {
     ease: "easeOut",
 }
 
-// Две независимые анимации, привязанные к фазе модалки:
-//  - phaseFade гасит чужие слоты при переходе в RESULT.
-//  - winnerPulse даёт победителю короткий импульс масштаба.
-// При reduceMotion обе анимации выпрямляются в моментальные set —
-// смысл сигнала остаётся (победитель отделён от ленты), движения нет.
+// Two independent animations tied to the modal phase:
+//  - phaseFade dims the non-winner slots when entering RESULT.
+//  - winnerPulse gives the winner a short scale beat.
+// Under reduceMotion both collapse into instant sets — the signal still
+// reads (winner is separated from the strip) without any travel.
 export default function usePhaseFade(phase) {
     const phaseFade = useMotionValue(1)
     const winnerPulse = useMotionValue(1)

@@ -10,11 +10,10 @@ const ACCEL_EASE = [0, 0, 0.3, 1]
 const ADVANCE_SPRING = { type: "spring", stiffness: 220, damping: 22 }
 const MIN_DURATION_MS = 180
 
-// Императивный контроллер барабана. Хранит активный handle (от
-// motion.animate или от runSegments) и время старта текущего tween-а
-// (нужно для accelerate). centerOffset хранится в ref внутри хука и
-// синхронизируется с пропом, чтобы targetY всегда видел свежее значение
-// без stale-closure.
+// Imperative reel controller. Holds the active handle (from motion.animate
+// or runSegments) and the start timestamp of the current tween (needed by
+// accelerate). centerOffset lives in a hook-local ref synced from the
+// prop, so targetY always reads the fresh value without stale-closure.
 export default function useReelController({ y, idleIndex, centerOffset }) {
     const reduceMotion = useReducedMotion()
     const centerOffsetRef = useRef(centerOffset)
@@ -26,9 +25,9 @@ export default function useReelController({ y, idleIndex, centerOffset }) {
 
     useEffect(() => {
         centerOffsetRef.current = centerOffset
-        // Если ничего не анимируется — подвинем барабан под новый
-        // centerOffset, иначе контроль над позицией пусть остаётся за
-        // активным tween-ом (иначе resize посреди спина дёргал бы ленту).
+        // If nothing is animating, slide the reel under the new
+        // centerOffset; otherwise let the active tween keep authority over
+        // y (a resize mid-spin would otherwise jerk the strip).
         if (!controlsRef.current) {
             y.set(targetYFor(targetIndexRef.current, centerOffset))
         }

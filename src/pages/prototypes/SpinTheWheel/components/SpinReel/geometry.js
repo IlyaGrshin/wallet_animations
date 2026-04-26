@@ -1,8 +1,8 @@
 export const SLOT_HEIGHT = 180
 export const VISIBLE_SLOT_BUFFER = 3
 
-// 2/3 — соотношение «центральный слот / соседний», подобрано визуально для
-// 180px slot, чтобы лента ощущалась барабаном, а не плоским списком.
+// 2/3 ratio between the centred slot and its neighbours, picked visually
+// for a 180px slot so the strip reads as a drum rather than a flat list.
 const MIN_SCALE = 0.667
 const SCALE_RANGE = 1 - MIN_SCALE
 
@@ -18,9 +18,9 @@ export function slotPositionScale(yVal, centerY, slotHeight) {
     return 1 - SCALE_RANGE * (dist / slotHeight)
 }
 
-// Кусочно-линейная: «зона интереса» (0..slotHeight) гасит 1 → 0.5 быстро,
-// «зона затухания» (slotHeight..3·slotHeight) — 0.5 → 0 плавно. Без этого
-// дальние слоты выглядели бы плоско и не было бы визуальной глубины.
+// Piecewise linear: the "focus zone" (0..slotHeight) drops 1 → 0.5 quickly,
+// the "fade zone" (slotHeight..3·slotHeight) eases 0.5 → 0 smoothly. Without
+// the split, distant slots would look flat and there'd be no depth cue.
 export function slotPositionOpacity(yVal, centerY, slotHeight) {
     const dist = Math.abs(yVal - centerY)
     if (dist >= 3 * slotHeight) return 0

@@ -22,8 +22,8 @@ const CARD_SLIDE = {
     },
 }
 
-// Без перемещения, только cross-fade — карточка всё ещё чувствуется
-// как переключение состояния, но не уезжает за пределы экрана.
+// No travel, just a cross-fade — the card still reads as a state change
+// without sliding off-screen.
 const CARD_FADE = {
     initial: { opacity: 0 },
     animate: { opacity: 1, transition: { duration: 0.15 } },

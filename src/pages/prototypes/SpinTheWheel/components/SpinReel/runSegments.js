@@ -1,12 +1,12 @@
 import { animate } from "motion/react"
 
-// Раннер последовательно проигрывает массив сегментов одного «круиза».
-// Каждый сегмент — `{ kind, offset, durationMs|durationFraction, ease|spring }`,
-// где `offset` — смещение относительно target (0 = ровно target). Все
-// случайные параметры разрешены на момент построения профиля.
+// Runs a cruise profile by playing its segments in order. Each segment is
+// `{ kind, offset, durationMs|durationFraction, ease|spring }`, where
+// `offset` is relative to target (0 = exactly target). All random params
+// are resolved at profile-build time, so each segment is deterministic.
 //
-// При `reduceMotion` раннер мгновенно ставит y в target и резолвит — это
-// единое место учёта prefers-reduced-motion для cruise-логики.
+// Under `reduceMotion` the runner snaps y to target and resolves — the
+// single place where prefers-reduced-motion is honoured for cruise logic.
 
 export default function runSegments({
     y,
@@ -40,9 +40,9 @@ export default function runSegments({
             seg.durationMs ?? (seg.durationFraction ?? 0) * totalMs
 
         if (seg.kind === "wait") {
-            // Микропауза в позиции `to` — реализуется setTimeout, потому
-            // что animate(y, to) к уже текущей позиции мог бы резолвиться
-            // сразу, не дав визуального «зависания».
+            // Hold at `to` via setTimeout — animate(y, to) toward the
+            // current position could resolve immediately and skip the
+            // visible pause.
             y.set(to)
             timeoutId = setTimeout(next, durationMs)
             return

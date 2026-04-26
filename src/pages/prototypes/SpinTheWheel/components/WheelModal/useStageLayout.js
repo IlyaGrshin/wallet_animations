@@ -6,11 +6,11 @@ import { CENTER_LIFT_PX, DEFAULT_LAYOUT } from "./animationConfig"
 const sameLayout = (a, b) =>
     a.stageH === b.stageH && a.footerH === b.footerH && a.navH === b.navH
 
-// Центр слота вписывается в свободное от nav и footer пространство
-// (-SLOT_HEIGHT, чтобы это была верх­няя кромка центрального слота, а не его центр).
-// CENTER_LIFT_PX компенсирует оптический сдвиг от тени footer card.
-// Math.max(..., navH) — страховка для очень коротких экранов, иначе центр
-// уезжает под навбар.
+// Fit the centred slot into the space left by the nav and footer
+// (-SLOT_HEIGHT picks the slot's top edge, not its centre). CENTER_LIFT_PX
+// compensates for the optical shift caused by the footer card shadow.
+// The Math.max(..., navH) floor protects very short screens — without it
+// the centre slides under the nav bar.
 function computeCenterOffset({ stageH, footerH, navH }) {
     return Math.max(
         (stageH + navH - footerH - SLOT_HEIGHT) / 2 - CENTER_LIFT_PX,

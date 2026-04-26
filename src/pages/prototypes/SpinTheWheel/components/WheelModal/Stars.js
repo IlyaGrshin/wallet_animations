@@ -134,8 +134,8 @@ Star.propTypes = {
 function Stars() {
     const reduceMotion = useReducedMotion()
     const stars = useMemo(() => generateStars(), [])
-    // Win-card уже объявляет результат — бесконечно мигающие звёзды при
-    // включённом reduce-motion были бы прямым нарушением сигнала.
+    // The win-card already announces the result — infinitely pulsing
+    // stars under reduce-motion would directly violate the signal.
     if (reduceMotion) return null
     return (
         <div style={containerStyle} aria-hidden="true">

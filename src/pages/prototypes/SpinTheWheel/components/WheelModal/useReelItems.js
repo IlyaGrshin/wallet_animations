@@ -4,8 +4,8 @@ import { VISIBLE_SLOT_BUFFER } from "../SpinReel/geometry"
 import { buildItems } from "../../utils"
 import { REEL_HARD_CAP, REEL_LENGTH, SPIN_TURNS } from "./animationConfig"
 
-// За пределами центрального + VISIBLE_SLOT_BUFFER слотов лента невидима, так
-// что её можно безопасно перегенерировать без визуального скачка.
+// Anything past the centred slot + VISIBLE_SLOT_BUFFER is offscreen, so it
+// can be regenerated safely without a visual jump.
 const KEEP_AHEAD = VISIBLE_SLOT_BUFFER + 1
 
 export default function useReelItems() {
@@ -22,10 +22,10 @@ export default function useReelItems() {
         ])
     }, [])
 
-    // Idle nudge крутится бесконечно, пока модалка открыта — без потолка
-    // массив рос бы по REEL_LENGTH каждые ~2.3 с (≈30 МБ за час). Cap
-    // останавливает рост; после него лента визуально упирается в конец,
-    // но это происходит только после очень долгого простоя.
+    // The idle nudge runs as long as the modal is open. Without a ceiling
+    // the array would grow by REEL_LENGTH every ~2.3s (≈30 MB per hour).
+    // The cap stops the growth; once hit the strip visually runs out, but
+    // only after a very long idle session.
     const growForIdle = useCallback((nextIndex) => {
         setItems((curr) => {
             if (nextIndex + SPIN_TURNS < curr.length) return curr

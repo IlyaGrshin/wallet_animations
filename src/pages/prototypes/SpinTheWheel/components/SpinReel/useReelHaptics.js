@@ -6,10 +6,10 @@ import WebApp from "@lib/twa"
 import { indexAtY } from "./geometry"
 import { PHASE } from "../../mockData"
 
-// `selectionChanged` (а не `impactOccurred`) — намеренное дизайн-решение:
-// эмулирует «щёлкание» механического барабана при прокрутке через слоты.
-// reduceMotion часто включают и при чувствительности к вибрации, поэтому
-// в этом режиме хаптики гасим — следуем общему сигналу пользователя.
+// `selectionChanged` (not `impactOccurred`) is a deliberate design call:
+// it emulates the click of a mechanical drum as slots pass under the
+// pointer. Users who turn on reduceMotion are often also sensitive to
+// vibration, so we suppress haptics in that mode — same broader signal.
 export default function useReelHaptics({ y, phase, centerOffset }) {
     const reduceMotion = useReducedMotion()
 
