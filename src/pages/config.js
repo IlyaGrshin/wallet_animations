@@ -113,6 +113,13 @@ const config = [
                 ),
             },
             {
+                title: "Streaming Text",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/StreamingText/StreamingText.showcase")
+                ),
+            },
+            {
                 title: "Gallery",
                 component: lazyWithPreload(
                     () => import("../components/Gallery/Gallery.showcase")
