@@ -95,11 +95,12 @@ const Onboarding = () => {
                     label="Add Existing Wallet"
                     isFill
                 />
-                <SectionHeader
-                    type="Footer"
-                    title="By continuing you agree to Terms of Service and User Agreement."
-                    style={{ textAlign: "center" }}
-                />
+                <div className={styles.terms}>
+                    <SectionHeader
+                        type="Footer"
+                        title="By continuing you agree to Terms of Service and User Agreement."
+                    />
+                </div>
             </div>
         </Page>
     )

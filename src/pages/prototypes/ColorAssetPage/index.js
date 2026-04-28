@@ -170,13 +170,7 @@ function ColorAssetPage() {
         <>
             <BackButton />
             <Page>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "8px",
-                    }}
-                >
+                <div className={styles.list}>
                     {assets.map((asset, index) => (
                         <AssetSection
                             mode="trade"

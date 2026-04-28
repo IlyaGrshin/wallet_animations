@@ -35,3 +35,12 @@
     z-index: 10;
     pointer-events: none;
 }
+
+.viewBody {
+    position: relative;
+    min-height: 100%;
+}
+
+.tabBarHit {
+    pointer-events: auto;
+}

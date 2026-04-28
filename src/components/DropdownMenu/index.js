@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
@@ -19,9 +19,7 @@ const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
         onMouseEnter={onMouseEnter}
         className={`${styles.item} ${isSelected ? styles.selected : ""}`}
     >
-        <Text variant="body" style={{ padding: "2px 0" }}>
-            {item}
-        </Text>
+        <Text variant="body">{item}</Text>
     </div>
 )
 
@@ -60,28 +58,25 @@ const DropdownMenu = ({ items, trigger }) => {
         if (!items.includes(selectedItem)) setSelectedItem(items[0])
     }, [items, selectedItem])
 
-    const closeDropdown = useCallback(() => {
+    const closeDropdown = () => {
         setIsOpen(false)
         resetPosition()
         setActiveIndex(-1)
-    }, [resetPosition])
+    }
 
-    const toggleDropdown = useCallback(() => {
+    const toggleDropdown = () => {
         setIsOpen((prev) => !prev)
         resetPosition()
         setActiveIndex(-1)
-    }, [resetPosition])
+    }
 
-    const handleSelectItem = useCallback(
-        (item) => {
-            setSelectedItem(item)
-            setIsOpen(false)
-            resetPosition()
-            setActiveIndex(-1)
-            buttonRef.current?.focus()
-        },
-        [resetPosition]
-    )
+    const handleSelectItem = (item) => {
+        setSelectedItem(item)
+        setIsOpen(false)
+        resetPosition()
+        setActiveIndex(-1)
+        buttonRef.current?.focus()
+    }
 
     useClickOutside(
         isOpen,
@@ -96,7 +91,6 @@ const DropdownMenu = ({ items, trigger }) => {
         const idx = Math.max(0, items.indexOf(selectedItem))
         setActiveIndex(idx)
         itemRefs.current[idx]?.focus()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, isPositioned])
 
     useEffect(() => {

@@ -8,6 +8,8 @@ import { RegularButton } from "../../../components/Button"
 
 import WebApp, { BackButton } from "../../../lib/twa"
 
+import * as styles from "./HapticFeedback.module.scss"
+
 const haptics = [
     {
         label: "Impact · Light",
@@ -81,11 +83,7 @@ const HapticFeedbackShowcase = () => {
                     </SectionList.Item>
 
                     <SectionList.Item>
-                        <div
-                            style={{
-                                padding: "12px var(--side-padding)",
-                            }}
-                        >
+                        <div className={styles.action}>
                             <RegularButton
                                 variant="filled"
                                 label="Replay"

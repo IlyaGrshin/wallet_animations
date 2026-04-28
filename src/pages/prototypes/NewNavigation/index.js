@@ -108,9 +108,7 @@ function NewNavigation() {
                         key={currentKey}
                         className={styles.view}
                     >
-                        <div
-                            style={{ position: "relative", minHeight: "100%" }}
-                        >
+                        <div className={styles.viewBody}>
                             {isFirstTab && (
                                 <div className={styles.navigationWrapper}>
                                     <NavigationPanel
@@ -127,7 +125,7 @@ function NewNavigation() {
             </div>
 
             <div className={styles.tabBarWrapper}>
-                <div style={{ pointerEvents: "auto" }}>
+                <div className={styles.tabBarHit}>
                     <TabBar
                         tabs={activeTabs}
                         onChange={handleTabChange}

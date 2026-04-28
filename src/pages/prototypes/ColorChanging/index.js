@@ -4,6 +4,8 @@ import { RegularButton } from "../../../components/Button"
 
 import WebApp, { BackButton } from "../../../lib/twa"
 
+import * as styles from "./ColorChanging.module.scss"
+
 function ColorChanging() {
     const [isSecondaryColor, setIsSecondaryColor] = useState(true)
 
@@ -32,14 +34,7 @@ function ColorChanging() {
     return (
         <>
             <BackButton />
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100vh",
-                }}
-            >
+            <div className={styles.root}>
                 <RegularButton
                     variant="filled"
                     label="Change Color"

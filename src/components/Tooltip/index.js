@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
@@ -43,25 +43,25 @@ const Tooltip = ({
         placement
     )
 
-    const openTooltip = useCallback(() => {
+    const openTooltip = () => {
         setIsOpen(true)
         resetPosition()
-    }, [resetPosition])
+    }
 
-    const closeTooltip = useCallback(() => {
+    const closeTooltip = () => {
         setIsOpen(false)
         resetPosition()
-    }, [resetPosition])
+    }
 
     const { onPointerEnter, onPointerLeave, clearOpenTimer, clearCloseTimer } =
         useHoverToggle({ onOpen: openTooltip, onClose: closeTooltip })
 
-    const toggleTooltip = useCallback(() => {
+    const toggleTooltip = () => {
         clearOpenTimer()
         clearCloseTimer()
         setIsOpen((prev) => !prev)
         resetPosition()
-    }, [resetPosition, clearOpenTimer, clearCloseTimer])
+    }
 
     useClickOutside(
         isOpen,
@@ -97,31 +97,33 @@ const Tooltip = ({
         ? TAIL_WIDTH_HORIZONTAL
         : TAIL_WIDTH_VERTICAL
 
-    const shellStyle = useMemo(() => {
-        if (!isPositioned) return null
-        const tp = position.tailProtrusion
-        return {
-            position: "fixed",
-            top: position.top,
-            left: position.left,
-            transformOrigin: `${position.originX} ${position.originY}`,
-            zIndex: 1000,
-            paddingTop: position.placement === "bottom" ? tp : 0,
-            paddingBottom: position.placement === "top" ? tp : 0,
-            paddingLeft: position.placement === "right" ? tp : 0,
-            paddingRight: position.placement === "left" ? tp : 0,
-            clipPath: buildClipPath({
-                width: position.width,
-                height: position.height,
-                tailOffsetX: position.tailOffsetX,
-                tailOffsetY: position.tailOffsetY,
-                tailBreadth,
-                tailProtrusion: tp,
-                placement: position.placement,
-                shape: position.shape,
-            }),
-        }
-    }, [isPositioned, position, tailBreadth])
+    const shellStyle = isPositioned
+        ? {
+              position: "fixed",
+              top: position.top,
+              left: position.left,
+              transformOrigin: `${position.originX} ${position.originY}`,
+              zIndex: 1000,
+              paddingTop:
+                  position.placement === "bottom" ? position.tailProtrusion : 0,
+              paddingBottom:
+                  position.placement === "top" ? position.tailProtrusion : 0,
+              paddingLeft:
+                  position.placement === "right" ? position.tailProtrusion : 0,
+              paddingRight:
+                  position.placement === "left" ? position.tailProtrusion : 0,
+              clipPath: buildClipPath({
+                  width: position.width,
+                  height: position.height,
+                  tailOffsetX: position.tailOffsetX,
+                  tailOffsetY: position.tailOffsetY,
+                  tailBreadth,
+                  tailProtrusion: position.tailProtrusion,
+                  placement: position.placement,
+                  shape: position.shape,
+              }),
+          }
+        : null
 
     return (
         <span className={styles.container}>

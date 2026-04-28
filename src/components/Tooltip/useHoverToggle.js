@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 const OPEN_DELAY = 80
 const CLOSE_DELAY = 120
@@ -7,19 +7,19 @@ export const useHoverToggle = ({ onOpen, onClose }) => {
     const openTimerRef = useRef(null)
     const closeTimerRef = useRef(null)
 
-    const clearOpenTimer = useCallback(() => {
+    const clearOpenTimer = () => {
         if (openTimerRef.current) {
             clearTimeout(openTimerRef.current)
             openTimerRef.current = null
         }
-    }, [])
+    }
 
-    const clearCloseTimer = useCallback(() => {
+    const clearCloseTimer = () => {
         if (closeTimerRef.current) {
             clearTimeout(closeTimerRef.current)
             closeTimerRef.current = null
         }
-    }, [])
+    }
 
     useEffect(
         () => () => {
@@ -29,39 +29,33 @@ export const useHoverToggle = ({ onOpen, onClose }) => {
         [clearOpenTimer, clearCloseTimer]
     )
 
-    const scheduleOpen = useCallback(() => {
+    const scheduleOpen = () => {
         clearCloseTimer()
         if (openTimerRef.current) return
         openTimerRef.current = setTimeout(() => {
             openTimerRef.current = null
             onOpen()
         }, OPEN_DELAY)
-    }, [clearCloseTimer, onOpen])
+    }
 
-    const scheduleClose = useCallback(() => {
+    const scheduleClose = () => {
         clearOpenTimer()
         if (closeTimerRef.current) return
         closeTimerRef.current = setTimeout(() => {
             closeTimerRef.current = null
             onClose()
         }, CLOSE_DELAY)
-    }, [clearOpenTimer, onClose])
+    }
 
-    const onPointerEnter = useCallback(
-        (e) => {
-            if (e.pointerType === "touch") return
-            scheduleOpen()
-        },
-        [scheduleOpen]
-    )
+    const onPointerEnter = (e) => {
+        if (e.pointerType === "touch") return
+        scheduleOpen()
+    }
 
-    const onPointerLeave = useCallback(
-        (e) => {
-            if (e.pointerType === "touch") return
-            scheduleClose()
-        },
-        [scheduleClose]
-    )
+    const onPointerLeave = (e) => {
+        if (e.pointerType === "touch") return
+        scheduleClose()
+    }
 
     return { onPointerEnter, onPointerLeave, clearOpenTimer, clearCloseTimer }
 }

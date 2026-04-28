@@ -41,7 +41,6 @@ export function useAnchoredPosition({
         contentSizeRef.current = { width, height }
         setPosition(calculate(triggerRect, { width, height }))
         setIsPositioned(true)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, isPositioned, triggerRef, contentRef, calculate, ...deps])
 
     useEffect(() => {
@@ -65,7 +64,6 @@ export function useAnchoredPosition({
             window.removeEventListener("scroll", schedule, true)
             window.removeEventListener("resize", schedule)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, isPositioned, triggerRef, calculate, equals, ...deps])
 
     return { position, isPositioned, resetPosition }

@@ -9,6 +9,8 @@ import Cell from "../../../components/Cells"
 import ImageAvatar from "../../../components/ImageAvatar"
 import Spinner from "../../../components/Spinner"
 
+import * as styles from "./Trading.module.scss"
+
 const fetchAssets = async () => {
     const response = await fetch("https://ilyagrshn.com/coingeckoApi/index.php")
     return response.json()
@@ -50,33 +52,19 @@ const AssetsList = () => {
     )
 }
 
-const centerStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-}
-
 function Trading() {
     return (
         <Page>
             <ErrorBoundary
                 fallback={
-                    <div style={centerStyle}>
-                        <Text
-                            variant="body"
-                            style={{
-                                color: "var(--tg-theme-subtitle-text-color)",
-                            }}
-                        >
-                            Error loading assets
-                        </Text>
+                    <div className={`${styles.center} ${styles.error}`}>
+                        <Text variant="body">Error loading assets</Text>
                     </div>
                 }
             >
                 <Suspense
                     fallback={
-                        <div style={centerStyle}>
+                        <div className={styles.center}>
                             <Spinner />
                         </div>
                     }

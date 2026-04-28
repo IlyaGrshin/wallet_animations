@@ -1,11 +1,4 @@
-import {
-    createContext,
-    useCallback,
-    useContext,
-    useMemo,
-    useRef,
-    useState,
-} from "react"
+import { createContext, useContext, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import SnackbarHost from "./SnackbarHost"
 
@@ -23,21 +16,19 @@ export const SnackbarProvider = ({ children }) => {
     const [snackbars, setSnackbars] = useState([])
     const idRef = useRef(0)
 
-    const dismiss = useCallback((id) => {
+    const dismiss = (id) => {
         setSnackbars((curr) => curr.filter((s) => s.id !== id))
-    }, [])
+    }
 
-    const show = useCallback((options) => {
+    const show = (options) => {
         idRef.current += 1
         const id = idRef.current
         setSnackbars((curr) => [...curr, { id, ...options }])
         return id
-    }, [])
-
-    const value = useMemo(() => ({ show, dismiss }), [show, dismiss])
+    }
 
     return (
-        <SnackbarContext.Provider value={value}>
+        <SnackbarContext.Provider value={{ show, dismiss }}>
             {children}
             <SnackbarHost snackbars={snackbars} onDismiss={dismiss} />
         </SnackbarContext.Provider>

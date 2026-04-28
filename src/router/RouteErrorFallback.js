@@ -1,3 +1,6 @@
+import { RegularButton } from "../components/Button"
+import Text from "../components/Text"
+
 import * as styles from "./RouteErrorFallback.module.scss"
 
 const handleReload = () => {
@@ -6,13 +9,28 @@ const handleReload = () => {
 
 const RouteErrorFallback = () => (
     <div className={styles.root}>
-        <div className={styles.title}>Something went wrong</div>
+        <Text
+            apple={{ variant: "body", weight: "semibold" }}
+            material={{ variant: "subheadline1", weight: "medium" }}
+        >
+            Something went wrong
+        </Text>
         <div className={styles.description}>
-            This page failed to load. It may have been updated — try reloading.
+            <Text
+                apple={{ variant: "subheadline1" }}
+                material={{ variant: "subheadline2" }}
+            >
+                This page failed to load. It may have been updated — try
+                reloading.
+            </Text>
         </div>
-        <button type="button" className={styles.button} onClick={handleReload}>
-            Reload
-        </button>
+        <div className={styles.button}>
+            <RegularButton
+                variant="filled"
+                label="Reload"
+                onClick={handleReload}
+            />
+        </div>
     </div>
 )
 

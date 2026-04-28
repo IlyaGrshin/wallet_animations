@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef } from "react"
+import { useEffect, useId, useRef } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { animate, useReducedMotion } from "motion/react"
@@ -48,31 +48,24 @@ const Tabs = ({
         return () => controls.stop()
     }, [activeTabIndex, scrollable, tabs.length, reduceMotion])
 
-    const handleClick = useCallback(
-        (index) => {
-            if (index !== activeTabIndex) onChange?.(index)
-        },
-        [activeTabIndex, onChange]
-    )
+    const handleClick = (index) => {
+        if (index !== activeTabIndex) onChange?.(index)
+    }
 
-    const handleKeyDown = useCallback(
-        (event) => {
-            const count = tabs.length
-            if (!count) return
-            let nextIndex = null
-            if (event.key === "ArrowRight")
-                nextIndex = (activeTabIndex + 1) % count
-            else if (event.key === "ArrowLeft")
-                nextIndex = (activeTabIndex - 1 + count) % count
-            else if (event.key === "Home") nextIndex = 0
-            else if (event.key === "End") nextIndex = count - 1
-            if (nextIndex == null) return
-            event.preventDefault()
-            onChange?.(nextIndex)
-            tabRefs.current[nextIndex]?.focus()
-        },
-        [activeTabIndex, tabs.length, onChange]
-    )
+    const handleKeyDown = (event) => {
+        const count = tabs.length
+        if (!count) return
+        let nextIndex = null
+        if (event.key === "ArrowRight") nextIndex = (activeTabIndex + 1) % count
+        else if (event.key === "ArrowLeft")
+            nextIndex = (activeTabIndex - 1 + count) % count
+        else if (event.key === "Home") nextIndex = 0
+        else if (event.key === "End") nextIndex = count - 1
+        if (nextIndex == null) return
+        event.preventDefault()
+        onChange?.(nextIndex)
+        tabRefs.current[nextIndex]?.focus()
+    }
 
     const listClass = [
         styles.list,

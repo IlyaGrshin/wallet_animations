@@ -1,5 +1,3 @@
-import { useCallback } from "react"
-
 import { clamp } from "../../utils/number"
 import { useAnchoredPosition } from "../../hooks/useAnchoredPosition"
 
@@ -55,18 +53,11 @@ const calculatePosition = (buttonRect, dropdownSize) => {
     return { top, left, openUpwards, originX, originY }
 }
 
-export const useDropdownPosition = (isOpen, buttonRef, dropdownRef) => {
-    const calculate = useCallback(
-        (triggerRect, contentSize) =>
-            calculatePosition(triggerRect, contentSize),
-        []
-    )
-
-    return useAnchoredPosition({
+export const useDropdownPosition = (isOpen, buttonRef, dropdownRef) =>
+    useAnchoredPosition({
         isOpen,
         triggerRef: buttonRef,
         contentRef: dropdownRef,
         initialPosition: INITIAL_POSITION,
-        calculate,
+        calculate: calculatePosition,
     })
-}

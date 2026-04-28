@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { useReducedMotion } from "motion/react"
@@ -51,20 +51,17 @@ const WordReveal = ({ children, speed, delay, onComplete }) => {
     const reduceMotion = useReducedMotion()
     const stagger = SPEED_PRESETS[speed] ?? SPEED_PRESETS.normal
 
-    const lines = useMemo(() => tokenizeWords(children), [children])
+    const lines = tokenizeWords(children)
 
-    const containerVariants = useMemo(
-        () => ({
-            hidden: {},
-            visible: {
-                transition: {
-                    staggerChildren: reduceMotion ? 0 : stagger,
-                    delayChildren: delay / 1000,
-                },
+    const containerVariants = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: reduceMotion ? 0 : stagger,
+                delayChildren: delay / 1000,
             },
-        }),
-        [stagger, delay, reduceMotion]
-    )
+        },
+    }
 
     const variants = reduceMotion ? reducedWordVariants : wordVariants
 
@@ -108,7 +105,7 @@ WordReveal.propTypes = {
 const TypewriterReveal = ({ children, speed, delay, onComplete }) => {
     const reduceMotion = useReducedMotion()
     const perChar = TYPE_PER_CHAR[speed] ?? TYPE_PER_CHAR.normal
-    const graphemes = useMemo(() => splitGraphemes(children), [children])
+    const graphemes = splitGraphemes(children)
     const total = graphemes.length
     const [progress, setProgress] = useState(() =>
         reduceMotion ? { whole: total, frac: 0 } : { whole: 0, frac: 0 }
@@ -141,7 +138,6 @@ const TypewriterReveal = ({ children, speed, delay, onComplete }) => {
         }
         raf = requestAnimationFrame(tick)
         return () => cancelAnimationFrame(raf)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [children, perChar, delay, reduceMotion])
 
     const { whole, frac } = progress

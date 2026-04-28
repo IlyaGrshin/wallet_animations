@@ -40,7 +40,7 @@ yarn lint:scss    # Stylelint only
 4. Honor `prefers-reduced-motion` — provide reduced variant or disable
 5. **No manual `memo` / `useMemo` / `useCallback`** unless profiling shows need — React Compiler handles it
 6. **Reuse project primitives** — `Button`, `Text`, `GlassContainer`, `Page`, `PageTransition` instead of raw `<button>` / `<div onClick>` / inline styles
-7. **SCSS Modules only** — no global CSS, no Tailwind
+7. **SCSS Modules only** — no global CSS, no Tailwind. Documented exceptions: `src/utils/viewTransition.scss` (needs `::view-transition-*` pseudos at root), `src/components/Text/{AppleText,MaterialText}/*.scss` (needs `body.apple [variant=…]` selectors), `src/index.css` (root resets / theme vars). Do not add new globals.
 8. Animate `transform` / `opacity` / `filter` / `clip-path` only — never `width` / `height` / `top` / `left`
 9. Never `transition: all` — list properties explicitly
 10. NEVER create markdown files unless explicitly asked

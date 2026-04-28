@@ -19,6 +19,5 @@ export const useClickOutside = (isOpen, onClose, ...refs) => {
         document.addEventListener("mousedown", handleClickOutside)
         return () =>
             document.removeEventListener("mousedown", handleClickOutside)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, ...refs])
 }

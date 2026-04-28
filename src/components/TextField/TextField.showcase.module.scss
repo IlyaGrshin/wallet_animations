@@ -24,21 +24,22 @@
 
 .input {
     position: absolute;
-    width: calc(100% - 144px);
+    width: calc(100% - 42px);
     bottom: 21px;
     left: 50%;
     transform: translateX(-50%) translateZ(0);
     border-radius: 36px;
-    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    clip-path: inset(0 51px round 36px);
+    transition: clip-path 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
-    will-change: width;
+    will-change: clip-path;
     contain: layout style paint;
     backface-visibility: hidden;
 
     &:focus-within {
-        width: calc(100% - 42px);
+        clip-path: inset(0 round 36px);
     }
-    
+
     & input {
         border-radius: 36px;
         background: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);

@@ -40,6 +40,8 @@ export default [
             'react/display-name': 'off',
             'react/jsx-key': 'error',
             'react-hooks/set-state-in-effect': 'off',
+            // React Compiler handles dependency tracking; this static check is redundant under it.
+            'react-hooks/exhaustive-deps': 'off',
             'no-console': ['warn', { allow: ['warn', 'error'] }],
         },
     },

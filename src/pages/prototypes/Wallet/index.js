@@ -10,14 +10,7 @@ import TransactionList from "./components/TransactionList"
 function ImagePlayground() {
     return (
         <SectionList.Item header="Image Playground">
-            <div
-                style={{
-                    backgroundImage: "url(https://picsum.photos/1200/1200)",
-                    width: "100%",
-                    height: "400px",
-                    backgroundSize: "cover",
-                }}
-            ></div>
+            <div className={styles.imagePlayground}></div>
         </SectionList.Item>
     )
 }

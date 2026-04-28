@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { useReducedMotion } from "motion/react"
@@ -38,7 +38,7 @@ const SnackbarItem = ({ item, onDismiss }) => {
     const [isDragging, setIsDragging] = useState(false)
     const [exitDirection, setExitDirection] = useState(0)
 
-    const dismiss = useCallback(() => onDismiss(id), [onDismiss, id])
+    const dismiss = () => onDismiss(id)
 
     useEffect(() => {
         triggerHaptic(type)

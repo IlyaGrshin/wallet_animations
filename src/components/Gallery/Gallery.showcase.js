@@ -17,13 +17,14 @@ const GalleryPage = ({ color, label }) => (
             width: "100%",
             height: 200,
             backgroundColor: color,
+            color: "#fff",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 12,
         }}
     >
-        <Text variant="title2" weight="bold" style={{ color: "#fff" }}>
+        <Text variant="title2" weight="bold">
             {label}
         </Text>
     </div>
