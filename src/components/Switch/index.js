@@ -17,11 +17,6 @@ function Switch({
         if (onChange) onChange(next)
     }
 
-    const setChecked = (next) => {
-        if (!isControlled) setUncontrolled(next)
-        emitChange(next)
-    }
-
     const toggle = () => {
         if (isControlled) {
             emitChange(!checked)

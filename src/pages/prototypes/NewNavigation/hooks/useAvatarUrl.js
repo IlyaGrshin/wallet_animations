@@ -7,8 +7,7 @@ export const useAvatarUrl = () => {
         const userData = initData.get("user")
 
         return initData ? JSON.parse(userData).photo_url : DefaultAvatar
-    } catch (error) {
-        // console.error('Error parsing initData or userData:', error);
+    } catch {
         return DefaultAvatar
     }
 }

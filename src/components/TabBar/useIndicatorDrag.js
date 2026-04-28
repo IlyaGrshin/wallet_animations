@@ -74,7 +74,9 @@ export function useIndicatorDrag({
                 try {
                     e.currentTarget.setPointerCapture?.(e.pointerId)
                     activePointerIdRef.current = e.pointerId
-                } catch {}
+                } catch {
+                    // pointer capture is best-effort
+                }
                 setIsDragging(true)
                 updateDragFromClientX(e.clientX)
                 e.preventDefault()
@@ -146,7 +148,9 @@ export function useIndicatorDrag({
         }
         try {
             e.currentTarget.releasePointerCapture?.(e.pointerId)
-        } catch {}
+        } catch {
+            // pointer capture is best-effort
+        }
         finishDrag(e.clientX)
         e.preventDefault()
     }

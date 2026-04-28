@@ -14,7 +14,7 @@ const CellsShowcase = () => {
     const [switchValue, setSwitchValue] = useState(true)
     const [disabledSwitch, setDisabledSwitch] = useState(false)
     const [editableValue, setEditableValue] = useState("")
-    const [pickerIndex, setPickerIndex] = useState(0)
+    const [pickerIndex] = useState(0)
     const [headerColor, setHeaderColor] = useState("#007AFF")
     const colorInputRef = useRef(null)
 

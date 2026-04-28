@@ -1,17 +1,24 @@
+import js from '@eslint/js';
+import globals from 'globals';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
-import react19 from 'eslint-plugin-react-19-upgrade';
-import prettierPlugin from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
     {
         ignores: ['build/', 'node_modules/'],
+    },
+    js.configs.recommended,
+    {
         files: ['src/**/*.{js,jsx,ts,tsx}'],
         languageOptions: {
             ecmaVersion: 'latest',
             sourceType: 'module',
             parserOptions: {
                 ecmaFeatures: { jsx: true },
+            },
+            globals: {
+                ...globals.browser,
             },
         },
         settings: {
@@ -22,20 +29,12 @@ export default [
         plugins: {
             react: reactPlugin,
             'react-hooks': reactHooks,
-            'react-19-upgrade': react19,
-            prettier: prettierPlugin,
         },
         rules: {
-            ...reactPlugin.configs.recommended.rules,
-            
-            // Используем recommended preset из react-hooks, который включает правила React Compiler
-            ...(reactHooks.configs?.recommended?.rules ?? {}),
+            ...reactPlugin.configs.flat.recommended.rules,
+            ...reactPlugin.configs.flat['jsx-runtime'].rules,
+            ...reactHooks.configs.flat.recommended.rules,
 
-            ...(react19.configs?.recommended?.rules ?? {}),
-
-            'react/jsx-uses-vars': 'error',
-            'prettier/prettier': 'error',
-            'react/react-in-jsx-scope': 'off',
             'react/prop-types': 'error',
             'react/display-name': 'off',
             'react/jsx-key': 'error',
@@ -45,4 +44,5 @@ export default [
             'no-console': ['warn', { allow: ['warn', 'error'] }],
         },
     },
+    prettierConfig,
 ];

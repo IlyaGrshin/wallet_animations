@@ -22,7 +22,7 @@ export const TextArea = forwardRef((props, ref) => {
         else
             try {
                 ref.current = el
-            } catch (e) {
+            } catch {
                 /* ignore */
             }
     }

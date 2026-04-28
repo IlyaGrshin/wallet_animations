@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect } from "react"
-import PropTypes from "prop-types"
 
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
@@ -10,7 +9,6 @@ import WebApp, { BackButton } from "../../../lib/twa"
 import Picker from "../../../components/Picker"
 import Collapsible from "../../../components/Collapsible"
 import Switch from "../../../components/Switch"
-import Text from "../../../components/Text"
 
 const BottomBar = () => {
     const [label, setLabel] = useState("")
@@ -203,5 +201,4 @@ const BottomBar = () => {
     )
 }
 
-BottomBar.propTypes = {}
 export default BottomBar
