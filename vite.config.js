@@ -86,19 +86,9 @@ export default defineConfig(({ command }) => ({
     include: /src\/.*\.js$/
   },
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-dom/client',
-      'prop-types',
-      'motion',
-      'motion/react',
-      'wouter',
-      'wouter/use-hash-location',
-      'calligraph',
-      'spoiled',
-      'colorthief'
-    ],
+    // Only list deps that Vite can't statically discover (lazy-loaded via
+    // dynamic import). Statically imported deps are auto-detected.
+    include: ['lottie-react', 'agentation'],
     esbuildOptions: {
       loader: {
         '.js': 'jsx'
