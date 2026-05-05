@@ -1,0 +1,245 @@
+$mono-stack: "Martian Mono", ui-monospace, "SF Mono", sfmono-regular, menlo,
+    monospace;
+$rounded-stack: "Google Sans", "SF Pro Rounded", ui-rounded, -apple-system,
+    system-ui, sans-serif;
+$card-w: 336;
+$card-h: 205;
+$card-bg: #098fef;
+
+@function cq($px) {
+    @return calc(#{$px} / #{$card-w} * 100cqi);
+}
+
+.root {
+    --card-tint: oklch(
+        from #{$card-bg} calc(l + 0.24) calc(c * 0.55) calc(h - 22)
+    );
+
+    position: relative;
+    width: 100%;
+    aspect-ratio: #{$card-w} / #{$card-h};
+    container-type: inline-size;
+    background: $card-bg;
+    border-radius: cq(20);
+    overflow: clip;
+    isolation: isolate;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+}
+
+.shine {
+    --tilt-x: 0;
+    --tilt-y: 0;
+    --shine-l-shift: calc(var(--tilt-y) * 0.1);
+    --shine-color: oklch(
+        from #16abf9 calc(l + var(--shine-l-shift)) c h
+    );
+    --shine-mag: calc(
+        var(--tilt-x) * var(--tilt-x) + var(--tilt-y) * var(--tilt-y)
+    );
+    --shine-spread: calc(11% + var(--shine-mag) * 6%);
+
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: clip;
+    pointer-events: none;
+    mix-blend-mode: plus-lighter;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: cq(349.5);
+        height: cq(349.5);
+        transform:
+            translate(-50%, -50%)
+            rotate(calc(-58deg + (var(--tilt-x) * 60deg)))
+            scale(1, 1.65);
+        background: conic-gradient(
+            from 90deg in oklch,
+            oklch(0% 0 0deg / 0%) 0%,
+            oklch(0% 0 0deg / 0%) calc(25% - var(--shine-spread)),
+            var(--shine-color) 25%,
+            oklch(0% 0 0deg / 0%) calc(25% + var(--shine-spread)),
+            oklch(0% 0 0deg / 0%) calc(75% - var(--shine-spread)),
+            var(--shine-color) 75%,
+            oklch(0% 0 0deg / 0%) calc(75% + var(--shine-spread)),
+            oklch(0% 0 0deg / 0%) 100%
+        );
+        opacity: 0.14;
+    }
+}
+
+.money {
+    position: absolute;
+    top: cq(65);
+    left: cq(20);
+    display: flex;
+    flex-direction: column;
+    gap: cq(4);
+}
+
+.amount {
+    display: flex;
+    align-items: center;
+    gap: cq(5);
+    padding-right: cq(2.571);
+}
+
+.coinIcon {
+    flex-shrink: 0;
+    width: cq(28);
+    height: cq(28);
+    transform: translateY(cq(-2));
+}
+
+.amountValue {
+    font-family: $rounded-stack;
+    font-weight: 500;
+    font-size: cq(22);
+    line-height: 1;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.amountUnit {
+    font-family: $rounded-stack;
+    font-weight: 500;
+    font-size: cq(22);
+    line-height: 1;
+    color: var(--card-tint);
+    white-space: nowrap;
+}
+
+.name {
+    position: absolute;
+    bottom: cq(17);
+    left: cq(24);
+    margin: 0;
+    font-family: $mono-stack;
+    font-weight: 500;
+    font-size: cq(11);
+    line-height: 1.2;
+    color: #fff;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.addressOuter {
+    position: absolute;
+    top: cq(16);
+    right: cq(16);
+    bottom: cq(16);
+    width: cq(24);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    mix-blend-mode: plus-darker;
+}
+
+.addressRotator {
+    width: cq($card-h - 32);
+    height: cq(24);
+    transform: rotate(90deg);
+    transform-origin: center;
+}
+
+.addressInner {
+    flex-direction: column;
+    align-items: center;
+    white-space: normal;
+}
+
+.addressLine {
+    display: block;
+    margin: 0;
+    font-family: $mono-stack;
+    font-weight: 400;
+    font-size: cq(9);
+    line-height: 1.2;
+    color: rgb(0 0 0 / 14%);
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow: 0 cq(1) 0 rgb(255 255 255 / 6%);
+    white-space: nowrap;
+}
+
+.qrButton {
+    position: absolute;
+    border: 0;
+    top: calc(50% - #{cq(15.5)});
+    right: cq(46);
+    width: cq(48);
+    height: cq(36);
+    transform: translateY(-50%);
+    padding: 0;
+    box-shadow: 0 0 0 cq(1) rgb(0 0 0 / 16%);
+    border-radius: cq(8);
+    background: linear-gradient(
+        127.28deg,
+        rgb(232 233 234 / 88%) 7.99%,
+        rgb(187 189 192 / 88%) 92.2%
+    );
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: clip;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 200ms ease;
+
+    &:active {
+        transform: translateY(-50%) scale(0.96);
+    }
+}
+
+.qrIcon {
+    width: cq(24);
+    height: cq(24);
+}
+
+.balanceLabel {
+    position: absolute;
+    bottom: cq(35);
+    right: cq(46);
+    margin: 0;
+    font-family: $mono-stack;
+    font-weight: 500;
+    font-size: cq(10);
+    line-height: 1.2;
+    color: var(--card-tint);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.balanceValue {
+    position: absolute;
+    bottom: cq(17);
+    right: cq(46);
+    margin: 0;
+    font-family: $mono-stack;
+    font-weight: 500;
+    font-size: cq(11);
+    line-height: 1.2;
+    color: #fff;
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.innerShadow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 cq(-1) cq(1) 0 rgb(0 0 0 / 14%);
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qrButton {
+        transition: none;
+    }
+}
