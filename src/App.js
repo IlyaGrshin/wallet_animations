@@ -4,7 +4,7 @@ import {
     initializeViewTransitions,
     cleanupViewTransitions,
 } from "./utils/viewTransition"
-import WebApp from "./lib/twa"
+import WebApp, { isTelegram } from "./lib/twa"
 
 import "./index.css"
 
@@ -43,6 +43,7 @@ const ORIENTATION_RETRY_MS = 250
 const ORIENTATION_MAX_ATTEMPTS = 12
 
 const startDeviceOrientation = () => {
+    if (!isTelegram()) return () => {}
     const tgOrient = WebApp?.DeviceOrientation
     if (!tgOrient || typeof tgOrient.start !== "function") return () => {}
 

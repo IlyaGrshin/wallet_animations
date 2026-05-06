@@ -6,6 +6,18 @@ $card-w: 336;
 $card-h: 205;
 $card-bg: #098fef;
 
+@property --tilt-x {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+}
+
+@property --tilt-y {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+}
+
 @function cq($px) {
     @return calc(#{$px} / #{$card-w} * 100cqi);
 }
@@ -14,6 +26,8 @@ $card-bg: #098fef;
     --card-tint: oklch(
         from #{$card-bg} calc(l + 0.24) calc(c * 0.55) calc(h - 22)
     );
+    --tilt-x: 0;
+    --tilt-y: 0;
 
     position: relative;
     width: 100%;
@@ -28,8 +42,6 @@ $card-bg: #098fef;
 }
 
 .shine {
-    --tilt-x: 0;
-    --tilt-y: 0;
     --shine-l-shift: calc(var(--tilt-y) * 0.1);
     --shine-color: oklch(
         from #16abf9 calc(l + var(--shine-l-shift)) c h
@@ -53,6 +65,7 @@ $card-bg: #098fef;
         top: 50%;
         width: cq(349.5);
         height: cq(349.5);
+        will-change: transform;
         transform:
             translate(-50%, -50%)
             rotate(calc(-58deg + (var(--tilt-x) * 60deg)))
@@ -69,6 +82,68 @@ $card-bg: #098fef;
             oklch(0% 0 0deg / 0%) 100%
         );
         opacity: 0.14;
+    }
+}
+
+.blur {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgb(255 255 255 / 1%);
+    backdrop-filter: blur(cq(10));
+    pointer-events: none;
+}
+
+.stars {
+    --stars-from: calc(32deg + (var(--tilt-x) * 60deg));
+
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    overflow: clip;
+    mix-blend-mode: soft-light;
+    mask-image: conic-gradient(
+        from var(--stars-from),
+        transparent 0%,
+        transparent 9%,
+        white 25%,
+        transparent 41%,
+        transparent 59%,
+        white 75%,
+        transparent 91%,
+        transparent 100%
+    );
+}
+
+.starsSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: rgb(255 255 255 / 50%);
+}
+
+.starPath {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%,
+    100% {
+        transform: scale(0.92);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .starPath {
+        animation: none;
     }
 }
 
@@ -168,6 +243,8 @@ $card-bg: #098fef;
 }
 
 .qrButton {
+    --chip-from: calc(32deg + (var(--tilt-x) * 60deg));
+
     position: absolute;
     border: 0;
     top: calc(50% - #{cq(15.5)});
@@ -178,11 +255,23 @@ $card-bg: #098fef;
     padding: 0;
     box-shadow: 0 0 0 cq(1) rgb(0 0 0 / 16%);
     border-radius: cq(8);
-    background: linear-gradient(
-        127.28deg,
-        rgb(232 233 234 / 88%) 7.99%,
-        rgb(187 189 192 / 88%) 92.2%
-    );
+    background:
+        conic-gradient(
+            from var(--chip-from),
+            rgb(255 255 255 / 0%) 0%,
+            rgb(255 255 255 / 0%) 6%,
+            rgb(255 255 255 / 36%) 25%,
+            rgb(255 255 255 / 0%) 44%,
+            rgb(0 0 0 / 0%) 56%,
+            rgb(0 0 0 / 12%) 75%,
+            rgb(0 0 0 / 0%) 94%,
+            rgb(0 0 0 / 0%) 100%
+        ),
+        linear-gradient(
+            127.28deg,
+            rgb(232 233 234 / 88%) 7.99%,
+            rgb(187 189 192 / 88%) 92.2%
+        );
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -231,11 +320,29 @@ $card-bg: #098fef;
 }
 
 .innerShadow {
+    --shadow-distance: #{cq(1)};
+    --shadow-angle: calc(212deg + (var(--tilt-x) * 60deg));
+
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    box-shadow: inset 0 cq(-1) cq(1) 0 rgb(0 0 0 / 14%);
+    box-shadow:
+        inset
+        calc(-1 * sin(var(--shadow-angle)) * var(--shadow-distance))
+        calc(cos(var(--shadow-angle)) * var(--shadow-distance))
+        cq(1)
+        0
+        rgb(0 0 0 / 16%);
     pointer-events: none;
+}
+
+.zonesDebug {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
 }
 
 @media (prefers-reduced-motion: reduce) {

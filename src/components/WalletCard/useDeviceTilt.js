@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { clamp } from "../../utils/number"
+import WebApp, { isTelegram } from "../../lib/twa"
 
 const SMOOTH = 0.15
 const MAX_DEG = 45
@@ -7,9 +8,9 @@ const MAX_RAD = (MAX_DEG * Math.PI) / 180
 
 export default function useDeviceTilt(targetRef) {
     useEffect(() => {
-        if (typeof window === "undefined") return
+        if (typeof window === "undefined") return undefined
         if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
-            return
+            return undefined
 
         const target = { x: 0, y: 0 }
         const current = { x: 0, y: 0 }
@@ -17,9 +18,11 @@ export default function useDeviceTilt(targetRef) {
         let lastX = ""
         let lastY = ""
 
-        const tg = window.Telegram?.WebApp
-        const tgOrient = tg?.DeviceOrientation
-        const useTg = !!(tgOrient && typeof tgOrient.start === "function")
+        const tgOrient = WebApp?.DeviceOrientation
+        const useTg =
+            isTelegram() &&
+            !!tgOrient &&
+            typeof tgOrient.start === "function"
 
         const tick = () => {
             if (useTg) {
@@ -52,38 +55,14 @@ export default function useDeviceTilt(targetRef) {
 }
 
 function subscribeWeb(target) {
-    if (typeof window.DeviceOrientationEvent === "undefined") return () => {}
-
-    const onOrientation = (e) => {
-        target.x = clamp((e.gamma ?? 0) / MAX_DEG, -1, 1)
-        target.y = clamp((e.beta ?? 0) / MAX_DEG, -1, 1)
+    const onMouse = (e) => {
+        const w = window.innerWidth || 1
+        const h = window.innerHeight || 1
+        target.x = clamp((e.clientX / w - 0.5) * 2, -1, 1)
+        target.y = clamp((e.clientY / h - 0.5) * 2, -1, 1)
     }
-    const subscribe = () => {
-        window.addEventListener("deviceorientation", onOrientation)
+    window.addEventListener("pointermove", onMouse)
+    return () => {
+        window.removeEventListener("pointermove", onMouse)
     }
-    const unsubscribe = () => {
-        window.removeEventListener("deviceorientation", onOrientation)
-    }
-
-    const reqPerm = window.DeviceOrientationEvent.requestPermission
-    if (typeof reqPerm === "function") {
-        const grant = async () => {
-            try {
-                const r = await reqPerm()
-                if (r === "granted") subscribe()
-            } catch {
-                /* ignore */
-            }
-        }
-        window.addEventListener("click", grant, { once: true })
-        window.addEventListener("touchend", grant, { once: true })
-        return () => {
-            window.removeEventListener("click", grant)
-            window.removeEventListener("touchend", grant)
-            unsubscribe()
-        }
-    }
-
-    subscribe()
-    return unsubscribe
 }
