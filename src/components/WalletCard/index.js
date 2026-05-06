@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import * as styles from "./WalletCard.module.scss"
 import FitText from "../FitText"
 import StarField from "./StarField"
+import TitaniumTexture from "../TitaniumTexture"
 import useDeviceTilt from "./useDeviceTilt"
 import QrIcon from "./assets/qr.svg?react"
 import UsdtIcon from "./assets/usdt.svg?react"
@@ -98,6 +99,8 @@ function WalletCard({
             <div className={styles.shine} aria-hidden="true" />
 
             <div className={styles.blur} aria-hidden="true" />
+
+            <TitaniumTexture brushed={0.35} amount={1} />
 
             <div className={styles.stars} aria-hidden="true">
                 <StarField safeZones={safeZones} />
