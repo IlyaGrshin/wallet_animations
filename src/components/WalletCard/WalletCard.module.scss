@@ -250,8 +250,7 @@ $card-bg: #098fef;
 }
 
 .qrButton {
-    --chip-from: calc(32deg + (var(--tilt-x) * 60deg));
-    --chip-spread: calc(19% + var(--shine-mag) * 6%);
+    --chip-peak: calc(50% + var(--tilt-x) * 28% + var(--tilt-y) * 16%);
 
     position: absolute;
     border: 0;
@@ -264,16 +263,13 @@ $card-bg: #098fef;
     box-shadow: 0 0 0 cq(1) rgb(0 0 0 / 16%);
     border-radius: cq(8);
     background:
-        conic-gradient(
-            from var(--chip-from),
-            rgb(255 255 255 / 0%) 0%,
-            rgb(255 255 255 / 0%) calc(25% - var(--chip-spread)),
-            rgb(255 255 255 / 36%) 25%,
-            rgb(255 255 255 / 0%) calc(25% + var(--chip-spread)),
-            rgb(0 0 0 / 0%) calc(75% - var(--chip-spread)),
-            rgb(0 0 0 / 12%) 75%,
-            rgb(0 0 0 / 0%) calc(75% + var(--chip-spread)),
-            rgb(0 0 0 / 0%) 100%
+        linear-gradient(
+            115deg,
+            rgb(0 0 0 / 8%) 0%,
+            rgb(255 255 255 / 16%) calc(var(--chip-peak) - 30%),
+            rgb(255 255 255 / 48%) var(--chip-peak),
+            rgb(255 255 255 / 16%) calc(var(--chip-peak) + 30%),
+            rgb(0 0 0 / 8%) 100%
         ),
         linear-gradient(
             127.28deg,
