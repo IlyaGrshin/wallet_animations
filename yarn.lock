@@ -3511,10 +3511,10 @@ snake-case@^3.0.4:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.1.tgz#1ce5650fddd87abc099eda37dcff024c2667ae46"
   integrity sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==
 
-spoiled@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/spoiled/-/spoiled-0.4.0.tgz#061740a64aa2cf83e674d99eb06a91081aba5640"
-  integrity sha512-ruC8iDcgFRXjl0s1YvVweMcPpnByDJ+HS6NZ5/rHDHsnNwJr5GWZ5L1O5LKiOGKWmfruthFyXA/mKQXJWq4PdA==
+spoiled@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/spoiled/-/spoiled-0.5.0.tgz#018286904b7afcdfef92aec5c0d132f5cc748bb2"
+  integrity sha512-vwIaKs13vPNBWJfGFeIFlJzuJC7uj/Z1MQFudRawQxefz2keDrNIlRmbxYAf3uorz/SiN1UCfC9+DBISTeyp6Q==
   dependencies:
     colord "^2.9.3"
 
