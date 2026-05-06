@@ -38,13 +38,11 @@ float fbm(vec2 p) {
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution.y;
 
-    // very mild anisotropic mottling — soft satin sheen
     float aspectX = mix(150.0, 420.0, u_brushed);
     float aspectY = mix(150.0, 90.0, u_brushed);
     vec2 mottleUV = vec2(uv.x * aspectX, uv.y * aspectY);
     float mottle = fbm(mottleUV) - 0.5;
 
-    // tight high-frequency grain
     vec2 grainUV = gl_FragCoord.xy * 1.7;
     float grain = vnoise(grainUV) - 0.5;
 

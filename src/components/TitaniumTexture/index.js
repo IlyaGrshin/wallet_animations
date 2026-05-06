@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
+import { useResizeObserver } from "../../hooks/useResizeObserver"
 import * as styles from "./TitaniumTexture.module.scss"
 import VERT_SRC from "./vert.glsl?raw"
 import FRAG_SRC from "./frag.glsl?raw"
@@ -10,29 +11,26 @@ function compileShader(gl, type, src) {
     const sh = gl.createShader(type)
     gl.shaderSource(sh, src)
     gl.compileShader(sh)
-    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-        const log = gl.getShaderInfoLog(sh)
-        gl.deleteShader(sh)
-        throw new Error(`Shader compile error: ${log}`)
-    }
-    return sh
+    if (gl.getShaderParameter(sh, gl.COMPILE_STATUS)) return sh
+    console.error(`Shader compile error: ${gl.getShaderInfoLog(sh)}`)
+    gl.deleteShader(sh)
+    return null
 }
 
 function createProgram(gl) {
     const vs = compileShader(gl, gl.VERTEX_SHADER, VERT_SRC)
     const fs = compileShader(gl, gl.FRAGMENT_SHADER, FRAG_SRC)
+    if (!vs || !fs) return null
     const prog = gl.createProgram()
     gl.attachShader(prog, vs)
     gl.attachShader(prog, fs)
     gl.linkProgram(prog)
     gl.deleteShader(vs)
     gl.deleteShader(fs)
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-        const log = gl.getProgramInfoLog(prog)
-        gl.deleteProgram(prog)
-        throw new Error(`Program link error: ${log}`)
-    }
-    return prog
+    if (gl.getProgramParameter(prog, gl.LINK_STATUS)) return prog
+    console.error(`Program link error: ${gl.getProgramInfoLog(prog)}`)
+    gl.deleteProgram(prog)
+    return null
 }
 
 export default function TitaniumTexture({
@@ -41,6 +39,7 @@ export default function TitaniumTexture({
     className,
 }) {
     const canvasRef = useRef(null)
+    const drawRef = useRef(null)
 
     useEffect(() => {
         const canvas = canvasRef.current
@@ -53,13 +52,8 @@ export default function TitaniumTexture({
         })
         if (!gl) return undefined
 
-        let prog
-        try {
-            prog = createProgram(gl)
-        } catch (err) {
-            console.error(err)
-            return undefined
-        }
+        const prog = createProgram(gl)
+        if (!prog) return undefined
         gl.useProgram(prog)
 
         const buf = gl.createBuffer()
@@ -74,13 +68,10 @@ export default function TitaniumTexture({
         gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0)
 
         const uRes = gl.getUniformLocation(prog, "u_resolution")
-        const uBrushed = gl.getUniformLocation(prog, "u_brushed")
-        const uAmount = gl.getUniformLocation(prog, "u_amount")
+        gl.uniform1f(gl.getUniformLocation(prog, "u_brushed"), brushed)
+        gl.uniform1f(gl.getUniformLocation(prog, "u_amount"), amount)
 
-        gl.uniform1f(uBrushed, brushed)
-        gl.uniform1f(uAmount, amount)
-
-        const draw = () => {
+        drawRef.current = () => {
             const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
             const w = Math.max(1, Math.floor(canvas.clientWidth * dpr))
             const h = Math.max(1, Math.floor(canvas.clientHeight * dpr))
@@ -92,16 +83,16 @@ export default function TitaniumTexture({
             gl.uniform2f(uRes, w, h)
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
         }
-        const ro = new ResizeObserver(draw)
-        ro.observe(canvas)
-        draw()
+        drawRef.current()
 
         return () => {
-            ro.disconnect()
+            drawRef.current = null
             gl.deleteBuffer(buf)
             gl.deleteProgram(prog)
         }
     }, [brushed, amount])
+
+    useResizeObserver(canvasRef, () => drawRef.current?.())
 
     return (
         <canvas

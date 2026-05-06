@@ -1,5 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useCallback, useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
+import { useResizeObserver } from "../../hooks/useResizeObserver"
 import * as styles from "./WalletCard.module.scss"
 import FitText from "../FitText"
 import StarField from "./StarField"
@@ -63,36 +64,34 @@ function WalletCard({
 
     useDeviceTilt(rootRef)
 
-    useLayoutEffect(() => {
+    const measure = useCallback(() => {
         const root = rootRef.current
-        if (!root) return undefined
+        if (!root) return
+        const rb = root.getBoundingClientRect()
+        if (rb.width === 0 || rb.height === 0) return
+        const sx = VIEWBOX_W / rb.width
+        const sy = VIEWBOX_H / rb.height
 
-        const measure = () => {
-            const rb = root.getBoundingClientRect()
-            if (rb.width === 0 || rb.height === 0) return
-            const sx = VIEWBOX_W / rb.width
-            const sy = VIEWBOX_H / rb.height
-
-            const zones = []
-            for (const ref of [moneyRef, nameRef, addressRef, qrRef]) {
-                const el = ref.current
-                if (el) zones.push(rectToZone(el.getBoundingClientRect(), rb, sx, sy))
-            }
-
-            const lbl = balanceLabelRef.current?.getBoundingClientRect()
-            const val = balanceValueRef.current?.getBoundingClientRect()
-            if (lbl && val) {
-                zones.push(rectToZone(unionRect(lbl, val), rb, sx, sy))
-            }
-
-            setSafeZones(zones)
+        const zones = []
+        for (const ref of [moneyRef, nameRef, addressRef, qrRef]) {
+            const el = ref.current
+            if (el) zones.push(rectToZone(el.getBoundingClientRect(), rb, sx, sy))
         }
 
+        const lbl = balanceLabelRef.current?.getBoundingClientRect()
+        const val = balanceValueRef.current?.getBoundingClientRect()
+        if (lbl && val) {
+            zones.push(rectToZone(unionRect(lbl, val), rb, sx, sy))
+        }
+
+        setSafeZones(zones)
+    }, [])
+
+    useLayoutEffect(() => {
         measure()
-        const ro = new ResizeObserver(measure)
-        ro.observe(root)
-        return () => ro.disconnect()
-    }, [name, address, usdtAmount, gramAmount, balance])
+    }, [measure, name, address, usdtAmount, gramAmount, balance])
+
+    useResizeObserver(rootRef, measure)
 
     return (
         <div ref={rootRef} className={styles.root}>
