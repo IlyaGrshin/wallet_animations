@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "resolutions": {
-    "baseline-browser-mapping": "^2.10.27"
+    "baseline-browser-mapping": "^2.10.29"
   },
   "homepage": ".",
   "dependencies": {
@@ -59,7 +59,7 @@
     "agentation": "^3.0.2",
     "babel-plugin-react-compiler": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "baseline-browser-mapping": "^2.10.27",
+    "baseline-browser-mapping": "^2.10.29",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
