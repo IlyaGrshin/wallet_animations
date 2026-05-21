@@ -1,20 +1,45 @@
-import { defineConfig } from 'vite';
+import { defineConfig, transformWithOxc } from 'vite';
 import { fileURLToPath } from 'node:url';
-import react from '@vitejs/plugin-react';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
 import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
 import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 const srcPath = fileURLToPath(new URL('./src', import.meta.url));
 
+// Vite 8's oxc transform parses .js as plain JS and rejects JSX. Our source
+// uses .js with JSX, so pre-transform those files with `lang: 'jsx'` before
+// the built-in pipeline sees them. Workaround per vitejs/rolldown-vite#323.
+const transformJsxInJs = () => ({
+  name: 'transform-jsx-in-js',
+  enforce: 'pre',
+  async transform(code, id) {
+    if (!id.endsWith('.js') || !id.includes(`${srcPath}/`)) return null;
+    return await transformWithOxc(code, id, { lang: 'jsx' });
+  }
+});
+
 export default defineConfig(({ command }) => ({
   base: './',
   plugins: [
+    transformJsxInJs(),
     react({
-      include: /\.(jsx?|tsx?)$/,
-      babel: {
-        configFile: true
-      }
+      include: /\.(jsx?|tsx?)$/
+    }),
+    babel({
+      // Plugin auto-enables JSX parsing for .jsx/.ts/.tsx but not .js;
+      // our source files use .js with JSX, so enable it explicitly.
+      parserOpts: { plugins: ['jsx'] },
+      presets: [reactCompilerPreset()],
+      plugins: command === 'build'
+        ? [
+            [
+              'transform-react-remove-prop-types',
+              { removeImport: true, additionalLibraries: ['prop-types'] }
+            ]
+          ]
+        : []
     }),
     command === 'serve' &&
       checker({
@@ -81,19 +106,10 @@ export default defineConfig(({ command }) => ({
       },
     })
   ],
-  esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.js$/
-  },
   optimizeDeps: {
     // Only list deps that Vite can't statically discover (lazy-loaded via
     // dynamic import). Statically imported deps are auto-detected.
-    include: ['lottie-react', 'agentation'],
-    esbuildOptions: {
-      loader: {
-        '.js': 'jsx'
-      }
-    }
+    include: ['lottie-react', 'agentation']
   },
   resolve: {
     alias: {
@@ -120,7 +136,8 @@ export default defineConfig(({ command }) => ({
         entryFileNames: 'assets/[name].[hash].js',
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'react';
+          if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id))
+            return 'react';
           return 'vendors';
         }
       }
