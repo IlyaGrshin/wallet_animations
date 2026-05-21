@@ -11,11 +11,11 @@
     "calligraph": "^1.4.1",
     "colorthief": "^3.3.1",
     "lottie-react": "^2.4.1",
-    "motion": "^12.39.0",
+    "motion": "^12.40.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "spoiled": "^0.5.0",
-    "wouter": "^3.9.0"
+    "wouter": "^3.10.0"
   },
   "scripts": {
     "dev": "vite",
