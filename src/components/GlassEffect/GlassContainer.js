@@ -8,6 +8,9 @@ const GlassContainer = ({ children, className = "", style = {}, ...rest }) => {
         return (
             <>
                 <div className={styles.glassBackground} aria-hidden="true" />
+                <div className={styles.glassTintBottom} aria-hidden="true" />
+                <div className={styles.glassTintMiddle} aria-hidden="true" />
+                <div className={styles.glassTintTop} aria-hidden="true" />
                 <div className={styles.glassShadow} aria-hidden="true" />
                 <GlassBorder />
             </>
@@ -18,6 +21,9 @@ const GlassContainer = ({ children, className = "", style = {}, ...rest }) => {
     return (
         <div className={`${styles.root} ${className}`} style={style} {...rest}>
             <div className={styles.glassBackground} aria-hidden="true" />
+            <div className={styles.glassTintBottom} aria-hidden="true" />
+            <div className={styles.glassTintMiddle} aria-hidden="true" />
+            <div className={styles.glassTintTop} aria-hidden="true" />
             <div className={styles.glassShadow} aria-hidden="true" />
             <GlassBorder />
             {children}
