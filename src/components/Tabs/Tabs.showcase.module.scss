@@ -10,6 +10,7 @@
     }
 
     :global(body.material) & {
+        border-radius: 16px;
         box-shadow: 0 0.33px 1px 0 rgb(0 0 0 / 6%);
     }
 }
