@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "yarn@4.5.3",
   "resolutions": {
     "baseline-browser-mapping": "^2.10.31"
   },
@@ -23,7 +24,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "./deploy.sh",
-    "lint": "npm run lint:js && npm run lint:scss",
+    "lint": "yarn lint:js && yarn lint:scss",
     "lint:js": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:scss": "stylelint 'src/**/*.scss'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,scss}' --cache",
