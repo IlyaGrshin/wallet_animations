@@ -1,5 +1,6 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
+import { Calligraph } from "calligraph"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
 import * as styles from "./WalletCard.module.scss"
 import FitText from "../FitText"
@@ -14,6 +15,13 @@ const DEFAULT_ADDRESS = "UQAl1dViv82p5sllNyPXJenPJqRfaHrVGkhmhFcrIjYinqYK"
 const VIEWBOX_W = 336
 const VIEWBOX_H = 205
 const ZONE_PADDING = 8
+
+function splitAmount(raw) {
+    const str = String(raw)
+    const idx = str.lastIndexOf(".")
+    if (idx === -1) return [str, ""]
+    return [str.slice(0, idx), str.slice(idx)]
+}
 
 function formatAddress(raw) {
     const clean = raw.replace(/\s+/g, "")
@@ -53,6 +61,8 @@ function WalletCard({
     debugSafeZones = false,
 }) {
     const [line1, line2] = formatAddress(address)
+    const [usdtWhole, usdtFraction] = splitAmount(usdtAmount)
+    const [gramWhole, gramFraction] = splitAmount(gramAmount)
     const rootRef = useRef(null)
     const moneyRef = useRef(null)
     const nameRef = useRef(null)
@@ -108,12 +118,34 @@ function WalletCard({
             <div ref={moneyRef} className={styles.money}>
                 <div className={styles.amount}>
                     <UsdtIcon className={styles.coinIcon} />
-                    <span className={styles.amountValue}>{usdtAmount}</span>
+                    <span className={styles.amountValue}>
+                        <Calligraph variant="number" animation="smooth">
+                            {usdtWhole}
+                        </Calligraph>
+                        {usdtFraction && (
+                            <span className={styles.amountFraction}>
+                                <Calligraph variant="number" animation="smooth">
+                                    {usdtFraction}
+                                </Calligraph>
+                            </span>
+                        )}
+                    </span>
                     <span className={styles.amountUnit}>USDT</span>
                 </div>
                 <div className={styles.amount}>
                     <GramIcon className={styles.coinIcon} />
-                    <span className={styles.amountValue}>{gramAmount}</span>
+                    <span className={styles.amountValue}>
+                        <Calligraph variant="number" animation="smooth">
+                            {gramWhole}
+                        </Calligraph>
+                        {gramFraction && (
+                            <span className={styles.amountFraction}>
+                                <Calligraph variant="number" animation="smooth">
+                                    {gramFraction}
+                                </Calligraph>
+                            </span>
+                        )}
+                    </span>
                     <span className={styles.amountUnit}>GRAM</span>
                 </div>
             </div>
@@ -150,7 +182,9 @@ function WalletCard({
                 Balance
             </p>
             <p ref={balanceValueRef} className={styles.balanceValue}>
-                {balance}
+                <Calligraph variant="number" animation="smooth">
+                    {balance}
+                </Calligraph>
             </p>
 
             <div className={styles.innerShadow} aria-hidden="true" />

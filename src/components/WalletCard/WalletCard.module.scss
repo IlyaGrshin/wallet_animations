@@ -1,7 +1,5 @@
 $mono-stack: "Martian Mono", ui-monospace, "SF Mono", sfmono-regular, menlo,
     monospace;
-$rounded-stack: "Google Sans", "SF Pro Rounded", ui-rounded, -apple-system,
-    system-ui, sans-serif;
 $card-w: 336;
 $card-h: 205;
 $card-bg: #098fef;
@@ -29,31 +27,42 @@ $card-bg: #098fef;
 }
 
 .root {
+    --card-bg: #{$card-bg};
+    --shine-base: #16abf9;
     --card-tint: oklch(
-        from #{$card-bg} calc(l + 0.24) calc(c * 0.55) calc(h - 22)
+        from var(--card-bg) calc(l + 0.24) calc(c * 0.55) calc(h - 22)
     );
     --tilt-x: 0;
     --tilt-y: 0;
     --shine-mag: calc(
         var(--tilt-x) * var(--tilt-x) + var(--tilt-y) * var(--tilt-y)
     );
+    --rounded-stack: "Google Sans", "SF Pro Rounded", ui-rounded, -apple-system,
+        system-ui, sans-serif;
 
     position: relative;
     width: 100%;
     aspect-ratio: #{$card-w} / #{$card-h};
     container-type: inline-size;
-    background: $card-bg;
+    background: var(--card-bg);
     border-radius: cq(20);
     overflow: clip;
     isolation: isolate;
     color: #fff;
     -webkit-font-smoothing: antialiased;
+
+    :global(body.apple) & {
+        --card-bg: #0079ff;
+        --shine-base: #169af9;
+        --rounded-stack: ui-rounded, "SF Pro Rounded", -apple-system, system-ui,
+            sans-serif;
+    }
 }
 
 .shine {
     --shine-l-shift: calc(var(--tilt-y) * 0.1);
     --shine-color: oklch(
-        from #16abf9 calc(l + var(--shine-l-shift)) c h
+        from var(--shine-base) calc(l + var(--shine-l-shift)) c h
     );
     --shine-spread: calc(11% + var(--shine-mag) * 6%);
 
@@ -161,6 +170,10 @@ $card-bg: #098fef;
     display: flex;
     flex-direction: column;
     gap: cq(4);
+
+    :global(body.apple) & {
+        top: cq(56);
+    }
 }
 
 .amount {
@@ -168,6 +181,10 @@ $card-bg: #098fef;
     align-items: center;
     gap: cq(5);
     padding-right: cq(2.571);
+
+    :global(body.apple) & {
+        gap: cq(2);
+    }
 }
 
 .coinIcon {
@@ -178,21 +195,42 @@ $card-bg: #098fef;
 }
 
 .amountValue {
-    font-family: $rounded-stack;
+    font-family: var(--rounded-stack);
     font-weight: 500;
     font-size: cq(22);
     line-height: 1;
     color: #fff;
     white-space: nowrap;
+
+    :global(body.apple) & {
+        font-weight: 600;
+        letter-spacing: 0.016em;
+    }
+}
+
+.amountFraction {
+    font-size: cq(14);
+    font-weight: 500;
+
+    :global(body.apple) & {
+        font-size: cq(18);
+        font-weight: 600;
+    }
 }
 
 .amountUnit {
-    font-family: $rounded-stack;
+    font-family: var(--rounded-stack);
     font-weight: 500;
     font-size: cq(22);
     line-height: 1;
     color: var(--card-tint);
     white-space: nowrap;
+
+    :global(body.apple) & {
+        font-weight: 600;
+        color: #6ddcff;
+        letter-spacing: 0.016em;
+    }
 }
 
 .name {
@@ -207,6 +245,10 @@ $card-bg: #098fef;
     color: #fff;
     text-transform: uppercase;
     white-space: nowrap;
+
+    :global(body.apple) & {
+        font-size: cq(12);
+    }
 }
 
 .addressOuter {
@@ -247,6 +289,11 @@ $card-bg: #098fef;
     text-align: center;
     text-shadow: 0 cq(1) 0 rgb(255 255 255 / 6%);
     white-space: nowrap;
+
+    :global(body.apple) & {
+        font-size: cq(8.2);
+        font-variation-settings: "wdth" 112.5;
+    }
 }
 
 .qrButton {
@@ -256,6 +303,12 @@ $card-bg: #098fef;
     border: 0;
     top: calc(50% - #{cq(15.5)});
     right: cq(46);
+
+    :global(body.apple) & {
+        top: calc(50% - #{cq(16)});
+        right: cq(48);
+    }
+
     width: cq(48);
     height: cq(36);
     transform: translateY(-50%);
@@ -306,6 +359,11 @@ $card-bg: #098fef;
     color: var(--card-tint);
     text-align: right;
     white-space: nowrap;
+
+    :global(body.apple) & {
+        right: cq(48);
+        color: #87efff;
+    }
 }
 
 .balanceValue {
@@ -321,6 +379,11 @@ $card-bg: #098fef;
     text-align: right;
     text-transform: uppercase;
     white-space: nowrap;
+
+    :global(body.apple) & {
+        right: cq(48);
+        font-size: cq(12);
+    }
 }
 
 .innerShadow {
