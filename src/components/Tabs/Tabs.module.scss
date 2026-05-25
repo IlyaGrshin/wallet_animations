@@ -57,6 +57,7 @@
 .glassRoot {
     position: relative;
     isolation: isolate;
+    margin-bottom: 16px;
     padding: 3px;
     border-radius: 100px;
     border: 0.67px solid rgb(0 0 0 / 8%);
@@ -64,7 +65,7 @@
 
 .tab {
     position: relative;
-    flex: 0 0 auto;
+    flex: 1 0 auto;
     display: inline-flex;
     align-items: center;
     justify-content: center;
