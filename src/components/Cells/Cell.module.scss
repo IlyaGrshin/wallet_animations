@@ -93,7 +93,18 @@
 		.body {
 			min-height: 52px;
 			padding: 10px var(--side-padding) 9px 0;
-			gap: 1px;
+
+			> *:nth-child(2) {
+				margin-top: 1px;
+			}
+
+			> *:nth-child(3) {
+				margin-top: 1px;
+			}
+
+			&:has(> *:nth-child(3)) > *:nth-child(2) {
+				margin-top: 0;
+			}
 		}
 
 		.end {
@@ -121,7 +132,18 @@
 
 		.body {
 			padding: 9px 12px 9px 0;
-			gap: 2px;
+
+			> *:nth-child(2) {
+				margin-top: 2px;
+			}
+
+			> *:nth-child(3) {
+				margin-top: 1px;
+			}
+
+			&:has(> *:nth-child(3)) > *:nth-child(2) {
+				margin-top: 0;
+			}
 		}
 
 		.end {

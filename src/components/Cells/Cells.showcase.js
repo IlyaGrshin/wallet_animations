@@ -186,6 +186,38 @@ const CellsShowcase = () => {
                         </Cell>
                     </SectionList.Item>
 
+                    <SectionList.Item header="Triple">
+                        <Cell
+                            start={
+                                <InitialsAvatar
+                                    userId={3}
+                                    name="Thomas Andersson"
+                                />
+                            }
+                            end={<Cell.End label="+2.46" />}
+                        >
+                            <Cell.Text
+                                title="Thomas Andersson"
+                                description="Incoming transfer"
+                                caption="Mar 22 at 23:39"
+                                bold
+                            />
+                        </Cell>
+                        <Cell
+                            start={<ImageAvatar src={getAssetIcon("TON")} />}
+                            end={
+                                <Cell.End label="-100 TON" caption="$32.33" />
+                            }
+                        >
+                            <Cell.Text
+                                title="Outgoing transfer"
+                                description="To Alice"
+                                caption="Yesterday at 14:02"
+                                bold
+                            />
+                        </Cell>
+                    </SectionList.Item>
+
                     <SectionList.Item header="Combined">
                         <Cell
                             start={<ImageAvatar src={getAssetIcon("TON")} />}
