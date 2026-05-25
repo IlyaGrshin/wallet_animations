@@ -12,11 +12,20 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      - run: corepack enable
+
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
+          cache: 'yarn'
 
-      - run: yarn install --frozen-lockfile
+      - name: Install dependencies (Hardened Mode)
+        run: yarn install --immutable
+        env:
+          YARN_ENABLE_HARDENED_MODE: '1'
+
+      - name: Check for duplicate dependencies
+        run: yarn dedupe --check
 
       - name: Build production bundle
         run: yarn build
