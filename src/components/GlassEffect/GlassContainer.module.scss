@@ -7,7 +7,7 @@
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
-    backdrop-filter: saturate(300%) blur(8px);
+    backdrop-filter: blur(8px);
     z-index: 0;
     will-change: transform;
     transform: translateZ(0);
@@ -17,6 +17,35 @@
         -apple-visual-effect: -apple-system-glass-material;
         backdrop-filter: none;
     }
+}
+
+.glassTintBottom {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    background: #333;
+    mix-blend-mode: color-dodge;
+}
+
+.glassTintMiddle {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    background: rgb(255 255 255 / 50%);
+}
+
+.glassTintTop {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    background: #f7f7f7;
+    mix-blend-mode: plus-darker;
 }
 
 .glassShadow {
