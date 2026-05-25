@@ -17,8 +17,12 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
+          cache: 'yarn'
 
       - run: yarn install --immutable
+
+      - name: Check for duplicate dependencies
+        run: yarn dedupe --check
 
       - name: Build production bundle
         run: yarn build
