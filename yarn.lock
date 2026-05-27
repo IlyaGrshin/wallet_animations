@@ -3088,11 +3088,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.39.0":
-  version: 12.39.0
-  resolution: "framer-motion@npm:12.39.0"
+"framer-motion@npm:^12.40.0":
+  version: 12.40.0
+  resolution: "framer-motion@npm:12.40.0"
   dependencies:
-    motion-dom: "npm:^12.39.0"
+    motion-dom: "npm:^12.40.0"
     motion-utils: "npm:^12.39.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -3106,7 +3106,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/23456f734c9cae8010a4df04245a6d40a0f1588876e1768c394d62c4a371a82f5e9d160fabb3882a99a962e67c648b76e52ff0d7dc6cb50a075486de25297609
+  checksum: 10c0/a1d26908d6661028fcdba0cf200fca18927a4d4eae0b1e64c37dfb7fdea9da66a8991abd0007079e98687060ba9c83db55620c238bc363106a24ff411d22f533
   languageName: node
   linkType: hard
 
@@ -4167,12 +4167,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:^12.39.0":
-  version: 12.39.0
-  resolution: "motion-dom@npm:12.39.0"
+"motion-dom@npm:^12.40.0":
+  version: 12.40.0
+  resolution: "motion-dom@npm:12.40.0"
   dependencies:
     motion-utils: "npm:^12.39.0"
-  checksum: 10c0/72e640aab7eeb563c0546f9f66bf6e2ba4c2d19b2bcabee4c1dfd258286e6f5b840387f64dc233830199edf2d4ffacab76ba7b721d0e9891c531bb7eb628c64f
+  checksum: 10c0/79da846a36fd5f6762a0fcfa6e0b7128e4d58f7c07d1467a9f789a9cd0b5adbef9bfbde75760901a13cf2bddd9b31e93e4348a714f570c45ca1e2bfabd22859e
   languageName: node
   linkType: hard
 
@@ -4183,11 +4183,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^12.39.0":
-  version: 12.39.0
-  resolution: "motion@npm:12.39.0"
+"motion@npm:^12.40.0":
+  version: 12.40.0
+  resolution: "motion@npm:12.40.0"
   dependencies:
-    framer-motion: "npm:^12.39.0"
+    framer-motion: "npm:^12.40.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -4200,7 +4200,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/e0bd04261cc35d65c85ef585c1be283c22ff85f4aa4004b69ec3c3a28628f3b03c845de96f057658eae3967ee5d12ae40d5c99d5b5dba2d33cc2cc97585b8835
+  checksum: 10c0/d0c118ed4829f2999c3ab7eb1ee916df70c65e95d262e951b69d3cea67a74e4a1d12e181badf4180e0d01c1ca8a9b109be4ea5456cad04bb58d4510f071af60f
   languageName: node
   linkType: hard
 
@@ -5213,15 +5213,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"spoiled@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "spoiled@npm:0.5.0"
+"spoiled@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "spoiled@npm:0.5.1"
   dependencies:
     colord: "npm:^2.9.3"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
-  checksum: 10c0/915029b7311e079b2278010267e16af64aceec0e781cfeff408a48407ac249a29e25e5e4e4a5e3dc16a86cc7ac997924fbd750ead9f121c2e58dc32db857bab5
+  checksum: 10c0/4a14d376250f824b5e2340a8420c9248eaf29d4887512dd938728302e35394a7f2ac483aefe2b670ffc4b939ea60ca84439f50146b5259bd9008ec7a63bb24b0
   languageName: node
   linkType: hard
 
@@ -5890,7 +5890,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^7.0.1"
     globals: "npm:^17.6.0"
     lottie-react: "npm:^2.4.1"
-    motion: "npm:^12.39.0"
+    motion: "npm:^12.40.0"
     prettier: "npm:^3.7.4"
     prop-types: "npm:^15.8.1"
     react: "npm:^19.2.6"
@@ -5898,13 +5898,13 @@ __metadata:
     rollup-plugin-webpack-stats: "npm:^3.1.2"
     sass: "npm:^1.100.0"
     satori: "npm:^0.26.0"
-    spoiled: "npm:^0.5.0"
+    spoiled: "npm:^0.5.1"
     stylelint: "npm:^17.12.0"
     stylelint-config-standard-scss: "npm:^17.0.0"
     vite: "npm:7"
     vite-plugin-checker: "npm:^0.14.1"
     vite-plugin-svgr: "npm:^5.0.0"
-    wouter: "npm:^3.9.0"
+    wouter: "npm:^3.10.0"
   languageName: unknown
   linkType: soft
 
@@ -6026,16 +6026,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wouter@npm:^3.9.0":
-  version: 3.9.0
-  resolution: "wouter@npm:3.9.0"
+"wouter@npm:^3.10.0":
+  version: 3.10.0
+  resolution: "wouter@npm:3.10.0"
   dependencies:
     mitt: "npm:^3.0.1"
     regexparam: "npm:^3.0.0"
     use-sync-external-store: "npm:^1.0.0"
   peerDependencies:
     react: ">=16.8.0"
-  checksum: 10c0/461622cd39366112fb4398acd457202fced00021f02351d1a6f99d17b8a7eea631883bf4346aa69710ea9738f8415e8f22b25689bb5930d1f4d96493ad39f8f4
+  checksum: 10c0/3ddfea0d87a94b97cc5e3baf9021c7ba984b1021d7a359b71853c54d9ca5e854fd3ebfe74a7b8ede46b6a216f981034a130616031cadc06369f67581887af536
   languageName: node
   linkType: hard
 
