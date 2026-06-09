@@ -120,6 +120,12 @@ const config = [
                 ),
             },
             {
+                title: "Table",
+                component: lazyWithPreload(
+                    () => import("../components/Table/Table.showcase")
+                ),
+            },
+            {
                 title: "Gallery",
                 component: lazyWithPreload(
                     () => import("../components/Gallery/Gallery.showcase")
