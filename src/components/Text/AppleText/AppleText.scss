@@ -22,7 +22,12 @@ body.apple {
         font-size: 17px;
         line-height: 22px;
     }
-    
+
+    [variant="callout"] {
+        font-size: 16px;
+        line-height: 22px;
+    }
+
     [variant="subheadline1"] {
         font-size: 15px;
         line-height: 20px;
