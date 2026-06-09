@@ -82,6 +82,14 @@
 
 			.icon {
 				background: linear-gradient(156.88deg, #00E7FF 14.96%, #007AFF 85.04%);
+
+				&.icon_success {
+					background: linear-gradient(180deg, #a0de7e 0%, #54cb68 100%);
+				}
+
+				&.icon_destructive {
+					background: linear-gradient(180deg, #ff885e 0%, #ff516a 100%);
+				}
 			}
 
 			.icon, .image {
@@ -121,6 +129,14 @@
 
 			.icon {
 				background: var(--tg-theme-button-color);
+
+				&.icon_success {
+					background: #7bc862;
+				}
+
+				&.icon_destructive {
+					background: #e17076;
+				}
 			}
 
 			.icon, .image {
