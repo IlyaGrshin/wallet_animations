@@ -3894,6 +3894,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"markdown-to-jsx@npm:7":
+  version: 7.7.17
+  resolution: "markdown-to-jsx@npm:7.7.17"
+  peerDependencies:
+    react: ">= 0.14.0"
+  peerDependenciesMeta:
+    react:
+      optional: true
+  checksum: 10c0/581c5ee1b3c79445f9f8369dc2882d0289507e702b2fcf2bc276b163a984cdcca2d8463a609c9bf310a31dcbf10c3210721c42c9173d4f12da675d3b56243736
+  languageName: node
+  linkType: hard
+
 "math-intrinsics@npm:^1.1.0":
   version: 1.1.0
   resolution: "math-intrinsics@npm:1.1.0"
@@ -5708,6 +5720,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^7.0.1"
     globals: "npm:^17.6.0"
     lottie-react: "npm:^2.4.1"
+    markdown-to-jsx: "npm:7"
     motion: "npm:^12.40.0"
     prettier: "npm:^3.7.4"
     prop-types: "npm:^15.8.1"

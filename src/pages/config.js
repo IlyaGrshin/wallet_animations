@@ -120,6 +120,12 @@ const config = [
                 ),
             },
             {
+                title: "Markdown",
+                component: lazyWithPreload(
+                    () => import("../components/Markdown/Markdown.showcase")
+                ),
+            },
+            {
                 title: "Table",
                 component: lazyWithPreload(
                     () => import("../components/Table/Table.showcase")
