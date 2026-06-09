@@ -25,39 +25,34 @@ const AppearanceProvider = ({ children }) => {
                 .trim()
         }
 
-        const updateThemeFromTelegram = () => {
-            const tgColorScheme = getTelegramColorScheme()
-            if (tgColorScheme) {
-                setColorScheme(tgColorScheme)
-            }
+        const applySystemScheme = (scheme) => {
+            setColorScheme(scheme)
+            document.body.setAttribute("data-color-scheme", scheme)
         }
 
-        const updateThemeFromSystem = () => {
-            const systemColorScheme = window.matchMedia(
-                "(prefers-color-scheme: dark)"
-            ).matches
-                ? "dark"
-                : "light"
-            setColorScheme(systemColorScheme)
-            document.body.setAttribute("data-color-scheme", systemColorScheme)
+        const updateThemeFromTelegram = () => {
+            const tgColorScheme = getTelegramColorScheme()
+            if (!tgColorScheme) return
+            setColorScheme(tgColorScheme)
+            document.body.removeAttribute("data-color-scheme")
         }
 
         const handleSystemThemeChange = (e) => {
-            const systemColorScheme = e.matches ? "dark" : "light"
-            setColorScheme(systemColorScheme)
-            document.body.setAttribute("data-color-scheme", systemColorScheme)
+            if (getTelegramColorScheme()) return
+            applySystemScheme(e.matches ? "dark" : "light")
         }
 
-        updateThemeFromTelegram()
-
-        if (!getTelegramColorScheme()) {
-            updateThemeFromSystem()
-        }
-
-        WebApp.onEvent("themeChanged", () => {
+        if (getTelegramColorScheme()) {
             updateThemeFromTelegram()
-        })
+        } else {
+            applySystemScheme(
+                window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light"
+            )
+        }
 
+        WebApp.onEvent("themeChanged", updateThemeFromTelegram)
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
         mediaQuery.addEventListener("change", handleSystemThemeChange)
 
