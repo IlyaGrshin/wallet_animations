@@ -3894,6 +3894,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"markdown-to-jsx@npm:9":
+  version: 9.8.1
+  resolution: "markdown-to-jsx@npm:9.8.1"
+  peerDependencies:
+    react: ">= 16.0.0"
+    solid-js: ">=1.0.0"
+    vue: ">=3.0.0"
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-native:
+      optional: true
+    solid-js:
+      optional: true
+    vue:
+      optional: true
+  checksum: 10c0/72bca3e015b839695e44978381708cd855536a1a1c1c6c1cd5f16e8278cc2b15ac4d6ef822c92797f17d25d1750b2919e7ffda8b0375510d451d7cbb61f80dea
+  languageName: node
+  linkType: hard
+
 "math-intrinsics@npm:^1.1.0":
   version: 1.1.0
   resolution: "math-intrinsics@npm:1.1.0"
@@ -5708,6 +5728,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^7.0.1"
     globals: "npm:^17.6.0"
     lottie-react: "npm:^2.4.1"
+    markdown-to-jsx: "npm:9"
     motion: "npm:^12.40.0"
     prettier: "npm:^3.7.4"
     prop-types: "npm:^15.8.1"
