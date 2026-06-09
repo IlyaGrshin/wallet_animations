@@ -48,6 +48,17 @@ async function get(path) {
     return promise
 }
 
+async function post(path, body) {
+    const { url, headers } = buildRequest(path)
+    const res = await fetch(url, {
+        method: "POST",
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+    })
+    if (!res.ok) throw new Error(`tonapi ${path}: ${res.status}`)
+    return res.json()
+}
+
 export function getAccount(address) {
     return get(`/v2/accounts/${address}`)
 }
@@ -61,8 +72,20 @@ export function getNfts(address, limit = 20) {
     return get(`/v2/accounts/${address}/nfts?limit=${limit}`)
 }
 
+export function getAccountNftHistory(address, limit = 200) {
+    return get(`/v2/accounts/${address}/nfts/history?limit=${limit}`)
+}
+
 export function getJettons(address) {
     return get(`/v2/accounts/${address}/jettons`)
+}
+
+export function getCollection(address) {
+    return get(`/v2/nfts/collections/${address}`)
+}
+
+export function getCollectionsBulk(addresses) {
+    return post("/v2/nfts/collections/_bulk", { account_ids: addresses })
 }
 
 export function getRates(tokens, currencies = ["usd"]) {
