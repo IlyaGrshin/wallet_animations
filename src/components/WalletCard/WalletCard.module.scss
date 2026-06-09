@@ -2,7 +2,6 @@ $mono-stack: "Martian Mono", ui-monospace, "SF Mono", sfmono-regular, menlo,
     monospace;
 $card-w: 336;
 $card-h: 205;
-$card-bg: #098fef;
 
 @property --tilt-x {
     syntax: "<number>";
@@ -27,10 +26,17 @@ $card-bg: #098fef;
 }
 
 .root {
-    --card-bg: #{$card-bg};
-    --shine-base: #16abf9;
+    --card-bg: oklch(
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.035) calc(c * 0.8) h
+    );
+    --shine-base: oklch(
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.105) calc(c * 0.73) h
+    );
     --card-tint: oklch(
-        from var(--card-bg) calc(l + 0.24) calc(c * 0.55) calc(h - 22)
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.22) calc(c * 0.75) h
     );
     --tilt-x: 0;
     --tilt-y: 0;
@@ -48,12 +54,19 @@ $card-bg: #098fef;
     border-radius: cq(20);
     overflow: clip;
     isolation: isolate;
-    color: #fff;
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
     -webkit-font-smoothing: antialiased;
 
     :global(body.apple) & {
-        --card-bg: #0079ff;
-        --shine-base: #169af9;
+        --card-bg: var(--tg-theme-accent-text-color);
+        --shine-base: oklch(
+            from var(--tg-theme-accent-text-color)
+            calc(l + 0.066) calc(c * 0.8) h
+        );
+        --card-tint: oklch(
+            from var(--tg-theme-accent-text-color)
+            calc(l + 0.2) calc(c * 0.9) h
+        );
         --rounded-stack: ui-rounded, "SF Pro Rounded", -apple-system, system-ui,
             sans-serif;
     }
@@ -191,20 +204,19 @@ $card-bg: #098fef;
     flex-shrink: 0;
     width: cq(28);
     height: cq(28);
-    transform: translateY(cq(-2));
+    transform: translateY(cq(-1));
 }
 
 .amountValue {
     font-family: var(--rounded-stack);
     font-weight: 500;
     font-size: cq(22);
-    line-height: 1;
-    color: #fff;
+    line-height: cq(28);
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
     white-space: nowrap;
 
     :global(body.apple) & {
         font-weight: 600;
-        letter-spacing: 0.016em;
     }
 }
 
@@ -222,14 +234,16 @@ $card-bg: #098fef;
     font-family: var(--rounded-stack);
     font-weight: 500;
     font-size: cq(22);
-    line-height: 1;
+    line-height: cq(28);
     color: var(--card-tint);
     white-space: nowrap;
 
     :global(body.apple) & {
         font-weight: 600;
-        color: #6ddcff;
-        letter-spacing: 0.016em;
+        color: oklch(
+            from var(--tg-theme-accent-text-color)
+            calc(l + 0.2) calc(c * 0.95) h
+        );
     }
 }
 
@@ -242,7 +256,7 @@ $card-bg: #098fef;
     font-weight: 500;
     font-size: cq(11);
     line-height: 1.2;
-    color: #fff;
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
     text-transform: uppercase;
     white-space: nowrap;
 
@@ -284,7 +298,7 @@ $card-bg: #098fef;
     font-weight: 400;
     font-size: cq(9);
     line-height: 1.2;
-    color: rgb(0 0 0 / 14%);
+    color: oklch(from var(--tg-theme-accent-text-color) 0% 0 h / 14%);
     text-transform: uppercase;
     text-align: center;
     text-shadow: 0 cq(1) 0 rgb(255 255 255 / 6%);
@@ -362,7 +376,10 @@ $card-bg: #098fef;
 
     :global(body.apple) & {
         right: cq(48);
-        color: #87efff;
+        color: oklch(
+            from var(--tg-theme-accent-text-color)
+            calc(l + 0.25) calc(c * 0.85) h
+        );
     }
 }
 
@@ -375,7 +392,7 @@ $card-bg: #098fef;
     font-weight: 500;
     font-size: cq(11);
     line-height: 1.2;
-    color: #fff;
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
     text-align: right;
     text-transform: uppercase;
     white-space: nowrap;
