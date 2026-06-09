@@ -38,9 +38,7 @@ function plainTag(Tag, className) {
 }
 
 const Code = ({ children, className }) => (
-    <code className={className?.startsWith("lang-") ? className : styles.inlineCode}>
-        {children}
-    </code>
+    <code className={className || styles.inlineCode}>{children}</code>
 )
 Code.propTypes = { children: PropTypes.node, className: PropTypes.string }
 
