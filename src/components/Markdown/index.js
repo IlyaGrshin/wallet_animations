@@ -4,17 +4,16 @@ import MarkdownToJsx from "markdown-to-jsx"
 
 import Text from "../Text"
 import SharedTable from "../Table"
-import { HEADING, BODY, QUOTE } from "./variants"
 import * as styles from "./Markdown.module.scss"
 
 const QuoteContext = createContext(false)
 
-function textTag(as, variant, className) {
+function textTag(as, apple, material, className) {
     const Component = ({ children, className: incoming, ...props }) => (
         <Text
             as={as}
-            apple={variant.apple}
-            material={variant.material}
+            apple={apple}
+            material={material}
             className={[className, incoming].filter(Boolean).join(" ") || undefined}
             {...props}
         >
@@ -106,12 +105,20 @@ const UnsupportedImage = () => (
 )
 
 const Paragraph = ({ children, className: incoming, ...props }) => {
-    const variant = useContext(QuoteContext) ? QUOTE : BODY
+    const quote = useContext(QuoteContext)
     return (
         <Text
             as="p"
-            apple={variant.apple}
-            material={variant.material}
+            apple={
+                quote
+                    ? { variant: "subheadline1" }
+                    : { variant: "callout", weight: "regular" }
+            }
+            material={
+                quote
+                    ? { variant: "subheadline1" }
+                    : { variant: "body", weight: "regular" }
+            }
             className={incoming || undefined}
             {...props}
         >
@@ -129,14 +136,48 @@ const Blockquote = ({ children }) => (
 Blockquote.propTypes = { children: PropTypes.node }
 
 const overrides = {
-    h1: textTag("h1", HEADING[1], styles.heading),
-    h2: textTag("h2", HEADING[2], styles.heading),
-    h3: textTag("h3", HEADING[3], styles.heading),
-    h4: textTag("h4", HEADING[4], styles.heading),
-    h5: textTag("h5", HEADING[5], styles.heading),
-    h6: textTag("h6", HEADING[6], styles.heading),
+    h1: textTag(
+        "h1",
+        { variant: "title1", weight: "bold" },
+        { variant: "title1", weight: "bold" },
+        styles.heading
+    ),
+    h2: textTag(
+        "h2",
+        { variant: "title2", weight: "bold" },
+        { variant: "title2", weight: "bold" },
+        styles.heading
+    ),
+    h3: textTag(
+        "h3",
+        { variant: "title3", weight: "semibold" },
+        { variant: "body", weight: "bold" },
+        styles.heading
+    ),
+    h4: textTag(
+        "h4",
+        { variant: "body", weight: "semibold" },
+        { variant: "subheadline1", weight: "bold" },
+        styles.heading
+    ),
+    h5: textTag(
+        "h5",
+        { variant: "subheadline1", weight: "semibold" },
+        { variant: "subheadline2", weight: "bold" },
+        styles.heading
+    ),
+    h6: textTag(
+        "h6",
+        { variant: "footnote", weight: "semibold" },
+        { variant: "caption2", weight: "bold" },
+        styles.heading
+    ),
     p: Paragraph,
-    li: textTag("li", BODY),
+    li: textTag(
+        "li",
+        { variant: "callout", weight: "regular" },
+        { variant: "body", weight: "regular" }
+    ),
     ul: plainTag("ul", styles.list),
     ol: plainTag("ol", styles.list),
     blockquote: Blockquote,
