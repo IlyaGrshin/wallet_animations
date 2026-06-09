@@ -9,6 +9,9 @@ import Cell from "../../../components/Cells"
 import InitialsAvatar from "../../../components/InitialsAvatar"
 import ImageAvatar from "../../../components/ImageAvatar"
 import Spinner from "../../../components/Spinner"
+import ArrowDownCircleFill from "../../../icons/28/Arrow Down Circle Fill.svg?react"
+import ArrowUpCircleFill from "../../../icons/28/Arrow Up Circle Fill.svg?react"
+import ArrowLeftRightCircleFill from "../../../icons/28/Arrow Left & Right Circle Fill.svg?react"
 import { BackButton, getUser } from "../../../lib/twa"
 
 import useWalletData from "./useWalletData"
@@ -40,9 +43,9 @@ const GramWallet = () => {
         usdtAmount,
         balance,
         hasMoreTransactions,
-        isLoadingMoreTransactions,
         loadMoreTransactions,
-        isLoading,
+        isLoadingCollectibles,
+        loadCollectibles,
         error,
     } = useWalletData(MY_ADDRESS)
     const sentinelRef = useRef(null)
@@ -55,11 +58,15 @@ const GramWallet = () => {
             ([entry]) => {
                 if (entry.isIntersecting) loadMoreTransactions()
             },
-            { rootMargin: "200px" }
+            { rootMargin: "1500px" }
         )
         observer.observe(sentinel)
         return () => observer.disconnect()
     }, [tabIndex, hasMoreTransactions, loadMoreTransactions])
+
+    useEffect(() => {
+        if (tabIndex === 1) loadCollectibles()
+    }, [tabIndex, loadCollectibles])
 
     useEffect(() => {
         const html = document.documentElement
@@ -82,24 +89,44 @@ const GramWallet = () => {
     }, [])
 
     function renderTransactionAvatar(tx) {
+        if (tx.description === "Deposit") {
+            return (
+                <Cell.Start
+                    type="Icon"
+                    iconType={<ArrowDownCircleFill />}
+                    variant="success"
+                />
+            )
+        }
+        if (tx.description === "Withdrawal") {
+            return <Cell.Start type="Icon" iconType={<ArrowUpCircleFill />} />
+        }
         if (tx.icon) return <ImageAvatar src={tx.icon} />
+        if (tx.name && tx.name !== "Activity") {
+            return (
+                <InitialsAvatar
+                    userId={hashToUserId(tx.name)}
+                    name={tx.name}
+                />
+            )
+        }
         return (
-            <InitialsAvatar userId={hashToUserId(tx.name)} name={tx.name} />
+            <Cell.Start type="Icon" iconType={<ArrowLeftRightCircleFill />} />
         )
     }
 
     function renderTabContent() {
-        if (isLoading) {
-            return (
-                <div className={styles.feedback}>
-                    <Spinner centered />
-                </div>
-            )
-        }
         if (error) {
             return <div className={styles.feedback}>{error}</div>
         }
         if (tabIndex === 0) {
+            if (transactions === null) {
+                return (
+                    <div className={styles.feedback}>
+                        <Spinner centered />
+                    </div>
+                )
+            }
             return (
                 <>
                     <div className={styles.cellList}>
@@ -119,11 +146,20 @@ const GramWallet = () => {
                         ))}
                     </div>
                     {hasMoreTransactions && (
-                        <div ref={sentinelRef} className={styles.sentinel}>
-                            {isLoadingMoreTransactions && <Spinner />}
-                        </div>
+                        <div
+                            ref={sentinelRef}
+                            className={styles.sentinel}
+                            aria-hidden="true"
+                        />
                     )}
                 </>
+            )
+        }
+        if (collectibles === null || isLoadingCollectibles) {
+            return (
+                <div className={styles.feedback}>
+                    <Spinner centered />
+                </div>
             )
         }
         return (
@@ -136,7 +172,7 @@ const GramWallet = () => {
                     >
                         <Cell.Text
                             title={item.name}
-                            description={item.description}
+                            description={item.caption}
                             bold
                         />
                     </Cell>

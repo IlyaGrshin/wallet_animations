@@ -1,210 +1,61 @@
 import { useEffect, useRef, useState } from "react"
 import {
     getAccount,
+    getAccountNftHistory,
+    getCollectionsBulk,
     getEvents,
     getJettons,
     getNfts,
     getRates,
-    rawToFriendly,
 } from "../../../lib/tonapi"
-
-const moneyFmt = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-})
-
-function rawToFloat(raw, decimals) {
-    if (raw == null) return 0
-    return Number(raw) / 10 ** decimals
-}
-
-function formatBalance(raw, decimals) {
-    if (raw == null) return null
-    return moneyFmt.format(rawToFloat(raw, decimals))
-}
-
-function shortenAddress(addr) {
-    if (!addr) return ""
-    const friendly = rawToFriendly(addr)
-    return `${friendly.slice(0, 4)}…${friendly.slice(-4)}`
-}
-
-function formatTimestamp(unixSeconds) {
-    const date = new Date(unixSeconds * 1000)
-    const now = new Date()
-    const isToday = date.toDateString() === now.toDateString()
-    const time = date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-    })
-    if (isToday) return `Today at ${time}`
-    const yesterday = new Date(now)
-    yesterday.setDate(now.getDate() - 1)
-    if (date.toDateString() === yesterday.toDateString()) {
-        return `Yesterday at ${time}`
-    }
-    const month = date.toLocaleString("en-US", { month: "short" })
-    return `${month} ${date.getDate()} at ${time}`
-}
-
-function pickCounterparty(action, myRawAddress) {
-    const detail =
-        action.TonTransfer ||
-        action.JettonTransfer ||
-        action.NftItemTransfer ||
-        null
-    if (!detail) return { counterparty: null, direction: "in" }
-    const recipientAddr = detail.recipient?.address
-    const isIncoming = recipientAddr === myRawAddress
-    return {
-        counterparty: isIncoming ? detail.sender : detail.recipient,
-        direction: isIncoming ? "in" : "out",
-    }
-}
-
-const ALLOWED_JETTON_SYMBOLS = new Set(["USDT", "USD₮", "XAUt0"])
-const TRANSFER_TYPES = new Set([
-    "TonTransfer",
-    "JettonTransfer",
-    "NftItemTransfer",
-])
-
-function mapEvent(event, myRawAddress) {
-    const action = event.actions?.[0]
-    if (!action) return null
-    if (action.type === "JettonTransfer") {
-        const symbol = action.JettonTransfer?.jetton?.symbol
-        if (!ALLOWED_JETTON_SYMBOLS.has(symbol)) return null
-    }
-    const { counterparty, direction } = pickCounterparty(action, myRawAddress)
-    if (counterparty?.is_scam) return null
-    const preview = action.simple_preview || {}
-    const fallbackAccount = preview.accounts?.[0]
-    const name =
-        counterparty?.name ||
-        shortenAddress(counterparty?.address) ||
-        fallbackAccount?.name ||
-        shortenAddress(fallbackAccount?.address) ||
-        preview.name ||
-        "Activity"
-    const isCurrencyTransfer =
-        action.type === "TonTransfer" || action.type === "JettonTransfer"
-    let description
-    if (isCurrencyTransfer) {
-        description = direction === "in" ? "Deposit" : "Withdrawal"
-    } else {
-        description = preview.name || action.type
-    }
-    const isTransfer = TRANSFER_TYPES.has(action.type)
-    let amount = null
-    if (preview.value) {
-        amount = isTransfer
-            ? `${direction === "in" ? "+" : "−"}${preview.value}`
-            : preview.value
-    }
-    return {
-        id: event.event_id,
-        name,
-        description,
-        caption: formatTimestamp(event.timestamp),
-        amount,
-        icon: counterparty?.icon || fallbackAccount?.icon,
-    }
-}
-
-function mapEvents(events, rawAddress) {
-    return (events || [])
-        .filter((e) => !e.is_scam)
-        .map((e) => mapEvent(e, rawAddress))
-        .filter(Boolean)
-}
-
-function pickPreview(item) {
-    const previews = item.previews || []
-    const small = previews.find((p) => p.resolution === "100x100")
-    return small?.url || previews[0]?.url || item.metadata?.image
-}
-
-function mapNft(item) {
-    return {
-        id: item.address,
-        name: item.metadata?.name || "Untitled",
-        description: item.collection?.name || "",
-        image: pickPreview(item),
-    }
-}
-
-const EMPTY_STATE = {
-    transactions: null,
-    collectibles: null,
-    tonAmount: null,
-    usdtAmount: null,
-    balance: null,
-    error: null,
-}
+import {
+    EMPTY_WALLET,
+    computeBalance,
+    formatTimestamp,
+    mapEvents,
+    mapNft,
+} from "./helpers"
 
 export default function useWalletData(address) {
-    const [state, setState] = useState(EMPTY_STATE)
+    const [wallet, setWallet] = useState(EMPTY_WALLET)
+    const [transactions, setTransactions] = useState(null)
     const [hasMoreTransactions, setHasMoreTransactions] = useState(false)
-    const [isLoadingMoreTransactions, setIsLoadingMoreTransactions] =
-        useState(false)
+    const [isLoadingMoreTransactions, setIsLoadingMoreTransactions] = useState(false)
+    const [collectibles, setCollectibles] = useState(null)
+    const [isLoadingCollectibles, setIsLoadingCollectibles] = useState(false)
+    const [error, setError] = useState(null)
     const pageRef = useRef({ rawAddress: null, nextFrom: null })
+    const collectiblesLoadedRef = useRef(false)
 
     useEffect(() => {
         let cancelled = false
-        setState(EMPTY_STATE)
+        setWallet(EMPTY_WALLET)
+        setTransactions(null)
         setHasMoreTransactions(false)
+        setCollectibles(null)
+        setError(null)
         pageRef.current = { rawAddress: null, nextFrom: null }
+        collectiblesLoadedRef.current = false
+
+        const accountPromise = getAccount(address)
+        const fail = (err) => !cancelled && setError(err.message || String(err))
 
         Promise.all([
-            getAccount(address),
-            getEvents(address, 20),
-            getNfts(address, 20),
+            accountPromise,
             getJettons(address),
             getRates(["ton"], ["usd"]),
         ])
-            .then(([account, eventsData, nftsData, jettonsData, ratesData]) => {
+            .then((r) => !cancelled && setWallet(computeBalance(...r)))
+            .catch(fail)
+
+        Promise.all([accountPromise, getEvents(address, 20)])
+            .then(([acc, evt]) => {
                 if (cancelled) return
-                const rawAddress = account.address
-                const transactions = mapEvents(eventsData.events, rawAddress)
-                const collectibles = (nftsData.nft_items || []).map(mapNft)
-                const tonValue = rawToFloat(account.balance, 9)
-                const tonAmount = formatBalance(account.balance, 9)
-                const usdt = (jettonsData.balances || []).find(
-                    (b) => b.jetton?.symbol === "USD₮" ||
-                        b.jetton?.symbol === "USDT"
-                )
-                const usdtValue = usdt
-                    ? rawToFloat(usdt.balance, usdt.jetton.decimals)
-                    : 0
-                const usdtAmount = usdt
-                    ? formatBalance(usdt.balance, usdt.jetton.decimals)
-                    : "0.00"
-                const tonRate = ratesData.rates?.TON?.prices?.USD || 0
-                const totalUsd = tonValue * tonRate + usdtValue
-                const balance = `$${moneyFmt.format(totalUsd)}`
-                pageRef.current = {
-                    rawAddress,
-                    nextFrom: eventsData.next_from || null,
-                }
-                setHasMoreTransactions(!!eventsData.next_from)
-                setState({
-                    transactions,
-                    collectibles,
-                    tonAmount,
-                    usdtAmount,
-                    balance,
-                    error: null,
-                })
+                pageRef.current = { rawAddress: acc.address, nextFrom: evt.next_from || null }
+                setTransactions(mapEvents(evt.events, acc.address))
+                setHasMoreTransactions(!!evt.next_from)
             })
-            .catch((err) => {
-                if (cancelled) return
-                setState({
-                    ...EMPTY_STATE,
-                    error: err.message || String(err),
-                })
-            })
+            .catch(fail)
 
         return () => {
             cancelled = true
@@ -213,36 +64,66 @@ export default function useWalletData(address) {
 
     async function loadMoreTransactions() {
         const page = pageRef.current
-        if (!page.nextFrom || !page.rawAddress) return
-        if (isLoadingMoreTransactions) return
+        if (!page.nextFrom || !page.rawAddress || isLoadingMoreTransactions) return
         setIsLoadingMoreTransactions(true)
         try {
             const data = await getEvents(address, 20, page.nextFrom)
             const more = mapEvents(data.events, page.rawAddress)
-            setState((s) => ({
-                ...s,
-                transactions: [...(s.transactions || []), ...more],
-            }))
-            pageRef.current = {
-                ...pageRef.current,
-                nextFrom: data.next_from || null,
-            }
+            setTransactions((prev) => [...(prev || []), ...more])
+            pageRef.current = { ...pageRef.current, nextFrom: data.next_from || null }
             setHasMoreTransactions(!!data.next_from)
-        } catch {
-            // swallow, leave state as-is
         } finally {
             setIsLoadingMoreTransactions(false)
         }
     }
 
+    async function loadCollectibles() {
+        if (collectiblesLoadedRef.current || isLoadingCollectibles) return
+        collectiblesLoadedRef.current = true
+        setIsLoadingCollectibles(true)
+        try {
+            const [nftsRes, historyRes, account] = await Promise.all([
+                getNfts(address, 200),
+                getAccountNftHistory(address, 200),
+                getAccount(address),
+            ])
+            const items = (nftsRes.nft_items || []).filter((i) => i.collection?.address)
+            const addrs = [...new Set(items.map((i) => i.collection.address))]
+            const { nft_collections: cols = [] } = await getCollectionsBulk(addrs)
+            const isOfficial = (c) =>
+                c.approved_by?.length > 0 &&
+                (c.metadata?.external_link || "").includes("fragment.com")
+            const ok = new Set(cols.filter(isOfficial).map((c) => c.address))
+            const receivedAt = {}
+            for (const op of historyRes.operations || []) {
+                const a = op.item?.address
+                if (!a || op.destination?.address !== account.address) continue
+                if (!receivedAt[a] || op.utime > receivedAt[a]) receivedAt[a] = op.utime
+            }
+            setCollectibles(
+                items
+                    .filter((i) => ok.has(i.collection.address))
+                    .map((i) => ({
+                        ...mapNft(i),
+                        caption: receivedAt[i.address] ? formatTimestamp(receivedAt[i.address]) : null,
+                    }))
+            )
+        } catch (err) {
+            setError(err.message || String(err))
+        } finally {
+            setIsLoadingCollectibles(false)
+        }
+    }
+
     return {
-        ...state,
+        ...wallet,
+        transactions,
         hasMoreTransactions,
         isLoadingMoreTransactions,
         loadMoreTransactions,
-        isLoading:
-            state.transactions === null &&
-            state.collectibles === null &&
-            !state.error,
+        collectibles,
+        isLoadingCollectibles,
+        loadCollectibles,
+        error,
     }
 }
