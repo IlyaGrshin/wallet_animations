@@ -18,7 +18,7 @@
         display: flex;
         justify-content: center;
         position: relative;
-    
+
         .image {
             height: var(--cover-height);
             aspect-ratio: 1 / 1;
@@ -27,15 +27,15 @@
             z-index: 1;
             margin-top: calc(var(--cover-height) * 0.12);
             will-change: transform;
-    
+
             &.coin {
                 background-image: url("../../../images/Coin\ Image.webp");
             }
-    
+
             &.disk {
                 background-image: url("../../../images/Disk\ Image.webp");
             }
-    
+
             &.planet {
                 background-image: url("../../../images/Death\ Planet\ Image.webp");
             }

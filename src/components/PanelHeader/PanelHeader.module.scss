@@ -25,7 +25,6 @@
             justify-content: flex-end;
             color: var(--tg-theme-accent-text-color);
         }
-
     }
 
     .middle {
@@ -53,7 +52,8 @@
             padding-top: 6px;
         }
 
-        .left, .right {
+        .left,
+        .right {
             display: none;
         }
 

@@ -205,9 +205,7 @@ const CellsShowcase = () => {
                         </Cell>
                         <Cell
                             start={<ImageAvatar src={getAssetIcon("TON")} />}
-                            end={
-                                <Cell.End label="-100 TON" caption="$32.33" />
-                            }
+                            end={<Cell.End label="-100 TON" caption="$32.33" />}
                         >
                             <Cell.Text
                                 title="Outgoing transfer"

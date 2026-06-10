@@ -10,7 +10,7 @@
     animation: rotate 1.4s linear infinite;
     width: 24px;
     height: 24px;
-  
+
     :global(body.apple) & {
         animation-timing-function: steps(8);
 
@@ -23,23 +23,23 @@
         color: var(--tg-theme-accent-text-color);
     }
 }
-  
+
 @media (prefers-reduced-motion) {
     .spinner {
-    	animation: rotate 10s linear infinite;
-  
+        animation: rotate 10s linear infinite;
+
         :global(body.apple) & {
             animation-timing-function: steps(8);
         }
     }
 }
-  
+
 @keyframes rotate {
     0% {
-      	transform: rotate(0deg);
+        transform: rotate(0deg);
     }
-  
+
     100% {
-      	transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }

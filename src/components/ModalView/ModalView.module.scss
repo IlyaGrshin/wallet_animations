@@ -11,7 +11,7 @@
     will-change: opacity;
 
     &::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
@@ -22,10 +22,10 @@
         transition: opacity 200ms linear;
         z-index: -1;
     }
-    
+
     &.animation::before {
         opacity: 0;
-    }    
+    }
 
     &.animation {
         &.open::before {
@@ -67,4 +67,3 @@
         }
     }
 }
-  
