@@ -8,146 +8,155 @@
 }
 
 .root {
-	display: flex;
-	flex-direction: row;
-	color: var(--tg-theme-text-color);
-	cursor: pointer;
-	text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    color: var(--tg-theme-text-color);
+    cursor: pointer;
+    text-decoration: none;
 
-	.start {
-		display: flex;
-		align-items: center;
+    .start {
+        display: flex;
+        align-items: center;
 
-		.image {
-			border-radius: 50%;
+        .image {
+            border-radius: 50%;
 
-			// Support both <img> and div with background-image
-			object-fit: contain;
-			background-size: contain;
-			background-repeat: no-repeat;
-			background-position: center;
-		}
+            // Support both <img> and div with background-image
+            object-fit: contain;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
 
-		.icon {
-			display: flex;
-			border-radius: 50%;
-			justify-content: center;
-			align-items: center;
+        .icon {
+            display: flex;
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
 
-			svg, path {
-				fill: white;
-			}
-		}
-	}
+            svg,
+            path {
+                fill: white;
+            }
+        }
+    }
 
-	.body {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		flex-grow: 1;
-		border-bottom: var(--cell-separator-height) solid var(--tg-theme-section-separator-color);
-	}
+    .body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+        border-bottom: var(--cell-separator-height) solid
+            var(--tg-theme-section-separator-color);
+    }
 
-	.end {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		padding: 0 0 0 8px;
-		padding-right: var(--side-padding);
-		text-align: right;
-		border-bottom: var(--cell-separator-height) solid var(--tg-theme-section-separator-color);
-		white-space: nowrap;
+    .end {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 0 0 8px;
+        padding-right: var(--side-padding);
+        text-align: right;
+        border-bottom: var(--cell-separator-height) solid
+            var(--tg-theme-section-separator-color);
+        white-space: nowrap;
 
-		.caption::first-letter {
-			text-transform: capitalize;
-		}
+        .caption::first-letter {
+            text-transform: capitalize;
+        }
 
-		&.received .label,
-		&.received .caption {
-			color: var(--text-confirm-color);
-		}
+        &.received .label,
+        &.received .caption {
+            color: var(--text-confirm-color);
+        }
 
-		&.failed .label,
-		&.failed .caption {
-			color: var(--tg-theme-destructive-text-color);
-		}
-	}
+        &.failed .label,
+        &.failed .caption {
+            color: var(--tg-theme-destructive-text-color);
+        }
+    }
 
-	:global(body.apple) & {
-		padding-left: var(--side-padding);
-		min-height: 44px;
+    :global(body.apple) & {
+        padding-left: var(--side-padding);
+        min-height: 44px;
 
-		.start {
-			padding: 12px 10px 12px 0;
+        .start {
+            padding: 12px 10px 12px 0;
 
-			.icon {
-				background: linear-gradient(156.88deg, #00E7FF 14.96%, #007AFF 85.04%);
-			}
+            .icon {
+                background: linear-gradient(
+                    156.88deg,
+                    #00e7ff 14.96%,
+                    #007aff 85.04%
+                );
+            }
 
-			.icon, .image {
-				width: 40px;
-				height: 40px;
-			}
-		}
+            .icon,
+            .image {
+                width: 40px;
+                height: 40px;
+            }
+        }
 
-		.body {
-			min-height: 52px;
-			padding: 10px var(--side-padding) 9px 0;
+        .body {
+            min-height: 52px;
+            padding: 10px var(--side-padding) 9px 0;
 
-			> *:nth-child(2) {
-				margin-top: 1px;
-			}
+            > *:nth-child(2) {
+                margin-top: 1px;
+            }
 
-			> *:nth-child(3) {
-				margin-top: 1px;
-			}
+            > *:nth-child(3) {
+                margin-top: 1px;
+            }
 
-			&:has(> *:nth-child(3)) > *:nth-child(2) {
-				margin-top: 0;
-			}
-		}
+            &:has(> *:nth-child(3)) > *:nth-child(2) {
+                margin-top: 0;
+            }
+        }
 
-		.end {
-			gap: 1px;
-		}
-	}
+        .end {
+            gap: 1px;
+        }
+    }
 
-	:global(body.material) & {
-		padding-left: var(--side-padding);
-		min-height: 50px;
+    :global(body.material) & {
+        padding-left: var(--side-padding);
+        min-height: 50px;
 
-		.start {
-			padding: 7px 15px 7px 0;
+        .start {
+            padding: 7px 15px 7px 0;
 
-			.icon {
-				background: var(--tg-theme-button-color);
-			}
+            .icon {
+                background: var(--tg-theme-button-color);
+            }
 
-			.icon, .image {
-				width: 42px;
-				height: 42px;
-				margin-left: -6px;
-			}
-		}
+            .icon,
+            .image {
+                width: 42px;
+                height: 42px;
+                margin-left: -6px;
+            }
+        }
 
-		.body {
-			padding: 9px 12px 9px 0;
+        .body {
+            padding: 9px 12px 9px 0;
 
-			> *:nth-child(2) {
-				margin-top: 2px;
-			}
+            > *:nth-child(2) {
+                margin-top: 2px;
+            }
 
-			> *:nth-child(3) {
-				margin-top: 1px;
-			}
+            > *:nth-child(3) {
+                margin-top: 1px;
+            }
 
-			&:has(> *:nth-child(3)) > *:nth-child(2) {
-				margin-top: 0;
-			}
-		}
+            &:has(> *:nth-child(3)) > *:nth-child(2) {
+                margin-top: 0;
+            }
+        }
 
-		.end {
-			gap: 2px;
-		}
-	}
+        .end {
+            gap: 2px;
+        }
+    }
 }

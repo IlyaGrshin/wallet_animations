@@ -39,8 +39,18 @@ const TableShowcase = () => {
                         head={["Type", "Mass", "Horizon radius", "Example"]}
                         align={["left", "left", "right", "left"]}
                         rows={[
-                            ["Stellar", "3 – 100 ☉", "tens of km", "Cygnus X-1"],
-                            ["Intermediate", "100 – 100k ☉", "thousands of km", "—"],
+                            [
+                                "Stellar",
+                                "3 – 100 ☉",
+                                "tens of km",
+                                "Cygnus X-1",
+                            ],
+                            [
+                                "Intermediate",
+                                "100 – 100k ☉",
+                                "thousands of km",
+                                "—",
+                            ],
                             [
                                 "Supermassive",
                                 "millions – billions ☉",

@@ -14,26 +14,36 @@ function textTag(as, apple, material, className) {
             as={as}
             apple={apple}
             material={material}
-            className={[className, incoming].filter(Boolean).join(" ") || undefined}
+            className={
+                [className, incoming].filter(Boolean).join(" ") || undefined
+            }
             {...props}
         >
             {children}
         </Text>
     )
-    Component.propTypes = { children: PropTypes.node, className: PropTypes.string }
+    Component.propTypes = {
+        children: PropTypes.node,
+        className: PropTypes.string,
+    }
     return Component
 }
 
 function plainTag(Tag, className) {
     const Component = ({ children, className: incoming, ...props }) => (
         <Tag
-            className={[className, incoming].filter(Boolean).join(" ") || undefined}
+            className={
+                [className, incoming].filter(Boolean).join(" ") || undefined
+            }
             {...props}
         >
             {children}
         </Tag>
     )
-    Component.propTypes = { children: PropTypes.node, className: PropTypes.string }
+    Component.propTypes = {
+        children: PropTypes.node,
+        className: PropTypes.string,
+    }
     return Component
 }
 

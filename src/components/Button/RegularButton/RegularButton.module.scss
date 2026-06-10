@@ -35,7 +35,7 @@
     }
 
     &[data-shine="true"]::before {
-        content: '';
+        content: "";
         will-change: transform;
         position: absolute;
         top: 0;
@@ -48,9 +48,10 @@
             rgb(255 255 255 / 85%) 20%,
             rgb(255 255 255 / 100%) 26%,
             rgb(255 255 255 / 85%) 32%,
-            rgb(255 255 255 / 0%) 50%);
+            rgb(255 255 255 / 0%) 50%
+        );
         mix-blend-mode: soft-light;
-        animation: wave 3s cubic-bezier(.4, 0, .6, 1) 1s infinite backwards;
+        animation: wave 3s cubic-bezier(0.4, 0, 0.6, 1) 1s infinite backwards;
         pointer-events: none;
     }
 

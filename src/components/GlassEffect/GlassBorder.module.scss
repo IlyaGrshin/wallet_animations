@@ -7,12 +7,15 @@
     mix-blend-mode: overlay;
     z-index: 2;
     pointer-events: none;
-    mask: linear-gradient(rgb(0 0 0) 0, rgb(0 0 0) 0) content-box,
+    mask:
+        linear-gradient(rgb(0 0 0) 0, rgb(0 0 0) 0) content-box,
         linear-gradient(rgb(0 0 0) 0, rgb(0 0 0) 0);
     mask-composite: exclude;
-    background: linear-gradient(8deg,
-            rgb(255 255 255 / 0%) 0%,
-            rgb(255 255 255 / 90%) 35%,
-            rgb(255 255 255 / 90%) 65%,
-            rgb(255 255 255 / 0%) 100%);
+    background: linear-gradient(
+        8deg,
+        rgb(255 255 255 / 0%) 0%,
+        rgb(255 255 255 / 90%) 35%,
+        rgb(255 255 255 / 90%) 65%,
+        rgb(255 255 255 / 0%) 100%
+    );
 }

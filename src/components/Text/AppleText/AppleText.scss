@@ -3,21 +3,21 @@ body.apple {
         color: inherit;
     }
 
-    [variant="title1"]{
+    [variant="title1"] {
         font-size: 28px;
         line-height: 34px;
     }
 
-    [variant="title2"]{
+    [variant="title2"] {
         font-size: 22px;
         line-height: 28px;
     }
-    
+
     [variant="title3"] {
         font-size: 20px;
         line-height: 24px;
     }
-    
+
     [variant="body"] {
         font-size: 17px;
         line-height: 22px;
@@ -37,33 +37,33 @@ body.apple {
         font-size: 14px;
         line-height: 18px;
     }
-    
+
     [variant="footnote"] {
         font-size: 13px;
         line-height: 18px;
     }
-    
+
     [variant="caption2"] {
         font-size: 11px;
         line-height: 13px;
     }
-    
+
     [weight="regular"] {
         font-weight: 400;
     }
-    
-    [weight="medium"]{
+
+    [weight="medium"] {
         font-weight: 500;
     }
-    
+
     [weight="semibold"] {
         font-weight: 600;
     }
-    
+
     [weight="bold"] {
         font-weight: 700;
     }
-    
+
     [data-rounded] {
         font-family: ui-rounded, apple-system, system-ui, sans-serif;
     }
@@ -83,7 +83,8 @@ body.apple {
             vertical-align: middle;
             color: inherit;
 
-            svg, path {
+            svg,
+            path {
                 fill: currentcolor !important;
             }
         }
