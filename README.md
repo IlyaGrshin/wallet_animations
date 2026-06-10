@@ -37,7 +37,6 @@ Node 20+ is required (Vite 7).
 | `yarn lint:scss` | Stylelint only |
 | `yarn format` | Prettier write over `src/` |
 | `yarn screenshot:story` | Render story screenshots (`scripts/screenshot-story.js`) |
-| `yarn deploy` | Deploy via `deploy.sh` |
 
 ## Project layout
 
@@ -78,3 +77,7 @@ from `var(--tg-theme-*)`, so light and dark both work.
 See `AGENTS.md` for the full contributor rules — file size limits, animation
 performance tiers, the SCSS-Modules-only policy, and project primitives to
 reuse (`Button`, `Text`, `GlassContainer`, `Page`, `PageTransition`).
+
+## License
+
+Released under the [MIT License](LICENSE).
