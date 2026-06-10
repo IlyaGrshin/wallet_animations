@@ -7,6 +7,32 @@ on:
   pull_request:
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - run: corepack enable
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: 'yarn'
+
+      - name: Install dependencies (Hardened Mode)
+        run: yarn install --immutable
+        env:
+          YARN_ENABLE_HARDENED_MODE: '1'
+
+      - name: Lint JS + SCSS
+        run: yarn lint
+
+      # Non-blocking: the repo is not fully Prettier-clean yet, so this
+      # surfaces formatting drift without failing CI on pre-existing files.
+      - name: Check formatting
+        run: yarn format:check
+        continue-on-error: true
+
   build:
     runs-on: ubuntu-latest
     steps:
