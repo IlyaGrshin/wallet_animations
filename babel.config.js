@@ -13,7 +13,12 @@ export default (api) => {
             ],
         ],
         plugins: [
-            "babel-plugin-react-compiler",
+            // Strip propTypes BEFORE the compiler runs: the remover only
+            // recognises plain components, and react-compiler rewrites them
+            // into a form (`function C(t0){ const $ = _c(n); ... }`) it no
+            // longer matches, so compiler-first leaves propTypes in the bundle.
+            // The remover only touches the static `C.propTypes` assignment, not
+            // JSX or component bodies, so running it first is safe for compiler.
             ...(isProd
                 ? [
                       [
@@ -25,6 +30,7 @@ export default (api) => {
                       ],
                   ]
                 : []),
+            "babel-plugin-react-compiler",
         ],
     }
 }
