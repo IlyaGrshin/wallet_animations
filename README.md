@@ -25,6 +25,16 @@ yarn dev        # http://localhost:3000
 
 Node 20+ is required (Vite 7).
 
+## Environment
+
+The build's base path is set by `base: './'` in `vite.config.js`, which emits
+relative asset URLs so the app works from any sub-path inside the Telegram
+WebView. Change it there if you deploy under a fixed prefix.
+
+The repository ships an `.env` with `PUBLIC_URL=.` — a leftover from the old
+Create React App setup. Vite does not read it, so it currently has no effect;
+configure the base path through `vite.config.js` instead.
+
 ## Scripts
 
 | Command | Description |
