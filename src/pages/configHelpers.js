@@ -24,6 +24,16 @@ export function sortedPages(config) {
     }))
 }
 
+// Routes that may render inside a SplitView detail pane. Prototypes own their
+// nested routing / page transitions / BackButton, so they stay full-screen.
+export function isSplitEligible(location) {
+    return (
+        location === "/" ||
+        location.startsWith("/showcase/") ||
+        location.startsWith("/telegram/")
+    )
+}
+
 export function flattenRoutes(config) {
     return sortedPages(config).flatMap(({ category, pages }) => {
         const prefix = categoryToPrefix(category)

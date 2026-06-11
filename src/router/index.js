@@ -9,8 +9,14 @@ import SkinSwitcher from "../components/SkinSwitcher"
 import ErrorBoundary from "../components/ErrorBoundary"
 import RouteErrorFallback from "./RouteErrorFallback"
 
+import SplitView from "../components/SplitView"
+import SplitViewPlaceholder from "../components/SplitView/Placeholder"
+import CatalogList from "../components/CatalogList"
+import useSplitView from "../hooks/useSplitView"
+
+import Page from "../components/Page"
 import config from "../pages/config"
-import { flattenRoutes } from "../pages/configHelpers"
+import { flattenRoutes, isSplitEligible } from "../pages/configHelpers"
 import CatalogPage from "../pages/CatalogPage"
 
 const routes = flattenRoutes(config)
@@ -51,14 +57,35 @@ const Routes = () => {
 function AppRoutes() {
     const [location] = useLocation()
     const showSkinSwitcher = location.startsWith("/showcase/")
+    const isWide = useSplitView()
 
-    return (
+    const stack = (contained) => (
         <>
-            <PageTransition bottomInset={showSkinSwitcher}>
+            <PageTransition contained={contained} bottomInset={showSkinSwitcher}>
                 <Routes />
             </PageTransition>
             {showSkinSwitcher && <SkinSwitcher />}
         </>
+    )
+
+    // Narrow viewport: keep the single-column stack (also a safety net for any
+    // route that opts out of split-view via isSplitEligible).
+    if (!isWide || !isSplitEligible(location)) {
+        return stack(false)
+    }
+
+    // Shell owns the TWA chrome in split mode; detail-pane <Page>s defer to it.
+    return (
+        <Page mode="secondary">
+            <SplitView>
+                <SplitView.Sidebar>
+                    <CatalogList />
+                </SplitView.Sidebar>
+                <SplitView.Detail>
+                    {location === "/" ? <SplitViewPlaceholder /> : stack(true)}
+                </SplitView.Detail>
+            </SplitView>
+        </Page>
     )
 }
 

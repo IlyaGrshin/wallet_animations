@@ -17,11 +17,15 @@ const transition = {
     ease: EASING.MATERIAL_STANDARD,
 }
 
-const PageTransition = ({ children, bottomInset = false }) => {
+const PageTransition = ({ children, bottomInset = false, contained = false }) => {
     const [location] = useLocation()
 
+    const rootClassName = contained
+        ? `${styles.root} ${styles.contained}`
+        : styles.root
+
     return (
-        <div className={styles.root}>
+        <div className={rootClassName}>
             <AnimatePresence mode="popLayout">
                 <m.div
                     key={location}
@@ -42,6 +46,7 @@ const PageTransition = ({ children, bottomInset = false }) => {
 PageTransition.propTypes = {
     children: PropTypes.node,
     bottomInset: PropTypes.bool,
+    contained: PropTypes.bool,
 }
 
 export default PageTransition
