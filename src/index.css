@@ -163,6 +163,14 @@ body {
     &.material {
         font-family: "Roboto Flex", Roboto, system-ui, sans-serif;
     }
+
+    &.skin-switcher-active {
+        /* Clearance from the viewport bottom to just above the floating
+           SkinSwitcher. Bottom-anchored UI reads it via
+           var(--bottom-clearance, <own baseline>), so it replaces the baseline
+           only while the switcher is mounted (the var is otherwise unset). */
+        --bottom-clearance: calc(env(safe-area-inset-bottom, 0px) + 72px);
+    }
 }
 
 body::-webkit-scrollbar, html::-webkit-scrollbar {

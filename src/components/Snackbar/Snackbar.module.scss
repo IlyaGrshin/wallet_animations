@@ -111,7 +111,7 @@
 }
 
 .host_bottom {
-    bottom: calc(env(safe-area-inset-bottom) + 12px);
+    bottom: var(--bottom-clearance, calc(env(safe-area-inset-bottom) + 12px));
     flex-direction: column-reverse;
 }
 

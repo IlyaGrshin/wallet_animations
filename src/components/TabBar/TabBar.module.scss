@@ -10,7 +10,7 @@
         position: absolute;
         left: 21px;
         right: 21px;
-        bottom: 21px;
+        bottom: var(--bottom-clearance, 21px);
         border-radius: 100px;
         padding: 4px;
         margin: 0;
@@ -28,7 +28,7 @@
         position: absolute;
         left: 16px;
         right: 16px;
-        bottom: 16px;
+        bottom: var(--bottom-clearance, 16px);
         border-radius: 100px;
         padding: 4px;
         width: calc(100% - 32px);

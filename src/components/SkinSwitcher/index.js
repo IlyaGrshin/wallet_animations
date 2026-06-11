@@ -21,6 +21,13 @@ const SkinSwitcher = () => {
         ensureRobotoFlex()
     }, [])
 
+    // Reserve bottom space while the switcher floats over the UI, so
+    // bottom-anchored elements (TabBar, Snackbar) lift above it via --bottom-clearance.
+    useEffect(() => {
+        document.body.classList.add("skin-switcher-active")
+        return () => document.body.classList.remove("skin-switcher-active")
+    }, [])
+
     const handleChange = (index) => {
         const next = SKINS[index].value
         if (next !== skin) setSkin(next)
