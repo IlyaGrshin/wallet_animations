@@ -85,6 +85,7 @@ The root `<body>` carries `.apple` (iOS / macOS) or `.material` (Android / Deskt
 
 ## Animation
 
+- **Invoke the `/web-animation-design` skill for any animation work** — easing, timing, duration, springs, transitions, gestures, microinteractions, `prefers-reduced-motion`, or anything that "feels janky". It carries deeper motion guidance than the rules below; the rules here are the project-specific defaults on top of it.
 - Default duration **0.2-0.3s**, hard cap **1s**
 - Animations are interruptible and input-driven; they do not block user interaction
 - Set `transform-origin` correctly (animate from trigger source); for SVG, use `<g>` wrapper with `transform-box: fill-box; transform-origin: center`
