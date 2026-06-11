@@ -75,8 +75,13 @@ function AppRoutes() {
     }
 
     // Shell owns the TWA chrome in split mode; detail-pane <Page>s defer to it.
+    // The chrome <Page> is a sibling keyed on location so it re-asserts the
+    // shell header/background on every navigation (resetting anything a detail
+    // demo mutated directly, e.g. NavigationBar's color picker) without
+    // remounting SplitView or the sidebar.
     return (
-        <Page mode="secondary">
+        <>
+            <Page mode="secondary" key={location} />
             <SplitView>
                 <SplitView.Sidebar>
                     <CatalogList />
@@ -85,7 +90,7 @@ function AppRoutes() {
                     {location === "/" ? <SplitViewPlaceholder /> : stack(true)}
                 </SplitView.Detail>
             </SplitView>
-        </Page>
+        </>
     )
 }
 
