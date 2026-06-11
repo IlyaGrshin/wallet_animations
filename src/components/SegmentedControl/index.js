@@ -50,7 +50,7 @@ const SegmentedControl = ({
                 className={styles.activeIndicator}
                 style={{
                     width: `calc(${100 / segments.length}% - 4px)`,
-                    left: `calc(${(100 / segments.length) * activeIndex}%)`,
+                    transform: `translateX(calc(${activeIndex} * (100% + 4px)))`,
                     marginLeft: "2px",
                     marginRight: "2px",
                 }}

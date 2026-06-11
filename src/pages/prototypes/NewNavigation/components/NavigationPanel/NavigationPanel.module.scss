@@ -70,7 +70,7 @@
     text-align: center;
     background-color: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
     overflow: hidden;
-    will-change: width, height, border-radius;
+    will-change: transform;
     z-index: 202;
 }
 

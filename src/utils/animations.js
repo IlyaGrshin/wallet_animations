@@ -1,6 +1,5 @@
 export const EASING = {
     MATERIAL_STANDARD: [0.26, 0.08, 0.25, 1],
-    APPLE_STANDARD: [0.38, 0.7, 0.125, 1.0],
     LINEAR: "linear",
     EASE_IN_OUT: "easeInOut",
 }
@@ -55,10 +54,6 @@ export const POPOVER_VARIANTS = {
 export const TRANSITIONS = {
     MATERIAL_STANDARD: {
         ease: EASING.MATERIAL_STANDARD,
-        duration: DURATION.NORMAL / 1000,
-    },
-    APPLE_STANDARD: {
-        ease: EASING.APPLE_STANDARD,
         duration: DURATION.NORMAL / 1000,
     },
     MORPH: {

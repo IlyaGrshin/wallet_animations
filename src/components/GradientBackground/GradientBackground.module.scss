@@ -21,7 +21,6 @@
     z-index: 0;
     transform: translateZ(0);
     backface-visibility: hidden;
-    will-change: contents;
     display: block;
     opacity: var(--opacity-max, 1);
 }
