@@ -1,7 +1,11 @@
 import { useEffect } from "react"
 
-export function usePreventScroll() {
+export function usePreventScroll(enabled = true) {
     useEffect(() => {
+        // In a SplitView detail pane the pane manages its own scroll; locking
+        // the global body would collapse the whole shell, so opt out.
+        if (!enabled) return
+
         const preventScroll = (e) => {
             e.preventDefault()
             window.scrollTo(0, 0)
@@ -30,5 +34,5 @@ export function usePreventScroll() {
             window.removeEventListener("scroll", preventScroll)
             window.removeEventListener("touchmove", preventScroll)
         }
-    }, [])
+    }, [enabled])
 }

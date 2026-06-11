@@ -82,7 +82,10 @@
 .items {
     display: flex;
     flex-direction: column;
-    width: calc(100vw - 36px);
+
+    // Size against the SplitView pane when open inside one; full viewport
+    // otherwise (--split-pane-width is only set by the SplitView shell).
+    width: calc(var(--split-pane-width, 100vw) - 36px);
     text-align: left;
     gap: 6px;
 }
