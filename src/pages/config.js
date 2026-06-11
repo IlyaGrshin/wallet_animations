@@ -155,6 +155,15 @@ const config = [
                     () => import("../components/Snackbar/Snackbar.showcase")
                 ),
             },
+            {
+                title: "Particle Effect",
+                component: lazyWithPreload(
+                    () =>
+                        import(
+                            "../components/ParticleEffect/ParticleEffect.showcase"
+                        )
+                ),
+            },
         ],
     },
     {
