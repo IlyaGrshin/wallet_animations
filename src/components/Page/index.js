@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import PropTypes from "prop-types"
 import WebApp from "../../lib/twa"
+import { useSplitViewContext } from "../SplitView/context"
 
 const { setHeaderColor, setBackgroundColor } = WebApp
 
@@ -11,6 +12,8 @@ const Page = ({
     backgroundColor,
     expandOnMount,
 }) => {
+    const { inDetailPane, setPaneBackground } = useSplitViewContext()
+
     const tgColorMapping = {
         primary: "bg_color",
         secondary: "secondary_bg_color",
@@ -36,13 +39,23 @@ const Page = ({
     }, [expandOnMount])
 
     useEffect(() => {
+        // In a SplitView detail pane the shell owns the TWA chrome and the pane
+        // background comes from CSS, so don't fight over header/background colors.
+        if (inDetailPane) return
         if (WebApp.initData) {
             setBackgroundColor(tgBackgroundColor)
             setHeaderColor(tgHeaderColor)
         } else {
             document.body.style.backgroundColor = CSSBackgroundColor
         }
-    }, [tgBackgroundColor, tgHeaderColor, CSSBackgroundColor])
+    }, [tgBackgroundColor, tgHeaderColor, CSSBackgroundColor, inDetailPane])
+
+    // In a detail pane, report the page color to the shell so the whole pane
+    // takes it (full height, including the bottom-inset area), not just content.
+    useEffect(() => {
+        if (!inDetailPane || !setPaneBackground) return
+        setPaneBackground(CSSBackgroundColor)
+    }, [inDetailPane, setPaneBackground, CSSBackgroundColor])
 
     return <>{children}</>
 }
