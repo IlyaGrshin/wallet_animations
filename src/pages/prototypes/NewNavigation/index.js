@@ -76,6 +76,9 @@ function NewNavigation() {
         document.body.style.overflow = "hidden"
         return () => {
             document.body.style.overflow = ""
+            // Restore swipes on unmount too: in split-view the prototype can be
+            // left via the sidebar without ever hitting the BackButton.
+            WebApp.enableVerticalSwipes()
         }
     }, [])
 
