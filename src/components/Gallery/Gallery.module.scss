@@ -2,7 +2,7 @@
     display: flex;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
-    width: 100vw;
+    width: 100%;
     scroll-behavior: smooth;
 }
 
@@ -13,5 +13,5 @@
 .page {
     flex: none;
     scroll-snap-align: start;
-    width: 100vw;
+    width: 100%;
 }

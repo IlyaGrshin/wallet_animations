@@ -2,7 +2,11 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+
+    // 100% (not 100vw) so the overlay fills its containing block — the page's
+    // transformed scroll wrapper, i.e. the SplitView pane when inside one, or
+    // the full viewport otherwise — instead of always spanning the viewport.
+    width: 100%;
     height: 100dvh;
     display: flex;
     justify-content: center;
@@ -38,7 +42,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: 100dvh;
     background: rgb(0 0 0 / 50%);
     display: flex;
@@ -56,6 +60,13 @@
     min-height: 65dvh;
     will-change: transform;
     overflow: hidden;
+
+    // The dialog container is focused only to drive the focus trap; it never
+    // needs its own focus ring (inner controls keep theirs).
+    &:focus,
+    &:focus-visible {
+        outline: none;
+    }
 
     &.animation {
         transform: translateY(100dvh);

@@ -6,7 +6,12 @@ import { AnimatePresence } from "motion/react"
 import { POPOVER_VARIANTS } from "../../utils/animations"
 import Text from "../Text"
 import { GlassBorder } from "../GlassEffect"
-import { useClickOutside, useDropdownPosition } from "./dropdownUtils"
+import { useSplitViewContext } from "../SplitView/context"
+import {
+    useClickOutside,
+    useDropdownPosition,
+    getViewportBounds,
+} from "./dropdownUtils"
 
 import * as styles from "./DropdownMenu.module.scss"
 
@@ -44,10 +49,19 @@ const DropdownMenu = ({ items, trigger }) => {
     const itemRefs = useRef([])
     const activeIndexRef = useRef(activeIndex)
 
+    const { paneRef } = useSplitViewContext()
+    const getBounds = () => {
+        const el = paneRef?.current
+        if (!el) return getViewportBounds()
+        const { left, top, right, bottom } = el.getBoundingClientRect()
+        return { left, top, right, bottom }
+    }
+
     const { position, isPositioned, resetPosition } = useDropdownPosition(
         isOpen,
         buttonRef,
-        dropdownRef
+        dropdownRef,
+        getBounds
     )
 
     useEffect(() => {

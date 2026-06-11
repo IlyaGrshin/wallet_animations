@@ -24,13 +24,15 @@ export function sortedPages(config) {
     }))
 }
 
-// Routes that may render inside a SplitView detail pane. Prototypes own their
-// nested routing / page transitions / BackButton, so they stay full-screen.
+// Routes that may render inside a SplitView detail pane. All current categories
+// are eligible; this is the single place to opt a route out (e.g. a full-bleed
+// flow that should stay full-screen).
 export function isSplitEligible(location) {
     return (
         location === "/" ||
         location.startsWith("/showcase/") ||
-        location.startsWith("/telegram/")
+        location.startsWith("/telegram/") ||
+        location.startsWith("/prototype/")
     )
 }
 
