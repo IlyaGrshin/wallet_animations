@@ -48,8 +48,15 @@ export function useParticles({
         ro.observe(content)
         engine.resize()
 
+        // Pause the render loop while scrolled out of the viewport.
+        const io = new IntersectionObserver(([entry]) => {
+            engine.setOnscreen(entry.isIntersecting)
+        })
+        io.observe(content)
+
         return () => {
             ro.disconnect()
+            io.disconnect()
             engine.destroy()
             engineRef.current = null
         }

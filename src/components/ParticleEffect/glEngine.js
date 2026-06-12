@@ -1,4 +1,4 @@
-import { linkProgram, resolveColor } from "./glUtils"
+import { linkProgram, resolveColor, setupGl } from "./glUtils"
 import { renderTextMask } from "./textMask"
 
 // Simulation tuning for the "text" (text = 1) mode of the dkaraush particle
@@ -54,19 +54,7 @@ export function createEngine({
 
     const maskCanvas = document.createElement("canvas")
     const maskCtx = maskCanvas.getContext("2d")
-    const texture = gl.createTexture()
-    gl.activeTexture(gl.TEXTURE0)
-    gl.bindTexture(gl.TEXTURE_2D, texture)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-    gl.useProgram(program)
-    gl.uniform1i(loc.textTexture, 0)
-
-    gl.clearColor(0, 0, 0, 0)
-    gl.enable(gl.BLEND)
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+    const texture = setupGl(gl, program, loc)
 
     const e = {
         buffer: null,
@@ -87,6 +75,8 @@ export function createEngine({
         covered: false,
         text: 1, // 1 = particles spawn on the glyph mask, 0 = block fallback
         pad: 0,
+        active: false, // covering or mid-reveal (the loop should run)
+        onscreen: true, // paused by an IntersectionObserver when scrolled away
         raf: 0,
     }
 
@@ -166,6 +156,7 @@ export function createEngine({
         gl.clear(gl.COLOR_BUFFER_BIT)
         if (fadeOutT >= 1) {
             e.raf = 0 // reveal finished: idle the loop
+            e.active = false
             return
         }
 
@@ -180,14 +171,8 @@ export function createEngine({
         gl.uniform2f(loc.size, e.w, e.h)
         gl.uniform1f(loc.seed, e.seed)
         gl.uniform1f(loc.r, e.radius)
-        gl.uniform1f(loc.noiseScale, SIM.noiseScale)
-        gl.uniform1f(loc.noiseSpeed, SIM.noiseSpeed)
-        gl.uniform1f(loc.dampingMult, SIM.dampingMult)
-        gl.uniform1f(loc.velocityMult, SIM.velocityMult)
-        gl.uniform1f(loc.forceMult, SIM.forceMult)
-        gl.uniform1f(loc.longevity, SIM.longevity)
-        gl.uniform1f(loc.maxVelocity, SIM.maxVelocity)
-        gl.uniform1f(loc.noiseMovement, SIM.noiseMovement)
+        // SIM keys map 1:1 to float uniforms of the same name (timeScale has none).
+        for (const key in SIM) if (loc[key]) gl.uniform1f(loc[key], SIM[key])
         gl.uniform3f(loc.color, e.color[0], e.color[1], e.color[2])
         gl.uniform1f(loc.fadeOut, fadeOutT)
         gl.uniform2f(loc.fadeOutXY, e.fadeOutXY[0], e.fadeOutXY[1])
@@ -210,7 +195,7 @@ export function createEngine({
     }
 
     const run = () => {
-        if (e.raf) return
+        if (e.raf || !e.onscreen) return
         e.lastDraw = window.performance.now()
         e.raf = requestAnimationFrame(frame)
     }
@@ -219,6 +204,7 @@ export function createEngine({
         resize,
         cover() {
             e.covered = true
+            e.active = true
             e.fadeOut = false
             e.fadeOutTime = 0
             updateMask()
@@ -228,12 +214,26 @@ export function createEngine({
         reveal(origin) {
             if (!e.covered) return
             e.covered = false
+            e.active = true
             e.fadeOut = true
             e.fadeOutTime = 0
             e.fadeOutXY = origin
                 ? [(origin.x + e.pad) * e.dpr, e.h - (origin.y + e.pad) * e.dpr]
                 : [e.w / 2, e.h / 2]
             run()
+        },
+        // Pause the loop while scrolled off-screen, resume if still active.
+        setOnscreen(onscreen) {
+            if (onscreen === e.onscreen) return
+            e.onscreen = onscreen
+            if (!onscreen) {
+                if (e.raf) {
+                    cancelAnimationFrame(e.raf)
+                    e.raf = 0
+                }
+            } else if (e.active) {
+                run()
+            }
         },
         destroy() {
             if (e.raf) cancelAnimationFrame(e.raf)
