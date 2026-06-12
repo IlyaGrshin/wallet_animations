@@ -113,13 +113,6 @@ const config = [
                 ),
             },
             {
-                title: "Streaming Text",
-                component: lazyWithPreload(
-                    () =>
-                        import("../components/StreamingText/StreamingText.showcase")
-                ),
-            },
-            {
                 title: "Markdown",
                 component: lazyWithPreload(
                     () => import("../components/Markdown/Markdown.showcase")
@@ -155,6 +148,18 @@ const config = [
                     () => import("../components/Snackbar/Snackbar.showcase")
                 ),
             },
+        ],
+    },
+    {
+        category: "Text Effects",
+        pages: [
+            {
+                title: "Streaming Text",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/StreamingText/StreamingText.showcase")
+                ),
+            },
             {
                 title: "Particle Effect",
                 component: lazyWithPreload(
@@ -162,6 +167,13 @@ const config = [
                         import(
                             "../components/ParticleEffect/ParticleEffect.showcase"
                         )
+                ),
+            },
+            {
+                title: "Calligraph",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/Calligraph/Calligraph.showcase")
                 ),
             },
         ],

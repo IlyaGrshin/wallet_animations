@@ -1,5 +1,6 @@
 const PREFIX_MAP = {
     Components: "showcase",
+    "Text Effects": "text-effects",
     Telegram: "telegram",
     Prototypes: "prototype",
 }
@@ -31,6 +32,7 @@ export function isSplitEligible(location) {
     return (
         location === "/" ||
         location.startsWith("/showcase/") ||
+        location.startsWith("/text-effects/") ||
         location.startsWith("/telegram/") ||
         location.startsWith("/prototype/")
     )
