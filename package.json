@@ -61,7 +61,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "baseline-browser-mapping": "^2.10.35",
-    "eslint": "^9",
+    "eslint": "^10",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
