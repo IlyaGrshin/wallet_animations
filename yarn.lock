@@ -1770,12 +1770,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.10.35":
-  version: 2.10.35
-  resolution: "baseline-browser-mapping@npm:2.10.35"
+"baseline-browser-mapping@npm:^2.10.37":
+  version: 2.10.37
+  resolution: "baseline-browser-mapping@npm:2.10.37"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 10c0/e92c222d626293925e89c3d5b4a9359f985796e28c37d473ad55b33ef7ed5f9b26cfebbc8620df57512b66049f87120403776f2e603b1a686c469c96047db2b0
+  checksum: 10c0/ff489d3ffecd9e440ccabc49401b49f693ecae4a0e73ab71c8c24d43c760399eab8d3eebc9a7798255ef9dc9ed26bb987db813ef9d2044f35455428561f9084b
   languageName: node
   linkType: hard
 
@@ -4840,9 +4840,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.100.0":
-  version: 1.100.0
-  resolution: "sass@npm:1.100.0"
+"sass@npm:^1.101.0":
+  version: 1.101.0
+  resolution: "sass@npm:1.101.0"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^5.0.0"
@@ -4853,7 +4853,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10c0/e2aab47c87b69d2d4f8e48fa665138548069f56a7fd0fc4e15c9bde888b715798e49d33436e873918a8849ca3cc6c141a68618f58e2f3b2e6ec179cc309ca622
+  checksum: 10c0/1fbbcef2f767dec4d97773a2a084f4e1ef2e4abecf574e08743e52237069f1129a6b43b07b5c23aa3bcbf395509e40db758d9748a07940da227aa1626329a74d
   languageName: node
   linkType: hard
 
@@ -5584,9 +5584,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-checker@npm:^0.14.1":
-  version: 0.14.1
-  resolution: "vite-plugin-checker@npm:0.14.1"
+"vite-plugin-checker@npm:^0.14.3":
+  version: 0.14.3
+  resolution: "vite-plugin-checker@npm:0.14.3"
   dependencies:
     "@babel/code-frame": "npm:^7.29.0"
     chokidar: "npm:^5.0.0"
@@ -5622,7 +5622,7 @@ __metadata:
       optional: true
     vue-tsc:
       optional: true
-  checksum: 10c0/1be1cb1ac0a420b5124647a245332dca720cdb9d5fc0103f6df2d3bde579fb920517def8cf76a73518670c9f10f224f45cff850b06d800962ac36a94a2db10f4
+  checksum: 10c0/4e0e7b21c0e64fa18ee716c60223a4272eac78614597c436b1352c3c47c2e0d6e9d774259e7c7b7a4d8bebeea549b2d37a82cabd05c3f5e200e945267405b33f
   languageName: node
   linkType: hard
 
@@ -5707,7 +5707,7 @@ __metadata:
     agentation: "npm:^3.0.2"
     babel-plugin-react-compiler: "npm:^1.0.0"
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
-    baseline-browser-mapping: "npm:^2.10.35"
+    baseline-browser-mapping: "npm:^2.10.37"
     calligraph: "npm:^1.4.1"
     colorthief: "npm:^3.3.1"
     eslint: "npm:^9"
@@ -5723,12 +5723,12 @@ __metadata:
     react: "npm:^19.2.7"
     react-dom: "npm:^19.2.7"
     rollup-plugin-webpack-stats: "npm:^3.1.3"
-    sass: "npm:^1.100.0"
+    sass: "npm:^1.101.0"
     satori: "npm:^0.26.0"
     stylelint: "npm:^17.13.0"
     stylelint-config-standard-scss: "npm:^17.0.0"
     vite: "npm:7"
-    vite-plugin-checker: "npm:^0.14.1"
+    vite-plugin-checker: "npm:^0.14.3"
     vite-plugin-svgr: "npm:^5.0.0"
     wouter: "npm:^3.10.0"
   languageName: unknown
