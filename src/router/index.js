@@ -4,6 +4,7 @@ import { Router, Switch, Route } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
 import { useLocation } from "wouter"
 import PageTransition from "../components/PageTransition"
+import { useFrozenLocation } from "../components/PageTransition/context"
 import Spinner from "../components/Spinner"
 import SkinSwitcher from "../components/SkinSwitcher"
 import ErrorBoundary from "../components/ErrorBoundary"
@@ -34,10 +35,14 @@ Redirect.propTypes = {
 }
 
 const Routes = () => {
-    const [location] = useLocation()
+    const [liveLocation] = useLocation()
+    // Inside PageTransition, match against the screen's frozen location: the
+    // exiting copy must keep rendering ITS route during the crossfade instead
+    // of snapping to the new one.
+    const location = useFrozenLocation() ?? liveLocation
     return (
         <ErrorBoundary fallback={<RouteErrorFallback />} resetKeys={[location]}>
-            <Switch>
+            <Switch location={location}>
                 <Route path="/" component={CatalogPage} />
                 {routes.map(({ path, component: Component }) => (
                     <Route key={path} path={path}>
