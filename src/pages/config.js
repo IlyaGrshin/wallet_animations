@@ -113,6 +113,12 @@ const config = [
                 ),
             },
             {
+                title: "Skeleton",
+                component: lazyWithPreload(
+                    () => import("../components/Skeleton/Skeleton.showcase")
+                ),
+            },
+            {
                 title: "Markdown",
                 component: lazyWithPreload(
                     () => import("../components/Markdown/Markdown.showcase")

@@ -3,14 +3,26 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: filter 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+// filter instead of opacity: Image manages its own opacity for the load fade
+.imgRedacted {
+    filter: opacity(0);
 }
 
 .shapeCircle {
+    --skeleton-radius: 50%;
+    --skeleton-inset-bottom: 0px;
+
     border-radius: 50%;
     margin-left: var(--image-cell-offset);
 }
 
 .shapeRounded {
+    --skeleton-radius: 8px;
+    --skeleton-inset-bottom: 0px;
+
     border-radius: 8px;
     margin-left: var(--image-cell-offset);
 }

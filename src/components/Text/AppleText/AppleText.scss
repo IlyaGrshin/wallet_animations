@@ -82,6 +82,7 @@ body.apple {
             line-height: 1;
             vertical-align: middle;
             color: inherit;
+            transition: opacity 0.45s cubic-bezier(0.23, 1, 0.32, 1);
 
             svg,
             path {
@@ -101,4 +102,11 @@ body.apple {
 
 [data-caps] {
     text-transform: uppercase;
+}
+
+[data-skeleton] {
+    .chevron-icon,
+    .arrow-icon {
+        opacity: 0;
+    }
 }

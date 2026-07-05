@@ -1,22 +1,40 @@
 import PropTypes from "prop-types"
 
 import { useSkin } from "../../hooks/DeviceProvider"
+import { Redaction, useSkeletonContext } from "../Skeleton"
 import AppleText from "./AppleText"
 import MaterialText from "./MaterialText"
 import Badge from "./Badge"
 
-const Text = ({ apple, material, children, ...rest }) => {
+const Text = ({ apple, material, skeleton, children, ...rest }) => {
     const { isApple } = useSkin()
+    const contextRedacted = useSkeletonContext()
+
+    // local prop overrides the Skeleton provider; a number is a width in ch
+    const active =
+        skeleton !== undefined ? Boolean(skeleton) : Boolean(contextRedacted)
+    const redact = skeleton !== undefined || contextRedacted !== null
+    const width = typeof skeleton === "number" ? skeleton : undefined
+
+    const content = redact ? (
+        <Redaction active={active} width={width}>
+            {children}
+        </Redaction>
+    ) : (
+        children
+    )
+    const skeletonAttr = active ? { "data-skeleton": true } : {}
+
     if (isApple) {
         return (
-            <AppleText {...rest} {...apple}>
-                {children}
+            <AppleText {...rest} {...apple} {...skeletonAttr}>
+                {content}
             </AppleText>
         )
     }
     return (
-        <MaterialText {...rest} {...material}>
-            {children}
+        <MaterialText {...rest} {...material} {...skeletonAttr}>
+            {content}
         </MaterialText>
     )
 }
@@ -24,6 +42,7 @@ const Text = ({ apple, material, children, ...rest }) => {
 Text.propTypes = {
     apple: PropTypes.object,
     material: PropTypes.object,
+    skeleton: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
     children: PropTypes.node,
 }
 
