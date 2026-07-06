@@ -27,8 +27,16 @@
 
 .patternCanvas {
     z-index: 1;
-    opacity: var(--opacity-max, 1);
+
+    // Hidden until the first pattern frame is drawn (see usePatternCanvas),
+    // then fades in over the already-visible gradient.
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     display: block;
+}
+
+.patternReady {
+    opacity: var(--opacity-max, 1);
 }
 
 .blend {

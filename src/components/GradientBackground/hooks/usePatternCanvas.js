@@ -1,11 +1,11 @@
 import { useEffect, useEffectEvent, useRef } from "react"
 import {
     DEVICE_PIXEL_RATIO_MAX,
-    PATTERN_INITIAL_DELAY,
     RESIZE_DEBOUNCE_PATTERN,
 } from "../utils/constants"
 import { getContainerDimensions } from "../utils/gradientUtils"
 import { fillCanvasWithPattern } from "../utils/patternUtils"
+import * as styles from "../GradientBackground.module.scss"
 
 export function usePatternCanvas({
     patternCanvasRef,
@@ -51,12 +51,7 @@ export function usePatternCanvas({
         const widthChanged = Math.abs(width - prevDimensions.width) > 1
         const heightChanged = Math.abs(height - prevDimensions.height) > 1
 
-        if (
-            !forceRender &&
-            !widthChanged &&
-            !heightChanged &&
-            patternImageRef.current
-        ) {
+        if (!forceRender && !widthChanged && !heightChanged) {
             return
         }
 
@@ -69,89 +64,46 @@ export function usePatternCanvas({
         }
 
         const ctx = patternCanvas.getContext("2d")
-        if (!ctx) return
-
-        if (patternImageRef.current && patternImageRef.current.complete) {
-            if (
-                patternCanvas.width === width &&
-                patternCanvas.height === height
-            ) {
-                fillCanvasWithPattern(
-                    ctx,
-                    patternCanvas,
-                    patternImageRef.current,
-                    width,
-                    height,
-                    activeIsDarkPattern
-                )
-            }
+        const img = patternImageRef.current
+        if (!ctx || !img || !img.complete || img.naturalWidth === 0) {
             return
         }
 
-        const img = patternImageRef.current || new Image()
-        if (!patternImageRef.current) {
-            patternImageRef.current = img
-            img.crossOrigin = "anonymous"
-
-            img.onload = () => {
-                if (
-                    patternCanvas.width !== width ||
-                    patternCanvas.height !== height
-                ) {
-                    return
-                }
-
-                fillCanvasWithPattern(
-                    ctx,
-                    patternCanvas,
-                    img,
-                    width,
-                    height,
-                    activeIsDarkPattern
-                )
-            }
-
-            img.onerror = (error) => {
-                console.warn("Failed to load pattern image:", patternUrl, error)
-            }
-
-            img.src = patternUrl
-        } else if (img.complete) {
-            fillCanvasWithPattern(
-                ctx,
-                patternCanvas,
-                img,
-                width,
-                height,
-                activeIsDarkPattern
-            )
-        }
+        fillCanvasWithPattern(
+            ctx,
+            patternCanvas,
+            img,
+            width,
+            height,
+            activeIsDarkPattern
+        )
+        // Reveal only after the first frame is on the canvas, so the pattern
+        // fades in over the gradient instead of popping in once loaded.
+        patternCanvas.classList.add(styles.patternReady)
     })
 
     useEffect(() => {
-        if (!patternUrl) {
-            patternImageRef.current = null
-            patternDimensionsRef.current = { width: 0, height: 0 }
-            return
-        }
-
         patternImageRef.current = null
         patternDimensionsRef.current = { width: 0, height: 0 }
 
-        let timeoutId = null
-        let resizeTimeoutId = null
-
-        const scheduleRender = (delay = 0) => {
-            if (timeoutId) {
-                clearTimeout(timeoutId)
-            }
-            timeoutId = setTimeout(() => {
-                renderPattern()
-                timeoutId = null
-            }, delay)
+        if (!patternUrl) {
+            return
         }
 
-        scheduleRender(PATTERN_INITIAL_DELAY)
+        // Start fetching immediately; the first draw happens on load.
+        const img = new Image()
+        img.crossOrigin = "anonymous"
+        img.onload = () => renderPattern(true)
+        img.onerror = (error) => {
+            console.warn("Failed to load pattern image:", patternUrl, error)
+        }
+        img.src = patternUrl
+        patternImageRef.current = img
+
+        // Sizes the canvas now and draws right away if the image is cached.
+        renderPattern(true)
+
+        let resizeTimeoutId = null
 
         const handleResize = () => {
             if (resizeTimeoutId) {
@@ -175,12 +127,11 @@ export function usePatternCanvas({
         }
 
         return () => {
-            if (timeoutId) {
-                clearTimeout(timeoutId)
-            }
             if (resizeTimeoutId) {
                 clearTimeout(resizeTimeoutId)
             }
+            img.onload = null
+            img.onerror = null
             window.removeEventListener("resize", handleResize)
             resizeObserver.disconnect()
             patternImageRef.current = null
