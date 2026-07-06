@@ -24,20 +24,23 @@
 
 .input {
     position: absolute;
-    width: calc(100% - 42px);
+    width: calc(100% - 144px);
     bottom: 21px;
     left: 50%;
     transform: translateX(-50%) translateZ(0);
     border-radius: 36px;
-    clip-path: inset(0 51px round 36px);
-    transition: clip-path 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+    // Deliberate width transition: a clip-path on this wrapper forms a
+    // backdrop root that blanks GlassContainer's backdrop-filter, and a
+    // clipped GlassBorder loses its side arcs. Keep this box the real
+    // pill geometry so every glass layer stays correct in both states.
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
-    will-change: clip-path;
     contain: layout style paint;
     backface-visibility: hidden;
 
     &:focus-within {
-        clip-path: inset(0 round 36px);
+        width: calc(100% - 42px);
     }
 
     & input {
