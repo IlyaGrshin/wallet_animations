@@ -3,21 +3,42 @@ import Text from "../Text"
 
 import * as styles from "./PanelHeader.module.scss"
 
-const PanelHeader = ({ children }) => {
+// data-modal-drag marks the header as an unconditional drag handle for
+// ModalView's swipe-to-dismiss; the attribute is inert outside a modal.
+const PanelHeader = ({ left, onLeft, right, onRight, children }) => {
     return (
-        <div className={`${styles.root} ${styles.modalHeight}`}>
+        <div
+            className={`${styles.root} ${styles.modalHeight}`}
+            data-modal-drag=""
+        >
             <div className={styles.body}>
                 <div className={styles.left}>
-                    <Text variant="body">Close</Text>
+                    {left && (
+                        <button
+                            type="button"
+                            className={styles.action}
+                            onClick={onLeft}
+                        >
+                            <Text variant="body">{left}</Text>
+                        </button>
+                    )}
                 </div>
                 <div className={styles.right}>
-                    <Text
-                        variant="body"
-                        apple={{ weight: "semibold" }}
-                        material={{ weight: "medium" }}
-                    >
-                        Done
-                    </Text>
+                    {right && (
+                        <button
+                            type="button"
+                            className={styles.action}
+                            onClick={onRight}
+                        >
+                            <Text
+                                variant="body"
+                                apple={{ weight: "semibold" }}
+                                material={{ weight: "medium" }}
+                            >
+                                {right}
+                            </Text>
+                        </button>
+                    )}
                 </div>
             </div>
             <div className={styles.middle}>
@@ -33,6 +54,10 @@ const PanelHeader = ({ children }) => {
 }
 
 PanelHeader.propTypes = {
+    left: PropTypes.string,
+    onLeft: PropTypes.func,
+    right: PropTypes.string,
+    onRight: PropTypes.func,
     children: PropTypes.node,
 }
 export default PanelHeader

@@ -1,3 +1,4 @@
+import { useState } from "react"
 import PropTypes from "prop-types"
 
 import ModalView from "../../ModalView"
@@ -8,105 +9,73 @@ import ImageAvatar from "../../ImageAvatar"
 
 import { getAssetIcon } from "../../../utils/AssetsMap"
 import { MainButton } from "../../../lib/twa"
-import InitialsAvatar from "../../InitialsAvatar"
+import {
+    DEMO_ASSETS,
+    AssetListPage,
+    AssetDetailPage,
+    AssetInfoPage,
+} from "./DemoPages"
 
 const Modals = ({ modals, handlers }) => {
+    const [asset, setAsset] = useState(DEMO_ASSETS[0])
+
     return (
         <>
             <ModalView
-                key="modal1"
-                isOpen={modals.modal1}
-                onClose={handlers.modal1.close}
+                key="tray"
+                isOpen={modals.tray}
+                onClose={handlers.tray.close}
                 style={{
                     backgroundColor: "var(--tg-theme-secondary-bg-color)",
                 }}
             >
-                <PanelHeader>Modal (Motion)</PanelHeader>
-                <SectionList>
-                    <SectionList.Item>
-                        <Cell start={<ImageAvatar src={getAssetIcon("TON")} />}>
-                            <Cell.Text
-                                title="Toncoin"
-                                description="100 TON"
-                                bold
-                            />
-                        </Cell>
-                        <Cell
-                            start={<ImageAvatar src={getAssetIcon("USDT")} />}
-                        >
-                            <Cell.Text
-                                title="Dollars"
-                                description="100 USDT"
-                                bold
-                            />
-                        </Cell>
-                        <Cell start={<ImageAvatar src={getAssetIcon("BTC")} />}>
-                            <Cell.Text
-                                title="Bitcoin"
-                                description="0.000001 BTC"
-                                bold
-                            />
-                        </Cell>
-                        <Cell
-                            start={<InitialsAvatar userId={1} name="Bitcoin" />}
-                        >
-                            <Cell.Text
-                                title="Bitcoin"
-                                description="0.000001 BTC"
-                                bold
-                            />
-                        </Cell>
-                    </SectionList.Item>
-                </SectionList>
-                <MainButton text="Confirm" onClick={handlers.modal1.close} />
+                <ModalView.Page id="list">
+                    <AssetListPage onSelect={setAsset} />
+                </ModalView.Page>
+                <ModalView.Page id="detail">
+                    <AssetDetailPage asset={asset} />
+                </ModalView.Page>
+                <ModalView.Page id="info">
+                    <AssetInfoPage asset={asset} />
+                </ModalView.Page>
             </ModalView>
             <ModalView
-                key="modal2"
-                isOpen={modals.modal2}
-                onClose={handlers.modal2.close}
+                key="simple"
+                isOpen={modals.simple}
+                onClose={handlers.simple.close}
                 style={{
                     backgroundColor: "var(--tg-theme-secondary-bg-color)",
                 }}
-                useCssAnimation={true}
             >
-                <PanelHeader>Modal (CSS)</PanelHeader>
+                <PanelHeader
+                    left="Cancel"
+                    onLeft={handlers.simple.close}
+                    right="Done"
+                    onRight={handlers.simple.close}
+                >
+                    Simple Modal
+                </PanelHeader>
                 <SectionList>
                     <SectionList.Item>
-                        <Cell start={<ImageAvatar src={getAssetIcon("TON")} />}>
-                            <Cell.Text
-                                title="Toncoin"
-                                description="100 TON"
-                                bold
-                            />
-                        </Cell>
-                        <Cell
-                            start={<ImageAvatar src={getAssetIcon("USDT")} />}
-                        >
-                            <Cell.Text
-                                title="Dollars"
-                                description="100 USDT"
-                                bold
-                            />
-                        </Cell>
-                        <Cell start={<ImageAvatar src={getAssetIcon("BTC")} />}>
-                            <Cell.Text
-                                title="Bitcoin"
-                                description="0.000001 BTC"
-                                bold
-                            />
-                        </Cell>
-                        <Cell
-                            start={<InitialsAvatar userId={1} name="Bitcoin" />}
-                        >
-                            <Cell.Text
-                                title="Bitcoin"
-                                description="0.000001 BTC"
-                                bold
-                            />
-                        </Cell>
+                        {DEMO_ASSETS.map((item) => (
+                            <Cell
+                                key={item.symbol}
+                                start={
+                                    <ImageAvatar
+                                        src={getAssetIcon(item.symbol)}
+                                    />
+                                }
+                            >
+                                <Cell.Text
+                                    title={item.name}
+                                    description={item.amount}
+                                    bold
+                                />
+                            </Cell>
+                        ))}
                     </SectionList.Item>
                 </SectionList>
-                <MainButton text="Confirm" onClick={handlers.modal2.close} />
+                <MainButton text="Confirm" onClick={handlers.simple.close} />
             </ModalView>
         </>
     )
@@ -114,14 +83,14 @@ const Modals = ({ modals, handlers }) => {
 
 Modals.propTypes = {
     modals: PropTypes.shape({
-        modal1: PropTypes.bool,
-        modal2: PropTypes.bool,
+        tray: PropTypes.bool,
+        simple: PropTypes.bool,
     }),
     handlers: PropTypes.shape({
-        modal1: PropTypes.shape({
+        tray: PropTypes.shape({
             close: PropTypes.func,
         }),
-        modal2: PropTypes.shape({
+        simple: PropTypes.shape({
             close: PropTypes.func,
         }),
     }),
