@@ -182,6 +182,12 @@ const config = [
                         import("../components/Calligraph/Calligraph.showcase")
                 ),
             },
+            {
+                title: "Fit Text",
+                component: lazyWithPreload(
+                    () => import("../components/FitText/FitText.showcase")
+                ),
+            },
         ],
     },
     {

@@ -28,6 +28,7 @@ import SnackbarSkeleton from "../components/Snackbar/Snackbar.skeleton"
 import StreamingTextSkeleton from "../components/StreamingText/StreamingText.skeleton"
 import ParticleEffectSkeleton from "../components/ParticleEffect/ParticleEffect.skeleton"
 import CalligraphSkeleton from "../components/Calligraph/Calligraph.skeleton"
+import FitTextSkeleton from "../components/FitText/FitText.skeleton"
 import NavigationBarSkeleton from "./showcases/NavigationBar/NavigationBar.skeleton"
 import BottomBarSkeleton from "./showcases/BottomBar/BottomBar.skeleton"
 import HapticFeedbackSkeleton from "./showcases/HapticFeedback/HapticFeedback.skeleton"
@@ -63,6 +64,7 @@ const pageSkeletons = {
     "Streaming Text": StreamingTextSkeleton,
     "Particle Effect": ParticleEffectSkeleton,
     Calligraph: CalligraphSkeleton,
+    "Fit Text": FitTextSkeleton,
     "Navigation Bar": NavigationBarSkeleton,
     "Bottom Bar": BottomBarSkeleton,
     "Haptic Feedback": HapticFeedbackSkeleton,
