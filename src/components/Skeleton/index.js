@@ -85,10 +85,11 @@ Redaction.propTypes = {
 export const SkeletonBlock = ({ className = "", as: Tag = "div", active }) => {
     const context = useSkeletonContext()
     const on = active ?? context ?? true
+    const redactionClassName = useRedactionClassName(on)
     return (
         <Tag
             ref={on ? waveRef : undefined}
-            className={`${className} ${useRedactionClassName(on)}`.trim()}
+            className={`${className} ${redactionClassName}`.trim()}
         />
     )
 }

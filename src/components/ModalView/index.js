@@ -88,18 +88,19 @@ const ModalView = ({
 
     useFocusTrap(modalRef, isOpen)
 
+    // Cleanup restores on close AND on unmount-while-open; a closed modal
+    // never touches the page chrome, so mounting one cannot clobber a header
+    // color the host page set itself.
     useEffect(() => {
+        if (!isOpen) return
         const headerColor = getHeaderColor()
-        const headerColorWithOverlay = `#${blendColors(headerColor, "#000000", 0.5)}`
-
-        if (isOpen) {
-            document.body.style.overflow = "hidden"
-            WebApp.disableVerticalSwipes?.()
-            WebApp.setHeaderColor(headerColorWithOverlay)
-        } else {
+        document.body.style.overflow = "hidden"
+        WebApp.disableVerticalSwipes?.()
+        WebApp.setHeaderColor(`#${blendColors(headerColor, "#000000", 0.5)}`)
+        return () => {
             document.body.style.overflow = "auto"
             WebApp.enableVerticalSwipes?.()
-            WebApp.setHeaderColor(headerColor)
+            WebApp.setHeaderColor(getHeaderColor())
         }
     }, [isOpen])
 
@@ -114,15 +115,6 @@ const ModalView = ({
         window.addEventListener("keydown", onKeyDown)
         return () => window.removeEventListener("keydown", onKeyDown)
     }, [isOpen, canPop, pop, onClose])
-
-    useEffect(
-        () => () => {
-            document.body.style.overflow = "auto"
-            WebApp.enableVerticalSwipes?.()
-            WebApp.setHeaderColor(getHeaderColor())
-        },
-        []
-    )
 
     const overlayClass = [
         styles.overlay,
