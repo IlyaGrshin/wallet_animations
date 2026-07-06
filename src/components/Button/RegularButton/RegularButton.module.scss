@@ -30,6 +30,17 @@
         color: var(--text-disabled-color);
     }
 
+    // Skeleton pill: drop the button's own fill and hide the label so only the
+    // redaction shimmer (::after, clipped by the button's overflow + radius)
+    // shows. Full-height coverage via inset-bottom 0.
+    &.skeleton {
+        --skeleton-inset-bottom: 0px;
+
+        background-color: transparent;
+        color: transparent;
+        cursor: default;
+    }
+
     &[data-fill="true"] {
         width: 100%;
     }

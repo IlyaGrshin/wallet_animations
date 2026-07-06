@@ -1,3 +1,5 @@
+import pageSkeletons from "./pageSkeletons"
+
 const PREFIX_MAP = {
     Components: "showcase",
     "Text Effects": "text-effects",
@@ -46,6 +48,10 @@ export function flattenRoutes(config) {
             return {
                 path: `/${prefix}/${slug}${page.routeSuffix || ""}`,
                 component: page.component,
+                // Per-screen loading skeleton: an explicit page.skeleton wins,
+                // otherwise fall back to the title-keyed registry (router uses
+                // PageSkeleton when neither is set).
+                skeleton: page.skeleton ?? pageSkeletons[page.title],
                 title: page.title,
                 slug,
             }

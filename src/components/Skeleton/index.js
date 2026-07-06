@@ -77,6 +77,28 @@ Redaction.propTypes = {
     children: PropTypes.node,
 }
 
+// Non-text redaction surface: a sized element that shimmers like the text bars,
+// with its shape (size / radius) supplied by `className`. Redacts in step with
+// an enclosing Skeleton provider; a bare block with no provider defaults to
+// redacted, since skeleton screens only render these in loading states. Pass
+// `active` to force the state, `as` to change the element (e.g. "span").
+export const SkeletonBlock = ({ className = "", as: Tag = "div", active }) => {
+    const context = useSkeletonContext()
+    const on = active ?? context ?? true
+    return (
+        <Tag
+            ref={on ? waveRef : undefined}
+            className={`${className} ${useRedactionClassName(on)}`.trim()}
+        />
+    )
+}
+
+SkeletonBlock.propTypes = {
+    className: PropTypes.string,
+    as: PropTypes.elementType,
+    active: PropTypes.bool,
+}
+
 const Skeleton = ({ active = true, children }) => (
     <SkeletonContext.Provider value={Boolean(active)}>
         {children}

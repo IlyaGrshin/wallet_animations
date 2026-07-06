@@ -5,7 +5,7 @@ import { useHashLocation } from "wouter/use-hash-location"
 import { useLocation } from "wouter"
 import PageTransition from "../components/PageTransition"
 import { useFrozenLocation } from "../components/PageTransition/context"
-import Spinner from "../components/Spinner"
+import PageSkeleton from "../components/PageSkeleton"
 import SkinSwitcher from "../components/SkinSwitcher"
 import ErrorBoundary from "../components/ErrorBoundary"
 import RouteErrorFallback from "./RouteErrorFallback"
@@ -44,13 +44,19 @@ const Routes = () => {
         <ErrorBoundary fallback={<RouteErrorFallback />} resetKeys={[location]}>
             <Switch location={location}>
                 <Route path="/" component={CatalogPage} />
-                {routes.map(({ path, component: Component }) => (
-                    <Route key={path} path={path}>
-                        <Suspense fallback={<Spinner centered size={48} />}>
-                            <Component />
-                        </Suspense>
-                    </Route>
-                ))}
+                {routes.map(
+                    ({ path, component: Component, skeleton: Fallback }) => (
+                        <Route key={path} path={path}>
+                            <Suspense
+                                fallback={
+                                    Fallback ? <Fallback /> : <PageSkeleton />
+                                }
+                            >
+                                <Component />
+                            </Suspense>
+                        </Route>
+                    )
+                )}
                 <Route>
                     <Redirect to="/" />
                 </Route>

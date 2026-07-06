@@ -58,6 +58,22 @@
         }
     }
 
+    // Skeleton pill: drop the fill, hide icon + label (kept in flow for size),
+    // and clip the redaction shimmer to the button's radius.
+    &.skeleton {
+        --skeleton-inset-bottom: 0px;
+
+        overflow: hidden;
+        background-color: transparent;
+        color: transparent;
+        cursor: default;
+
+        svg,
+        path {
+            visibility: hidden;
+        }
+    }
+
     :global(body.apple) & {
         gap: 0;
         padding: 8px 0;
