@@ -1,12 +1,16 @@
+import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { Calligraph } from "calligraph"
 import * as styles from "./Wheel.module.scss"
 
-import useHorizontalDrag from "./useHorizontalDrag"
+import Tick from "./Tick"
 import useWheelSnap from "./useWheelSnap"
 
 const CenterIndicator = <div className={styles.centerIndicator} />
+
+// Past this many pixels of drag the release is a drag end, not a tap
+const TAP_SLOP = 5
 
 const Wheel = ({
     value,
@@ -19,12 +23,9 @@ const Wheel = ({
     enableHaptic = true,
     className,
 }) => {
-    const {
-        dragControls,
-        onPointerDown,
-        onDragEnd: onDragEndScroll,
-        onPointerUp,
-    } = useHorizontalDrag(disabled)
+    const containerRef = useRef(null)
+    const draggedRef = useRef(false)
+    const [radius, setRadius] = useState(250)
 
     const {
         currentValue,
@@ -42,8 +43,25 @@ const Wheel = ({
         max,
         disabled,
         enableHaptic,
-        onDragEndScroll,
     })
+
+    // The drum spans the full container: ticks fold past its edges at 90deg
+    useLayoutEffect(() => {
+        const node = containerRef.current
+        if (!node) return
+        const measure = () => {
+            if (node.clientWidth > 0) setRadius(node.clientWidth / 2)
+        }
+        measure()
+        const observer = new ResizeObserver(measure)
+        observer.observe(node)
+        return () => observer.disconnect()
+    }, [])
+
+    const handleTickSelect = (tickValue) => {
+        if (disabled || draggedRef.current) return
+        animateToValue(tickValue)
+    }
 
     const handleKeyDown = (e) => {
         if (disabled) return
@@ -99,6 +117,7 @@ const Wheel = ({
             </div>
 
             <div
+                ref={containerRef}
                 className={styles.wheelContainer}
                 role="slider"
                 aria-label="Value selector"
@@ -115,23 +134,29 @@ const Wheel = ({
                     className={styles.ticksContainer}
                     style={{ x }}
                     drag={disabled ? false : "x"}
-                    dragControls={dragControls}
-                    dragListener={false}
                     dragConstraints={dragConstraints}
                     dragElastic={0.1}
                     dragMomentum={false}
-                    onPointerDown={onPointerDown}
-                    onPointerUp={onPointerUp}
-                    onDrag={handleDrag}
+                    onPointerDown={() => {
+                        draggedRef.current = false
+                    }}
+                    onDrag={(event, info) => {
+                        if (Math.abs(info.offset.x) > TAP_SLOP) {
+                            draggedRef.current = true
+                        }
+                        handleDrag()
+                    }}
                     onDragEnd={handleDragEnd}
                 >
-                    {ticks.map((tickValue) => (
-                        <div key={tickValue} className={styles.tick}>
-                            <span className={styles.tickNumber}>
-                                {tickValue}
-                            </span>
-                            <span className={styles.tickMark} />
-                        </div>
+                    {ticks.map((tickValue, index) => (
+                        <Tick
+                            key={tickValue}
+                            value={tickValue}
+                            index={index}
+                            x={x}
+                            radius={radius}
+                            onSelect={handleTickSelect}
+                        />
                     ))}
                 </m.div>
             </div>

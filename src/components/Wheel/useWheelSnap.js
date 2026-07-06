@@ -27,13 +27,16 @@ const useWheelSnap = ({
     max = 40,
     disabled = false,
     enableHaptic = true,
-    onDragEndScroll,
 }) => {
     const isControlled = value !== undefined
     const [uncontrolled, setUncontrolled] = useState(defaultValue)
     const currentValue = isControlled ? value : uncontrolled
     const [previousValue, setPreviousValue] = useState(currentValue)
     const currentValueRef = useRef(currentValue)
+    // Values reported through onChange: when the controlled prop echoes one
+    // of them back, x is already there (or animating there with the drag's
+    // velocity) — re-animating would fight the gesture and kill momentum.
+    const lastInternalValueRef = useRef(currentValue)
 
     const x = useMotionValue(-(currentValue - 1) * STEP_WIDTH)
 
@@ -53,6 +56,7 @@ const useWheelSnap = ({
             if (enableHaptic && clamped !== currentValueRef.current) {
                 WebApp.HapticFeedback.selectionChanged()
             }
+            lastInternalValueRef.current = clamped
             if (!isControlled) setUncontrolled(clamped)
             onChange?.(clamped)
         },
@@ -77,7 +81,6 @@ const useWheelSnap = ({
 
     const handleDragEnd = useCallback(
         (_, info) => {
-            onDragEndScroll()
             if (disabled) return
 
             const currentX = x.get()
@@ -89,15 +92,16 @@ const useWheelSnap = ({
             animate(x, targetX, { ...SPRING.SNAP, velocity })
             setValueWithHaptic(targetValue)
         },
-        [disabled, x, max, setValueWithHaptic, onDragEndScroll]
+        [disabled, x, max, setValueWithHaptic]
     )
 
-    // Sync x position when controlled value changes externally
+    // Sync x position when the controlled value changes externally
     useEffect(() => {
-        if (isControlled && value !== undefined) {
-            animate(x, -(value - 1) * STEP_WIDTH, SPRING.GENTLE)
-        }
-    }, [value, isControlled, x])
+        if (!isControlled || value === undefined) return
+        if (value === lastInternalValueRef.current) return
+        lastInternalValueRef.current = value
+        animate(x, -(clamp(value, max) - 1) * STEP_WIDTH, SPRING.GENTLE)
+    }, [value, isControlled, max, x])
 
     const dragConstraints = useMemo(
         () => ({ left: -(max - 1) * STEP_WIDTH, right: 0 }),
