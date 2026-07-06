@@ -7,6 +7,17 @@
     --image-cell-offset: -6px;
 }
 
+// A cell that closes the visual list drops its separator, at any nesting
+// depth (TabContent slides, Collapsible content). Closing the list means
+// being the last sibling, or being followed only by a collapsed last sibling
+// that currently renders nothing (aria-hidden, e.g. a closed Collapsible).
+// Wrappers that sit mid-section re-arm the separator through
+// --last-cell-separator-height (see SectionList.module.scss).
+.root:last-child,
+.root:has(+ [aria-hidden="true"]:last-child) {
+    --cell-separator-height: var(--last-cell-separator-height, 0px);
+}
+
 .root {
     display: flex;
     flex-direction: row;

@@ -23,10 +23,15 @@
             align-self: stretch;
         }
 
-        .container > * {
-            &:last-child {
-                --cell-separator-height: 0;
-            }
+        // The section's closing cell hides its own separator (Cell.module.scss
+        // keys off :last-child); wrappers on the last-child chain pass that
+        // down by inheritance. Anything off the chain sits mid-list (e.g. the
+        // Wallet small-assets group with a button after it), so its own last
+        // cell re-arms the separator. A trailing aria-hidden sibling (a closed
+        // Collapsible) renders nothing, so it does not count as content after.
+        .container
+            :not(:last-child, :has(+ [aria-hidden="true"]:last-child)) {
+            --last-cell-separator-height: var(--cell-separator-height);
         }
     }
 
