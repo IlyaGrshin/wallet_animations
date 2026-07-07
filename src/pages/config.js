@@ -11,6 +11,12 @@ const config = [
                 ),
             },
             {
+                title: "Cell Stack",
+                component: lazyWithPreload(
+                    () => import("../components/CellStack/CellStack.showcase")
+                ),
+            },
+            {
                 title: "Picker",
                 component: lazyWithPreload(
                     () => import("../components/Picker/Picker.showcase")
