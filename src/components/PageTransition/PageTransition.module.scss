@@ -16,7 +16,10 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    will-change: transform, opacity;
+
+    // No will-change here: `will-change: opacity` makes the scroller a
+    // backdrop root and AppBar's glass buttons lose their blur. Motion
+    // promotes the element itself during route transitions.
 }
 
 .withBottomInset {
