@@ -1,5 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
+import WebApp from "../../lib/twa"
 import * as styles from "./Switch.module.scss"
 
 /**
@@ -28,6 +29,8 @@ function Switch({
     }
 
     const toggle = () => {
+        WebApp.HapticFeedback.selectionChanged()
+
         if (isControlled) {
             emitChange(!checked)
             return

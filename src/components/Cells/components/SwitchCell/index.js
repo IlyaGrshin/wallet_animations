@@ -1,5 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
+import WebApp from "../../../../lib/twa"
 import Cell from "../../index"
 import Switch from "../../../Switch"
 
@@ -27,6 +28,7 @@ const SwitchCell = ({
 
     const handleClick = () => {
         if (disabled) return
+        WebApp.HapticFeedback.selectionChanged()
         if (isControlled) {
             handleChange(!checked)
             return
