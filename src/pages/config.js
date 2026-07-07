@@ -35,6 +35,12 @@ const config = [
                 ),
             },
             {
+                title: "Panel Header",
+                component: lazyWithPreload(
+                    () => import("../components/PanelHeader/PanelHeader.showcase")
+                ),
+            },
+            {
                 title: "Spinner",
                 component: lazyWithPreload(
                     () => import("../components/Spinner/Spinner.showcase")

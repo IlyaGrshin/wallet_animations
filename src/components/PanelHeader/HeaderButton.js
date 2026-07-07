@@ -1,0 +1,59 @@
+import PropTypes from "prop-types"
+import * as m from "motion/react-m"
+
+import { GlassBorder } from "../GlassEffect"
+import Text from "../Text"
+
+import * as styles from "./HeaderButton.module.scss"
+
+export const HEADER_BUTTON_VARIANTS = [
+    "regular",
+    "secondary",
+    "accent",
+    "overlay",
+]
+
+// A glass action in the panel header: a text label (auto-sized pill) or an
+// icon (44x44 square). Glass lives on the element itself, not via a
+// GlassContainer child, so the tap scale can't make Safari drop the
+// backdrop-filter mid-animation. Only the glass variants carry a GlassBorder.
+const HeaderButton = ({ children, onClick, variant = "regular" }) => {
+    const isText = typeof children === "string"
+    const hasRim = variant === "regular" || variant === "overlay"
+
+    return (
+        <m.button
+            type="button"
+            className={`${styles.button} ${styles[variant]} ${
+                isText ? styles.label : styles.icon
+            }`}
+            onClick={onClick}
+            whileTap={{ scale: 1.1 }}
+            transition={{
+                scale: { type: "spring", stiffness: 800, damping: 40 },
+            }}
+        >
+            {hasRim && <GlassBorder />}
+            <span className={styles.content}>
+                {isText ? (
+                    <Text
+                        apple={{ variant: "body", weight: "medium" }}
+                        material={{ variant: "body", weight: "medium" }}
+                    >
+                        {children}
+                    </Text>
+                ) : (
+                    children
+                )}
+            </span>
+        </m.button>
+    )
+}
+
+HeaderButton.propTypes = {
+    children: PropTypes.node,
+    onClick: PropTypes.func,
+    variant: PropTypes.oneOf(HEADER_BUTTON_VARIANTS),
+}
+
+export default HeaderButton

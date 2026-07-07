@@ -7,6 +7,9 @@ import Cell from "../../Cells"
 import ImageAvatar from "../../ImageAvatar"
 
 import { getAssetIcon } from "../../../utils/AssetsMap"
+import ChevronLeftIcon from "../../../icons/28/Chevron Left.svg?react"
+import EllipsisIcon from "../../../icons/28/Elipsis.svg?react"
+import XmarkIcon from "../../../icons/28/Xmark.svg?react"
 
 export const DEMO_ASSETS = [
     {
@@ -57,7 +60,7 @@ export const AssetListPage = ({ onSelect }) => {
 
     return (
         <>
-            <PanelHeader left="Cancel" onLeft={close}>
+            <PanelHeader left={<XmarkIcon />} onLeft={close}>
                 Assets
             </PanelHeader>
             <SectionList>
@@ -98,7 +101,12 @@ export const AssetDetailPage = ({ asset }) => {
 
     return (
         <>
-            <PanelHeader left="Back" onLeft={pop}>
+            <PanelHeader
+                left={<ChevronLeftIcon />}
+                onLeft={pop}
+                right={<EllipsisIcon />}
+                onRight={() => push("info")}
+            >
                 {asset.name}
             </PanelHeader>
             <SectionList>
@@ -146,7 +154,7 @@ export const AssetInfoPage = ({ asset }) => {
 
     return (
         <>
-            <PanelHeader left="Back" onLeft={pop}>
+            <PanelHeader left={<ChevronLeftIcon />} onLeft={pop}>
                 About {asset.name}
             </PanelHeader>
             <SectionList>

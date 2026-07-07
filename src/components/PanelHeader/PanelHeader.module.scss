@@ -1,83 +1,91 @@
 .root {
     position: relative;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
 
-    .body {
+    .side {
+        position: relative;
+        z-index: 2;
         display: flex;
-        flex: 1 0 0;
-        align-self: stretch;
-
-        .left {
-            display: flex;
-            align-items: center;
-            flex: 1 0 0;
-            align-self: stretch;
-            padding: 0 16px;
-            color: var(--tg-theme-accent-text-color);
-        }
-
-        .right {
-            display: flex;
-            align-items: center;
-            flex: 1 0 0;
-            align-self: stretch;
-            padding: 0 16px;
-            justify-content: flex-end;
-            color: var(--tg-theme-accent-text-color);
-        }
+        align-items: center;
+        min-width: 44px;
+        min-height: 44px;
     }
 
+    .trailing {
+        justify-content: flex-end;
+    }
+
+    // Absolute-centred; pointer-events pass through to the drag handle.
     .middle {
         position: absolute;
+        inset: 0;
         display: flex;
-        width: 100%;
-        height: 100%;
         align-items: center;
         justify-content: center;
         pointer-events: none;
     }
 
-    // Bare text button: the surrounding .left/.right areas carry the layout,
-    // the accent color comes from them via inheritance.
-    .action {
-        appearance: none;
-        display: flex;
-        align-items: center;
-        align-self: stretch;
-        background: none;
-        border: 0;
-        padding: 0;
-        margin: 0;
-        color: inherit;
-        font: inherit;
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent;
+    // Over-content state: the title inherits white, matching overlay buttons.
+    .middleOverlay {
+        color: var(--tg-theme-button-text-color);
     }
 
-    :global(body.apple) & {
+    .titlePill {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 44px;
+        padding: 0 12px;
+        border-radius: 22px;
+    }
 
-        &.modalHeight {
-            height: 56px;
+    .titleContent {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    // Content is pinned 10px above the bottom, so the taller in-modal bar lands
+    // its extra height as a larger top inset (10px standalone, 16px in a modal).
+    :global(body.apple) & {
+        height: 64px;
+        padding: 0 16px 10px;
+        align-items: flex-end;
+
+        &.inModal {
+            height: 70px;
+        }
+
+        .middle {
+            top: auto;
+            bottom: 10px;
+            height: 44px;
         }
     }
 
+    // Material: flat left-aligned app bar, no side actions.
     :global(body.material) & {
         height: 56px;
+        padding: 0 var(--side-padding);
 
-        &.modalHeight {
+        &.inModal {
             height: 60px;
             padding-top: 6px;
         }
 
-        .left,
-        .right {
+        .side {
             display: none;
         }
 
         .middle {
+            justify-content: flex-start;
             padding: 0 var(--side-padding);
-            justify-content: left;
         }
     }
 }

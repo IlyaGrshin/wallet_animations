@@ -9,13 +9,23 @@ import WebApp, { BackButton } from "../../lib/twa"
 
 import ModalPage, { parsePages } from "./ModalPage"
 import TrayPages from "./TrayPages"
+import ModalPanel from "./ModalPanel"
+import { ModalChromeContext } from "../PanelHeader/context"
 import { useDismissDrag } from "./useDismissDrag"
 import { blendColors } from "../../utils/common"
 import { useFocusTrap } from "../../hooks/useFocusTrap"
 import { useSplitView } from "../../hooks/useSplitView"
+import { useSkin } from "../../hooks/DeviceProvider"
 import { SPRING } from "../../utils/animations"
 
 const getHeaderColor = () => WebApp.themeParams.secondary_bg_color || "#EFEFF4"
+
+// Squircle the panel corners (34px Apple, 16px Material). The sheet rounds its
+// top edge only; the centred dialog rounds all four. CSS border-radius is the
+// fallback shape.
+const APPLE_RADIUS = 34
+const MATERIAL_RADIUS = 16
+const SMOOTHING = 0.6
 
 // Entrance/exit read the viewport at animation time (not mount time) so the
 // slide stays correct after keyboard-driven viewport resizes.
@@ -44,6 +54,7 @@ const ModalView = ({
 }) => {
     const modalRef = useRef(null)
     const isWide = useSplitView()
+    const { isApple } = useSkin()
 
     const pages = parsePages(children)
     const isTray = pages !== null
@@ -137,6 +148,13 @@ const ModalView = ({
         isWide ? styles.dialog : styles.bottomSheet,
         isTray ? styles.tray : styles.plain,
     ].join(" ")
+    const corner = {
+        radius: isApple ? APPLE_RADIUS : MATERIAL_RADIUS,
+        smoothing: SMOOTHING,
+    }
+    const corners = isWide
+        ? corner
+        : { topLeft: corner, topRight: corner, bottomLeft: 0, bottomRight: 0 }
 
     return createPortal(
         <AnimatePresence>
@@ -148,8 +166,9 @@ const ModalView = ({
                         {...overlayMotion}
                         onClick={onClose}
                     >
-                        <m.div
-                            ref={modalRef}
+                        <ModalPanel
+                            panelRef={modalRef}
+                            corners={corners}
                             role="dialog"
                             aria-modal="true"
                             className={panelClass}
@@ -163,26 +182,28 @@ const ModalView = ({
                             onClick={(event) => event.stopPropagation()}
                             {...props}
                         >
-                            {isTray ? (
-                                <TrayPages
-                                    pages={pages}
-                                    activeId={activeId}
-                                    depth={nav.stack.length}
-                                    direction={nav.direction}
-                                    nav={{
-                                        push,
-                                        pop,
-                                        canPop,
-                                        activeId,
-                                        close: onClose,
-                                    }}
-                                />
-                            ) : (
-                                <div className={styles.content}>
-                                    {children}
-                                </div>
-                            )}
-                        </m.div>
+                            <ModalChromeContext.Provider value={true}>
+                                {isTray ? (
+                                    <TrayPages
+                                        pages={pages}
+                                        activeId={activeId}
+                                        depth={nav.stack.length}
+                                        direction={nav.direction}
+                                        nav={{
+                                            push,
+                                            pop,
+                                            canPop,
+                                            activeId,
+                                            close: onClose,
+                                        }}
+                                    />
+                                ) : (
+                                    <div className={styles.content}>
+                                        {children}
+                                    </div>
+                                )}
+                            </ModalChromeContext.Provider>
+                        </ModalPanel>
                     </m.div>
                 </>
             )}

@@ -1,0 +1,89 @@
+.button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 22px;
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &:focus,
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+// Glass lives on the element itself (see HeaderButton.js) so the tap scale
+// doesn't drop the backdrop-filter in Safari.
+.regular {
+    background: var(--glass-tint-background);
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+    color: var(--tg-theme-text-color);
+    backdrop-filter: blur(8px);
+
+    @supports (-apple-visual-effect: -apple-system-glass-material) {
+        -apple-visual-effect: -apple-system-glass-material;
+        backdrop-filter: none;
+    }
+}
+
+// Translucent glass for sitting over content; white glyph.
+.overlay {
+    background: rgb(from var(--tg-theme-section-bg-color) r g b / 10%);
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+    color: var(--tg-theme-button-text-color);
+    backdrop-filter: blur(20px);
+}
+
+.secondary {
+    background: var(--tertiary-fill-background);
+    color: var(--tg-theme-section-header-text-color);
+}
+
+.accent {
+    background: var(--tg-theme-accent-text-color);
+    color: var(--tg-theme-button-text-color);
+    box-shadow:
+        inset 0.67px 0.67px 0 0 rgb(255 255 255 / 20%),
+        inset -0.67px -0.67px 0 0 rgb(255 255 255 / 20%);
+
+    // The glyph/label blends into the accent fill (Figma), softening pure white.
+    .content {
+        mix-blend-mode: overlay;
+    }
+}
+
+.icon {
+    width: 44px;
+}
+
+.label {
+    padding: 0 14px;
+}
+
+// Sits above the glass background and the GlassBorder rim.
+.content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+
+    // Any icon renders in a fixed 28px box and inherits the button colour.
+    svg {
+        display: block;
+        width: 28px;
+        height: 28px;
+    }
+
+    svg path {
+        fill: currentcolor;
+    }
+}
