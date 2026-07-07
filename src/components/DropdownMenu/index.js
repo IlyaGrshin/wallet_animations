@@ -218,7 +218,7 @@ const DropdownMenu = ({ items, trigger }) => {
                                     zIndex: 1000,
                                 }}
                             >
-                                <GlassBorder />
+                                <GlassBorder muted />
                                 {items.map((item, index) => (
                                     <MenuItem
                                         key={index}
