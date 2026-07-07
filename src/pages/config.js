@@ -227,6 +227,8 @@ const config = [
     },
     {
         category: "Prototypes",
+        // Full app prototypes own their chrome — no browser AppBar.
+        header: false,
         pages: [
             {
                 title: "Input Page",

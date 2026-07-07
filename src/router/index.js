@@ -16,11 +16,13 @@ import CatalogList from "../components/CatalogList"
 import useSplitView from "../hooks/useSplitView"
 
 import Page from "../components/Page"
+import AppBar from "../components/AppBar"
 import config from "../pages/config"
 import { flattenRoutes, isSplitEligible } from "../pages/configHelpers"
 import CatalogPage from "../pages/CatalogPage"
 
 const routes = flattenRoutes(config)
+const CATALOG_TITLE = "UI Prototype"
 
 function Redirect({ to }) {
     const [, navigate] = useLocation()
@@ -43,10 +45,20 @@ const Routes = () => {
     return (
         <ErrorBoundary fallback={<RouteErrorFallback />} resetKeys={[location]}>
             <Switch location={location}>
-                <Route path="/" component={CatalogPage} />
+                <Route path="/">
+                    <AppBar title={CATALOG_TITLE} back={false} />
+                    <CatalogPage />
+                </Route>
                 {routes.map(
-                    ({ path, component: Component, skeleton: Fallback }) => (
+                    ({
+                        path,
+                        component: Component,
+                        skeleton: Fallback,
+                        title,
+                        header,
+                    }) => (
                         <Route key={path} path={path}>
+                            <AppBar title={title} header={header} />
                             <Suspense
                                 fallback={
                                     Fallback ? <Fallback /> : <PageSkeleton />
@@ -95,6 +107,7 @@ function AppRoutes() {
             <Page mode="secondary" key={location} />
             <SplitView>
                 <SplitView.Sidebar>
+                    <AppBar title={CATALOG_TITLE} back={false} />
                     <CatalogList />
                 </SplitView.Sidebar>
                 <SplitView.Detail>
