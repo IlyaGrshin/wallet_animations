@@ -2,6 +2,16 @@ import { useState } from "react"
 import PropTypes from "prop-types"
 import * as styles from "./Switch.module.scss"
 
+/**
+ * iOS/Material toggle. Controlled when `value` is passed, otherwise
+ * uncontrolled from `defaultValue`. Stops click propagation, so it's safe
+ * inside a tappable Cell. onChange receives the next boolean.
+ * @param {boolean} [props.value] Controlled state.
+ * @param {boolean} [props.defaultValue=false] Initial state when uncontrolled.
+ * @param {(next: boolean) => void} [props.onChange]
+ * @example
+ * <Switch defaultValue onChange={setEnabled} />
+ */
 function Switch({
     value,
     defaultValue = false,

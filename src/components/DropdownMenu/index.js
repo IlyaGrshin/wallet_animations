@@ -39,6 +39,14 @@ MenuItem.propTypes = {
     ]),
 }
 
+/**
+ * Portal-rendered menu with keyboard nav (arrows / Enter / Esc) and edge-aware
+ * placement. Without `trigger` it renders the selected item as the button.
+ * @param {string[]} props.items Menu options (required, non-empty).
+ * @param {import("react").ReactNode} [props.trigger] Custom trigger; defaults to selected item.
+ * @example
+ * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
+ */
 const DropdownMenu = ({ items, trigger }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])

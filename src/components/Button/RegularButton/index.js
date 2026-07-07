@@ -11,6 +11,16 @@ import Skeleton, {
 import * as styles from "./RegularButton.module.scss"
 import { useSkin } from "../../../hooks/DeviceProvider"
 
+/**
+ * Pill button. Reuse instead of a raw <button>. Extra props (onClick, etc.)
+ * spread onto the underlying motion element.
+ * @param {"filled"|"outlined"} props.variant
+ * @param {string} props.label
+ * @param {boolean} [props.isShine] Sweep highlight; only affects `filled`.
+ * @param {boolean} [props.isFill] Stretch to fill the container width.
+ * @example
+ * <RegularButton variant="filled" label="Pay" onClick={onPay} isFill />
+ */
 export const RegularButton = ({
     variant,
     label,

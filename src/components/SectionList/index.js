@@ -11,6 +11,16 @@ const APPLE_RADIUS = 26
 const MATERIAL_RADIUS = 16
 const SMOOTHING = 0.6 // Figma iOS squircle smoothing
 
+/**
+ * Grouped list container with squircled section corners. Wrap rows in
+ * `SectionList.Item`, which adds an optional header and a footer description.
+ * @example
+ * <SectionList>
+ *   <SectionList.Item header="General" description="Applies to all wallets">
+ *     <Cell><Cell.Text title="Currency" /></Cell>
+ *   </SectionList.Item>
+ * </SectionList>
+ */
 const SectionList = ({ children, ...props }) => {
     return (
         <section className={styles.root} {...props}>

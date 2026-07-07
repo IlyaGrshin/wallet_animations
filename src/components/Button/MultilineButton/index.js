@@ -7,6 +7,15 @@ import Skeleton, {
 } from "../../Skeleton"
 import * as styles from "./MultilineButton.module.scss"
 
+/**
+ * Compact icon-over-label action tile (e.g. Send / Add). Extra props spread
+ * onto the root element.
+ * @param {"filled"|"plain"} props.variant
+ * @param {import("react").ReactNode} props.icon
+ * @param {string} props.label
+ * @example
+ * <MultilineButton variant="filled" icon={<ArrowUpIcon />} label="Send" />
+ */
 export function MultilineButton({ variant, icon, label, style, ...props }) {
     // Under a Skeleton provider the whole button becomes a neutral gray pill;
     // the icon and label stay in flow (for size) but are hidden.

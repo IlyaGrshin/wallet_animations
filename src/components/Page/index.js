@@ -5,6 +5,16 @@ import { useSplitViewContext } from "../SplitView/context"
 
 const { setHeaderColor, setBackgroundColor } = WebApp
 
+/**
+ * Screen wrapper that syncs the TWA header/background colors and the
+ * --page-background var (drives AppBar/TabBar fades). Renders children as-is.
+ * @param {"primary"|"secondary"} [props.mode] Which --tg-theme bg to use.
+ * @param {string} [props.headerColor]     Hex without '#', overrides mode.
+ * @param {string} [props.backgroundColor] Hex without '#', overrides mode.
+ * @param {boolean} [props.expandOnMount]  Call WebApp.expand() on mount.
+ * @example
+ * <Page mode="primary" expandOnMount>{content}</Page>
+ */
 const Page = ({
     children,
     mode = "secondary",

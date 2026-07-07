@@ -93,10 +93,18 @@ StackCard.propTypes = {
     total: PropTypes.number.isRequired,
 }
 
-// A clickable group of cells that drops into a list where a section would go.
-// Collapsed, every card after the first tucks behind it as a peeking stack;
-// tapping toggles between the stack and a plain column. The first child is
-// the front card — usually a CellStack.Morph so its content morphs too.
+/**
+ * Clickable group of cells that drops into a list where a section would go.
+ * Collapsed, every card after the first tucks behind it as a peeking stack;
+ * tapping toggles between the stack and a plain column. The first child is the
+ * front card — usually a `CellStack.Morph` so its content morphs too.
+ * @param {boolean} [props.defaultExpanded=false] Start expanded.
+ * @example
+ * <CellStack>
+ *   <CellStack.Morph>{frontCard}</CellStack.Morph>
+ *   <Cell>{...}</Cell>
+ * </CellStack>
+ */
 function CellStack({ children, defaultExpanded = false }) {
     const { isApple } = useSkin()
     const [expanded, setExpanded] = useState(defaultExpanded)
