@@ -33,7 +33,12 @@ const Detail = ({ children }) => {
     useResizeObserver(paneRef, (entry) => setPaneWidth(entry.contentRect.width))
 
     const style = {}
-    if (background) style.background = background
+    if (background) {
+        style.background = background
+        // Pane-scoped page color for fade gradients (AppBar/TabBar), shadowing
+        // the body-level value the shell chrome Page sets.
+        style["--page-background"] = background
+    }
     if (paneWidth != null) style["--split-pane-width"] = `${paneWidth}px`
 
     return (

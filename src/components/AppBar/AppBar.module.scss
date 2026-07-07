@@ -10,10 +10,13 @@
         position: absolute;
         inset: 0 0 -16px;
         z-index: -1;
+
+        --fade-color: var(--page-background, var(--tg-theme-secondary-bg-color));
+
         background: linear-gradient(
             to bottom,
-            var(--tg-theme-secondary-bg-color),
-            rgb(from var(--tg-theme-secondary-bg-color) r g b / 0%)
+            var(--fade-color),
+            rgb(from var(--fade-color) r g b / 0%)
         );
         opacity: 0;
         transition: opacity 0.2s ease;

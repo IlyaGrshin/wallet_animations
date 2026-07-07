@@ -48,6 +48,9 @@ const Page = ({
         } else {
             document.body.style.backgroundColor = CSSBackgroundColor
         }
+        // Page-color fade gradients (AppBar top, TabBar bottom) follow the
+        // actual page background, whatever the mode.
+        document.body.style.setProperty("--page-background", CSSBackgroundColor)
     }, [tgBackgroundColor, tgHeaderColor, CSSBackgroundColor, inDetailPane])
 
     // In a detail pane, report the page color to the shell so the whole pane

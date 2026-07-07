@@ -72,7 +72,8 @@
     }
 
     .gradient {
-        --mask-color: var(--tg-theme-secondary-bg-color);
+        // Follows the actual page background (see Page), not a fixed theme color.
+        --mask-color: var(--page-background, var(--tg-theme-secondary-bg-color));
         --mask-opacity-top: 0;
         --mask-opacity-bottom: 0.9;
         --overlay-padding-x: 21px;
