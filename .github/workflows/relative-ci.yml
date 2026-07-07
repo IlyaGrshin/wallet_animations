@@ -35,6 +35,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    env:
+      RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
     steps:
       - uses: actions/checkout@v5
 
@@ -56,7 +58,9 @@ jobs:
       - name: Build production bundle
         run: yarn build
 
+      # RelativeCI needs a repo secret GitHub does not expose to Dependabot /
+      # fork PRs. Skip (don't fail) when the key is absent; still runs on
+      # push to main and on internal branch PRs.
       - name: Send bundle stats to RelativeCI
+        if: ${{ env.RELATIVE_CI_KEY != '' }}
         run: npx @relative-ci/agent
-        env:
-          RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}

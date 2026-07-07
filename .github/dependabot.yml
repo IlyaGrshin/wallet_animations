@@ -5,9 +5,15 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Majors are bumped manually (they often need code changes or are
+    # peer-blocked), so Dependabot only proposes minor + patch. This also
+    # keeps stale major PRs from filling open-pull-requests-limit.
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
     groups:
       # Minor + patch bundled into two PRs per week (dev vs prod).
-      # Majors fall outside groups and get individual PRs for manual review.
       dev-deps:
         dependency-type: development
         update-types:
