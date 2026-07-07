@@ -45,6 +45,14 @@
         width: 100%;
     }
 
+    // The blended, compositor-animated shine gets its own GPU surface, and
+    // Blink/WebKit drop the rounded overflow clip for it — the gradient leaks
+    // outside the pill (visible on dark backgrounds). clip-path re-applies
+    // the same rounding as a compositor-level mask, which does clip it.
+    &[data-shine="true"] {
+        clip-path: inset(0 round var(--button-radius));
+    }
+
     &[data-shine="true"]::before {
         content: "";
         will-change: transform;
@@ -67,17 +75,21 @@
     }
 
     :global(body.apple) & {
+        --button-radius: 25px;
+
         padding: 14px 16px;
-        border-radius: 25px;
+        border-radius: var(--button-radius);
     }
 
     :global(body.material) & {
+        --button-radius: 28px;
+
         display: flex;
         align-items: center;
         justify-content: center;
         min-height: 48px;
         padding: 12px 24px;
-        border-radius: 28px;
+        border-radius: var(--button-radius);
     }
 }
 
