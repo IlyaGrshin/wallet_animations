@@ -5764,6 +5764,7 @@ __metadata:
     "@babel/core": "npm:^7.29.7"
     "@babel/preset-react": "npm:^7.29.7"
     "@eslint/js": "npm:^10.0.1"
+    "@lisse/core": "npm:0.4.0"
     "@lisse/react": "npm:^0.4.0"
     "@relative-ci/agent": "npm:^4.3.1"
     "@resvg/resvg-js": "npm:^2.6.2"

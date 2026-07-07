@@ -9,6 +9,7 @@
   },
   "homepage": ".",
   "dependencies": {
+    "@lisse/core": "0.4.0",
     "@lisse/react": "^0.4.0",
     "calligraph": "^1.4.1",
     "colorthief": "^3.3.1",
