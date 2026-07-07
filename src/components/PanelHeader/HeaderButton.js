@@ -14,9 +14,9 @@ export const HEADER_BUTTON_VARIANTS = [
 ]
 
 // A glass action in the panel header: a text label (auto-sized pill) or an
-// icon (44x44 square). Glass lives on the element itself, not via a
-// GlassContainer child, so the tap scale can't make Safari drop the
-// backdrop-filter mid-animation. Only the glass variants carry a GlassBorder.
+// icon (44x44 square). Glass lives on the element itself so the tap scale
+// can't make Safari drop the backdrop-filter mid-animation; the rim lives
+// inside it and must stay blend-free (see .rim in the SCSS).
 const HeaderButton = ({ children, onClick, variant = "regular" }) => {
     const isText = typeof children === "string"
     const hasRim = variant === "regular" || variant === "overlay"
@@ -33,7 +33,7 @@ const HeaderButton = ({ children, onClick, variant = "regular" }) => {
                 scale: { type: "spring", stiffness: 800, damping: 40 },
             }}
         >
-            {hasRim && <GlassBorder />}
+            {hasRim && <GlassBorder className={styles.rim} />}
             <span className={styles.content}>
                 {isText ? (
                     <Text

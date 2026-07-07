@@ -67,7 +67,22 @@
     padding: 0 14px;
 }
 
-// Sits above the glass background and the GlassBorder rim.
+// Blend-free GlassBorder: backdrop-filter isolates descendant blending
+// (overlay here = stark white ring), and a blended sibling would kill the
+// blur entirely under a sticky bar in a scroller (AppBar). The low-alpha
+// gradient approximates the blended GlassContainer look.
+.button .rim {
+    mix-blend-mode: normal;
+    background: linear-gradient(
+        8deg,
+        rgb(255 255 255 / 0%) 0%,
+        rgb(255 255 255 / 32%) 35%,
+        rgb(255 255 255 / 32%) 65%,
+        rgb(255 255 255 / 0%) 100%
+    );
+}
+
+// Sits above the button's glass background and the rim.
 .content {
     position: relative;
     z-index: 3;
