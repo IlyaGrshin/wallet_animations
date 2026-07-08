@@ -26,14 +26,21 @@ const REQUEST = {
     range: [0, 100],
 }
 
+// The logo catalog shares the scanner's `logoid`, so the icon URL is derived
+// straight from the row — never guessed from the ticker (HYPE != XTVCHYPE).
+const LOGO_BASE = "https://s3-symbol-logo.tradingview.com"
+const logoUrl = (logoid) => (logoid ? `${LOGO_BASE}/${logoid}--big.svg` : null)
+
 // Rows keep the CoinGecko field names the screens already consume;
-// `quoteSymbol` (e.g. "CRYPTO:BTCUSD") keys the websocket ticks.
+// `quoteSymbol` (e.g. "CRYPTO:BTCUSD") keys the websocket ticks. `image` is
+// part of the shared contract (ColorAssetPage reads it for its accent color).
 const mapRows = (data) =>
     data.map(({ s, d }) => ({
         quoteSymbol: s,
         symbol: d[0]?.toLowerCase(),
         name: d[1],
         logoid: d[2],
+        image: logoUrl(d[2]),
         current_price: d[3],
         price_change_percentage_24h: d[4],
         total_volume: d[5],
@@ -46,7 +53,8 @@ const mapRows = (data) =>
 // subscriber leaves.
 let snapshot = { assets: null, updatedAt: null, error: null }
 let base = null // last scanner rows, before websocket ticks
-const ticks = new Map() // quoteSymbol -> latest streamed fields
+let baseAt = 0 // timestamp of the current scanner snapshot
+const ticks = new Map() // quoteSymbol -> latest streamed fields + `at`
 const subscribers = new Set()
 let scannerTimer = null
 let flushTimer = null
@@ -56,11 +64,14 @@ let dirty = false
 
 const notify = () => subscribers.forEach((listener) => listener())
 
-// Live ticks win over the (older) scanner close prices.
+// Live ticks win over the scanner close prices — but only while they are
+// fresher than the current snapshot. After an outage/reconnect, or once a
+// symbol goes quiet, its stale tick predates the latest scanner refresh, so
+// the scanner's current close/chp wins again until the symbol ticks anew.
 const applyTicks = (rows) =>
     rows.map((row) => {
         const tick = ticks.get(row.quoteSymbol)
-        if (!tick) return row
+        if (!tick || tick.at < baseAt) return row
         return {
             ...row,
             current_price: tick.lp ?? row.current_price,
@@ -70,7 +81,7 @@ const applyTicks = (rows) =>
     })
 
 const onTick = (name, values) => {
-    ticks.set(name, { ...ticks.get(name), ...values })
+    ticks.set(name, { ...ticks.get(name), ...values, at: Date.now() })
     dirty = true
 }
 
@@ -113,7 +124,11 @@ const refresh = async () => {
             body: JSON.stringify(REQUEST),
         })
         const { data } = await response.json()
+        // The last subscriber may have unmounted during the await, closing the
+        // stream. Bail before reopening one that nobody owns and would leak.
+        if (!subscribers.size) return
         base = mapRows(data)
+        baseAt = Date.now()
         ensureStream()
         publish()
     } catch (error) {
@@ -141,6 +156,7 @@ const subscribe = (listener) => {
         stream?.close()
         stream = null
         streamKey = ""
+        ticks.clear() // drop the stale price cache; next mount refetches
     }
 }
 

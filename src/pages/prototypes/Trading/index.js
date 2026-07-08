@@ -30,13 +30,12 @@ const PLACEHOLDER_ASSETS = [
     { name: "Polygon", symbol: "matic", current_price: 0.72, pct: -0.6 },
 ]
 
-// TradingView logo by the row's own logoid — the data source and the logo
-// catalog are the same, so icons always match the coin. The XTVC guess only
-// backs the placeholder rows, which predate the live catalog.
+// Live rows carry a resolved `image` from the shared catalog, so icons always
+// match the coin. The XTVC guess only backs the local placeholder rows, which
+// predate the live catalog.
 const assetIcon = (asset) =>
-    `https://s3-symbol-logo.tradingview.com/${
-        asset.logoid ?? `crypto/XTVC${asset.symbol?.toUpperCase()}`
-    }--big.svg`
+    asset.image ??
+    `https://s3-symbol-logo.tradingview.com/crypto/XTVC${asset.symbol?.toUpperCase()}--big.svg`
 
 // 24h move with a direction arrow instead of a sign, tinted by the app's
 // semantic tokens; the arrow sits outside the odometer so a sign flip swaps
