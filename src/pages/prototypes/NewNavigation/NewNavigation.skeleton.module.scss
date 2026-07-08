@@ -55,7 +55,7 @@
 // radius 100px, section-bg glass, tabs spread across the whole width, and the
 // same --bottom-clearance handling for the tricky bottom inset.
 .tabBar {
-    position: fixed;
+    position: absolute;
     z-index: 2;
     display: flex;
     align-items: center;
