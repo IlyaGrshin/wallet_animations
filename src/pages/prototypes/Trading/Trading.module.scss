@@ -8,3 +8,18 @@
 .error {
     color: var(--tg-theme-subtitle-text-color);
 }
+
+// Delta color rides the wrapper (Text [variant] inherits), per convention.
+.delta {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 2px;
+
+    &.up {
+        color: var(--text-confirm-color);
+    }
+
+    &.down {
+        color: var(--tg-theme-destructive-text-color);
+    }
+}

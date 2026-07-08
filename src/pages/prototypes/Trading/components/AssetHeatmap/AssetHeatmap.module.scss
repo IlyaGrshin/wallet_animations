@@ -1,0 +1,113 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    color: var(--tg-theme-text-color);
+}
+
+// The map clips its own rounded corners (radius mirrors the sibling section
+// cards): flat 8px tiles run to the edges, and the clip shaves the corner
+// tiles to the section radius so the block reads as one rounded card.
+.map {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1074 / 743;
+
+    :global(body.apple) & {
+        border-radius: 26px;
+    }
+
+    :global(body.material) & {
+        border-radius: 16px;
+    }
+}
+
+// Ghost surface for the whole map while the assets request loads.
+.pending {
+    background-color: var(--tg-theme-section-bg-color);
+}
+
+// Bleeds the tile layer past the clip by one tile-border width, so the
+// outer transparent borders fall outside the rounded edge and the edge
+// tiles sit flush against it; only the inner gaps remain visible.
+.tiles {
+    position: absolute;
+    inset: -1.5px;
+}
+
+// Flat 8px tiles; the transparent border + padding-box clip carves the gap
+// between them, and the map's own clip rounds the block's outer corners.
+.tile {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 4px;
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    background-clip: padding-box;
+    color: #fff;
+    text-align: center;
+    letter-spacing: -0.02em;
+
+    // Labels sit inside fixed-height treemap marks; the type ramp's airy
+    // line heights clip two-line labels in the shortest tiles. Needs
+    // !important to outrank body.apple [variant=...] from the Text styles.
+    [variant] {
+        line-height: 1.1 !important;
+    }
+}
+
+.fit {
+    height: 100%;
+}
+
+.labels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+// Diverging scale anchored to the app's semantic tokens: hue follows
+// whatever the active Telegram theme supplies, while OKLCH pins lightness
+// and chroma per strength tier so the ramp stays consistent (values taken
+// from the reference widget's palette). Hex fallbacks cover engines without
+// relative color syntax. The percent label on each tile carries the value
+// redundantly.
+.gain1 {
+    background-color: #67ba84;
+    background-color: oklch(from var(--text-confirm-color) 72% 0.115 h);
+}
+
+.gain2 {
+    background-color: #459757;
+    background-color: oklch(from var(--text-confirm-color) 61% 0.125 h);
+}
+
+.gain3 {
+    background-color: #2d6824;
+    background-color: oklch(from var(--text-confirm-color) 46% 0.12 h);
+}
+
+.loss1 {
+    background-color: #e78383;
+    background-color: oklch(
+        from var(--tg-theme-destructive-text-color) 72% 0.125 h
+    );
+}
+
+.loss2 {
+    background-color: #df4841;
+    background-color: oklch(
+        from var(--tg-theme-destructive-text-color) 61% 0.19 h
+    );
+}
+
+.loss3 {
+    background-color: #911c12;
+    background-color: oklch(
+        from var(--tg-theme-destructive-text-color) 43% 0.155 h
+    );
+}
