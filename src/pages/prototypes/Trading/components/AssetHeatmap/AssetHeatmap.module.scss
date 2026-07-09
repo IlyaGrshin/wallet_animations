@@ -12,6 +12,10 @@
     }
 }
 
+:global(body.apple) section.transparentSection div:has(> .map) {
+    background-color: transparent;
+}
+
 // Bleed by one tile-border width: the outer transparent borders fall
 // outside the clip, so edge tiles sit flush and only inner gaps show.
 .tiles {
@@ -56,6 +60,11 @@
         font-size: inherit !important;
         line-height: 1.1 !important;
     }
+}
+
+.skeletonTile {
+    --skeleton-radius: 8px;
+    --skeleton-inset-bottom: 0;
 }
 
 .labels {

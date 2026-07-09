@@ -3,6 +3,10 @@ import PropTypes from "prop-types"
 import Text from "../../../../../components/Text"
 import SectionList from "../../../../../components/SectionList"
 import Tappable from "../../../../../components/Tappable"
+import {
+    waveRef,
+    useRedactionClassName,
+} from "../../../../../components/Skeleton"
 
 import useAssets from "../../../../../hooks/useAssets"
 
@@ -13,7 +17,7 @@ import * as styles from "./AssetHeatmap.module.scss"
 const cx = (...classes) => classes.filter(Boolean).join(" ")
 
 const MAP_ASPECT = 1074 / 743
-const TOP_COUNT = 30
+const TOP_COUNT = 25
 
 // Volume^0.4 area compression: BTC/ETH out-trade the tail ~500x and would
 // swallow the map raw; 0.4 keeps the dominance readable.
@@ -90,8 +94,13 @@ const layoutAssets = (rows) => {
     }))
 }
 
-// Absolute value with trimmed trailing zeros; the tile color carries the sign.
-const formatChange = (change) => `${Math.abs(Number(change.toFixed(2)))}%`
+const formatChange = (change) =>
+    `${change < 0 ? "↓" : "↑"}\u202F${Math.abs(Number(change.toFixed(2)))}%`
+
+const SKELETON_ROWS = Array.from({ length: TOP_COUNT }, (_, i) => ({
+    id: `s${i}`,
+    volume: 0.8 ** i,
+}))
 
 const formatUpdatedAt = (date) =>
     `Today at ${date.toLocaleTimeString("en-US", {
@@ -167,14 +176,40 @@ HeatmapTile.propTypes = {
     h: PropTypes.number.isRequired,
 }
 
-const AssetHeatmap = () => {
-    const { assets, updatedAt } = useAssets()
+const SkeletonTile = ({ x, y, w, h }) => {
+    const redaction = useRedactionClassName(true)
+    return (
+        <div
+            ref={waveRef}
+            className={cx(styles.tile, styles.skeletonTile, redaction)}
+            style={{
+                position: "absolute",
+                left: `${x}%`,
+                top: `${y}%`,
+                width: `${w}%`,
+                height: `${h}%`,
+            }}
+        />
+    )
+}
 
-    const rows = assets ? selectHeatmapAssets(assets) : []
+SkeletonTile.propTypes = {
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+    w: PropTypes.number.isRequired,
+    h: PropTypes.number.isRequired,
+}
+
+const AssetHeatmap = () => {
+    const { assets, updatedAt, error } = useAssets()
+    const loading = !assets && !error
+
+    const rows = assets ? selectHeatmapAssets(assets) : SKELETON_ROWS
     const rects = layoutAssets(rows)
 
     return (
         <SectionList.Item
+            className={styles.transparentSection}
             header="Market heatmap"
             description={
                 updatedAt ? formatUpdatedAt(updatedAt) : "Today at 00:00"
@@ -182,17 +217,27 @@ const AssetHeatmap = () => {
         >
             <div className={styles.map}>
                 <div className={styles.tiles}>
-                    {rows.map((asset, index) => (
-                        <HeatmapTile
-                            key={asset.symbol}
-                            symbol={asset.symbol}
-                            change={asset.change}
-                            x={rects[index].x}
-                            y={rects[index].y}
-                            w={rects[index].w}
-                            h={rects[index].h}
-                        />
-                    ))}
+                    {rows.map((asset, index) =>
+                        loading ? (
+                            <SkeletonTile
+                                key={asset.id}
+                                x={rects[index].x}
+                                y={rects[index].y}
+                                w={rects[index].w}
+                                h={rects[index].h}
+                            />
+                        ) : (
+                            <HeatmapTile
+                                key={asset.symbol}
+                                symbol={asset.symbol}
+                                change={asset.change}
+                                x={rects[index].x}
+                                y={rects[index].y}
+                                w={rects[index].w}
+                                h={rects[index].h}
+                            />
+                        )
+                    )}
                 </div>
             </div>
         </SectionList.Item>
