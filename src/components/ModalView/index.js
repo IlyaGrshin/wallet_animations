@@ -146,8 +146,10 @@ const ModalView = ({
     const panelClass = [
         styles.panel,
         isWide ? styles.dialog : styles.bottomSheet,
-        isTray ? styles.tray : styles.plain,
-    ].join(" ")
+        !isTray && styles.plain,
+    ]
+        .filter(Boolean)
+        .join(" ")
     const corner = {
         radius: isApple ? APPLE_RADIUS : MATERIAL_RADIUS,
         smoothing: SMOOTHING,

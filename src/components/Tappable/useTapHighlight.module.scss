@@ -3,22 +3,24 @@
     user-select: none;
 }
 
+// `in` is a JS reserved word: CSS modules cannot emit it as a named export,
+// so `styles.in` silently resolves to undefined — hence fadeIn/fadeOut.
 .overlay {
-    &.in {
+    &.fadeIn {
         background: var(--highlight-default);
     }
 
-    &.out {
+    &.fadeOut {
         animation: overlay-out 250ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
     }
 }
 
 .opacity {
-    &.in {
+    &.fadeIn {
         opacity: 0.6;
     }
 
-    &.out {
+    &.fadeOut {
         animation: opacity-out 250ms cubic-bezier(0.23, 1, 0.32, 1) forwards;
     }
 }
