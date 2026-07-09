@@ -1,8 +1,7 @@
 import PropTypes from "prop-types"
 
 import Text from "../../../../../components/Text"
-import SectionHeader from "../../../../../components/SectionHeader"
-import Skeleton from "../../../../../components/Skeleton"
+import SectionList from "../../../../../components/SectionList"
 
 import useAssets from "../../../../../hooks/useAssets"
 
@@ -166,39 +165,34 @@ HeatmapTile.propTypes = {
 }
 
 const AssetHeatmap = () => {
-    const { assets, updatedAt, error } = useAssets()
-    const loading = !assets && !error
+    const { assets, updatedAt } = useAssets()
 
     const rows = assets ? selectHeatmapAssets(assets) : []
     const rects = layoutAssets(rows)
 
     return (
-        <section className={styles.root}>
-            <SectionHeader title="Market heatmap" />
-            <Skeleton active={loading}>
-                <div className={cx(styles.map, !assets && styles.pending)}>
-                    <div className={styles.tiles}>
-                        {rows.map((asset, index) => (
-                            <HeatmapTile
-                                key={asset.symbol}
-                                symbol={asset.symbol}
-                                change={asset.change}
-                                x={rects[index].x}
-                                y={rects[index].y}
-                                w={rects[index].w}
-                                h={rects[index].h}
-                            />
-                        ))}
-                    </div>
+        <SectionList.Item
+            header="Market heatmap"
+            description={
+                updatedAt ? formatUpdatedAt(updatedAt) : "Today at 00:00"
+            }
+        >
+            <div className={styles.map}>
+                <div className={styles.tiles}>
+                    {rows.map((asset, index) => (
+                        <HeatmapTile
+                            key={asset.symbol}
+                            symbol={asset.symbol}
+                            change={asset.change}
+                            x={rects[index].x}
+                            y={rects[index].y}
+                            w={rects[index].w}
+                            h={rects[index].h}
+                        />
+                    ))}
                 </div>
-                <SectionHeader
-                    type="Footer"
-                    title={
-                        updatedAt ? formatUpdatedAt(updatedAt) : "Today at 00:00"
-                    }
-                />
-            </Skeleton>
-        </section>
+            </div>
+        </SectionList.Item>
     )
 }
 
