@@ -45,7 +45,7 @@ const Delta = ({ value }) => {
     return (
         <span className={`${styles.delta} ${up ? styles.up : styles.down}`}>
             {up ? "↑" : "↓"}
-            <Calligraph variant="number" animation="smooth">
+            <Calligraph variant="number" animation="smooth" autoSize={false}>
                 {formatPercentage(Math.abs(value))}
             </Calligraph>
         </span>
@@ -56,6 +56,11 @@ Delta.propTypes = {
     value: PropTypes.number.isRequired,
 }
 
+// Odometers are keyed by symbol: rows themselves are keyed by index (the
+// skeleton reveals in place when data lands), so on a rank reorder the same
+// row hosts another coin — remount the digits instead of morphing one
+// coin's price into another's. autoSize is off: it animates the wrapper
+// width (layout) on every tick that changes digit count.
 const AssetRow = ({ asset }) => (
     <Cell
         start={<ImageAvatar src={assetIcon(asset)} />}
@@ -64,13 +69,19 @@ const AssetRow = ({ asset }) => (
                 title={
                     <>
                         $
-                        <Calligraph variant="number" animation="smooth">
+                        <Calligraph
+                            key={asset.symbol}
+                            variant="number"
+                            animation="smooth"
+                            autoSize={false}
+                        >
                             {formatPrice(asset.current_price)}
                         </Calligraph>
                     </>
                 }
                 description={
                     <Delta
+                        key={asset.symbol}
                         value={asset.price_change_percentage_24h ?? asset.pct}
                     />
                 }

@@ -134,7 +134,7 @@ const HeatmapTile = ({ symbol, change, x, y, w, h }) => {
                 "--fit": `${fit.toFixed(3)}cqw`,
             }}
         >
-            <span className={styles.labels}>
+            <div className={styles.labels}>
                 <Text
                     apple={{ variant: "subheadline2", weight: "semibold" }}
                     material={{ variant: "subheadline2", weight: "medium" }}
@@ -142,16 +142,16 @@ const HeatmapTile = ({ symbol, change, x, y, w, h }) => {
                     {symbol}
                 </Text>
                 {showChange && (
-                    <span className={styles.change}>
+                    <div className={styles.change}>
                         <Text
                             apple={{ variant: "subheadline2" }}
                             material={{ variant: "subheadline2" }}
                         >
                             {label}
                         </Text>
-                    </span>
+                    </div>
                 )}
-            </span>
+            </div>
         </div>
     )
 }
