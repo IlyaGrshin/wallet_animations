@@ -2,6 +2,7 @@ import PropTypes from "prop-types"
 
 import Text from "../../../../../components/Text"
 import SectionList from "../../../../../components/SectionList"
+import Tappable from "../../../../../components/Tappable"
 
 import useAssets from "../../../../../hooks/useAssets"
 
@@ -124,9 +125,10 @@ const HeatmapTile = ({ symbol, change, x, y, w, h }) => {
     )
 
     return (
-        <div
+        <Tappable
             className={cx(styles.tile, toneClass(change))}
             style={{
+                position: "absolute",
                 left: `${x}%`,
                 top: `${y}%`,
                 width: `${w}%`,
@@ -152,7 +154,7 @@ const HeatmapTile = ({ symbol, change, x, y, w, h }) => {
                     </div>
                 )}
             </div>
-        </div>
+        </Tappable>
     )
 }
 

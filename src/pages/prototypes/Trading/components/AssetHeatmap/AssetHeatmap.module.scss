@@ -21,7 +21,6 @@
 
 // The transparent border + padding-box clip carves the inter-tile gap.
 .tile {
-    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
