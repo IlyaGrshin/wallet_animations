@@ -27,12 +27,13 @@ const MIN_CHANGE_WIDTH = 9
 // MAP_ASPECT) — no ResizeObserver, no measure-then-scale pass. sqrt(area)
 // shrinks the tail progressively, the width/height terms are hard bounds
 // against clipping, and the stylesheet caps the result at the ramp size.
-const AREA_K = 0.2
-const FILL_W = 0.7
-const FILL_H = 0.65
+const AREA_K = 0.22
+const FILL_W = 0.78
+const FILL_H = 0.72
 const LINE_EM = 1.1 // pinned in the stylesheet
 const GAP_EM = 0.2 // the 2px labels gap, at typical tile type size
 const CHANGE_SCALE = 0.85 // percent line, relative to the ticker (see SCSS)
+const SOLO_AREA_K = 0.34
 
 // Canvas-measured glyph widths in em, cached per unique label — exact with
 // zero layout involvement. 600 covers both skins: material's medium only
@@ -117,7 +118,7 @@ const HeatmapTile = ({ symbol, change, x, y, w, h }) => {
         ? LINE_EM * (1 + CHANGE_SCALE) + GAP_EM
         : LINE_EM
     const fit = Math.min(
-        AREA_K * Math.sqrt(w * hCq),
+        (showChange ? AREA_K : SOLO_AREA_K) * Math.sqrt(w * hCq),
         (FILL_W * w) / widestEm,
         (FILL_H * hCq) / linesEm
     )
