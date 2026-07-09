@@ -10,8 +10,7 @@ export function formatPercentage(percentage) {
     return `${percentage?.toFixed(2)}%`
 }
 
-// USD notation: grouped thousands with cents for prices from $1, four
-// significant digits below that so micro-cap prices stay meaningful.
+// Cents from $1, four significant digits below (micro-cap prices).
 export function formatPrice(price) {
     if (typeof price !== "number") return price
     const options =

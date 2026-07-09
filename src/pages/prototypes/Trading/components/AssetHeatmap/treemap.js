@@ -1,9 +1,6 @@
-// Squarified treemap layout (Bruls, Huizing, van Wijk). Each strip is laid
-// along the shorter side of the remaining rectangle, and items join the
-// current strip while that improves the worst aspect ratio, so tiles stay
-// close to square. Feed weights sorted descending for the canonical
-// largest-first arrangement. Returns rects ({ x, y, w, h }) in the same
-// units and order as the input.
+// Squarified treemap (Bruls, Huizing, van Wijk): items join the current
+// strip while that improves the worst aspect ratio. Feed weights sorted
+// descending; returns rects ({ x, y, w, h }) in input units and order.
 const worstRatio = (row, side) => {
     const sum = row.reduce((acc, area) => acc + area, 0)
     const max = Math.max(...row)

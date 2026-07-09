@@ -4,10 +4,10 @@
     color: var(--tg-theme-text-color);
 }
 
-// The map clips its own rounded corners (radius mirrors the sibling section
-// cards): flat 8px tiles run to the edges, and the clip shaves the corner
-// tiles to the section radius so the block reads as one rounded card.
+// Query container for the tiles' cqw font sizes; clips the flat tiles to
+// the section radius so the block reads as one rounded card.
 .map {
+    container-type: inline-size;
     position: relative;
     overflow: hidden;
     aspect-ratio: 1074 / 743;
@@ -26,16 +26,14 @@
     background-color: var(--tg-theme-section-bg-color);
 }
 
-// Bleeds the tile layer past the clip by one tile-border width, so the
-// outer transparent borders fall outside the rounded edge and the edge
-// tiles sit flush against it; only the inner gaps remain visible.
+// Bleed by one tile-border width: the outer transparent borders fall
+// outside the clip, so edge tiles sit flush and only inner gaps show.
 .tiles {
     position: absolute;
     inset: -1.5px;
 }
 
-// Flat 8px tiles; the transparent border + padding-box clip carves the gap
-// between them, and the map's own clip rounds the block's outer corners.
+// The transparent border + padding-box clip carves the inter-tile gap.
 .tile {
     position: absolute;
     display: flex;
@@ -51,16 +49,28 @@
     text-align: center;
     letter-spacing: -0.02em;
 
-    // Labels sit inside fixed-height treemap marks; the type ramp's airy
-    // line heights clip two-line labels in the shortest tiles. Needs
-    // !important to outrank body.apple [variant=...] from the Text styles.
+    // --fit comes precomputed from the rect geometry (index.js); the ramp
+    // size doubles as the no-container-units fallback and the cap, the 5px
+    // floor clips text instead of vanishing it.
+    font-size: 14px;
+
+    // Proportional digits would wiggle the centered line on every tick.
+    font-variant-numeric: tabular-nums;
+
+    // Revisit snapshots and first-second websocket corrections repaint
+    // tones right after mount — crossfade instead of snapping.
+    transition: background-color 0.45s ease;
+
+    @supports (font-size: 1cqw) {
+        font-size: clamp(5px, var(--fit), 14px);
+    }
+
+    // Ramp font sizes and airy line heights must yield to the fitted size;
+    // !important outranks body.apple [variant=...] from the Text styles.
     [variant] {
+        font-size: inherit !important;
         line-height: 1.1 !important;
     }
-}
-
-.fit {
-    height: 100%;
 }
 
 .labels {
@@ -70,12 +80,14 @@
     gap: 2px;
 }
 
-// Diverging scale anchored to the app's semantic tokens: hue follows
-// whatever the active Telegram theme supplies, while OKLCH pins lightness
-// and chroma per strength tier so the ramp stays consistent (values taken
-// from the reference widget's palette). Hex fallbacks cover engines without
-// relative color syntax. The percent label on each tile carries the value
-// redundantly.
+// Secondary to the ticker; mirrors CHANGE_SCALE in index.js.
+.change {
+    font-size: 0.85em;
+}
+
+// Diverging scale: hue follows the theme tokens, OKLCH pins lightness and
+// chroma per tier (reference palette); hex covers engines without relative
+// color syntax.
 .gain1 {
     background-color: #67ba84;
     background-color: oklch(from var(--text-confirm-color) 72% 0.115 h);

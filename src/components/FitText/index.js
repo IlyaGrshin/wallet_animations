@@ -24,9 +24,7 @@ export default function FitText({
             const outerW = outer.clientWidth
             const innerW = inner.offsetWidth
             if (!outerW || !innerW) return
-            // `fill` caps how much of the container the content may occupy,
-            // so text in tight boxes scales down before it wedges edge to
-            // edge; content that already fits within the cap is untouched.
+            // `fill` caps how much of the container the content may occupy
             let ratio = (fill * outerW) / innerW
             if (fitHeight) {
                 const outerH = outer.clientHeight

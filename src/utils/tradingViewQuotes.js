@@ -1,7 +1,6 @@
-// Minimal client for TradingView's public quote websocket — the same feed
-// their charts and screener pages use. Messages ride a length-prefixed
-// framing (`~m~<len>~m~<json>`); `~h~N` frames are heartbeats the server
-// expects echoed back verbatim, or it drops the connection.
+// Minimal client for TradingView's public quote websocket. Messages ride a
+// length-prefixed framing (`~m~<len>~m~<json>`); `~h~N` heartbeats must be
+// echoed back verbatim or the server drops the connection.
 const ENDPOINT = "wss://data.tradingview.com/socket.io/websocket?from=screener"
 const RECONNECT_DELAY = 3_000
 
@@ -9,10 +8,9 @@ const FRAME_SPLIT = /~m~\d+~m~/
 
 const wrap = (payload) => `~m~${payload.length}~m~${payload}`
 
-// Opens a quote session for `symbols` (e.g. "CRYPTO:BTCUSD") streaming the
-// given `fields` (e.g. ["lp", "chp"]). `onTick(name, values)` fires per
-// update with only the fields that changed. Reconnects itself until
-// `close()` is called.
+// Streams `fields` (e.g. ["lp", "chp"]) for `symbols` ("CRYPTO:BTCUSD");
+// `onTick(name, values)` carries only the fields that changed. Reconnects
+// itself until `close()`.
 export const openQuoteStream = ({ symbols, fields, onTick }) => {
     let ws = null
     let reconnectTimer = null

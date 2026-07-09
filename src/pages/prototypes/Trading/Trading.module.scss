@@ -8,30 +8,3 @@
 .error {
     color: var(--tg-theme-subtitle-text-color);
 }
-
-// Delta color rides the wrapper (Text [variant] inherits), per convention.
-.delta {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 2px;
-
-    &.up {
-        color: var(--text-confirm-color);
-    }
-
-    &.down {
-        color: var(--tg-theme-destructive-text-color);
-    }
-
-    // The skeleton hides text by painting it transparent, but the delta's own
-    // up/down color overrides that and bleeds through the translucent bar.
-    // Yield to the redaction while the row loads so the bar fully masks the
-    // arrow and its odometer. Must be color, not opacity: ancestor opacity
-    // doesn't dim Calligraph in WebKit.
-    :global([data-skeleton]) & {
-        &.up,
-        &.down {
-            color: transparent;
-        }
-    }
-}
