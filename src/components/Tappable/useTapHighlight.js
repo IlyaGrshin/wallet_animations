@@ -5,7 +5,7 @@ import * as styles from "./useTapHighlight.module.scss"
 export const supportsTouch =
     typeof window !== "undefined" && "ontouchstart" in window
 
-// Duration the fade-out state stays applied — kept in sync with the CSS `out`
+// Duration the fade-out state stays applied — kept in sync with the CSS fade-out
 // animation so the highlight resets only once it has finished fading.
 const FADE_OUT_MS = 250
 
@@ -26,7 +26,7 @@ export function useTapHighlight({
 
     const fadeOut = () => {
         setTapped(false)
-        setTappedClassNames([commonStyle, styles.out])
+        setTappedClassNames([commonStyle, styles.fadeOut])
         onTapOut?.()
         timeoutRef.current = window.setTimeout(() => {
             setTappedClassNames([commonStyle])
@@ -36,7 +36,7 @@ export function useTapHighlight({
     const fadeIn = (data) => {
         clearTimeout(timeoutRef.current)
         setTapped(true)
-        setTappedClassNames([commonStyle, styles.in])
+        setTappedClassNames([commonStyle, styles.fadeIn])
         onTap?.(data)
     }
 
