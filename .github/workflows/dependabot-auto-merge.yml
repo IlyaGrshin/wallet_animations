@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Fetch Dependabot metadata
         id: meta
-        uses: dependabot/fetch-metadata@v2
+        uses: dependabot/fetch-metadata@v3
 
       # Dependabot never dedupes the lockfile, which trips the blocking
       # `yarn dedupe --check` in Build & RelativeCI. Self-heal the branch so the
