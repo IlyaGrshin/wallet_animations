@@ -5,6 +5,16 @@ import Text from "../Text"
 
 import * as styles from "./SegmentedControl.module.scss"
 
+/**
+ * Segmented picker with an animated active indicator. Uncontrolled — tracks
+ * its own index from `defaultIndex`; onChange receives the selected index.
+ * @param {Array<import("react").ReactNode>} props.segments Labels, one per segment.
+ * @param {number} [props.defaultIndex=0]
+ * @param {"circled"} [props.type] Pill (circled) vs default track.
+ * @param {(index: number) => void} [props.onChange]
+ * @example
+ * <SegmentedControl segments={["Day", "Week", "Month"]} onChange={setRange} />
+ */
 const SegmentedControl = ({
     segments,
     onChange,
@@ -50,7 +60,7 @@ const SegmentedControl = ({
                 className={styles.activeIndicator}
                 style={{
                     width: `calc(${100 / segments.length}% - 4px)`,
-                    left: `calc(${(100 / segments.length) * activeIndex}%)`,
+                    transform: `translateX(calc(${activeIndex} * (100% + 4px)))`,
                     marginLeft: "2px",
                     marginRight: "2px",
                 }}

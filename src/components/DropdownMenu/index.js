@@ -6,7 +6,12 @@ import { AnimatePresence } from "motion/react"
 import { POPOVER_VARIANTS } from "../../utils/animations"
 import Text from "../Text"
 import { GlassBorder } from "../GlassEffect"
-import { useClickOutside, useDropdownPosition } from "./dropdownUtils"
+import { useSplitViewContext } from "../SplitView/context"
+import {
+    useClickOutside,
+    useDropdownPosition,
+    getViewportBounds,
+} from "./dropdownUtils"
 
 import * as styles from "./DropdownMenu.module.scss"
 
@@ -34,6 +39,14 @@ MenuItem.propTypes = {
     ]),
 }
 
+/**
+ * Portal-rendered menu with keyboard nav (arrows / Enter / Esc) and edge-aware
+ * placement. Without `trigger` it renders the selected item as the button.
+ * @param {string[]} props.items Menu options (required, non-empty).
+ * @param {import("react").ReactNode} [props.trigger] Custom trigger; defaults to selected item.
+ * @example
+ * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
+ */
 const DropdownMenu = ({ items, trigger }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
@@ -44,10 +57,19 @@ const DropdownMenu = ({ items, trigger }) => {
     const itemRefs = useRef([])
     const activeIndexRef = useRef(activeIndex)
 
+    const { paneRef } = useSplitViewContext()
+    const getBounds = () => {
+        const el = paneRef?.current
+        if (!el) return getViewportBounds()
+        const { left, top, right, bottom } = el.getBoundingClientRect()
+        return { left, top, right, bottom }
+    }
+
     const { position, isPositioned, resetPosition } = useDropdownPosition(
         isOpen,
         buttonRef,
-        dropdownRef
+        dropdownRef,
+        getBounds
     )
 
     useEffect(() => {
@@ -196,7 +218,7 @@ const DropdownMenu = ({ items, trigger }) => {
                                     zIndex: 1000,
                                 }}
                             >
-                                <GlassBorder />
+                                <GlassBorder muted />
                                 {items.map((item, index) => (
                                     <MenuItem
                                         key={index}

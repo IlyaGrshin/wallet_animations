@@ -16,6 +16,12 @@ const config = [
                 ),
             },
             {
+                title: "Cell Stack",
+                component: lazyWithPreload(
+                    () => import("../components/CellStack/CellStack.showcase")
+                ),
+            },
+            {
                 title: "Picker",
                 component: lazyWithPreload(
                     () => import("../components/Picker/Picker.showcase")
@@ -31,6 +37,12 @@ const config = [
                 title: "Modal Pages",
                 component: lazyWithPreload(
                     () => import("../components/ModalView/ModalView.showcase")
+                ),
+            },
+            {
+                title: "Panel Header",
+                component: lazyWithPreload(
+                    () => import("../components/PanelHeader/PanelHeader.showcase")
                 ),
             },
             {
@@ -118,10 +130,21 @@ const config = [
                 ),
             },
             {
-                title: "Streaming Text",
+                title: "Skeleton",
                 component: lazyWithPreload(
-                    () =>
-                        import("../components/StreamingText/StreamingText.showcase")
+                    () => import("../components/Skeleton/Skeleton.showcase")
+                ),
+            },
+            {
+                title: "Markdown",
+                component: lazyWithPreload(
+                    () => import("../components/Markdown/Markdown.showcase")
+                ),
+            },
+            {
+                title: "Table",
+                component: lazyWithPreload(
+                    () => import("../components/Table/Table.showcase")
                 ),
             },
             {
@@ -151,6 +174,40 @@ const config = [
         ],
     },
     {
+        category: "Text Effects",
+        pages: [
+            {
+                title: "Streaming Text",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/StreamingText/StreamingText.showcase")
+                ),
+            },
+            {
+                title: "Particle Effect",
+                component: lazyWithPreload(
+                    () =>
+                        import(
+                            "../components/ParticleEffect/ParticleEffect.showcase"
+                        )
+                ),
+            },
+            {
+                title: "Calligraph",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/Calligraph/Calligraph.showcase")
+                ),
+            },
+            {
+                title: "Fit Text",
+                component: lazyWithPreload(
+                    () => import("../components/FitText/FitText.showcase")
+                ),
+            },
+        ],
+    },
+    {
         category: "Telegram",
         pages: [
             {
@@ -175,6 +232,8 @@ const config = [
     },
     {
         category: "Prototypes",
+        // Full app prototypes own their chrome — no browser AppBar.
+        header: false,
         pages: [
             {
                 title: "Input Page",

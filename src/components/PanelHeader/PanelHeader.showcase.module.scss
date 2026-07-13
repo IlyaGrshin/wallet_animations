@@ -1,0 +1,15 @@
+.section {
+    margin-bottom: 24px;
+}
+
+.canvas {
+    margin: 0 var(--side-padding);
+    border-radius: 20px;
+    background: var(--tg-theme-section-bg-color);
+}
+
+// Colored backdrop so the overlay variant's translucent glass and white
+// glyphs read the way they would over real content.
+.over {
+    background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+}

@@ -5,6 +5,7 @@ import Page from "../Page"
 import TextField from "../TextField"
 import GlassContainer from "../GlassEffect"
 import GradientBackground from "../GradientBackground"
+import { useSplitViewContext } from "../SplitView/context"
 
 import patternSvg from "../../images/pattern.svg"
 import { useColorScheme } from "../../hooks/useColorScheme"
@@ -15,12 +16,14 @@ import * as styles from "./TextField.showcase.module.scss"
 function InputPage() {
     const viewportHeight = useViewportHeight()
     const colorScheme = useColorScheme()
+    const { inDetailPane } = useSplitViewContext()
 
     // Используем стабильную начальную высоту для фона
     const stableHeight =
         WebApp.viewportHeight || window.innerHeight || window.screen.height
 
-    usePreventScroll()
+    // The split-view pane scrolls itself; don't lock the global body there.
+    usePreventScroll(!inDetailPane)
 
     const gradientColors = ["#d5d88d", "#d5d88d", "#88b884", "#88b884"]
     const gradientColorsDark = ["#fec496", "#dd6cb9", "#962fbf", "#4f5bd5"]

@@ -15,23 +15,31 @@ const INITIAL_POSITION = {
     originY: "0%",
 }
 
-const calculatePosition = (buttonRect, dropdownSize) => {
-    const { innerHeight, innerWidth } = window
-    const spaceBelow = innerHeight - buttonRect.bottom
-    const spaceAbove = buttonRect.top
+// Bounds to clamp the menu within: the SplitView pane's rect when open inside
+// one, the full viewport otherwise.
+export const getViewportBounds = () => ({
+    left: 0,
+    top: 0,
+    right: window.innerWidth,
+    bottom: window.innerHeight,
+})
+
+const calculatePosition = (buttonRect, dropdownSize, bounds) => {
+    const spaceBelow = bounds.bottom - buttonRect.bottom
+    const spaceAbove = buttonRect.top - bounds.top
 
     const openUpwards =
         spaceBelow < dropdownSize.height && spaceAbove > spaceBelow
+
+    const minLeft = bounds.left + VIEWPORT_PADDING
+    const minTop = bounds.top + VIEWPORT_PADDING
 
     const buttonCenterX = buttonRect.left + buttonRect.width / 2
     const rawLeft = buttonCenterX - dropdownSize.width / 2
     const left = clamp(
         rawLeft,
-        VIEWPORT_PADDING,
-        Math.max(
-            VIEWPORT_PADDING,
-            innerWidth - dropdownSize.width - VIEWPORT_PADDING
-        )
+        minLeft,
+        Math.max(minLeft, bounds.right - dropdownSize.width - VIEWPORT_PADDING)
     )
 
     const rawTop = openUpwards
@@ -39,11 +47,8 @@ const calculatePosition = (buttonRect, dropdownSize) => {
         : buttonRect.bottom + GAP
     const top = clamp(
         rawTop,
-        VIEWPORT_PADDING,
-        Math.max(
-            VIEWPORT_PADDING,
-            innerHeight - dropdownSize.height - VIEWPORT_PADDING
-        )
+        minTop,
+        Math.max(minTop, bounds.bottom - dropdownSize.height - VIEWPORT_PADDING)
     )
 
     const originXPx = clamp(buttonCenterX - left, 0, dropdownSize.width)
@@ -53,11 +58,16 @@ const calculatePosition = (buttonRect, dropdownSize) => {
     return { top, left, openUpwards, originX, originY }
 }
 
-export const useDropdownPosition = (isOpen, buttonRef, dropdownRef) =>
+export const useDropdownPosition = (
+    isOpen,
+    buttonRef,
+    dropdownRef,
+    getBounds = getViewportBounds
+) =>
     useAnchoredPosition({
         isOpen,
         triggerRef: buttonRef,
         contentRef: dropdownRef,
         initialPosition: INITIAL_POSITION,
-        calculate: calculatePosition,
+        calculate: (rect, size) => calculatePosition(rect, size, getBounds()),
     })

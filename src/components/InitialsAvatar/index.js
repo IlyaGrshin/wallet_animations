@@ -1,6 +1,11 @@
 import { useSkin } from "../../hooks/DeviceProvider"
 import PropTypes from "prop-types"
 
+import {
+    useSkeletonContext,
+    useRedactionClassName,
+    waveRef,
+} from "../Skeleton"
 import { isUnicode } from "../../utils/common"
 
 import * as styles from "./InitialsAvatar.module.scss"
@@ -17,6 +22,8 @@ const bgColors = [
 
 const InitialsAvatar = ({ size = 40, userId, name }) => {
     const { isApple, isMaterial } = useSkin()
+    const redacted = Boolean(useSkeletonContext())
+    const redactionClassName = useRedactionClassName(redacted)
     const bgIndex = userId % 7
 
     const [color, topColor, bottomColor] = bgColors[bgIndex]
@@ -24,19 +31,24 @@ const InitialsAvatar = ({ size = 40, userId, name }) => {
 
     if (isMaterial) size = 42
 
+    const background = isApple
+        ? `linear-gradient(180deg, ${topColor} 0%, ${bottomColor} 100%)`
+        : color
+
     return (
         <div
-            className={`${styles.root}`}
+            ref={redacted ? waveRef : undefined}
+            className={`${styles.root} ${redactionClassName}`}
             style={{
                 width: size,
                 height: size,
-                background: isApple
-                    ? `linear-gradient(180deg, ${topColor} 0%, ${bottomColor} 100%)`
-                    : color,
+                background: redacted ? undefined : background,
                 "--font_size": `${Math.round(size / 2.2)}px`,
             }}
         >
-            <div>
+            <div
+                className={`${styles.initials} ${redacted ? styles.hiddenInitials : ""}`}
+            >
                 {isUnicode(firstName.charAt(0)) &&
                     firstName.charAt(0).toLocaleUpperCase()}
                 {isUnicode(lastName.charAt(0)) &&

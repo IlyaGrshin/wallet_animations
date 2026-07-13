@@ -22,7 +22,11 @@
 }
 
 :global(body.apple) .amount span {
-    font-family: ui-rounded, -apple-system, system-ui, sans-serif;
+    font-family:
+        ui-rounded,
+        -apple-system,
+        system-ui,
+        sans-serif;
 }
 
 .prefix {
@@ -30,7 +34,7 @@
 }
 
 .cardOverlay .amount span {
-    color: #FFF;
+    color: #fff;
 }
 
 .cardDefault .amount span {
@@ -63,7 +67,7 @@
     --tg-theme-subtitle-text-color: rgb(255 255 255 / 55%);
     --tg-theme-accent-text-color: #fff;
     --tg-theme-section-bg-color: transparent;
-    --text-confirm-color: #30D158;
+    --text-confirm-color: #30d158;
 
     color: white;
 

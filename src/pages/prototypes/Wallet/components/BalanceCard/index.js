@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { Calligraph } from "calligraph"
-import { Spoiler } from "spoiled"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 
 import Train from "../../../../../components/Train"
 import Text from "../../../../../components/Text"
+import ParticleEffect from "../../../../../components/ParticleEffect"
 import { generateRandomBalance } from "../../../../../utils/number"
 
 import * as styles from "./BalanceCard.module.scss"
@@ -84,16 +84,17 @@ export default function BalanceCard({
                 >
                     {label}
                 </Text>
-                <Spoiler
+                <ParticleEffect
                     className={styles.amount}
                     hidden={hidden}
+                    color={variant === "overlay" ? "#fff" : undefined}
                     onClick={() => setHidden((s) => !s)}
                 >
                     <span className={styles.prefix}>$</span>
                     <Calligraph variant="number" animation="smooth">
                         {balance}
                     </Calligraph>
-                </Spoiler>
+                </ParticleEffect>
                 <Train
                     divider="space"
                     onClick={() => setIsToday((prev) => !prev)}

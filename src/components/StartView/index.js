@@ -9,9 +9,11 @@ const StartView = ({ title, description }) => {
             <Text variant="title1" weight="bold">
                 {title}
             </Text>
-            <Text variant="body" weight="regular">
-                {description}
-            </Text>
+            {description && (
+                <Text variant="body" weight="regular">
+                    {description}
+                </Text>
+            )}
         </div>
     )
 }

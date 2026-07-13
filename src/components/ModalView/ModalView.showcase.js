@@ -11,8 +11,8 @@ import { BackButton } from "../../lib/twa"
 
 const ModalPages = () => {
     const { modals, handlers } = useModal({
-        modal1: false,
-        modal2: false,
+        tray: false,
+        simple: false,
     })
 
     return (
@@ -21,11 +21,17 @@ const ModalPages = () => {
                 <BackButton />
                 <SectionList>
                     <SectionList.Item>
-                        <Cell onClick={handlers.modal1.open}>
-                            <Cell.Text type="Accent" title="Open Modal" />
+                        <Cell onClick={handlers.tray.open}>
+                            <Cell.Text
+                                type="Accent"
+                                title="Open Dynamic Tray"
+                            />
                         </Cell>
-                        <Cell onClick={handlers.modal2.open}>
-                            <Cell.Text type="Accent" title="Open Modal (CSS)" />
+                        <Cell onClick={handlers.simple.open}>
+                            <Cell.Text
+                                type="Accent"
+                                title="Open Simple Modal"
+                            />
                         </Cell>
                     </SectionList.Item>
                 </SectionList>

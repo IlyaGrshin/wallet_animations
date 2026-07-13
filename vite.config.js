@@ -118,10 +118,14 @@ export default defineConfig(({ command }) => ({
         assetFileNames: 'assets/[name].[hash][extname]',
         chunkFileNames: 'assets/[name].[hash].js',
         entryFileNames: 'assets/[name].[hash].js',
+        // Only pin the always-loaded libs to stable chunks for long-term
+        // caching; everything else splits per usage point, so page-only deps
+        // (lottie-web, markdown-to-jsx, colorthief, calligraph) stay out of
+        // the startup path.
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
           if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'react';
-          return 'vendors';
+          if (/\/node_modules\/(motion|framer-motion|motion-dom|motion-utils)\//.test(id)) return 'motion';
         }
       }
     }

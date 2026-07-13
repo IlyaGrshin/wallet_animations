@@ -1,6 +1,6 @@
 export const EASING = {
     MATERIAL_STANDARD: [0.26, 0.08, 0.25, 1],
-    APPLE_STANDARD: [0.38, 0.7, 0.125, 1.0],
+    QUINT_OUT: [0.23, 1, 0.32, 1],
     LINEAR: "linear",
     EASE_IN_OUT: "easeInOut",
 }
@@ -44,6 +44,11 @@ export const SPRING = {
         stiffness: 280,
         damping: 26,
     },
+    MODAL: {
+        type: "spring",
+        stiffness: 250,
+        damping: 30,
+    },
 }
 
 export const POPOVER_VARIANTS = {
@@ -55,10 +60,6 @@ export const POPOVER_VARIANTS = {
 export const TRANSITIONS = {
     MATERIAL_STANDARD: {
         ease: EASING.MATERIAL_STANDARD,
-        duration: DURATION.NORMAL / 1000,
-    },
-    APPLE_STANDARD: {
-        ease: EASING.APPLE_STANDARD,
         duration: DURATION.NORMAL / 1000,
     },
     MORPH: {

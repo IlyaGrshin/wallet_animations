@@ -1,13 +1,14 @@
 import PropTypes from "prop-types"
-import { use } from "react"
 import { BackButton } from "../../../lib/twa"
 
 import Page from "../../../components/Page"
 
 import ImageAvatar from "../../../components/ImageAvatar"
 import Text from "../../../components/Text"
+import Skeleton from "../../../components/Skeleton"
 import { RegularButton, MultilineButton } from "../../../components/Button"
 
+import useAssets from "../../../hooks/useAssets"
 import { useAccentColorLazy } from "../../../hooks/useAccentColor"
 
 import ArrowUpCircleFill from "../../../icons/28/Arrow Up Circle Fill.svg?react"
@@ -17,12 +18,12 @@ import ArrowLeftAndRightCircleFill from "../../../icons/28/Arrow Left & Right Ci
 
 import * as styles from "./ColorAssetPage.module.scss"
 
-const fetchAssets = async () => {
-    const response = await fetch("https://ilyagrshn.com/coingeckoApi/index.php")
-    return response.json()
-}
+// Placeholder cards rendered while the fetch is in flight; each reveals on
+// its own once its data and accent color are ready.
+const SKELETON_COUNT = 3
 
-const assetsResource = fetchAssets()
+// Mock values give the skeleton bars realistic, varied widths while loading.
+const PLACEHOLDER = { name: "Ethereum", current_price: "3,180", symbol: "eth" }
 
 function Banner({ name }) {
     const BannerText = `Currently, ${name} can only be purchased, held and sold within Crypto Wallet. It is not possible to transfer, receive or withdraw ${name} externally.`
@@ -114,10 +115,16 @@ ActionButtons.propTypes = {
     mode: PropTypes.string,
 }
 
-function AssetSection({ mode, image, name, price, ticker }) {
-    const { hex: accentColor, ref } = useAccentColorLazy(image, 10, {
+function AssetSection({ mode, asset }) {
+    const { hex: accentColor, ref } = useAccentColorLazy(asset?.image, 10, {
         rootMargin: "100px",
     })
+
+    // Reveal only once the data AND its accent color are both ready: the card
+    // waves as a neutral skeleton, then pops into color with its content, so
+    // the text never flashes over a colorless background.
+    const revealed = Boolean(asset) && Boolean(accentColor)
+    const data = asset ?? PLACEHOLDER
 
     return (
         <section
@@ -129,57 +136,61 @@ function AssetSection({ mode, image, name, price, ticker }) {
                     : undefined,
             }}
         >
-            {mode === "trade" ? <Banner name={name} /> : null}
-            <div className={styles.body}>
-                <ImageAvatar size={72} src={image} />
-                <div className={styles.data}>
-                    <Text variant="title3" weight="semibold">
-                        {name}
-                    </Text>
-                    <Text
-                        apple={{ variant: "title2", weight: "semibold" }}
-                        material={{ variant: "title3" }}
-                    >
-                        ${price}
-                    </Text>
-                    <Text
-                        apple={{ variant: "subheadline1", weight: "regular" }}
-                        material={{ variant: "title3" }}
-                    >
-                        {ticker}
-                    </Text>
+            {revealed && mode === "trade" ? <Banner name={data.name} /> : null}
+            <Skeleton active={!revealed}>
+                <div className={styles.body}>
+                    <ImageAvatar size={72} src={asset?.image} />
+                    <div className={styles.data}>
+                        <Text variant="title3" weight="semibold">
+                            {data.name}
+                        </Text>
+                        <Text
+                            apple={{ variant: "title2", weight: "semibold" }}
+                            material={{ variant: "title3" }}
+                        >
+                            ${data.current_price}
+                        </Text>
+                        <Text
+                            apple={{ variant: "subheadline1", weight: "regular" }}
+                            material={{ variant: "title3" }}
+                        >
+                            {data.symbol?.toUpperCase()}
+                        </Text>
+                    </div>
                 </div>
-            </div>
-            <ActionButtons mode={mode} />
+            </Skeleton>
+            {revealed ? <ActionButtons mode={mode} /> : null}
         </section>
     )
 }
 
 AssetSection.propTypes = {
     mode: PropTypes.string,
-    image: PropTypes.string,
-    name: PropTypes.string,
-    price: PropTypes.string,
-    ticker: PropTypes.string,
+    asset: PropTypes.shape({
+        image: PropTypes.string,
+        name: PropTypes.string,
+        current_price: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ]),
+        symbol: PropTypes.string,
+    }),
 }
 
 function ColorAssetPage() {
-    const assets = use(assetsResource)
+    const { assets } = useAssets()
+
+    // Index keys keep the placeholder cards and the real cards on the same
+    // elements, so the first cards reveal in place rather than remounting.
+    const rows = assets ?? Array.from({ length: SKELETON_COUNT }, () => null)
 
     return (
         <>
             <BackButton />
             <Page>
                 <div className={styles.list}>
-                    {assets.map((asset, index) => (
-                        <AssetSection
-                            mode="trade"
-                            image={asset.image}
-                            name={asset.name}
-                            price={asset.current_price}
-                            ticker={asset.symbol?.toUpperCase()}
-                            key={index}
-                        />
+                    {rows.map((asset, index) => (
+                        <AssetSection mode="trade" asset={asset} key={index} />
                     ))}
                 </div>
             </Page>

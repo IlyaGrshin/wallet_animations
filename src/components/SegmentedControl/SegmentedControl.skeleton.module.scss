@@ -1,0 +1,63 @@
+// Static segmented-bar shapes for the suspense fallback. The real control is
+// interactive (buttons + state), so the skeleton renders a look-alike track
+// instead. Values mirror SegmentedControl.module.scss so the swap is seamless.
+.group {
+    padding: 12px var(--side-padding);
+}
+
+.track {
+    position: relative;
+    display: flex;
+    width: 100%;
+    gap: 4px;
+    padding: 2px;
+    border-radius: 9px;
+    background-color: var(--quaternary-fill-background);
+
+    :global(body.material) & {
+        border-radius: 18px;
+    }
+}
+
+.segment {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 0 4px;
+    border-radius: 7px;
+
+    :global(body.material) & {
+        padding: 8px 0;
+    }
+}
+
+// First segment carries the resting active indicator so the bar reads as a
+// real segmented control mid-selection.
+.active {
+    background-color: var(--segmented_control_active_background);
+    border: 0.5px solid var(--quarternary-fill-background);
+    box-shadow:
+        0 3px 8px 0 rgb(0 0 0 / 12%),
+        0 3px 1px 0 rgb(0 0 0 / 4%);
+
+    :global(body.material) & {
+        border: 0;
+        border-radius: 16px;
+        box-shadow: none;
+    }
+}
+
+.circled {
+    border-radius: 18px;
+
+    .segment {
+        padding: 7px 0;
+    }
+
+    .active {
+        border: 0;
+        border-radius: 16px;
+        box-shadow: none;
+    }
+}

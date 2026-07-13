@@ -14,9 +14,7 @@ const CellText = ({ type, title, description, caption, bold }) => {
                 </Text>
             </div>
             {description && (
-                <div
-                    className={caption ? styles.description : styles.caption}
-                >
+                <div className={caption ? styles.description : styles.caption}>
                     <Text
                         variant={caption ? "subheadline1" : "subheadline2"}
                         weight="regular"
@@ -38,8 +36,8 @@ const CellText = ({ type, title, description, caption, bold }) => {
 
 CellText.propTypes = {
     type: PropTypes.string,
-    title: PropTypes.string,
-    description: PropTypes.string,
+    title: PropTypes.node,
+    description: PropTypes.node,
     caption: PropTypes.string,
     bold: PropTypes.bool,
 }
