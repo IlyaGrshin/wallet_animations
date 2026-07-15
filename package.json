@@ -9,9 +9,9 @@
   },
   "homepage": ".",
   "dependencies": {
-    "@lisse/core": "0.4.0",
-    "@lisse/react": "^0.4.0",
-    "@tanstack/react-virtual": "^3.14.5",
+    "@lisse/core": "0.5.2",
+    "@lisse/react": "^0.5.2",
+    "@tanstack/react-virtual": "^3.14.6",
     "calligraph": "^1.4.1",
     "colorthief": "^3.4.0",
     "lottie-react": "^2.4.1",
