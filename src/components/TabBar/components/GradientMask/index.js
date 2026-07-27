@@ -63,6 +63,7 @@ function GradientMask({
                         fill="white"
                     />
                     <rect
+                        className={styles.gradientCutout}
                         x={left}
                         y={top}
                         width={innerWidth}

@@ -3,25 +3,13 @@
     position: relative;
     align-items: flex-start;
     align-self: stretch;
-    box-shadow: 0 -0.33px 0 0 var(--separator-non-opaque);
-    padding-bottom: env(safe-area-inset-bottom);
 
     :global(body.apple) & {
         position: absolute;
         left: 21px;
         right: 21px;
         bottom: var(--bottom-clearance, 21px);
-        border-radius: 100px;
-        padding: 4px;
         margin: 0;
-        background: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
-        backdrop-filter: saturate(300%) blur(8px);
-        box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
-
-        @supports (-apple-visual-effect: -apple-system-glass-material) {
-            -apple-visual-effect: -apple-system-glass-material;
-            backdrop-filter: none;
-        }
     }
 
     :global(body.material) & {
@@ -29,45 +17,69 @@
         left: 16px;
         right: 16px;
         bottom: var(--bottom-clearance, 16px);
-        border-radius: 100px;
-        padding: 4px;
         width: calc(100% - 32px);
-        background: rgb(from var(--tg-theme-section-bg-color) r g b / 84%);
-        backdrop-filter: blur(30px) saturate(10);
-        box-shadow:
-            0 1px 2px 0 rgb(0 0 0 / 8%),
-            0 2px 16px 1px rgb(0 0 0 / 10%);
     }
 
-    &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        pointer-events: none;
-        background: rgb(from var(--quaternary-fill-background) r g b / 4%);
-        z-index: 0;
-    }
+    .surface {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        width: 100%;
+        padding: 4px;
+        border-radius: 100px;
+        transform: scale(var(--tabbar-scroll-scale, 1));
+        transform-origin: center bottom;
 
-    // Apple already gets GlassBorder; a glass surface carries exactly one
-    // border, so the blended hairlines exist only where GlassBorder doesn't.
-    :global(body.material) &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        pointer-events: none;
-        box-shadow:
-            inset 0 1px 0 0 #fff,
-            inset 0 -0.5px 0 0 #fff;
-        mix-blend-mode: soft-light;
-        z-index: 2;
+        :global(body.apple) & {
+            background: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
+            backdrop-filter: saturate(300%) blur(8px);
+            box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+
+            @supports (-apple-visual-effect: -apple-system-glass-material) {
+                -apple-visual-effect: -apple-system-glass-material;
+                backdrop-filter: none;
+            }
+        }
+
+        :global(body.material) & {
+            background: rgb(from var(--tg-theme-section-bg-color) r g b / 84%);
+            backdrop-filter: blur(30px) saturate(10);
+            box-shadow:
+                0 1px 2px 0 rgb(0 0 0 / 8%),
+                0 2px 16px 1px rgb(0 0 0 / 10%);
+        }
+
+        &::before {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            border-radius: inherit;
+            background: rgb(from var(--quaternary-fill-background) r g b / 4%);
+            pointer-events: none;
+            content: "";
+        }
+
+        // Apple already gets GlassBorder; a glass surface carries exactly one
+        // border, so the hairlines exist only where GlassBorder doesn't.
+        :global(body.material) &::after {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            border-radius: inherit;
+            box-shadow:
+                inset 0 1px 0 0 #fff,
+                inset 0 -0.5px 0 0 #fff;
+            mix-blend-mode: soft-light;
+            pointer-events: none;
+            content: "";
+        }
     }
 
     .content {
         display: flex;
         position: relative;
         width: 100%;
+        margin-inline: auto;
         z-index: 1;
     }
 
@@ -80,12 +92,20 @@
         --overlay-padding-y: 21px;
 
         position: absolute;
-        inset: 0;
-        width: calc(100% + var(--overlay-padding-x) * 2);
+        top: 0;
+        left: 50%;
+        width: 100vw;
         height: calc(64px + var(--overlay-padding-y) * 2);
         z-index: 0;
-        margin: calc(var(--overlay-padding-y) * -1)
-            calc(var(--overlay-padding-x) * -1);
+        margin-top: calc(var(--overlay-padding-y) * -1);
+        pointer-events: none;
+        transform: translateX(-50%);
+    }
+
+    .gradientCutout {
+        transform: scale(var(--tabbar-scroll-scale, 1));
+        transform-box: fill-box;
+        transform-origin: center bottom;
     }
 
     .activeIndicator {
@@ -114,6 +134,7 @@
 
     .clipPathContainer {
         position: absolute;
+        left: 50%;
         display: flex;
         background-color: var(--tertiary-fill-background);
         width: calc(100% - 8px);
@@ -121,7 +142,7 @@
         will-change: clip-path;
         z-index: 10;
         overflow: hidden;
-        transform: translateZ(0);
+        transform: translateX(-50%) translateZ(0);
         isolation: isolate;
         backface-visibility: hidden;
 

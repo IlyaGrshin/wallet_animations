@@ -7,6 +7,7 @@ import { GlassBorder } from "../GlassEffect"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
 import { useIndicatorDrag } from "./useIndicatorDrag"
+import { useScrollScale } from "./useScrollScale"
 import GradientMask from "./components/GradientMask"
 
 const TabBarOverlay = ({
@@ -15,10 +16,13 @@ const TabBarOverlay = ({
     onChange,
     onSnapToSame,
     playKey,
+    compact,
+    maxWidth,
 }) => {
     const { overlayRef, animate, transition, handlers } = useIndicatorDrag({
         tabsLength: tabs.length,
         activeIndex,
+        compact,
         spring: { type: "spring", stiffness: 800, damping: 50 },
         onSnapToSame,
         onSnapToNew: onChange,
@@ -28,6 +32,7 @@ const TabBarOverlay = ({
         <m.div
             className={styles.clipPathContainer}
             ref={overlayRef}
+            style={{ maxWidth }}
             {...handlers}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, ...animate }}
@@ -42,6 +47,7 @@ const TabBarOverlay = ({
                     isActive={index === activeIndex}
                     onClick={() => onChange(index)}
                     playKey={playKey}
+                    compact={compact}
                     data-overlay
                     {...tab}
                 />
@@ -50,8 +56,15 @@ const TabBarOverlay = ({
     )
 }
 
-const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
+const TabBar = ({
+    tabs,
+    onChange,
+    defaultIndex = 0,
+    variant = "default",
+    collapseOnScroll = false,
+}) => {
     const { isApple } = useSkin()
+    const compact = variant === "compact"
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
     const [replayNonce, setReplayNonce] = useState(0)
 
@@ -63,7 +76,11 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
         setActiveIndex((prev) => Math.min(prev, tabs.length - 1))
     }, [tabs.length])
 
+    const rootRef = useRef(null)
+    const { scale, expand } = useScrollScale(rootRef, collapseOnScroll)
+
     const handleSegmentClick = (index) => {
+        expand()
         if (index === activeIndex) {
             setReplayNonce((n) => n + 1)
         } else {
@@ -74,70 +91,85 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
 
     const playKey = `${activeIndex}:${replayNonce}`
 
-    const rootRef = useRef(null)
-
     const [rootWidth, setRootWidth] = useState(0)
+    const [viewportWidth, setViewportWidth] = useState(0)
 
     useResizeObserver(rootRef, (entry) => {
-        setRootWidth(entry.contentRect.width)
+        setRootWidth(entry.target.getBoundingClientRect().width)
+        setViewportWidth(document.documentElement.clientWidth)
     })
 
     const isThreeTabs = tabs.length === 3
     const marginX = isThreeTabs ? 54 : 21
-    const rootStyle = isApple
-        ? {
-              left: marginX,
-              right: marginX,
-              width: `calc(100% - ${marginX * 2}px)`,
-          }
-        : {}
+    const maxTabWidth = compact ? 90 : undefined
+    const maxTabsWidth = maxTabWidth ? tabs.length * maxTabWidth : undefined
+    const maxRootWidth = maxTabsWidth ? maxTabsWidth + 8 : undefined
+    const rootStyle = {
+        "--tabbar-scroll-scale": scale,
+        ...(isApple
+            ? {
+                  left: marginX,
+                  right: marginX,
+                  width: `calc(100% - ${marginX * 2}px)`,
+              }
+            : {}),
+        ...(compact
+            ? { maxWidth: maxRootWidth, marginInline: "auto" }
+            : {}),
+    }
+
+    const maskSideInset =
+        rootWidth > 0 && viewportWidth > rootWidth
+            ? (viewportWidth - rootWidth) / 2
+            : marginX
 
     const maskInsets = {
         top: 21,
         bottom: 21,
-        left: marginX,
-        right: marginX,
+        left: maskSideInset,
+        right: maskSideInset,
     }
 
     return (
         <m.div
             ref={rootRef}
             className={styles.root}
-            whileTap={{ scale: 1.02 }}
+            whileTap={compact ? undefined : { scale: 1.02 }}
             transition={{
                 scale: { type: "spring", stiffness: 800, damping: 40 },
             }}
             style={rootStyle}
             layout
         >
-            <div
-                style={{
-                    display: "flex",
-                    width: "100%",
-                    position: "relative",
-                    zIndex: 1,
-                }}
-            >
-                {tabs.map((tab, index) => (
-                    <Tab
-                        key={index}
-                        isActive={index === activeIndex}
-                        onClick={() => handleSegmentClick(index)}
-                        playKey={playKey}
-                        {...tab}
-                    />
-                ))}
+            <div className={styles.surface}>
+                <div className={styles.content} style={{ maxWidth: maxTabsWidth }}>
+                    {tabs.map((tab, index) => (
+                        <Tab
+                            key={index}
+                            isActive={index === activeIndex}
+                            onClick={() => handleSegmentClick(index)}
+                            playKey={playKey}
+                            compact={compact}
+                            {...tab}
+                        />
+                    ))}
+                </div>
+                <TabBarOverlay
+                    tabs={tabs}
+                    activeIndex={activeIndex}
+                    onChange={handleSegmentClick}
+                    onSnapToSame={() => setReplayNonce((n) => n + 1)}
+                    playKey={playKey}
+                    compact={compact}
+                    maxWidth={maxTabsWidth}
+                />
+
+                <Activity mode={isApple ? "visible" : "hidden"}>
+                    <GlassBorder />
+                </Activity>
             </div>
-            <TabBarOverlay
-                tabs={tabs}
-                activeIndex={activeIndex}
-                onChange={handleSegmentClick}
-                onSnapToSame={() => setReplayNonce((n) => n + 1)}
-                playKey={playKey}
-            />
 
             <Activity mode={isApple ? "visible" : "hidden"}>
-                <GlassBorder />
                 <GradientMask
                     width={rootWidth}
                     height={64}
@@ -152,6 +184,8 @@ TabBar.propTypes = {
     tabs: PropTypes.array.isRequired,
     onChange: PropTypes.func,
     defaultIndex: PropTypes.number,
+    variant: PropTypes.oneOf(["default", "compact"]),
+    collapseOnScroll: PropTypes.bool,
 }
 
 TabBarOverlay.propTypes = {
@@ -160,6 +194,8 @@ TabBarOverlay.propTypes = {
     onChange: PropTypes.func,
     onSnapToSame: PropTypes.func,
     playKey: PropTypes.string,
+    compact: PropTypes.bool,
+    maxWidth: PropTypes.number,
 }
 
 export default TabBar

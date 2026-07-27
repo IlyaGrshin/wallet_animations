@@ -21,6 +21,8 @@ const allTabs = [
 ]
 
 const tabCounts = ["2", "3", "4"]
+const displayModes = ["Default", "Compact"]
+const demoRows = Array.from({ length: 12 }, (_, index) => `Scroll row ${index + 1}`)
 
 const wrapperStyle = {
     position: "fixed",
@@ -33,8 +35,10 @@ const wrapperStyle = {
 
 const TabBarShowcase = () => {
     const [pickerIndex, setPickerIndex] = useState(0)
+    const [displayModeIndex, setDisplayModeIndex] = useState(0)
     const count = parseInt(tabCounts[pickerIndex], 10)
     const tabs = allTabs.slice(0, count)
+    const compact = displayModes[displayModeIndex] === "Compact"
 
     return (
         <>
@@ -56,10 +60,36 @@ const TabBarShowcase = () => {
                             onPickerIndex={setPickerIndex}
                         />
                     </SectionList.Item>
+                    <SectionList.Item>
+                        <Cell
+                            end={
+                                <Cell.Part type="Picker">
+                                    {displayModes[displayModeIndex]}
+                                </Cell.Part>
+                            }
+                        >
+                            <Cell.Text title="Tab bar mode" />
+                        </Cell>
+                        <Picker
+                            items={displayModes}
+                            onPickerIndex={setDisplayModeIndex}
+                        />
+                    </SectionList.Item>
+                    <SectionList.Item>
+                        {demoRows.map((title) => (
+                            <Cell key={title}>
+                                <Cell.Text title={title} />
+                            </Cell>
+                        ))}
+                    </SectionList.Item>
                 </SectionList>
                 <div style={wrapperStyle}>
                     <div style={{ pointerEvents: "auto" }}>
-                        <TabBar tabs={tabs} />
+                        <TabBar
+                            tabs={tabs}
+                            variant={compact ? "compact" : "default"}
+                            collapseOnScroll={compact}
+                        />
                     </div>
                 </div>
             </Page>
