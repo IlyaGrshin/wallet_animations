@@ -75,6 +75,10 @@
         padding: 6px 0 8px;
     }
 
+    :global(body.material) & {
+        padding: 6px 0;
+    }
+
     svg,
     path,
     .icon {
