@@ -93,10 +93,12 @@ const TabBar = ({
 
     const [rootWidth, setRootWidth] = useState(0)
     const [rootHeight, setRootHeight] = useState(0)
+    const [viewportWidth, setViewportWidth] = useState(0)
 
     useResizeObserver(rootRef, (entry) => {
         setRootWidth(entry.contentRect.width)
         setRootHeight(entry.contentRect.height)
+        setViewportWidth(document.documentElement.clientWidth)
     })
 
     const isThreeTabs = tabs.length === 3
@@ -118,11 +120,16 @@ const TabBar = ({
             : {}),
     }
 
+    const maskSideInset =
+        rootWidth > 0 && viewportWidth > rootWidth
+            ? (viewportWidth - rootWidth) / 2
+            : marginX
+
     const maskInsets = {
         top: 21,
         bottom: 21,
-        left: marginX,
-        right: marginX,
+        left: maskSideInset,
+        right: maskSideInset,
     }
 
     return (
