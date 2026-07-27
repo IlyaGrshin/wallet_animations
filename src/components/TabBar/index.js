@@ -92,11 +92,11 @@ const TabBar = ({
     const playKey = `${activeIndex}:${replayNonce}`
 
     const [rootWidth, setRootWidth] = useState(0)
-    const [viewportWidth, setViewportWidth] = useState(0)
+    const [rootHeight, setRootHeight] = useState(0)
 
     useResizeObserver(rootRef, (entry) => {
-        setRootWidth(entry.target.getBoundingClientRect().width)
-        setViewportWidth(document.documentElement.clientWidth)
+        setRootWidth(entry.contentRect.width)
+        setRootHeight(entry.contentRect.height)
     })
 
     const isThreeTabs = tabs.length === 3
@@ -118,16 +118,11 @@ const TabBar = ({
             : {}),
     }
 
-    const maskSideInset =
-        rootWidth > 0 && viewportWidth > rootWidth
-            ? (viewportWidth - rootWidth) / 2
-            : marginX
-
     const maskInsets = {
         top: 21,
         bottom: 21,
-        left: maskSideInset,
-        right: maskSideInset,
+        left: marginX,
+        right: marginX,
     }
 
     return (
@@ -172,8 +167,9 @@ const TabBar = ({
             <Activity mode={isApple ? "visible" : "hidden"}>
                 <GradientMask
                     width={rootWidth}
-                    height={64}
+                    height={rootHeight}
                     insets={maskInsets}
+                    innerHeight={rootHeight}
                 />
             </Activity>
         </m.div>
