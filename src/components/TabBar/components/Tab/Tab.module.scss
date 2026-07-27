@@ -71,6 +71,10 @@
     padding: 8px 0;
     gap: 0;
 
+    :global(body.apple) & {
+        padding: 6px 0 7px;
+    }
+
     svg,
     path,
     .icon {
