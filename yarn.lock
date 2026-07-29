@@ -789,21 +789,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lisse/core@npm:0.5.2":
-  version: 0.5.2
-  resolution: "@lisse/core@npm:0.5.2"
-  checksum: 10c0/e9b1aedd47f661ee6fa969411c88aaf791ec5bd9c200cb0602ca752911e96fe83864c33723cfe1b69bb23cfbf4e5bcf598938bbe673079e2d4a2bdf64432fb8f
+"@lisse/core@npm:0.6.2":
+  version: 0.6.2
+  resolution: "@lisse/core@npm:0.6.2"
+  checksum: 10c0/274579c452b4bc5b6a5671428c5cd686a478d18857b95971f2ea2640def3812110e4803dd0fcc21a765cf47d0e2aa89f037ac356b6ce37f9d6ca0776f5eff741
   languageName: node
   linkType: hard
 
-"@lisse/react@npm:^0.5.2":
-  version: 0.5.2
-  resolution: "@lisse/react@npm:0.5.2"
+"@lisse/react@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "@lisse/react@npm:0.6.2"
   dependencies:
-    "@lisse/core": "npm:0.5.2"
+    "@lisse/core": "npm:0.6.2"
   peerDependencies:
     react: ">=18.0.0"
-  checksum: 10c0/64770aadda0b4708893d94b5582f2b2762fa1e914a173b046eff3344b17197301590011d53083685c0fb3da6b626e2d9545c61099edfa317f5763401ac3ccd7f
+  checksum: 10c0/42aa06f142fbd3c295612dcaabf0398c57db718e7107f8fc725532a57526d729639c0c6ae5c6b285f0fe0ae2d58ac56acb516f0513fc585b93a224d6ed9ec59a
   languageName: node
   linkType: hard
 
@@ -1478,22 +1478,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-virtual@npm:^3.14.7":
-  version: 3.14.7
-  resolution: "@tanstack/react-virtual@npm:3.14.7"
+"@tanstack/react-virtual@npm:^3.14.9":
+  version: 3.14.9
+  resolution: "@tanstack/react-virtual@npm:3.14.9"
   dependencies:
-    "@tanstack/virtual-core": "npm:3.17.5"
+    "@tanstack/virtual-core": "npm:3.17.7"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/b0332de248caedbb3b6da53042da13d36994370359ac12162166b2d89cf4e31049dc909fc1b7d96a28f6b93d3a2397efa099ce232e2d9b451b9d4350800e81cc
+  checksum: 10c0/4d89bb77c2e3db831e457500a003fbca62374e7f9cbf5c04e3ac92c75154bec5b9afaa9aa39d682d9983f8f6904d937746f9e88aecfd181ad1a96aed67b93768
   languageName: node
   linkType: hard
 
-"@tanstack/virtual-core@npm:3.17.5":
-  version: 3.17.5
-  resolution: "@tanstack/virtual-core@npm:3.17.5"
-  checksum: 10c0/e6a9f305414ac096f5cc7cfb597aa6b41a52b5e51a2d20ac0ca060abf37c2abc6a0ca357378006f030119da3552dafe8b0472aa000dad58577b5e9163cbec681
+"@tanstack/virtual-core@npm:3.17.7":
+  version: 3.17.7
+  resolution: "@tanstack/virtual-core@npm:3.17.7"
+  checksum: 10c0/9dd7cc9859af0f79e2189422a27fa4f72bddaccd3ecb027ad3f6968a28cd472e964a11b0005bd605ad0d534860233005711752d10d3c297f57fc3c5dbe397d56
   languageName: node
   linkType: hard
 
@@ -2968,11 +2968,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^12.42.2":
-  version: 12.42.2
-  resolution: "framer-motion@npm:12.42.2"
+"framer-motion@npm:^12.43.0":
+  version: 12.43.0
+  resolution: "framer-motion@npm:12.43.0"
   dependencies:
-    motion-dom: "npm:^12.42.2"
+    motion-dom: "npm:^12.43.0"
     motion-utils: "npm:^12.39.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -2986,7 +2986,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/2e514e0e303c0c01bc7d6a1028f7722ec17fc307922c6770a8dc5f7782521c60254f9c265329b887a29b32e2c730742328ecae468be626406afa5db1e6c0aa01
+  checksum: 10c0/cce3c1daf8f53da4d9299e6bdd2a1e9f08a30e13d84ce1e468cf25285f9ec2a900c812e0aa3dce79e7453a2a3cf328a717451beef9bf0a6175a3d3794116e36a
   languageName: node
   linkType: hard
 
@@ -4078,12 +4078,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion-dom@npm:^12.42.2":
-  version: 12.42.2
-  resolution: "motion-dom@npm:12.42.2"
+"motion-dom@npm:^12.43.0":
+  version: 12.43.0
+  resolution: "motion-dom@npm:12.43.0"
   dependencies:
     motion-utils: "npm:^12.39.0"
-  checksum: 10c0/1bcee88df706e3aaa4e5b8e7d2ba0efd8e2304c142e7541411bbd6f03b0fbe8d25883ec157905fdebf284f51db02008245f6d4653d20a97de9acf44bbb7be79f
+  checksum: 10c0/ef7d3f6eaa6cfeb1a939847a8b2581d119f2efc054948921ece0e2b1091f0969c15ca7707b87a46dddac7f156a714878f168e7b9f6ea189eeb7d5d9fbbb99d26
   languageName: node
   linkType: hard
 
@@ -4094,11 +4094,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"motion@npm:^12.42.2":
-  version: 12.42.2
-  resolution: "motion@npm:12.42.2"
+"motion@npm:^12.43.0":
+  version: 12.43.0
+  resolution: "motion@npm:12.43.0"
   dependencies:
-    framer-motion: "npm:^12.42.2"
+    framer-motion: "npm:^12.43.0"
     tslib: "npm:^2.4.0"
   peerDependencies:
     "@emotion/is-prop-valid": "*"
@@ -4111,7 +4111,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/44c333efe50fadb8ede589e237694e05dd73bed09c66f26ebcf89ca8a7449e77e55a0d3f2df6c1bdc00ee8de7f4e6fe957ef219d8002008472d978f4979ddab5
+  checksum: 10c0/15544ecc71d356661a959c78c4f84b3ca91728f5d17265b68912d2bbcf86f20409ebf5acf2f6c82e0c0425d1024267b04abd5b786177a3694bf706f7a3a529d6
   languageName: node
   linkType: hard
 
@@ -5814,11 +5814,11 @@ __metadata:
     "@babel/core": "npm:^7.29.7"
     "@babel/preset-react": "npm:^7.29.7"
     "@eslint/js": "npm:^10.0.1"
-    "@lisse/core": "npm:0.5.2"
-    "@lisse/react": "npm:^0.5.2"
+    "@lisse/core": "npm:0.6.2"
+    "@lisse/react": "npm:^0.6.2"
     "@relative-ci/agent": "npm:^4.3.1"
     "@resvg/resvg-js": "npm:^2.6.2"
-    "@tanstack/react-virtual": "npm:^3.14.7"
+    "@tanstack/react-virtual": "npm:^3.14.9"
     "@types/react": "npm:^19.2.17"
     "@types/react-dom": "npm:^19.2.3"
     "@vitejs/plugin-react": "npm:5"
@@ -5835,7 +5835,7 @@ __metadata:
     globals: "npm:^17.7.0"
     lottie-react: "npm:^2.4.1"
     markdown-to-jsx: "npm:9"
-    motion: "npm:^12.42.2"
+    motion: "npm:^12.43.0"
     prettier: "npm:^3.9.6"
     prop-types: "npm:^15.8.1"
     react: "npm:^19.2.8"
