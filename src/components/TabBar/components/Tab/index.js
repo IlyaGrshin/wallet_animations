@@ -16,6 +16,7 @@ const Tab = ({
     className = "",
     activeSegmentTime,
     activeSegment,
+    compact = false,
     ...rest
 }) => {
     const showLottie = Boolean(lottieIcon)
@@ -79,7 +80,7 @@ const Tab = ({
             layout
             transition={{ type: "spring", stiffness: 800, damping: 50 }}
             {...rest}
-            className={`${styles.tab} ${isActive ? styles.active : ""} ${className}`.trim()}
+            className={`${styles.tab} ${compact ? styles.compact : ""} ${isActive ? styles.active : ""} ${className}`.trim()}
             onClick={onClick}
         >
             <m.div layout className={styles.icon}>
@@ -96,9 +97,11 @@ const Tab = ({
                     icon
                 )}
             </m.div>
-            <m.span layout style={{ display: "inline-block" }}>
-                {label}
-            </m.span>
+            {!compact && (
+                <m.span layout style={{ display: "inline-block" }}>
+                    {label}
+                </m.span>
+            )}
         </m.div>
     )
 }
@@ -113,6 +116,7 @@ Tab.propTypes = {
     className: PropTypes.string,
     activeSegmentTime: PropTypes.number, // Время в секундах, когда иконка становится активной
     activeSegment: PropTypes.arrayOf(PropTypes.number), // Ручная настройка сегмента [startFrame, endFrame]
+    compact: PropTypes.bool,
 }
 
 export default Tab

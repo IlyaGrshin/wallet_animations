@@ -65,3 +65,27 @@
         border-radius: 100px;
     }
 }
+
+.compact {
+    max-width: 90px;
+    padding: 8px 0;
+    gap: 0;
+
+    :global(body.apple) & {
+        padding: 6px 0 8px;
+    }
+
+    :global(body.material) & {
+        padding: 6px 0;
+    }
+
+    svg,
+    path,
+    .icon {
+        height: 32px;
+    }
+
+    :global(body.apple) &:not(:first-child) {
+        margin-left: 0;
+    }
+}

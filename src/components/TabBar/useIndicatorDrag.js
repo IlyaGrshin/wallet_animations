@@ -5,6 +5,7 @@ import { clamp } from "../../utils/number"
 export function useIndicatorDrag({
     tabsLength,
     activeIndex,
+    compact = false,
     onSnapToSame,
     onSnapToNew,
     spring,
@@ -20,11 +21,17 @@ export function useIndicatorDrag({
 
     const segmentPercent = 100 / tabsLength
 
-    const indicatorWidth = `calc(${segmentPercent}% + 7.33px - 4px)`
-    const indicatorLeft = `calc(${segmentPercent * activeIndex}% - ${3.67 * activeIndex}px)`
+    const indicatorWidth = compact
+        ? `${segmentPercent}%`
+        : `calc(${segmentPercent}% + 7.33px - 4px)`
+    const indicatorLeft = compact
+        ? `${segmentPercent * activeIndex}%`
+        : `calc(${segmentPercent * activeIndex}% - ${3.67 * activeIndex}px)`
 
     const clipLeft = indicatorLeft
-    const clipRight = `calc(100% - (${indicatorLeft} + ${indicatorWidth}) - 2.33px * ${activeIndex})`
+    const clipRight = compact
+        ? `calc(100% - (${indicatorLeft} + ${indicatorWidth}))`
+        : `calc(100% - (${indicatorLeft} + ${indicatorWidth}) - 2.33px * ${activeIndex})`
 
     const animateClipPath =
         isDragging && dragLeftPercent != null
