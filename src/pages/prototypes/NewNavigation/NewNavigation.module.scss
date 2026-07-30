@@ -22,11 +22,6 @@
     }
 }
 
-.navigationWrapper {
-    position: relative;
-    z-index: 200;
-}
-
 .tabBarWrapper {
     position: absolute;
     bottom: 0;
@@ -39,6 +34,44 @@
 .viewBody {
     position: relative;
     min-height: 100%;
+}
+
+.searchHeader {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 -16px;
+        z-index: -1;
+
+        --fade-color: var(--page-background, var(--tg-theme-secondary-bg-color));
+
+        background: linear-gradient(
+            to bottom,
+            var(--fade-color),
+            rgb(from var(--fade-color) r g b / 0%)
+        );
+        opacity: 0;
+        transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        pointer-events: none;
+    }
+
+    :global(body.material) &::before {
+        inset: 0;
+        background: rgb(from var(--fade-color) r g b / 80%);
+        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
+    }
+
+    &.scrolled::before {
+        opacity: 1;
+    }
+
+    :global(body.material) &.scrolled::before {
+        backdrop-filter: blur(10px);
+    }
 }
 
 .tabBarHit {
