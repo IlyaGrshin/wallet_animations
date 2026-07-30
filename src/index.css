@@ -16,6 +16,12 @@
     }
 
     --shell-height: 100dvh;
+
+    --material-surface-background: rgb(from var(--tg-theme-section-bg-color) r g b / 84%);
+    --material-surface-filter: blur(30px) saturate(10);
+    --material-surface-shadow:
+        0 1px 2px 0 rgb(0 0 0 / 8%),
+        0 2px 16px 1px rgb(0 0 0 / 10%);
 }
 
 :root {

@@ -8,6 +8,10 @@
     background: var(--tg-theme-section-bg-color);
 }
 
+.plain {
+    background: none;
+}
+
 // Colored backdrop so the overlay variant's translucent glass and white
 // glyphs read the way they would over real content.
 .over {

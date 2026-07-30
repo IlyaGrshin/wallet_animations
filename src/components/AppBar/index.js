@@ -5,7 +5,6 @@ import { useHashLocation } from "wouter/use-hash-location"
 import PanelHeader from "../PanelHeader"
 import { useSplitViewContext } from "../SplitView/context"
 import { isTelegram } from "../../lib/twa"
-import ChevronLeftIcon from "../../icons/28/Chevron Left.svg?react"
 
 import * as styles from "./AppBar.module.scss"
 
@@ -59,7 +58,7 @@ const AppBar = ({ title, header = true, back = true }) => {
         >
             <PanelHeader
                 {...(showBack && {
-                    left: <ChevronLeftIcon />,
+                    left: <PanelHeader.BackIcon />,
                     onLeft: () => navigate("/"),
                 })}
             >

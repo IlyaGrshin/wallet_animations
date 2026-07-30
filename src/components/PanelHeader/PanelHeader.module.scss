@@ -1,4 +1,10 @@
+$search-easing: cubic-bezier(0.23, 1, 0.32, 1);
+$search-duration: 0.25s;
+$search-fade-duration: 0.15s;
+
 .root {
+    --header-control-size: 44px;
+
     position: relative;
     display: flex;
     align-items: center;
@@ -10,8 +16,8 @@
         z-index: 2;
         display: flex;
         align-items: center;
-        min-width: 44px;
-        min-height: 44px;
+        min-width: var(--header-control-size);
+        min-height: var(--header-control-size);
     }
 
     .trailing {
@@ -38,9 +44,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 44px;
+        height: var(--header-control-size);
         padding: 0 12px;
-        border-radius: 22px;
+        border-radius: calc(var(--header-control-size) / 2);
     }
 
     .titleContent {
@@ -49,6 +55,76 @@
         display: flex;
         align-items: center;
         white-space: nowrap;
+    }
+
+    &.withSearch {
+        --header-gap: 10px;
+
+        gap: var(--header-gap);
+
+        .middle {
+            --field-height: var(--header-control-size);
+            --field-radius: calc(var(--header-control-size) / 2);
+
+            position: static;
+            order: 1;
+            flex: 1;
+            pointer-events: auto;
+        }
+
+        .middle > * {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .trailing {
+            order: 2;
+        }
+
+        .collapsing {
+            width: var(--header-control-size);
+            min-width: 0;
+            transition:
+                width $search-duration $search-easing,
+                margin $search-duration $search-easing;
+        }
+
+        .collapsing > * {
+            transition:
+                opacity $search-duration $search-easing,
+                transform $search-duration $search-easing;
+        }
+
+        .side:first-child.collapsing > * {
+            transform-origin: left center;
+        }
+
+        .trailing.collapsing > * {
+            transform-origin: right center;
+        }
+
+        &.searching {
+            .collapsing {
+                width: 0;
+                pointer-events: none;
+            }
+
+            .side:first-child.collapsing {
+                margin-right: calc(-1 * var(--header-gap));
+            }
+
+            .trailing.collapsing {
+                margin-left: calc(-1 * var(--header-gap));
+            }
+
+            .collapsing > * {
+                opacity: 0;
+                transform: scale(0.6);
+                transition:
+                    opacity $search-fade-duration $search-easing,
+                    transform $search-fade-duration $search-easing;
+            }
+        }
     }
 
     // Content is pinned 10px above the bottom, so the taller in-modal bar lands
@@ -69,23 +145,36 @@
         }
     }
 
-    // Material: flat left-aligned app bar, no side actions.
+    // Material: flat left-aligned app bar.
     :global(body.material) & {
-        height: 56px;
-        padding: 0 var(--side-padding);
+        --header-gap: 16px;
 
-        &.inModal {
-            height: 60px;
-            padding-top: 6px;
+        height: 56px;
+        gap: var(--header-gap);
+        padding: 6px 7px;
+
+        &.withSearch {
+            --header-gap: 7px;
         }
 
-        .side {
+        .side:empty {
             display: none;
         }
 
+        .side:first-child:empty ~ .middle {
+            padding-left: 9px;
+        }
+
         .middle {
+            position: static;
+            order: 1;
+            flex: 1;
             justify-content: flex-start;
-            padding: 0 var(--side-padding);
+            padding: 0;
+        }
+
+        .trailing {
+            order: 2;
         }
     }
 }
