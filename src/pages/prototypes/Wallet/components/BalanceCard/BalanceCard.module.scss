@@ -90,7 +90,6 @@
 // ============================================
 .cardDefault {
     color: var(--tg-theme-text-color);
-    background: var(--tg-theme-section-bg-color);
 
     .label {
         :global(body.apple) & {
@@ -103,8 +102,6 @@
     }
 
     :global(body.material) & {
-        background-color: var(--tg-theme-section-bg-color);
-
         .amount {
             font-size: 44px;
             font-weight: 500;
