@@ -11,11 +11,11 @@ import { Image } from "../Image"
 import * as styles from "./ImageAvatar.module.scss"
 
 const ImageAvatar = forwardRef(
-    ({ size = 40, className, style, src, shape = "circle" }, ref) => {
+    ({ size, className, style, src, shape = "circle" }, ref) => {
         const { isMaterial } = useSkin()
         const redacted = Boolean(useSkeletonContext())
         const redactionClassName = useRedactionClassName(redacted)
-        if (isMaterial) size = 42
+        const resolvedSize = size ?? (isMaterial ? 42 : 40)
 
         return (
             <div
@@ -33,8 +33,8 @@ const ImageAvatar = forwardRef(
                     ${redactionClassName}
                     ${className || ""}`}
                 style={{
-                    width: size,
-                    height: size,
+                    width: resolvedSize,
+                    height: resolvedSize,
                     ...style,
                 }}
             >
