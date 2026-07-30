@@ -95,14 +95,6 @@ $search-fade-duration: 0.15s;
                 transform $search-duration $search-easing;
         }
 
-        .side:first-child.collapsing > * {
-            transform-origin: left center;
-        }
-
-        .trailing.collapsing > * {
-            transform-origin: right center;
-        }
-
         &.searching {
             .collapsing {
                 width: 0;
