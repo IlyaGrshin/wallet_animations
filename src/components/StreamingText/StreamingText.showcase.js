@@ -66,7 +66,6 @@ const StreamingTextShowcase = () => {
                             }}
                         >
                             <SegmentedControl
-                                type="circled"
                                 segments={SPEEDS}
                                 defaultIndex={speedIdx}
                                 onChange={setSpeedIdx}
@@ -81,7 +80,6 @@ const StreamingTextShowcase = () => {
                             }}
                         >
                             <SegmentedControl
-                                type="circled"
                                 segments={MODES}
                                 defaultIndex={modeIdx}
                                 onChange={setModeIdx}

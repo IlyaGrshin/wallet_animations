@@ -11,10 +11,10 @@ import * as styles from "./SegmentedControl.skeleton.module.scss"
 // click handlers + selection state); this is an inert look-alike whose labels
 // redact into shimmer bars under the Skeleton provider. First segment shows
 // the resting indicator, matching the real control's default selection.
-const SegmentBar = ({ segments, circled = false }) => (
+const SegmentBar = ({ segments }) => (
     <div className={styles.group}>
         <Skeleton active>
-            <div className={`${styles.track} ${circled ? styles.circled : ""}`}>
+            <div className={styles.track}>
                 {segments.map((label, index) => (
                     <div
                         key={index}
@@ -43,11 +43,10 @@ const SegmentBar = ({ segments, circled = false }) => (
 
 SegmentBar.propTypes = {
     segments: PropTypes.arrayOf(PropTypes.string).isRequired,
-    circled: PropTypes.bool,
 }
 
 // Suspense fallback for the Segmented Control showcase. Mirrors its four
-// sections (2 / 3 / 4 segments + circled) so the lazy chunk swaps in without
+// sections (2 / 3 / 4 segments) so the lazy chunk swaps in without
 // layout shift. Headers stay solid; only the segment labels redact.
 const SegmentedControlSkeleton = () => (
     <Page>
@@ -62,10 +61,6 @@ const SegmentedControlSkeleton = () => (
 
             <SectionList.Item header="4 Segments">
                 <SegmentBar segments={["One", "Two", "Three", "Four"]} />
-            </SectionList.Item>
-
-            <SectionList.Item header="Circled">
-                <SegmentBar segments={["Day", "Week", "Month"]} circled />
             </SectionList.Item>
         </SectionList>
     </Page>

@@ -30,15 +30,6 @@ const SegmentedControlShowcase = () => (
                         />
                     </div>
                 </SectionList.Item>
-
-                <SectionList.Item header="Circled">
-                    <div style={{ padding: "12px var(--side-padding)" }}>
-                        <SegmentedControl
-                            segments={["Day", "Week", "Month"]}
-                            type="circled"
-                        />
-                    </div>
-                </SectionList.Item>
             </SectionList>
         </Page>
     </>

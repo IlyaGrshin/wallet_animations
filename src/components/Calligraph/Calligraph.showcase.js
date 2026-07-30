@@ -107,7 +107,6 @@ const CalligraphShowcase = () => {
                     <SectionList.Item header="Animation preset">
                         <div style={{ padding: "12px var(--side-padding)" }}>
                             <SegmentedControl
-                                type="circled"
                                 segments={ANIMATIONS}
                                 defaultIndex={animIdx}
                                 onChange={setAnimIdx}

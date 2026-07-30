@@ -6,16 +6,19 @@
 }
 
 .track {
+    --track-inset: 2px;
+    --track-radius: 18px;
+
     position: relative;
     display: flex;
     width: 100%;
-    gap: 4px;
-    padding: 2px;
-    border-radius: 9px;
+    gap: calc(var(--track-inset) * 2);
+    padding: var(--track-inset);
+    border-radius: var(--track-radius);
     background-color: var(--quaternary-fill-background);
 
-    :global(body.material) & {
-        border-radius: 18px;
+    :global(body.apple) & {
+        --track-inset: 4px;
     }
 }
 
@@ -24,8 +27,8 @@
     flex: 1;
     align-items: center;
     justify-content: center;
-    padding: 6px 0 4px;
-    border-radius: 7px;
+    padding: 7px 0;
+    border-radius: calc(var(--track-radius) - var(--track-inset));
 
     :global(body.material) & {
         padding: 8px 0;
@@ -36,28 +39,5 @@
 // real segmented control mid-selection.
 .active {
     background-color: var(--segmented_control_active_background);
-    border: 0.5px solid var(--quarternary-fill-background);
-    box-shadow:
-        0 3px 8px 0 rgb(0 0 0 / 12%),
-        0 3px 1px 0 rgb(0 0 0 / 4%);
-
-    :global(body.material) & {
-        border: 0;
-        border-radius: 16px;
-        box-shadow: none;
-    }
-}
-
-.circled {
-    border-radius: 18px;
-
-    .segment {
-        padding: 7px 0;
-    }
-
-    .active {
-        border: 0;
-        border-radius: 16px;
-        box-shadow: none;
-    }
+    box-shadow: 0 2px 20px 0 rgb(0 0 0 / 6%);
 }

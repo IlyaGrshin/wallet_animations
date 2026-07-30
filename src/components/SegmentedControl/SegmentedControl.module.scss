@@ -1,13 +1,20 @@
 .root {
+    --track-inset: 2px;
+    --track-radius: 18px;
+
     position: relative;
     width: 100%;
     display: flex;
     background-color: var(--quaternary-fill-background);
-    border-radius: 9px;
-    padding: 2px;
+    border-radius: var(--track-radius);
+    padding: var(--track-inset);
     overflow: hidden;
     transition: background-color 0.2s ease;
-    gap: 4px;
+    gap: calc(var(--track-inset) * 2);
+
+    :global(body.apple) & {
+        --track-inset: 4px;
+    }
 
     .segment {
         flex: 1;
@@ -15,59 +22,27 @@
         border: none;
         outline: none;
         color: var(--tg-theme-text-color);
-        padding: 6px 0 4px;
+        padding: 7px 0;
         z-index: 1;
         text-align: center;
-        transition: color 0.2s ease;
 
-        &.active {
-            color: var(--tg-theme-text-color);
-            transition: color 0.2s ease;
+        :global(body.material) & {
+            padding: 8px 0;
         }
     }
 
     .activeIndicator {
         position: absolute;
         left: 0;
-        height: calc(100% - 4px);
+        height: calc(100% - var(--track-inset) * 2);
+        margin-inline: var(--track-inset);
         background-color: var(--segmented_control_active_background);
-        border-radius: 7px;
+        border-radius: calc(var(--track-radius) - var(--track-inset));
+        box-shadow: 0 2px 20px 0 rgb(0 0 0 / 6%);
         transition:
             transform 0.2s ease,
             background-color 0.2s ease;
         z-index: 0;
-        border: 0.5px solid var(--quarternary-fill-background);
-        box-shadow:
-            0 3px 8px 0 rgb(0 0 0 / 12%),
-            0 3px 1px 0 rgb(0 0 0 / 4%);
         will-change: transform;
-    }
-
-    &.circled {
-        border-radius: 18px;
-
-        .segment {
-            padding: 7px 0;
-        }
-
-        .activeIndicator {
-            border-radius: 16px;
-            border: 0;
-            box-shadow: none;
-        }
-    }
-
-    :global(body.material) & {
-        border-radius: 18px;
-
-        .segment {
-            padding: 8px 0;
-        }
-
-        .activeIndicator {
-            border-radius: 16px;
-            border: 0;
-            box-shadow: none;
-        }
     }
 }

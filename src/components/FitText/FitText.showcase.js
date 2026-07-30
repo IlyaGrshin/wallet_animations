@@ -82,7 +82,6 @@ const FitTextShowcase = () => {
                     <SectionList.Item header="Container width — refits via ResizeObserver">
                         <div style={{ padding: "12px var(--side-padding)" }}>
                             <SegmentedControl
-                                type="circled"
                                 segments={WIDTHS}
                                 defaultIndex={widthIdx}
                                 onChange={setWidthIdx}
@@ -93,7 +92,6 @@ const FitTextShowcase = () => {
                     <SectionList.Item header="Min scale — below it the text clips">
                         <div style={{ padding: "12px var(--side-padding)" }}>
                             <SegmentedControl
-                                type="circled"
                                 segments={MIN_SCALES}
                                 defaultIndex={minScaleIdx}
                                 onChange={setMinScaleIdx}
