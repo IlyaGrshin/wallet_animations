@@ -29,8 +29,7 @@
         // Wallet small-assets group with a button after it), so its own last
         // cell re-arms the separator. A trailing aria-hidden sibling (a closed
         // Collapsible) renders nothing, so it does not count as content after.
-        .container
-            :not(:last-child, :has(+ [aria-hidden="true"]:last-child)) {
+        .container :not(:last-child, :has(+ [aria-hidden="true"]:last-child)) {
             --last-cell-separator-height: var(--cell-separator-height);
         }
     }

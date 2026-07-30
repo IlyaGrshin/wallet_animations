@@ -90,9 +90,7 @@ const CalligraphShowcase = () => {
                             <Cell.Text type="Accent" title="Decrease" />
                         </Cell>
                         <Cell
-                            onClick={() =>
-                                setBalance(generateRandomBalance())
-                            }
+                            onClick={() => setBalance(generateRandomBalance())}
                         >
                             <Cell.Text type="Accent" title="Randomize" />
                         </Cell>

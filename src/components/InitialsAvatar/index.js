@@ -1,11 +1,7 @@
 import { useSkin } from "../../hooks/DeviceProvider"
 import PropTypes from "prop-types"
 
-import {
-    useSkeletonContext,
-    useRedactionClassName,
-    waveRef,
-} from "../Skeleton"
+import { useSkeletonContext, useRedactionClassName, waveRef } from "../Skeleton"
 import { isUnicode } from "../../utils/common"
 
 import * as styles from "./InitialsAvatar.module.scss"

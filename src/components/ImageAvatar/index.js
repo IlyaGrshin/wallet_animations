@@ -2,11 +2,7 @@ import { forwardRef } from "react"
 import PropTypes from "prop-types"
 
 import { useSkin } from "../../hooks/DeviceProvider"
-import {
-    useSkeletonContext,
-    useRedactionClassName,
-    waveRef,
-} from "../Skeleton"
+import { useSkeletonContext, useRedactionClassName, waveRef } from "../Skeleton"
 import { Image } from "../Image"
 import * as styles from "./ImageAvatar.module.scss"
 

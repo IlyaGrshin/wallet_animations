@@ -14,9 +14,7 @@ import * as styles from "./SegmentedControl.skeleton.module.scss"
 const SegmentBar = ({ segments, circled = false }) => (
     <div className={styles.group}>
         <Skeleton active>
-            <div
-                className={`${styles.track} ${circled ? styles.circled : ""}`}
-            >
+            <div className={`${styles.track} ${circled ? styles.circled : ""}`}>
                 {segments.map((label, index) => (
                     <div
                         key={index}

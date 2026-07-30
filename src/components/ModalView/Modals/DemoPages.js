@@ -66,9 +66,7 @@ export const AssetListPage = ({ onSelect }) => {
                         <Cell
                             key={asset.symbol}
                             start={
-                                <ImageAvatar
-                                    src={getAssetIcon(asset.symbol)}
-                                />
+                                <ImageAvatar src={getAssetIcon(asset.symbol)} />
                             }
                             end={<Cell.End label={asset.fiat} />}
                             onClick={() => {

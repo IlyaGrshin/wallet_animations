@@ -12,7 +12,10 @@
         inset: 0 0 -16px;
         z-index: -1;
 
-        --fade-color: var(--page-background, var(--tg-theme-secondary-bg-color));
+        --fade-color: var(
+            --page-background,
+            var(--tg-theme-secondary-bg-color)
+        );
 
         background: linear-gradient(
             to bottom,

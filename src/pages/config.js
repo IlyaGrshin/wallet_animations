@@ -37,7 +37,8 @@ const config = [
             {
                 title: "Panel Header",
                 component: lazyWithPreload(
-                    () => import("../components/PanelHeader/PanelHeader.showcase")
+                    () =>
+                        import("../components/PanelHeader/PanelHeader.showcase")
                 ),
             },
             {
@@ -182,16 +183,13 @@ const config = [
                 title: "Particle Effect",
                 component: lazyWithPreload(
                     () =>
-                        import(
-                            "../components/ParticleEffect/ParticleEffect.showcase"
-                        )
+                        import("../components/ParticleEffect/ParticleEffect.showcase")
                 ),
             },
             {
                 title: "Calligraph",
                 component: lazyWithPreload(
-                    () =>
-                        import("../components/Calligraph/Calligraph.showcase")
+                    () => import("../components/Calligraph/Calligraph.showcase")
                 ),
             },
             {

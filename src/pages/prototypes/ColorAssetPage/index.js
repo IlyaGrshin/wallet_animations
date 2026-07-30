@@ -151,7 +151,10 @@ function AssetSection({ mode, asset }) {
                             ${data.current_price}
                         </Text>
                         <Text
-                            apple={{ variant: "subheadline1", weight: "regular" }}
+                            apple={{
+                                variant: "subheadline1",
+                                weight: "regular",
+                            }}
                             material={{ variant: "title3" }}
                         >
                             {data.symbol?.toUpperCase()}

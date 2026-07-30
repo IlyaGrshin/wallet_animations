@@ -102,7 +102,12 @@ const PanelHeaderShowcase = () => {
 
                 <Sample label="Search" plain>
                     <PanelHeader
-                        left={<ImageAvatar src={avatarUrl} size={isApple ? 38 : 36} />}
+                        left={
+                            <ImageAvatar
+                                src={avatarUrl}
+                                size={isApple ? 38 : 36}
+                            />
+                        }
                         onLeft={noop}
                         right={<GiftIcon />}
                         onRight={noop}

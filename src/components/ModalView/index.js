@@ -90,12 +90,9 @@ const ModalView = ({
                 : state
         )
 
-    const {
-        y,
-        overlayOpacity,
-        dragProps,
-        onPanelPointerDown,
-    } = useDismissDrag({ onClose, panelRef: modalRef })
+    const { y, overlayOpacity, dragProps, onPanelPointerDown } = useDismissDrag(
+        { onClose, panelRef: modalRef }
+    )
 
     useFocusTrap(modalRef, isOpen)
 

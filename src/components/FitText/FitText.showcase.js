@@ -62,7 +62,10 @@ const FitTextShowcase = () => {
                             <FitText
                                 minScale={parseFloat(MIN_SCALES[minScaleIdx])}
                             >
-                                <Text variant="title1" apple={{ weight: "bold" }}>
+                                <Text
+                                    variant="title1"
+                                    apple={{ weight: "bold" }}
+                                >
                                     {PHRASES[phraseIdx]}
                                 </Text>
                             </FitText>
@@ -87,9 +90,7 @@ const FitTextShowcase = () => {
                         </div>
                     </SectionList.Item>
 
-                    <SectionList.Item
-                        header="Min scale — below it the text clips"
-                    >
+                    <SectionList.Item header="Min scale — below it the text clips">
                         <div style={{ padding: "12px var(--side-padding)" }}>
                             <SegmentedControl
                                 type="circled"

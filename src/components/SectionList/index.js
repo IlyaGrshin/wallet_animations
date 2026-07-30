@@ -39,7 +39,10 @@ const SectionListItem = ({ children, header, description, ...props }) => {
     // and re-applies to the new target. clip-path only, no SVG effects.
     useSmoothCorners(
         isApple ? containerRef : cardRef,
-        { radius: isApple ? APPLE_RADIUS : MATERIAL_RADIUS, smoothing: SMOOTHING },
+        {
+            radius: isApple ? APPLE_RADIUS : MATERIAL_RADIUS,
+            smoothing: SMOOTHING,
+        },
         { autoEffects: false }
     )
 

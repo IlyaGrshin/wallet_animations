@@ -35,7 +35,10 @@ const SkeletonShowcase = () => {
                                     <ImageAvatar src={getAssetIcon("TON")} />
                                 }
                                 end={
-                                    <Cell.End label="1,247.51" caption="$3.21" />
+                                    <Cell.End
+                                        label="1,247.51"
+                                        caption="$3.21"
+                                    />
                                 }
                             >
                                 <Cell.Text title="Toncoin" description="TON" />

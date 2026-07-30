@@ -55,7 +55,9 @@ const PanelHeader = ({
     const renderSide = ({ action, onClick, variant, trailing, exits }) => (
         <div
             className={`${styles.side} ${trailing ? styles.trailing : ""} ${
-                (trailing ? materialSearch : appleSearch) ? styles.collapsing : ""
+                (trailing ? materialSearch : appleSearch)
+                    ? styles.collapsing
+                    : ""
             }`}
             {...(searchFocused && {
                 onMouseDown: (event) => event.preventDefault(),
@@ -125,9 +127,7 @@ const PanelHeader = ({
                     (isApple && titleGlass ? (
                         <div className={styles.titlePill}>
                             <GlassContainer />
-                            <span className={styles.titleContent}>
-                                {title}
-                            </span>
+                            <span className={styles.titleContent}>{title}</span>
                         </div>
                     ) : (
                         title
