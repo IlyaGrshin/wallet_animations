@@ -1,0 +1,8 @@
+{
+    "name": "UI Prototype",
+    "short_name": "UI Prototype",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#EFEFF4"
+}

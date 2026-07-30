@@ -2,6 +2,7 @@
     position: sticky;
     top: 0;
     z-index: 10;
+    padding-top: var(--appbar-inset-top, env(safe-area-inset-top, 0));
 
     // Page-bg -> transparent fade (TabBar-style), 16px past the bar, fading in
     // on scroll instead of a hard material edge.

@@ -1,6 +1,9 @@
 .root {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--shell-height);
     overflow: hidden;
 }
 
@@ -16,6 +19,7 @@
     width: 100%;
     height: 100%;
     overflow-y: auto;
+    padding-bottom: env(safe-area-inset-bottom, 0);
 
     // No will-change here: `will-change: opacity` makes the scroller a
     // backdrop root and AppBar's glass buttons lose their blur. Motion
