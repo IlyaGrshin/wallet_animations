@@ -35,8 +35,33 @@
     }
 
     :global(body.apple) & {
-        padding: 16px;
-        gap: 24px;
+        // iOS 26 grouped-list rhythm. The spec measures text to card, so every
+        // gap that meets a header or footer subtracts the padding that text
+        // carries — kept as a variable so the two can't drift apart.
+        --header-text-inset: 10px;
+
+        padding: 0 16px 20px;
+        gap: 0;
+
+        section + section {
+            margin-top: 35px;
+        }
+
+        section + section[data-header] {
+            margin-top: calc(28px - var(--header-text-inset));
+        }
+
+        section[data-footer] + section {
+            margin-top: calc(24px - var(--header-text-inset));
+        }
+
+        section[data-footer] + section[data-header] {
+            margin-top: calc(16px - var(--header-text-inset) * 2);
+        }
+
+        section:first-child:not([data-header]) {
+            margin-top: 20px;
+        }
 
         section .container {
             background-color: var(--tg-theme-section-bg-color);
