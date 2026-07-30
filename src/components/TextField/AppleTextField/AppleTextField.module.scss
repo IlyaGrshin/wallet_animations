@@ -5,7 +5,7 @@
 .input {
     font: inherit;
     line-height: inherit;
-    border-radius: 12px;
+    border-radius: var(--field-radius, 12px);
     background: var(--input-bg-color);
     color: var(--tg-theme-text-color);
     caret-color: var(--tg-theme-accent-text-color);
@@ -15,6 +15,7 @@
 
     &::placeholder {
         color: var(--tg-theme-subtitle-text-color);
+        font-weight: inherit;
     }
 }
 
@@ -61,6 +62,7 @@
 
 .search {
     .input {
+        min-height: var(--field-height, 0);
         padding-inline-start: 42px;
         padding-block: 10px;
 

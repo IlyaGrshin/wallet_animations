@@ -33,7 +33,7 @@ export const AppleTextField = forwardRef(
         return (
             <AppleText
                 variant="body"
-                weight="regular"
+                weight={type === "search" ? "medium" : "regular"}
                 className={[
                     styles.root,
                     className,
