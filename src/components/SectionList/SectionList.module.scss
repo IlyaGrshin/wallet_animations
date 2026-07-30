@@ -43,23 +43,23 @@
         padding: 0 16px 20px;
         gap: 0;
 
-        section + section {
+        > * + * {
             margin-top: 35px;
         }
 
-        section + section[data-header] {
+        > * + [data-header] {
             margin-top: calc(28px - var(--header-text-inset));
         }
 
-        section[data-footer] + section {
+        > [data-footer] + * {
             margin-top: calc(24px - var(--header-text-inset));
         }
 
-        section[data-footer] + section[data-header] {
+        > [data-footer] + [data-header] {
             margin-top: calc(16px - var(--header-text-inset) * 2);
         }
 
-        section:first-child:not([data-header]) {
+        > :first-child:not([data-header]) {
             margin-top: 20px;
         }
 
