@@ -46,10 +46,11 @@ MenuItem.propTypes = {
  * placement. Without `trigger` it renders the selected item as the button.
  * @param {string[]} props.items Menu options (required, non-empty).
  * @param {import("react").ReactNode} [props.trigger] Custom trigger; defaults to selected item.
+ * @param {(item: string) => void} [props.onChange] Fires with the picked item.
  * @example
  * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
  */
-const DropdownMenu = ({ items, trigger }) => {
+const DropdownMenu = ({ items, trigger, onChange }) => {
     const { isApple } = useSkin()
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
@@ -97,6 +98,7 @@ const DropdownMenu = ({ items, trigger }) => {
 
     const handleSelectItem = (item) => {
         setSelectedItem(item)
+        if (onChange) onChange(item)
         setIsOpen(false)
         resetPosition()
         setActiveIndex(-1)
@@ -249,5 +251,6 @@ const DropdownMenu = ({ items, trigger }) => {
 DropdownMenu.propTypes = {
     items: PropTypes.arrayOf(PropTypes.string).isRequired,
     trigger: PropTypes.node,
+    onChange: PropTypes.func,
 }
 export default DropdownMenu
