@@ -87,6 +87,7 @@ export const AppleTextField = forwardRef(
                         className={[styles.icon, styles.clearButtonIcon]
                             .filter(Boolean)
                             .join(" ")}
+                        onMouseDown={(event) => event.preventDefault()}
                         onClick={onClear}
                     >
                         <ClearAppleSVG />

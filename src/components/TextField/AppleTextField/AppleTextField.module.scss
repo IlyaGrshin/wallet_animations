@@ -22,8 +22,9 @@
 .icon {
     position: absolute;
     z-index: 1;
+    top: 50%;
     color: var(--tg-theme-subtitle-text-color);
-    top: 12px;
+    transform: translateY(-50%);
 }
 
 .searchIcon {
@@ -65,6 +66,7 @@
         min-height: var(--field-height, 0);
         padding-inline-start: 42px;
         padding-block: 10px;
+        backdrop-filter: blur(20px);
 
         &::-webkit-search-cancel-button,
         &::-webkit-search-decoration,
@@ -87,7 +89,4 @@
         }
     }
 
-    .icon {
-        top: 10px;
-    }
 }
