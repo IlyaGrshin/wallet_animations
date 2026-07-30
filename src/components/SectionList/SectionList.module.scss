@@ -43,6 +43,14 @@
             border-radius: 26px;
             overflow: hidden;
         }
+
+        &.grouped {
+            padding-inline: 0;
+
+            section .container {
+                border-radius: 0;
+            }
+        }
     }
 
     :global(body.material) & {
@@ -53,6 +61,14 @@
             background-color: var(--tg-theme-section-bg-color);
             border-radius: 16px;
             overflow: hidden;
+        }
+
+        &.grouped {
+            padding-inline: 0;
+
+            section .card {
+                border-radius: 0;
+            }
         }
     }
 }

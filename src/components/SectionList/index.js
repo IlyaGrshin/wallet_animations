@@ -1,8 +1,9 @@
-import { useRef } from "react"
+import { useContext, useRef } from "react"
 import PropTypes from "prop-types"
 import { useSmoothCorners } from "@lisse/react"
 import * as styles from "./SectionList.module.scss"
 import SectionHeader from "../../components/SectionHeader"
+import { SectionListContext } from "./context"
 import { useSkin } from "../../hooks/DeviceProvider"
 
 // Radii mirror SectionList.module.scss: Apple rounds the inner .container
@@ -12,8 +13,10 @@ const MATERIAL_RADIUS = 16
 const SMOOTHING = 0.6 // Figma iOS squircle smoothing
 
 /**
- * Grouped list container with squircled section corners. Wrap rows in
- * `SectionList.Item`, which adds an optional header and a footer description.
+ * Grouped list container. Wrap rows in `SectionList.Item`, which adds an
+ * optional header and a footer description.
+ * @param {"insetGrouped"|"grouped"} [props.type="insetGrouped"] Inset cards with
+ * squircled corners, or full-bleed sections that reach the screen edges.
  * @example
  * <SectionList>
  *   <SectionList.Item header="General" description="Applies to all wallets">
@@ -21,24 +24,31 @@ const SMOOTHING = 0.6 // Figma iOS squircle smoothing
  *   </SectionList.Item>
  * </SectionList>
  */
-const SectionList = ({ children, ...props }) => {
+const SectionList = ({ children, type = "insetGrouped", ...props }) => {
     return (
-        <section className={styles.root} {...props}>
-            {children}
-        </section>
+        <SectionListContext.Provider value={type}>
+            <section
+                className={`${styles.root} ${styles[type] ?? ""}`}
+                {...props}
+            >
+                {children}
+            </section>
+        </SectionListContext.Provider>
     )
 }
 
 const SectionListItem = ({ children, header, description, ...props }) => {
     const { isApple } = useSkin()
+    const grouped = useContext(SectionListContext) === "grouped"
     const cardRef = useRef(null)
     const containerRef = useRef(null)
+    const squareRef = useRef(null)
 
     // Squircle the element that carries the section background. The hook is
     // keyed on the ref, so a skin switch restores the old element's clip-path
     // and re-applies to the new target. clip-path only, no SVG effects.
     useSmoothCorners(
-        isApple ? containerRef : cardRef,
+        grouped ? squareRef : isApple ? containerRef : cardRef,
         {
             radius: isApple ? APPLE_RADIUS : MATERIAL_RADIUS,
             smoothing: SMOOTHING,
@@ -47,7 +57,11 @@ const SectionListItem = ({ children, header, description, ...props }) => {
     )
 
     return (
-        <section {...props}>
+        <section
+            {...(header && { "data-header": "" })}
+            {...(description && { "data-footer": "" })}
+            {...props}
+        >
             <div ref={cardRef} className={styles.card}>
                 {header && <SectionHeader title={header} />}
                 <div ref={containerRef} className={styles.container}>
@@ -69,5 +83,6 @@ SectionList.Item = SectionListItem
 
 SectionList.propTypes = {
     children: PropTypes.node,
+    type: PropTypes.oneOf(["insetGrouped", "grouped"]),
 }
 export default SectionList
