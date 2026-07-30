@@ -4,8 +4,10 @@ import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import { POPOVER_VARIANTS } from "../../utils/animations"
+import Tappable from "../Tappable"
 import Text from "../Text"
 import { GlassBorder } from "../GlassEffect"
+import { useSkin } from "../../hooks/DeviceProvider"
 import { useSplitViewContext } from "../SplitView/context"
 import {
     useClickOutside,
@@ -16,7 +18,7 @@ import {
 import * as styles from "./DropdownMenu.module.scss"
 
 const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
-    <div
+    <Tappable
         ref={itemRef}
         role="menuitem"
         tabIndex={-1}
@@ -25,7 +27,7 @@ const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
         className={`${styles.item} ${isSelected ? styles.selected : ""}`}
     >
         <Text variant="body">{item}</Text>
-    </div>
+    </Tappable>
 )
 
 MenuItem.propTypes = {
@@ -48,6 +50,7 @@ MenuItem.propTypes = {
  * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
  */
 const DropdownMenu = ({ items, trigger }) => {
+    const { isApple } = useSkin()
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
     const [activeIndex, setActiveIndex] = useState(-1)
@@ -218,7 +221,7 @@ const DropdownMenu = ({ items, trigger }) => {
                                     zIndex: 1000,
                                 }}
                             >
-                                <GlassBorder muted />
+                                {isApple && <GlassBorder muted />}
                                 {items.map((item, index) => (
                                     <MenuItem
                                         key={index}

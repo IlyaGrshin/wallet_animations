@@ -24,11 +24,6 @@
         cursor: pointer;
         color: var(--tg-theme-text-color);
         position: relative;
-
-        &:hover {
-            background-color: rgb(120 120 128 / 12%);
-            border-radius: 50px;
-        }
     }
 
     :global(body.material) & {
@@ -56,6 +51,7 @@
 
         .item {
             padding: 11px 8px;
+            border-radius: 50px;
 
             &:last-child {
                 border-bottom: 0;
