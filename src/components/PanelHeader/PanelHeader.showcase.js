@@ -9,8 +9,8 @@ import TextField from "../TextField"
 
 import CheckmarkIcon from "../../icons/28/Checkmark.svg?react"
 import GiftIcon from "../../icons/28/Gift Fill.svg?react"
-import avatarSrc from "../../icons/avatars/IlyaG.jpg"
 
+import { useAvatarUrl } from "../../hooks/useAvatarUrl"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { BackButton } from "../../lib/twa"
 
@@ -40,6 +40,7 @@ Sample.propTypes = {
 
 const PanelHeaderShowcase = () => {
     const { isApple } = useSkin()
+    const avatarUrl = useAvatarUrl()
     const [query, setQuery] = useState("")
 
     return (
@@ -101,7 +102,7 @@ const PanelHeaderShowcase = () => {
 
                 <Sample label="Search" plain>
                     <PanelHeader
-                        left={<ImageAvatar src={avatarSrc} size={isApple ? 38 : 36} />}
+                        left={<ImageAvatar src={avatarUrl} size={isApple ? 38 : 36} />}
                         onLeft={noop}
                         right={<GiftIcon />}
                         onRight={noop}
