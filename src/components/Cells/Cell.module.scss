@@ -3,10 +3,6 @@
     --image-cell-offset: 0;
 }
 
-:global(body.material) {
-    --image-cell-offset: -6px;
-}
-
 // A cell that closes the visual list drops its separator, at any nesting
 // depth (TabContent slides, Collapsible content). Closing the list means
 // being the last sibling, or being followed only by a collapsed last sibling
@@ -24,6 +20,10 @@
     color: var(--tg-theme-text-color);
     cursor: pointer;
     text-decoration: none;
+
+    :global(body.material) & {
+        --image-cell-offset: -6px;
+    }
 
     .start {
         display: flex;
