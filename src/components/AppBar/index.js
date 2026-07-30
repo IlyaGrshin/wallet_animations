@@ -1,22 +1,12 @@
-import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { useHashLocation } from "wouter/use-hash-location"
 
 import PanelHeader from "../PanelHeader"
 import { useSplitViewContext } from "../SplitView/context"
+import { useScrolled } from "../../hooks/useScrolled"
 import { isTelegram } from "../../lib/twa"
 
 import * as styles from "./AppBar.module.scss"
-
-const findScroller = (node) => {
-    let el = node?.parentElement
-    while (el) {
-        const overflowY = getComputedStyle(el).overflowY
-        if (overflowY === "auto" || overflowY === "scroll") return el
-        el = el.parentElement
-    }
-    return null
-}
 
 // Browser-only page header (renders null inside Telegram, where native chrome
 // handles it). The back button is dropped in a SplitView detail pane, where the
@@ -24,30 +14,9 @@ const findScroller = (node) => {
 const AppBar = ({ title, header = true, back = true }) => {
     const [, navigate] = useHashLocation()
     const { inDetailPane } = useSplitViewContext()
-    const [scrolled, setScrolled] = useState(false)
-    const barRef = useRef(null)
     const enabled = header !== false && !isTelegram()
     const showBack = back && !inDetailPane
-
-    useEffect(() => {
-        if (!enabled) return
-        const scroller = findScroller(barRef.current)
-        if (!scroller) return
-        let raf = 0
-        const onScroll = () => {
-            if (raf) return
-            raf = requestAnimationFrame(() => {
-                raf = 0
-                setScrolled(scroller.scrollTop > 2)
-            })
-        }
-        onScroll()
-        scroller.addEventListener("scroll", onScroll, { passive: true })
-        return () => {
-            scroller.removeEventListener("scroll", onScroll)
-            if (raf) cancelAnimationFrame(raf)
-        }
-    }, [enabled])
+    const [barRef, scrolled] = useScrolled(enabled)
 
     if (!enabled) return null
 
