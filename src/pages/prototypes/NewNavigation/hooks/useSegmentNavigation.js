@@ -3,7 +3,6 @@ import WebApp from "../../../../lib/twa"
 
 export const useSegmentNavigation = () => {
     const [activeSegment, setActiveSegment] = useState(0)
-    const [view, setView] = useState("wallet")
 
     useEffect(() => {
         if (WebApp.initData) {
@@ -15,13 +14,10 @@ export const useSegmentNavigation = () => {
     }, [])
 
     const handleSegmentChange = (index) => {
-        const newView = index === 1 ? "tonwallet" : "wallet"
-
-        setView(newView)
         setActiveSegment(index)
 
         WebApp.HapticFeedback.selectionChanged()
     }
 
-    return { activeSegment, view, handleSegmentChange }
+    return { activeSegment, handleSegmentChange }
 }

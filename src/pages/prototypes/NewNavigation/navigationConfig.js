@@ -13,12 +13,12 @@ import lottieIconChartline from "../../../icons/lottie/chartline"
 import lottieIconBag from "../../../icons/lottie/bag"
 import lottieIconClock from "../../../icons/lottie/clock"
 
-export const getTabsConfig = (skin) => ({
+export const getTabsConfig = (skin, onOpenTonWallet) => ({
     wallet: [
         {
             label: "Wallet",
             icon: <WalletIcon />,
-            view: <Wallet />,
+            view: <Wallet onOpenTonWallet={onOpenTonWallet} />,
             lottieIcon: lottieIconWallet(skin),
             activeSegment: [0, 50],
         },

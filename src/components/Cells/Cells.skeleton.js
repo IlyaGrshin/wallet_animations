@@ -41,10 +41,22 @@ const CellsSkeleton = () => (
                         <Cell.Text title="Toncoin" description="100 TON" bold />
                     </Cell>
                     <Cell start={<ImageAvatar />}>
-                        <Cell.Text title="Bitcoin" description="0.001 BTC" bold />
+                        <Cell.Text
+                            title="Bitcoin"
+                            description="0.001 BTC"
+                            bold
+                        />
                     </Cell>
-                    <Cell start={<InitialsAvatar userId={1} name="Ilya Grishin" />}>
-                        <Cell.Text title="Ilya Grishin" description="Contact" bold />
+                    <Cell
+                        start={
+                            <InitialsAvatar userId={1} name="Ilya Grishin" />
+                        }
+                    >
+                        <Cell.Text
+                            title="Ilya Grishin"
+                            description="Contact"
+                            bold
+                        />
                     </Cell>
                 </Skeleton>
             </SectionList.Item>
@@ -54,7 +66,11 @@ const CellsSkeleton = () => (
                     <Cell end={<Cell.Part type="Chevron" />}>
                         <Cell.Text title="Chevron" />
                     </Cell>
-                    <Cell end={<Cell.Text title="$150.00" description="Received" />}>
+                    <Cell
+                        end={
+                            <Cell.Text title="$150.00" description="Received" />
+                        }
+                    >
                         <Cell.Text title="Transfer" description="Today" bold />
                     </Cell>
                     <Cell end={<Cell.Text title="English" />}>
@@ -88,7 +104,12 @@ const CellsSkeleton = () => (
             <SectionList.Item header="Triple">
                 <Skeleton active>
                     <Cell
-                        start={<InitialsAvatar userId={3} name="Thomas Andersson" />}
+                        start={
+                            <InitialsAvatar
+                                userId={3}
+                                name="Thomas Andersson"
+                            />
+                        }
                         end={<Cell.End label="+2.46" />}
                     >
                         <Cell.Text
@@ -114,7 +135,10 @@ const CellsSkeleton = () => (
 
             <SectionList.Item header="Combined">
                 <Skeleton active>
-                    <Cell start={<ImageAvatar />} end={<Cell.Part type="Chevron" />}>
+                    <Cell
+                        start={<ImageAvatar />}
+                        end={<Cell.Part type="Chevron" />}
+                    >
                         <Cell.Text title="Toncoin" description="100 TON" bold />
                     </Cell>
                     <Cell

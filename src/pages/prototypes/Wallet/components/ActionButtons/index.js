@@ -30,7 +30,7 @@ export default function ActionButtons() {
         <div className={styles.buttons}>
             {buttons.map((button, index) => (
                 <MultilineButton
-                    variant="tinted"
+                    variant="plain"
                     icon={button.icon}
                     label={button.name}
                     key={index}

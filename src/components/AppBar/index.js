@@ -3,8 +3,10 @@ import { useHashLocation } from "wouter/use-hash-location"
 
 import PanelHeader from "../PanelHeader"
 import { useSplitViewContext } from "../SplitView/context"
+import { useScrolled } from "../../hooks/useScrolled"
 import { isTelegram } from "../../lib/twa"
-import ChevronLeftIcon from "../../icons/28/Chevron Left.svg?react"
+
+import * as styles from "./AppBar.module.scss"
 
 // Browser-only page header (renders null inside Telegram, where native chrome
 // handles it). The back button is dropped in a SplitView detail pane, where the
@@ -12,21 +14,26 @@ import ChevronLeftIcon from "../../icons/28/Chevron Left.svg?react"
 const AppBar = ({ title, header = true, back = true }) => {
     const [, navigate] = useHashLocation()
     const { inDetailPane } = useSplitViewContext()
-
-    if (header === false || isTelegram()) return null
-
+    const enabled = header !== false && !isTelegram()
     const showBack = back && !inDetailPane
+    const [barRef, scrolled] = useScrolled(enabled)
+
+    if (!enabled) return null
 
     return (
-        <PanelHeader
-            sticky
-            {...(showBack && {
-                left: <ChevronLeftIcon />,
-                onLeft: () => navigate("/"),
-            })}
+        <div
+            ref={barRef}
+            className={`${styles.bar} ${scrolled ? styles.scrolled : ""}`}
         >
-            {title}
-        </PanelHeader>
+            <PanelHeader
+                {...(showBack && {
+                    left: <PanelHeader.BackIcon />,
+                    onLeft: () => navigate("/"),
+                })}
+            >
+                {title}
+            </PanelHeader>
+        </div>
     )
 }
 

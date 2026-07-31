@@ -22,12 +22,33 @@ const PARTICLE_DENSITY = 0.028
 const PARTICLE_MIN = 300
 const PARTICLE_MAX = 8000
 const STRIDE = 28 // 7 floats * 4 bytes
-const ATTRIBS = [[0, 2, 0], [1, 2, 8], [2, 1, 16], [3, 1, 20], [4, 1, 24]]
+const ATTRIBS = [
+    [0, 2, 0],
+    [1, 2, 8],
+    [2, 1, 16],
+    [3, 1, 20],
+    [4, 1, 24],
+]
 
 const UNIFORMS = [
-    "time", "deltaTime", "size", "reset", "r", "seed", "noiseScale",
-    "noiseSpeed", "dampingMult", "velocityMult", "forceMult", "longevity",
-    "maxVelocity", "noiseMovement", "color", "fadeOut", "fadeOutXY", "text",
+    "time",
+    "deltaTime",
+    "size",
+    "reset",
+    "r",
+    "seed",
+    "noiseScale",
+    "noiseSpeed",
+    "dampingMult",
+    "velocityMult",
+    "forceMult",
+    "longevity",
+    "maxVelocity",
+    "noiseMovement",
+    "color",
+    "fadeOut",
+    "fadeOutXY",
+    "text",
     "textTexture",
 ]
 
@@ -50,7 +71,8 @@ export function createEngine({
 }) {
     const program = linkProgram(gl)
     const loc = {}
-    for (const name of UNIFORMS) loc[name] = gl.getUniformLocation(program, name)
+    for (const name of UNIFORMS)
+        loc[name] = gl.getUniformLocation(program, name)
 
     const maskCanvas = document.createElement("canvas")
     const maskCtx = maskCanvas.getContext("2d")
@@ -104,7 +126,12 @@ export function createEngine({
         gl.activeTexture(gl.TEXTURE0)
         gl.bindTexture(gl.TEXTURE_2D, texture)
         gl.texImage2D(
-            gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, maskCanvas,
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            maskCanvas
         )
         gl.generateMipmap(gl.TEXTURE_2D)
     }
@@ -136,7 +163,7 @@ export function createEngine({
         e.radius = (radius || 1.6) * e.dpr
         e.count = Math.max(
             PARTICLE_MIN,
-            Math.min(PARTICLE_MAX, Math.round(cssW * cssH * PARTICLE_DENSITY)),
+            Math.min(PARTICLE_MAX, Math.round(cssW * cssH * PARTICLE_DENSITY))
         )
         e.color = resolveColor(color, content)
         genBuffer()
@@ -182,7 +209,11 @@ export function createEngine({
 
         gl.bindBuffer(gl.ARRAY_BUFFER, e.buffer[e.bufferIndex])
         bindAttribs()
-        gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER, 0, e.buffer[1 - e.bufferIndex])
+        gl.bindBufferBase(
+            gl.TRANSFORM_FEEDBACK_BUFFER,
+            0,
+            e.buffer[1 - e.bufferIndex]
+        )
         bindAttribs()
         gl.beginTransformFeedback(gl.POINTS)
         gl.drawArrays(gl.POINTS, 0, e.count)

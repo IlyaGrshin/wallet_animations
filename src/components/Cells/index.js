@@ -33,8 +33,7 @@ const CellComponent = ({
     // A cell shows press feedback only when it does something: it has an
     // onClick or renders as an interactive element (a link/button via `as`).
     // `tappable` forces it on or off explicitly.
-    const interactive =
-        tappable ?? (onClick != null || Component !== "div")
+    const interactive = tappable ?? (onClick != null || Component !== "div")
 
     const content = (
         <>

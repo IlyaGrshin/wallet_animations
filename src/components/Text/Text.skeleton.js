@@ -14,7 +14,10 @@ const SAMPLES = [
     { variant: "title3", text: "Pack my box with liquor jugs" },
     { variant: "body", text: "How vexingly quick daft zebras leap the fence" },
     { variant: "callout", text: "Sphinx of black quartz, judge my vow" },
-    { variant: "footnote", text: "The five boxing wizards jump quickly at dawn" },
+    {
+        variant: "footnote",
+        text: "The five boxing wizards jump quickly at dawn",
+    },
     { variant: "caption1", text: "Waltz, bad nymph, for quick jigs" },
 ]
 

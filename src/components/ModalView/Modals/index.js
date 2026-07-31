@@ -8,7 +8,6 @@ import Cell from "../../Cells"
 import ImageAvatar from "../../ImageAvatar"
 
 import { getAssetIcon } from "../../../utils/AssetsMap"
-import XmarkIcon from "../../../icons/28/Xmark.svg?react"
 import { MainButton } from "../../../lib/twa"
 import {
     DEMO_ASSETS,
@@ -49,7 +48,7 @@ const Modals = ({ modals, handlers }) => {
                 }}
             >
                 <PanelHeader
-                    left={<XmarkIcon />}
+                    left={<PanelHeader.CloseIcon />}
                     onLeft={handlers.simple.close}
                 >
                     Simple Modal

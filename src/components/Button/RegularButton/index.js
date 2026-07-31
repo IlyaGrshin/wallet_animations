@@ -2,6 +2,7 @@ import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 
 import { GlassBorder } from "../../GlassEffect"
+import Tappable from "../../Tappable"
 import Text from "../../Text"
 import Skeleton, {
     useSkeletonContext,
@@ -50,13 +51,18 @@ export const RegularButton = ({
         </Text>
     )
 
+    // Press feedback matches the platform: an iOS scale, a Material ripple.
+    const pressable = !skeleton
+    const Root = isApple || !pressable ? m.div : Tappable
+    const tapProps = isApple && pressable ? { whileTap: { scale: 1.02 } } : {}
+
     return (
-        <m.div
+        <Root
             ref={skeleton ? waveRef : undefined}
             className={`${styles.button} ${styles[variant]} ${
                 skeleton ? styles.skeleton : ""
             } ${redactionClassName}`}
-            {...(isApple && !skeleton && { whileTap: { scale: 1.02 } })}
+            {...tapProps}
             {...dynamicProps}
             {...props}
         >
@@ -68,7 +74,7 @@ export const RegularButton = ({
             ) : (
                 label_
             )}
-        </m.div>
+        </Root>
     )
 }
 

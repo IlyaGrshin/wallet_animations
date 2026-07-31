@@ -9,9 +9,8 @@ import ActionButtons from "../Wallet/components/ActionButtons"
 
 import * as styles from "./NewNavigation.skeleton.module.scss"
 
-// Mirrors the first visible view (Wallet tab): the top navigation panel
-// (avatar + wallet-name pill + QR), a big balance, the action-button row, an
-// asset list and the floating tab bar.
+// Mirrors the first visible view (Wallet tab): a big balance, the
+// action-button row, an asset list and the floating tab bar.
 const ASSET_ROWS = [
     { title: "Toncoin", sub: "TON", value: "1,024.50" },
     { title: "Bitcoin", sub: "BTC", value: "64,120" },
@@ -24,12 +23,6 @@ const TAB_COUNT = 4
 const NavigationSkeleton = () => (
     <Page mode="primary">
         <Skeleton active>
-            <div className={styles.navPanel}>
-                <SkeletonBlock className={styles.avatar} />
-                <SkeletonBlock className={styles.namePill} />
-                <SkeletonBlock className={styles.qr} />
-            </div>
-
             <div className={styles.balance}>
                 <Text variant="subheadline2">Balance</Text>
                 <SkeletonBlock className={styles.amount} />

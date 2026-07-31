@@ -70,7 +70,11 @@ PageScroll.propTypes = {
  *   <Page mode="secondary">{routeContent}</Page>
  * </PageTransition>
  */
-const PageTransition = ({ children, bottomInset = false, contained = false }) => {
+const PageTransition = ({
+    children,
+    bottomInset = false,
+    contained = false,
+}) => {
     const [location] = useLocation()
 
     const rootClassName = contained

@@ -42,7 +42,10 @@ const SectionListSkeleton = () => (
             >
                 <Skeleton active>
                     <Cell>
-                        <Cell.Text title="With description" description="Subtitle" />
+                        <Cell.Text
+                            title="With description"
+                            description="Subtitle"
+                        />
                     </Cell>
                     <Cell>
                         <Cell.Text title="Bold row" bold />

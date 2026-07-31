@@ -46,7 +46,9 @@ const InitialsAvatarSkeleton = () => (
                     >
                         <Cell.Text title="24px" />
                     </Cell>
-                    <Cell start={<InitialsAvatar userId={1} name="Bob Smith" />}>
+                    <Cell
+                        start={<InitialsAvatar userId={1} name="Bob Smith" />}
+                    >
                         <Cell.Text title="40px" description="Default" />
                     </Cell>
                     <Cell

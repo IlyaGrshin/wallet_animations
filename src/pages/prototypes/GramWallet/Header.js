@@ -2,8 +2,6 @@ import PropTypes from "prop-types"
 import { useHashLocation } from "wouter/use-hash-location"
 
 import PanelHeader from "../../../components/PanelHeader"
-import ChevronLeftIcon from "../../../icons/28/Chevron Left.svg?react"
-import EllipsisIcon from "../../../icons/28/Elipsis.svg?react"
 
 import HeaderBalances from "./HeaderBalances"
 
@@ -13,9 +11,9 @@ const Header = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
     return (
         <PanelHeader
             sticky
-            left={<ChevronLeftIcon />}
+            left={<PanelHeader.BackIcon />}
             onLeft={() => navigate("/")}
-            right={<EllipsisIcon />}
+            right={<PanelHeader.MoreIcon />}
         >
             <HeaderBalances
                 gramAmount={gramAmount}

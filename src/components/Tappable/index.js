@@ -70,7 +70,7 @@ const Tappable = ({
             className={cx(
                 styles.root,
                 className,
-                isOpacity && cx(...tappedClassNames),
+                isOpacity && cx(...tappedClassNames)
             )}
         >
             {children}
@@ -84,7 +84,7 @@ const Tappable = ({
                             key={id}
                             className={cx(
                                 styles.ripple,
-                                tapped && styles.tapped,
+                                tapped && styles.tapped
                             )}
                             style={{
                                 left: value[0],

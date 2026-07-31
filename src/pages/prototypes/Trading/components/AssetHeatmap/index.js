@@ -124,9 +124,7 @@ const HeatmapTile = ({ symbol, change, x, y, w, h }) => {
         labelEm(symbol, 600),
         showChange ? labelEm(label, 400) * CHANGE_SCALE : 0
     )
-    const linesEm = showChange
-        ? LINE_EM * (1 + CHANGE_SCALE) + GAP_EM
-        : LINE_EM
+    const linesEm = showChange ? LINE_EM * (1 + CHANGE_SCALE) + GAP_EM : LINE_EM
     const fit = Math.min(
         (showChange ? AREA_K : SOLO_AREA_K) * Math.sqrt(w * hCq),
         (FILL_W * w) / widestEm,

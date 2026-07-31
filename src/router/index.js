@@ -84,7 +84,10 @@ function AppRoutes() {
 
     const stack = (contained) => (
         <>
-            <PageTransition contained={contained} bottomInset={showSkinSwitcher}>
+            <PageTransition
+                contained={contained}
+                bottomInset={showSkinSwitcher}
+            >
                 <Routes />
             </PageTransition>
             {showSkinSwitcher && <SkinSwitcher />}

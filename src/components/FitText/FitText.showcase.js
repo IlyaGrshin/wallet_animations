@@ -34,7 +34,7 @@ const Stage = ({ width, children }) => (
                 padding: "16px 0",
                 borderRadius: 12,
                 boxShadow:
-                    "inset 0 0 0 1px var(--tg-theme-section-separator-color)",
+                    "inset 0 0 0 var(--cell-separator-height) var(--tg-theme-section-separator-color)",
             }}
         >
             {children}
@@ -62,7 +62,10 @@ const FitTextShowcase = () => {
                             <FitText
                                 minScale={parseFloat(MIN_SCALES[minScaleIdx])}
                             >
-                                <Text variant="title1" apple={{ weight: "bold" }}>
+                                <Text
+                                    variant="title1"
+                                    apple={{ weight: "bold" }}
+                                >
                                     {PHRASES[phraseIdx]}
                                 </Text>
                             </FitText>
@@ -79,7 +82,6 @@ const FitTextShowcase = () => {
                     <SectionList.Item header="Container width — refits via ResizeObserver">
                         <div style={{ padding: "12px var(--side-padding)" }}>
                             <SegmentedControl
-                                type="circled"
                                 segments={WIDTHS}
                                 defaultIndex={widthIdx}
                                 onChange={setWidthIdx}
@@ -87,12 +89,9 @@ const FitTextShowcase = () => {
                         </div>
                     </SectionList.Item>
 
-                    <SectionList.Item
-                        header="Min scale — below it the text clips"
-                    >
+                    <SectionList.Item header="Min scale — below it the text clips">
                         <div style={{ padding: "12px var(--side-padding)" }}>
                             <SegmentedControl
-                                type="circled"
                                 segments={MIN_SCALES}
                                 defaultIndex={minScaleIdx}
                                 onChange={setMinScaleIdx}

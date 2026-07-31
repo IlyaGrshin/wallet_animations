@@ -1,9 +1,12 @@
-// Portalled to document.body, so inset: 0 spans the full viewport — including
-// the SplitView sidebar — for the iPad-style full-screen dim. Opacity is
+// Portalled to document.body, so it spans the full viewport — including the
+// SplitView sidebar — for the iPad-style full-screen dim. Opacity is
 // driven from JS by the same motion value as the panel drag.
 .overlay {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--shell-height);
     display: flex;
     justify-content: center;
     background: rgb(0 0 0 / 50%);

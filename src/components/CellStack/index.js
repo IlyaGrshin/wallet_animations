@@ -63,9 +63,7 @@ const StackCard = ({ children, depth, expanded, spring, isApple, total }) => {
                     <m.div
                         className={styles.fill}
                         animate={{
-                            opacity: expanded
-                                ? 0
-                                : (FILL_OPACITY[depth] ?? 0),
+                            opacity: expanded ? 0 : (FILL_OPACITY[depth] ?? 0),
                         }}
                         transition={FILL_TRANSITION}
                     />

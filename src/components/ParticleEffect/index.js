@@ -80,10 +80,18 @@ export default function ParticleEffect({
             onClick={handleClick}
             {...rest}
         >
-            <span ref={contentRef} className={styles.content} aria-hidden={hidden}>
+            <span
+                ref={contentRef}
+                className={styles.content}
+                aria-hidden={hidden}
+            >
                 {children}
             </span>
-            <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
+            <canvas
+                ref={canvasRef}
+                className={styles.canvas}
+                aria-hidden="true"
+            />
         </span>
     )
 }

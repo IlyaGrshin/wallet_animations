@@ -1,3 +1,6 @@
+$swap-easing: cubic-bezier(0.23, 1, 0.32, 1);
+$swap-duration: 0.2s;
+
 .button {
     position: relative;
     display: flex;
@@ -17,6 +20,13 @@
     &:focus-visible {
         outline: none;
     }
+
+    :global(body.material) & {
+        background: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        -apple-visual-effect: none;
+    }
 }
 
 // Glass lives on the element itself (see HeaderButton.js) so the tap scale
@@ -30,6 +40,10 @@
     @supports (-apple-visual-effect: -apple-system-glass-material) {
         -apple-visual-effect: -apple-system-glass-material;
         backdrop-filter: none;
+    }
+
+    :global(body.material) & {
+        color: var(--tg-theme-subtitle-text-color);
     }
 }
 
@@ -57,10 +71,38 @@
     .content {
         mix-blend-mode: overlay;
     }
+
+    :global(body.material) & {
+        color: var(--tg-theme-accent-text-color);
+
+        .content {
+            mix-blend-mode: normal;
+        }
+    }
 }
 
 .icon {
     width: 44px;
+}
+
+.swap {
+    display: grid;
+    place-items: center;
+
+    > * {
+        grid-area: 1 / 1;
+        display: flex;
+        transition:
+            opacity $swap-duration $swap-easing,
+            transform $swap-duration $swap-easing,
+            filter $swap-duration $swap-easing;
+    }
+}
+
+.swapHidden {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(3px);
 }
 
 .label {
@@ -83,7 +125,26 @@
         height: 28px;
     }
 
+    :global(body.material) & svg {
+        width: 24px;
+        height: 24px;
+    }
+
     svg path {
         fill: currentcolor;
+    }
+
+    svg path[stroke] {
+        fill: none;
+        stroke: currentcolor;
+    }
+}
+
+.surface {
+    :global(body.material) & {
+        background: var(--material-surface-background);
+        box-shadow: 0 0.67px 1.67px 0 rgb(0 0 0 / 12%);
+        backdrop-filter: var(--material-surface-filter);
+        color: var(--tg-theme-text-color);
     }
 }

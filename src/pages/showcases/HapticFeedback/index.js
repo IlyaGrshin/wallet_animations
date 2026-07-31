@@ -4,11 +4,8 @@ import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
 import Cell from "../../../components/Cells"
 import Picker from "../../../components/Picker"
-import { RegularButton } from "../../../components/Button"
 
 import WebApp, { BackButton } from "../../../lib/twa"
-
-import * as styles from "./HapticFeedback.module.scss"
 
 const haptics = [
     {
@@ -83,13 +80,9 @@ const HapticFeedbackShowcase = () => {
                     </SectionList.Item>
 
                     <SectionList.Item>
-                        <div className={styles.action}>
-                            <RegularButton
-                                variant="filled"
-                                label="Replay"
-                                onClick={playSelected}
-                            />
-                        </div>
+                        <Cell onClick={playSelected}>
+                            <Cell.Text type="Accent" title="Replay" />
+                        </Cell>
                     </SectionList.Item>
                 </SectionList>
             </Page>

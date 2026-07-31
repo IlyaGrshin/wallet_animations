@@ -64,7 +64,9 @@ function Morph({ children }) {
         collapsedFace.description && expandedFace.description
     )
     const description =
-        face.description ?? expandedFace.description ?? collapsedFace.description
+        face.description ??
+        expandedFace.description ??
+        collapsedFace.description
     const drift = description && !face.description ? DRIFT : 0
 
     return (

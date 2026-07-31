@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export const findScroller = (node) => {
     let el = node?.parentElement
@@ -10,28 +10,44 @@ export const findScroller = (node) => {
     return null
 }
 
-export default function useScrolled(ref, { enabled = true, threshold = 2 } = {}) {
+/**
+ * Tracks whether the nearest scrolling ancestor is scrolled away from the top,
+ * so a pinned header can fade its surface in.
+ * @param {boolean} [enabled=true] Skip the listener entirely when false.
+ * @returns {[import("react").RefObject, boolean]} Ref for the pinned element.
+ * @example
+ * const [barRef, scrolled] = useScrolled()
+ * <div ref={barRef} className={scrolled ? styles.scrolled : ""} />
+ */
+export function useScrolled(enabled = true) {
+    const ref = useRef(null)
     const [scrolled, setScrolled] = useState(false)
 
     useEffect(() => {
         if (!enabled) return
+
         const scroller = findScroller(ref.current)
         if (!scroller) return
+
         let raf = 0
         const onScroll = () => {
             if (raf) return
             raf = requestAnimationFrame(() => {
                 raf = 0
-                setScrolled(scroller.scrollTop > threshold)
+                setScrolled(scroller.scrollTop > 2)
             })
         }
+
         onScroll()
         scroller.addEventListener("scroll", onScroll, { passive: true })
+
         return () => {
             scroller.removeEventListener("scroll", onScroll)
             if (raf) cancelAnimationFrame(raf)
         }
-    }, [ref, enabled, threshold])
+    }, [enabled])
 
-    return enabled && scrolled
+    return [ref, scrolled]
 }
+
+export default useScrolled

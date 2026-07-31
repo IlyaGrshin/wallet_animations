@@ -36,6 +36,18 @@
         path {
             fill: var(--tg-theme-accent-text-color);
         }
+
+        :global(body.material) & {
+            color: var(--tg-theme-text-color);
+            box-shadow: 0 0.33px 2px 0 rgb(0 0 0 / 8%);
+
+            svg,
+            path {
+                width: 24px;
+                height: 24px;
+                fill: var(--tg-theme-text-color);
+            }
+        }
     }
 
     &.gray {
