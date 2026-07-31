@@ -24,10 +24,22 @@ function formatBalance(raw, decimals) {
     return moneyFmt.format(rawToFloat(raw, decimals))
 }
 
-function shortenAddress(addr) {
-    if (!addr) return ""
-    const friendly = rawToFriendly(addr)
+export function shortenFriendly(friendly) {
+    if (!friendly) return ""
     return `${friendly.slice(0, 4)}…${friendly.slice(-4)}`
+}
+
+export function shortenAddress(addr) {
+    if (!addr) return ""
+    return shortenFriendly(rawToFriendly(addr))
+}
+
+export function formatDate(unixSeconds) {
+    return new Date(unixSeconds * 1000).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    })
 }
 
 export function formatTimestamp(unixSeconds) {
@@ -49,6 +61,13 @@ export function formatTimestamp(unixSeconds) {
     return `${month} ${date.getDate()} at ${time}`
 }
 
+function splitValue(previewValue) {
+    if (!previewValue) return { value: null, unit: null }
+    const match = /^(.+)\s(\S+)$/.exec(previewValue.trim())
+    if (!match) return { value: previewValue, unit: null }
+    return { value: match[1], unit: match[2] }
+}
+
 function pickCounterparty(action, myRawAddress) {
     const detail =
         action.TonTransfer ||
@@ -66,6 +85,7 @@ function pickCounterparty(action, myRawAddress) {
 function mapEvent(event, myRawAddress) {
     const action = event.actions?.[0]
     if (!action) return null
+    if (action.type === "JettonMint") return null
     if (action.type === "JettonTransfer") {
         const symbol = action.JettonTransfer?.jetton?.symbol
         if (!ALLOWED_JETTON_SYMBOLS.has(symbol)) return null
@@ -87,19 +107,18 @@ function mapEvent(event, myRawAddress) {
         ? direction === "in" ? "Deposit" : "Withdrawal"
         : preview.name || action.type
     const isTransfer = TRANSFER_TYPES.has(action.type)
-    let amount = null
-    if (preview.value) {
-        amount = isTransfer
-            ? `${direction === "in" ? "+" : "−"}${preview.value}`
-            : preview.value
-    }
+    const { value, unit } = splitValue(preview.value)
+    const sign = isTransfer && value ? (direction === "in" ? "+" : "−") : ""
+    const nft = action.NftItemTransfer?.nft
     return {
         id: event.event_id,
         name,
         description,
         caption: formatTimestamp(event.timestamp),
-        amount,
+        amount: value ? `${sign}${value}` : null,
+        unit,
         icon: counterparty?.icon || fallback?.icon,
+        nftAddress: typeof nft === "string" ? nft : nft?.address,
     }
 }
 
@@ -108,21 +127,6 @@ export function mapEvents(events, rawAddress) {
         .filter((e) => !e.is_scam)
         .map((e) => mapEvent(e, rawAddress))
         .filter(Boolean)
-}
-
-function pickPreview(item) {
-    const previews = item.previews || []
-    const small = previews.find((p) => p.resolution === "100x100")
-    return small?.url || previews[0]?.url || item.metadata?.image
-}
-
-export function mapNft(item) {
-    return {
-        id: item.address,
-        name: item.metadata?.name || "Untitled",
-        description: item.collection?.name || "",
-        image: pickPreview(item),
-    }
 }
 
 export function computeBalance(account, jettonsData, ratesData) {

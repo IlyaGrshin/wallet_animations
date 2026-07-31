@@ -1,20 +1,29 @@
 import { useEffect, useRef, useState } from "react"
-import {
-    getAccount,
-    getAccountNftHistory,
-    getCollectionsBulk,
-    getEvents,
-    getJettons,
-    getNfts,
-    getRates,
-} from "../../../lib/tonapi"
-import {
-    EMPTY_WALLET,
-    computeBalance,
-    formatTimestamp,
-    mapEvents,
-    mapNft,
-} from "./helpers"
+import { getAccount, getEvents, getJettons, getRates } from "../../../lib/tonapi"
+import { getNftsByAddress, getOwnedNfts } from "../../../lib/toncenter"
+import { EMPTY_WALLET, computeBalance, mapEvents } from "./helpers"
+import { isFragmentItem, mapNft, rawKey } from "./nft"
+
+async function withNftPreviews(rows) {
+    const addresses = [...new Set(rows.map((r) => r.nftAddress).filter(Boolean))]
+    if (!addresses.length) return rows
+    try {
+        const data = await getNftsByAddress(addresses)
+        const byAddress = new Map(
+            (data.nft_items || []).map((item) => [
+                rawKey(item.address),
+                mapNft(item, data),
+            ])
+        )
+        return rows.map((row) =>
+            row.nftAddress
+                ? { ...row, nft: byAddress.get(rawKey(row.nftAddress)) }
+                : row
+        )
+    } catch {
+        return rows
+    }
+}
 
 export default function useWalletData(address) {
     const [wallet, setWallet] = useState(EMPTY_WALLET)
@@ -49,10 +58,14 @@ export default function useWalletData(address) {
             .catch(fail)
 
         Promise.all([accountPromise, getEvents(address, 20)])
-            .then(([acc, evt]) => {
+            .then(async ([acc, evt]) => {
                 if (cancelled) return
                 pageRef.current = { rawAddress: acc.address, nextFrom: evt.next_from || null }
-                setTransactions(mapEvents(evt.events, acc.address))
+                const rows = await withNftPreviews(
+                    mapEvents(evt.events, acc.address)
+                )
+                if (cancelled) return
+                setTransactions(rows)
                 setHasMoreTransactions(!!evt.next_from)
             })
             .catch(fail)
@@ -68,7 +81,9 @@ export default function useWalletData(address) {
         setIsLoadingMoreTransactions(true)
         try {
             const data = await getEvents(address, 20, page.nextFrom)
-            const more = mapEvents(data.events, page.rawAddress)
+            const more = await withNftPreviews(
+                mapEvents(data.events, page.rawAddress)
+            )
             setTransactions((prev) => [...(prev || []), ...more])
             pageRef.current = { ...pageRef.current, nextFrom: data.next_from || null }
             setHasMoreTransactions(!!data.next_from)
@@ -82,31 +97,11 @@ export default function useWalletData(address) {
         collectiblesLoadedRef.current = true
         setIsLoadingCollectibles(true)
         try {
-            const [nftsRes, historyRes, account] = await Promise.all([
-                getNfts(address, 200),
-                getAccountNftHistory(address, 200),
-                getAccount(address),
-            ])
-            const items = (nftsRes.nft_items || []).filter((i) => i.collection?.address)
-            const addrs = [...new Set(items.map((i) => i.collection.address))]
-            const { nft_collections: cols = [] } = await getCollectionsBulk(addrs)
-            const isOfficial = (c) =>
-                c.approved_by?.length > 0 &&
-                (c.metadata?.external_link || "").includes("fragment.com")
-            const ok = new Set(cols.filter(isOfficial).map((c) => c.address))
-            const receivedAt = {}
-            for (const op of historyRes.operations || []) {
-                const a = op.item?.address
-                if (!a || op.destination?.address !== account.address) continue
-                if (!receivedAt[a] || op.utime > receivedAt[a]) receivedAt[a] = op.utime
-            }
+            const data = await getOwnedNfts(address)
             setCollectibles(
-                items
-                    .filter((i) => ok.has(i.collection.address))
-                    .map((i) => ({
-                        ...mapNft(i),
-                        caption: receivedAt[i.address] ? formatTimestamp(receivedAt[i.address]) : null,
-                    }))
+                (data.nft_items || [])
+                    .filter(isFragmentItem)
+                    .map((item) => mapNft(item, data))
             )
         } catch (err) {
             setError(err.message || String(err))
@@ -119,10 +114,8 @@ export default function useWalletData(address) {
         ...wallet,
         transactions,
         hasMoreTransactions,
-        isLoadingMoreTransactions,
         loadMoreTransactions,
         collectibles,
-        isLoadingCollectibles,
         loadCollectibles,
         error,
     }

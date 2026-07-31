@@ -1,0 +1,21 @@
+.actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.tile {
+    display: flex;
+    flex: 1 0 0;
+    border-radius: 16px;
+}
+
+.copy {
+    display: inline-flex;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: none;
+    color: var(--tg-theme-accent-text-color);
+    font: inherit;
+}

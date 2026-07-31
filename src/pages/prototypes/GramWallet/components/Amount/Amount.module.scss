@@ -1,0 +1,16 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+}
+
+.icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+
+    path {
+        fill: var(--tg-theme-accent-text-color);
+    }
+}

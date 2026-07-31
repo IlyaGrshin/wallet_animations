@@ -89,6 +89,7 @@ export default defineConfig(({ command }) => ({
     // Only list deps that Vite can't statically discover (lazy-loaded via
     // dynamic import). Statically imported deps are auto-detected.
     include: ['lottie-react', 'agentation'],
+    entries: ['index.html'],
     esbuildOptions: {
       loader: {
         '.js': 'jsx'

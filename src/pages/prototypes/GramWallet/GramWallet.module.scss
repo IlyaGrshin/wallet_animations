@@ -47,18 +47,3 @@
     }
 }
 
-.cellList > *:last-child {
-    --cell-separator-height: 0;
-}
-
-.feedback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 48px 16px;
-    color: var(--tg-theme-subtitle-text-color);
-}
-
-.sentinel {
-    height: 1px;
-}

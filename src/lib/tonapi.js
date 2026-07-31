@@ -1,12 +1,9 @@
+import { cachedRequest, readJson } from "./requestCache"
 import WebApp from "./twa"
 
 const TONAPI_BASE = "https://tonapi.io"
 const PROXY_URL = import.meta.env.VITE_TONAPI_PROXY_URL
 const DIRECT_KEY = import.meta.env.VITE_TONAPI_KEY
-const CACHE_TTL = 30_000
-
-const cache = new Map()
-const inflight = new Map()
 
 function buildRequest(path) {
     const initData = WebApp?.initData
@@ -24,39 +21,12 @@ function buildRequest(path) {
     }
 }
 
-async function get(path) {
-    const cached = cache.get(path)
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-        return cached.data
-    }
-    if (inflight.has(path)) return inflight.get(path)
-
-    const promise = (async () => {
-        try {
-            const { url, headers } = buildRequest(path)
-            const res = await fetch(url, { headers })
-            if (!res.ok) throw new Error(`tonapi ${path}: ${res.status}`)
-            const data = await res.json()
-            cache.set(path, { timestamp: Date.now(), data })
-            return data
-        } finally {
-            inflight.delete(path)
-        }
-    })()
-
-    inflight.set(path, promise)
-    return promise
-}
-
-async function post(path, body) {
-    const { url, headers } = buildRequest(path)
-    const res = await fetch(url, {
-        method: "POST",
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+function get(path) {
+    const label = `tonapi ${path}`
+    return cachedRequest(label, async () => {
+        const { url, headers } = buildRequest(path)
+        return readJson(await fetch(url, { headers }), label)
     })
-    if (!res.ok) throw new Error(`tonapi ${path}: ${res.status}`)
-    return res.json()
 }
 
 export function getAccount(address) {
@@ -68,24 +38,8 @@ export function getEvents(address, limit = 20, beforeLt = null) {
     return get(`/v2/accounts/${address}/events?limit=${limit}${before}`)
 }
 
-export function getNfts(address, limit = 20) {
-    return get(`/v2/accounts/${address}/nfts?limit=${limit}`)
-}
-
-export function getAccountNftHistory(address, limit = 200) {
-    return get(`/v2/accounts/${address}/nfts/history?limit=${limit}`)
-}
-
 export function getJettons(address) {
     return get(`/v2/accounts/${address}/jettons`)
-}
-
-export function getCollection(address) {
-    return get(`/v2/nfts/collections/${address}`)
-}
-
-export function getCollectionsBulk(addresses) {
-    return post("/v2/nfts/collections/_bulk", { account_ids: addresses })
 }
 
 export function getRates(tokens, currencies = ["usd"]) {

@@ -122,7 +122,7 @@ CellStart.propTypes = {
 }
 
 CellEnd.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.node,
     caption: PropTypes.string,
 }
 

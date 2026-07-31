@@ -1,19 +1,15 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import WalletCard from "../../../components/WalletCard"
 import Page from "../../../components/Page"
 import { RegularButton } from "../../../components/Button"
 import Tabs from "../../../components/Tabs"
 import TabContent from "../../../components/Tabs/TabContent"
 import SectionList from "../../../components/SectionList"
-import Cell from "../../../components/Cells"
-import InitialsAvatar from "../../../components/InitialsAvatar"
-import ImageAvatar from "../../../components/ImageAvatar"
-import Spinner from "../../../components/Spinner"
-import ArrowDownCircleFill from "../../../icons/28/Arrow Down Circle Fill.svg?react"
-import ArrowUpCircleFill from "../../../icons/28/Arrow Up Circle Fill.svg?react"
-import ArrowLeftRightCircleFill from "../../../icons/28/Arrow Left & Right Circle Fill.svg?react"
 import { BackButton, getUser } from "../../../lib/twa"
 
+import Collectibles from "./components/Collectibles"
+import Feedback from "./components/Feedback"
+import Transactions from "./components/Transactions"
 import useWalletData from "./useWalletData"
 import * as styles from "./GramWallet.module.scss"
 
@@ -25,12 +21,6 @@ const tgName = tgUser?.id === 38304776
     : tgUser
         ? [tgUser.first_name, tgUser.last_name].filter(Boolean).join(" ")
         : ""
-
-function hashToUserId(str) {
-    let h = 0
-    for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0
-    return Math.abs(h)
-}
 
 const TABS = ["Transactions", "Collectibles"]
 
@@ -44,25 +34,9 @@ const GramWallet = () => {
         balance,
         hasMoreTransactions,
         loadMoreTransactions,
-        isLoadingCollectibles,
         loadCollectibles,
         error,
     } = useWalletData(MY_ADDRESS)
-    const sentinelRef = useRef(null)
-
-    useEffect(() => {
-        if (tabIndex !== 0 || !hasMoreTransactions) return
-        const sentinel = sentinelRef.current
-        if (!sentinel) return
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) loadMoreTransactions()
-            },
-            { rootMargin: "1500px" }
-        )
-        observer.observe(sentinel)
-        return () => observer.disconnect()
-    }, [tabIndex, hasMoreTransactions, loadMoreTransactions])
 
     useEffect(() => {
         if (tabIndex === 1) loadCollectibles()
@@ -88,97 +62,18 @@ const GramWallet = () => {
         }
     }, [])
 
-    function renderTransactionAvatar(tx) {
-        if (tx.description === "Deposit") {
-            return (
-                <Cell.Start
-                    type="Icon"
-                    iconType={<ArrowDownCircleFill />}
-                    variant="success"
-                />
-            )
-        }
-        if (tx.description === "Withdrawal") {
-            return <Cell.Start type="Icon" iconType={<ArrowUpCircleFill />} />
-        }
-        if (tx.icon) return <ImageAvatar src={tx.icon} />
-        if (tx.name && tx.name !== "Activity") {
-            return (
-                <InitialsAvatar
-                    userId={hashToUserId(tx.name)}
-                    name={tx.name}
-                />
-            )
-        }
-        return (
-            <Cell.Start type="Icon" iconType={<ArrowLeftRightCircleFill />} />
-        )
-    }
-
     function renderTabContent() {
-        if (error) {
-            return <div className={styles.feedback}>{error}</div>
-        }
+        if (error) return <Feedback>{error}</Feedback>
         if (tabIndex === 0) {
-            if (transactions === null) {
-                return (
-                    <div className={styles.feedback}>
-                        <Spinner centered />
-                    </div>
-                )
-            }
             return (
-                <>
-                    <div className={styles.cellList}>
-                        {transactions.map((tx) => (
-                            <Cell
-                                key={tx.id}
-                                start={renderTransactionAvatar(tx)}
-                                end={<Cell.End label={tx.amount} />}
-                            >
-                                <Cell.Text
-                                    title={tx.name}
-                                    description={tx.description}
-                                    caption={tx.caption}
-                                    bold
-                                />
-                            </Cell>
-                        ))}
-                    </div>
-                    {hasMoreTransactions && (
-                        <div
-                            ref={sentinelRef}
-                            className={styles.sentinel}
-                            aria-hidden="true"
-                        />
-                    )}
-                </>
+                <Transactions
+                    items={transactions}
+                    hasMore={hasMoreTransactions}
+                    loadMore={loadMoreTransactions}
+                />
             )
         }
-        if (collectibles === null || isLoadingCollectibles) {
-            return (
-                <div className={styles.feedback}>
-                    <Spinner centered />
-                </div>
-            )
-        }
-        return (
-            <div className={styles.cellList}>
-                {collectibles.map((item) => (
-                    <Cell
-                        key={item.id}
-                        start={<ImageAvatar src={item.image} shape="rounded" />}
-                        end={<Cell.Part type="Chevron" />}
-                    >
-                        <Cell.Text
-                            title={item.name}
-                            description={item.caption}
-                            bold
-                        />
-                    </Cell>
-                ))}
-            </div>
-        )
+        return <Collectibles items={collectibles} />
     }
 
     return (
