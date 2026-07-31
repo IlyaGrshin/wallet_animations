@@ -9,12 +9,11 @@ import StarField from "./StarField"
 import TitaniumTexture from "../TitaniumTexture"
 import useDeviceTilt from "./useDeviceTilt"
 import QrIcon from "./assets/qr.svg?react"
-import UsdtIcon from "./assets/usdt.svg?react"
-import GramIcon from "./assets/gram.svg?react"
+import GramIcon from "../../icons/28/Gram.svg?react"
 
 const DEFAULT_ADDRESS = "UQAl1dViv82p5sllNyPXJenPJqRfaHrVGkhmhFcrIjYinqYK"
-const VIEWBOX_W = 336
-const VIEWBOX_H = 205
+const VIEWBOX_W = 361
+const VIEWBOX_H = 220
 const ZONE_PADDING = 8
 const CORNER_RADIUS = 20 // px, matches the SCSS reference radius at card width
 const CORNER_SMOOTHING = 0.6 // Figma iOS squircle smoothing
@@ -36,15 +35,6 @@ function formatAddress(raw) {
     ]
 }
 
-function unionRect(a, b) {
-    return {
-        left: Math.min(a.left, b.left),
-        top: Math.min(a.top, b.top),
-        right: Math.max(a.right, b.right),
-        bottom: Math.max(a.bottom, b.bottom),
-    }
-}
-
 function rectToZone(r, root, sx, sy) {
     return [
         (r.left - root.left) * sx - ZONE_PADDING,
@@ -57,22 +47,19 @@ function rectToZone(r, root, sx, sy) {
 function WalletCard({
     name = "Alicia Torreaux",
     address = DEFAULT_ADDRESS,
-    usdtAmount = "0",
     gramAmount = "0",
     balance = "$3,450.04",
     onQrClick,
     debugSafeZones = false,
 }) {
     const [line1, line2] = formatAddress(address)
-    const [usdtWhole, usdtFraction] = splitAmount(usdtAmount)
     const [gramWhole, gramFraction] = splitAmount(gramAmount)
     const rootRef = useRef(null)
     const moneyRef = useRef(null)
     const nameRef = useRef(null)
     const addressRef = useRef(null)
     const qrRef = useRef(null)
-    const balanceLabelRef = useRef(null)
-    const balanceValueRef = useRef(null)
+    const fiatRef = useRef(null)
     const [safeZones, setSafeZones] = useState([])
 
     useDeviceTilt(rootRef)
@@ -86,15 +73,9 @@ function WalletCard({
         const sy = VIEWBOX_H / rb.height
 
         const zones = []
-        for (const ref of [moneyRef, nameRef, addressRef, qrRef]) {
+        for (const ref of [moneyRef, fiatRef, nameRef, addressRef, qrRef]) {
             const el = ref.current
             if (el) zones.push(rectToZone(el.getBoundingClientRect(), rb, sx, sy))
-        }
-
-        const lbl = balanceLabelRef.current?.getBoundingClientRect()
-        const val = balanceValueRef.current?.getBoundingClientRect()
-        if (lbl && val) {
-            zones.push(rectToZone(unionRect(lbl, val), rb, sx, sy))
         }
 
         setSafeZones(zones)
@@ -102,7 +83,7 @@ function WalletCard({
 
     useLayoutEffect(() => {
         measure()
-    }, [measure, name, address, usdtAmount, gramAmount, balance])
+    }, [measure, name, address, gramAmount, balance])
 
     useResizeObserver(rootRef, measure)
 
@@ -126,22 +107,6 @@ function WalletCard({
 
             <div ref={moneyRef} className={styles.money}>
                 <div className={styles.amount}>
-                    <UsdtIcon className={styles.coinIcon} />
-                    <span className={styles.amountValue}>
-                        <Calligraph variant="number" animation="smooth">
-                            {usdtWhole}
-                        </Calligraph>
-                        {usdtFraction && (
-                            <span className={styles.amountFraction}>
-                                <Calligraph variant="number" animation="smooth">
-                                    {usdtFraction}
-                                </Calligraph>
-                            </span>
-                        )}
-                    </span>
-                    <span className={styles.amountUnit}>USDT</span>
-                </div>
-                <div className={styles.amount}>
                     <GramIcon className={styles.coinIcon} />
                     <span className={styles.amountValue}>
                         <Calligraph variant="number" animation="smooth">
@@ -158,6 +123,12 @@ function WalletCard({
                     <span className={styles.amountUnit}>GRAM</span>
                 </div>
             </div>
+
+            <p ref={fiatRef} className={styles.fiat}>
+                <Calligraph variant="number" animation="smooth">
+                    {balance}
+                </Calligraph>
+            </p>
 
             <p ref={nameRef} className={styles.name}>{name}</p>
 
@@ -186,15 +157,6 @@ function WalletCard({
             >
                 <QrIcon className={styles.qrIcon} />
             </button>
-
-            <p ref={balanceLabelRef} className={styles.balanceLabel}>
-                Balance
-            </p>
-            <p ref={balanceValueRef} className={styles.balanceValue}>
-                <Calligraph variant="number" animation="smooth">
-                    {balance}
-                </Calligraph>
-            </p>
 
             <div className={styles.innerShadow} aria-hidden="true" />
 
@@ -226,7 +188,6 @@ function WalletCard({
 WalletCard.propTypes = {
     name: PropTypes.string,
     address: PropTypes.string,
-    usdtAmount: PropTypes.string,
     gramAmount: PropTypes.string,
     balance: PropTypes.string,
     onQrClick: PropTypes.func,

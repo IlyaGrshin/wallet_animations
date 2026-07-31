@@ -2,24 +2,24 @@ import { useMemo } from "react"
 import PropTypes from "prop-types"
 import * as styles from "./WalletCard.module.scss"
 
-// [x, y] — coordinates in 336×205 viewBox units (size derived per-star)
+// [x, y] — coordinates in 361×220 viewBox units (size derived per-star)
 const RAW_STARS = [
-    [14, 10],
-    [70, 26],
-    [126, 14],
-    [188, 28],
-    [248, 14],
-    [22, 50],
-    [120, 48],
-    [212, 50],
-    [262, 50],
-    [222, 76],
-    [56, 144],
-    [110, 156],
-    [156, 144],
-    [188, 160],
-    [156, 196],
-    [188, 196],
+    [15, 11],
+    [75, 28],
+    [135, 15],
+    [202, 30],
+    [266, 15],
+    [24, 54],
+    [129, 52],
+    [228, 54],
+    [281, 54],
+    [239, 82],
+    [60, 155],
+    [118, 167],
+    [168, 155],
+    [202, 172],
+    [168, 210],
+    [202, 210],
 ]
 
 const STAR_BASE = 3 // half-extent → 6×6 visual
@@ -65,7 +65,7 @@ export default function StarField({ safeZones }) {
     return (
         <svg
             className={styles.starsSvg}
-            viewBox="0 0 336 205"
+            viewBox="0 0 361 220"
             preserveAspectRatio="none"
             aria-hidden="true"
         >

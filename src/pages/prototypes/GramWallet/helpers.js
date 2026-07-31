@@ -5,7 +5,7 @@ const moneyFmt = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
 })
 
-export const EMPTY_WALLET = { tonAmount: null, usdtAmount: null, balance: null }
+export const EMPTY_WALLET = { tonAmount: null, balance: null }
 
 const ALLOWED_JETTON_SYMBOLS = new Set(["USDT", "USD₮", "XAUt0"])
 const TRANSFER_TYPES = new Set([
@@ -138,7 +138,6 @@ export function computeBalance(account, jettonsData, ratesData) {
     const tonRate = ratesData.rates?.TON?.prices?.USD || 0
     return {
         tonAmount: formatBalance(account.balance, 9),
-        usdtAmount: usdt ? formatBalance(usdt.balance, usdt.jetton.decimals) : "0.00",
         balance: `$${moneyFmt.format(tonValue * tonRate + usdtValue)}`,
     }
 }

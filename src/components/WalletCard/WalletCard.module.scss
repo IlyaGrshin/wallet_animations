@@ -1,7 +1,7 @@
 $mono-stack: "Martian Mono", ui-monospace, "SF Mono", sfmono-regular, menlo,
     monospace;
-$card-w: 336;
-$card-h: 205;
+$card-w: 361;
+$card-h: 220;
 
 @property --tilt-x {
     syntax: "<number>";
@@ -34,7 +34,7 @@ $card-h: 205;
         from var(--tg-theme-accent-text-color)
         calc(l + 0.105) calc(c * 0.73) h
     );
-    --card-tint: oklch(
+    --card-amount-tint: oklch(
         from var(--tg-theme-accent-text-color)
         calc(l + 0.22) calc(c * 0.75) h
     );
@@ -63,9 +63,9 @@ $card-h: 205;
             from var(--tg-theme-accent-text-color)
             calc(l + 0.066) calc(c * 0.8) h
         );
-        --card-tint: oklch(
+        --card-amount-tint: oklch(
             from var(--tg-theme-accent-text-color)
-            calc(l + 0.2) calc(c * 0.9) h
+            calc(l + 0.2) calc(c * 0.95) h
         );
         --rounded-stack: ui-rounded, "SF Pro Rounded", -apple-system, system-ui,
             sans-serif;
@@ -178,15 +178,10 @@ $card-h: 205;
 
 .money {
     position: absolute;
-    top: cq(65);
+    top: cq(78);
     left: cq(20);
     display: flex;
     flex-direction: column;
-    gap: cq(4);
-
-    :global(body.apple) & {
-        top: cq(56);
-    }
 }
 
 .amount {
@@ -231,25 +226,39 @@ $card-h: 205;
 }
 
 .amountUnit {
+    margin-left: cq(4);
     font-family: var(--rounded-stack);
     font-weight: 500;
     font-size: cq(22);
     line-height: cq(28);
-    color: var(--card-tint);
+    color: var(--card-amount-tint);
     white-space: nowrap;
 
     :global(body.apple) & {
         font-weight: 600;
-        color: oklch(
-            from var(--tg-theme-accent-text-color)
-            calc(l + 0.2) calc(c * 0.95) h
-        );
+    }
+}
+
+.fiat {
+    position: absolute;
+    top: cq(112);
+    left: cq(24);
+    margin: 0;
+    font-family: var(--rounded-stack);
+    font-weight: 500;
+    font-size: cq(14);
+    line-height: cq(16);
+    color: var(--card-amount-tint);
+    white-space: nowrap;
+
+    :global(body.apple) & {
+        font-weight: 600;
     }
 }
 
 .name {
     position: absolute;
-    bottom: cq(17);
+    bottom: cq(20);
     left: cq(24);
     margin: 0;
     font-family: $mono-stack;
@@ -267,10 +276,10 @@ $card-h: 205;
 
 .addressOuter {
     position: absolute;
-    top: cq(16);
+    top: cq(20.5);
     right: cq(16);
-    bottom: cq(16);
-    width: cq(24);
+    bottom: cq(20.5);
+    width: cq(20);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -279,8 +288,8 @@ $card-h: 205;
 }
 
 .addressRotator {
-    width: cq($card-h - 32);
-    height: cq(24);
+    width: cq($card-h - 41);
+    height: cq(20);
     transform: rotate(90deg);
     transform-origin: center;
 }
@@ -315,14 +324,8 @@ $card-h: 205;
 
     position: absolute;
     border: 0;
-    top: calc(50% - #{cq(15.5)});
-    right: cq(46);
-
-    :global(body.apple) & {
-        top: calc(50% - #{cq(16)});
-        right: cq(48);
-    }
-
+    top: calc(50% - #{cq(10)});
+    right: cq(48);
     width: cq(48);
     height: cq(36);
     transform: translateY(-50%);
@@ -359,48 +362,6 @@ $card-h: 205;
 .qrIcon {
     width: cq(24);
     height: cq(24);
-}
-
-.balanceLabel {
-    position: absolute;
-    bottom: cq(35);
-    right: cq(46);
-    margin: 0;
-    font-family: $mono-stack;
-    font-weight: 500;
-    font-size: cq(10);
-    line-height: 1.2;
-    color: var(--card-tint);
-    text-align: right;
-    white-space: nowrap;
-
-    :global(body.apple) & {
-        right: cq(48);
-        color: oklch(
-            from var(--tg-theme-accent-text-color)
-            calc(l + 0.25) calc(c * 0.85) h
-        );
-    }
-}
-
-.balanceValue {
-    position: absolute;
-    bottom: cq(17);
-    right: cq(46);
-    margin: 0;
-    font-family: $mono-stack;
-    font-weight: 500;
-    font-size: cq(11);
-    line-height: 1.2;
-    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
-    text-align: right;
-    text-transform: uppercase;
-    white-space: nowrap;
-
-    :global(body.apple) & {
-        right: cq(48);
-        font-size: cq(12);
-    }
 }
 
 .innerShadow {

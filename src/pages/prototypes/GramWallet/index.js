@@ -30,7 +30,6 @@ const GramWallet = () => {
         transactions,
         collectibles,
         tonAmount,
-        usdtAmount,
         balance,
         hasMoreTransactions,
         loadMoreTransactions,
@@ -84,7 +83,6 @@ const GramWallet = () => {
                     <WalletCard
                         name={tgName || undefined}
                         address={MY_ADDRESS}
-                        usdtAmount={usdtAmount || "0.00"}
                         gramAmount={tonAmount || "0.00"}
                         balance={balance || "$0.00"}
                     />
