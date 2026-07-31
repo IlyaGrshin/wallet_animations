@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import * as m from "motion/react-m"
 import WalletCard from "../../../components/WalletCard"
 import Page from "../../../components/Page"
 import { RegularButton } from "../../../components/Button"
@@ -10,7 +11,9 @@ import { BackButton, getUser } from "../../../lib/twa"
 import Collectibles from "./components/Collectibles"
 import Feedback from "./components/Feedback"
 import Transactions from "./components/Transactions"
+import Header from "./Header"
 import useWalletData from "./useWalletData"
+import useWalletFlight from "./useWalletFlight"
 import * as styles from "./GramWallet.module.scss"
 
 const MY_ADDRESS = "UQDYzZmfsrGzhObKJUw4gzdeIxEai3jAFbiGKGwxvxHinf4K"
@@ -36,6 +39,18 @@ const GramWallet = () => {
         loadCollectibles,
         error,
     } = useWalletData(MY_ADDRESS)
+    const [cardEl, setCardEl] = useState(null)
+    const [amountEl, setAmountEl] = useState(null)
+    const [balanceEl, setBalanceEl] = useState(null)
+    const [gramLineEl, setGramLineEl] = useState(null)
+    const [fiatLineEl, setFiatLineEl] = useState(null)
+    const flight = useWalletFlight({
+        cardEl,
+        gramAnchor: amountEl,
+        fiatAnchor: balanceEl,
+        gramEl: gramLineEl,
+        fiatEl: fiatLineEl,
+    })
 
     useEffect(() => {
         if (tabIndex === 1) loadCollectibles()
@@ -79,13 +94,32 @@ const GramWallet = () => {
         <>
             <BackButton />
             <Page>
+                <Header
+                    gramAmount={tonAmount || "0.00"}
+                    balance={balance || "$0.00"}
+                    flight={flight}
+                    gramRef={setGramLineEl}
+                    fiatRef={setFiatLineEl}
+                />
                 <div className={styles.wrapper}>
-                    <WalletCard
-                        name={tgName || undefined}
-                        address={MY_ADDRESS}
-                        gramAmount={tonAmount || "0.00"}
-                        balance={balance || "$0.00"}
-                    />
+                    <m.div
+                        ref={setCardEl}
+                        className={styles.cardShell}
+                        style={{
+                            scale: flight.card.scale,
+                            "--wallet-card-fade": flight.card.fade,
+                        }}
+                    >
+                        <WalletCard
+                            name={tgName || undefined}
+                            address={MY_ADDRESS}
+                            gramAmount={tonAmount || "0.00"}
+                            balance={balance || "$0.00"}
+                            amountRef={setAmountEl}
+                            balanceRef={setBalanceEl}
+                            valuesHidden
+                        />
+                    </m.div>
                     <div className={styles.actions}>
                         <div className={styles.action}>
                             <RegularButton

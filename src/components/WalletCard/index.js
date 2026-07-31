@@ -49,6 +49,9 @@ function WalletCard({
     address = DEFAULT_ADDRESS,
     gramAmount = "0",
     balance = "$3,450.04",
+    amountRef,
+    balanceRef,
+    valuesHidden = false,
     onQrClick,
     debugSafeZones = false,
 }) {
@@ -106,7 +109,12 @@ function WalletCard({
             </div>
 
             <div ref={moneyRef} className={styles.money}>
-                <div className={styles.amount}>
+                <div
+                    ref={amountRef}
+                    className={`${styles.amount} ${
+                        valuesHidden ? styles.hiddenValue : ""
+                    }`}
+                >
                     <GramIcon className={styles.coinIcon} />
                     <span className={styles.amountValue}>
                         <Calligraph variant="number" animation="smooth">
@@ -124,7 +132,15 @@ function WalletCard({
                 </div>
             </div>
 
-            <p ref={fiatRef} className={styles.fiat}>
+            <p
+                ref={(node) => {
+                    fiatRef.current = node
+                    balanceRef?.(node)
+                }}
+                className={`${styles.fiat} ${
+                    valuesHidden ? styles.hiddenValue : ""
+                }`}
+            >
                 <Calligraph variant="number" animation="smooth">
                     {balance}
                 </Calligraph>
@@ -190,6 +206,9 @@ WalletCard.propTypes = {
     address: PropTypes.string,
     gramAmount: PropTypes.string,
     balance: PropTypes.string,
+    amountRef: PropTypes.func,
+    balanceRef: PropTypes.func,
+    valuesHidden: PropTypes.bool,
     onQrClick: PropTypes.func,
     debugSafeZones: PropTypes.bool,
 }

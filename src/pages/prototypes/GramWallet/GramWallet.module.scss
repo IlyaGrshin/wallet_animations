@@ -1,3 +1,119 @@
+// The wallet's two amounts live here for real: they start over the card wearing
+// its rounded, tinted look and scroll carries them into the bar's title slot,
+// where they settle into the navigation typography.
+.headerBalances {
+    display: grid;
+    place-items: center;
+
+    --wallet-amount-tint: oklch(
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.22) calc(c * 0.75) h
+    );
+
+    :global(body.apple) & {
+        --wallet-amount-tint: oklch(
+            from var(--tg-theme-accent-text-color)
+            calc(l + 0.2) calc(c * 0.95) h
+        );
+    }
+}
+
+.walletTitle {
+    grid-area: 1 / 1;
+}
+
+.balancesStack {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// TabBar's trick: each line renders twice, bar look under card look, stacked
+// in one grid cell. The card look is cut by a clip-path whose edge follows the
+// card's bottom, so every part of a line recolours in one geometric sweep.
+.gramLine,
+.fiatLine {
+    display: grid;
+    transform-origin: left center;
+    white-space: nowrap;
+    will-change: transform;
+    font-family: "Google Sans", "SF Pro Rounded", ui-rounded, -apple-system,
+        system-ui, sans-serif;
+
+    :global(body.apple) & {
+        font-family: ui-rounded, "SF Pro Rounded", -apple-system, system-ui,
+            sans-serif;
+    }
+}
+
+.gramLine {
+    font-weight: 500;
+
+    :global(body.apple) & {
+        font-weight: 600;
+    }
+}
+
+.lineLayer {
+    grid-area: 1 / 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.36em;
+}
+
+.barLook {
+    color: var(--tg-theme-text-color);
+
+    .gem {
+        color: var(--tg-theme-accent-text-color);
+    }
+}
+
+.fiatLine .barLook {
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+.cardLook {
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
+    will-change: clip-path;
+}
+
+.fiatLine .cardLook {
+    color: var(--wallet-amount-tint);
+}
+
+.gem {
+    display: flex;
+    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+    transform-origin: left center;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    svg path {
+        fill: currentcolor;
+    }
+}
+
+.gramUnit {
+    position: absolute;
+    left: 100%;
+    margin-left: 0.27em;
+    color: var(--wallet-amount-tint);
+}
+
+.cardShell {
+    align-self: stretch;
+    transform-origin: top center;
+    will-change: transform;
+}
+
 .wrapper {
     display: flex;
     flex-direction: column;

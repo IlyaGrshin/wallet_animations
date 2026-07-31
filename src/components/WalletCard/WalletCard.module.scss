@@ -131,6 +131,7 @@ $card-h: 220;
     pointer-events: none;
     border-radius: inherit;
     overflow: clip;
+    opacity: var(--wallet-card-fade, 1);
     mix-blend-mode: soft-light;
     mask-image: conic-gradient(
         from var(--stars-from),
@@ -189,6 +190,10 @@ $card-h: 220;
     align-items: center;
     gap: cq(5);
     padding-right: cq(2.571);
+
+    // Own font-size, not just the children's: the page measures this row to
+    // scale the balance it flies up into the header.
+    font-size: cq(22);
 
     :global(body.apple) & {
         gap: cq(2);
@@ -256,11 +261,18 @@ $card-h: 220;
     }
 }
 
+// Keeps its box (the page measures it to fly its own copy from here, and the
+// star field keeps the safe zone) while the visible amount lives in the header.
+.hiddenValue {
+    visibility: hidden;
+}
+
 .name {
     position: absolute;
     bottom: cq(20);
     left: cq(24);
     margin: 0;
+    opacity: var(--wallet-card-fade, 1);
     font-family: $mono-stack;
     font-weight: 500;
     font-size: cq(11);
@@ -280,6 +292,7 @@ $card-h: 220;
     right: cq(16);
     bottom: cq(20.5);
     width: cq(20);
+    opacity: var(--wallet-card-fade, 1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -351,6 +364,7 @@ $card-h: 220;
     align-items: center;
     justify-content: center;
     overflow: clip;
+    opacity: var(--wallet-card-fade, 1);
     -webkit-tap-highlight-color: transparent;
     transition: transform 200ms ease;
 
