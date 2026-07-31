@@ -27,7 +27,7 @@
     flex: 1;
     align-items: center;
     justify-content: center;
-    padding: 7px 0;
+    padding: 5px 0;
     border-radius: calc(var(--track-radius) - var(--track-inset));
 
     :global(body.material) & {
