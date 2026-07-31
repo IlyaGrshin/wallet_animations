@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import { GlassContainer } from "../GlassEffect"
 import Text from "../Text"
 import { useSkin } from "../../hooks/DeviceProvider"
+import { useScrolled } from "../../hooks/useScrolled"
 
 import HeaderButton, { HEADER_BUTTON_VARIANTS } from "./HeaderButton"
 import { BackIcon, CloseIcon, MoreIcon } from "./icons"
@@ -14,7 +15,8 @@ import * as styles from "./PanelHeader.module.scss"
 // centered title. 64px tall standalone, 70px inside a ModalView (via
 // ModalChromeContext). Material stays a flat app bar: no glass, icon actions
 // only (a text action is dropped), and no side actions at all inside a modal.
-// data-modal-drag makes the whole bar a swipe-to-dismiss handle.
+// data-modal-drag makes the whole bar a swipe-to-dismiss handle. `sticky` pins
+// the bar to the top of its page scroller and fades its surface in on scroll.
 const PanelHeader = ({
     left,
     onLeft,
@@ -25,10 +27,12 @@ const PanelHeader = ({
     overlay = false,
     titleGlass = false,
     search,
+    sticky = false,
     children,
 }) => {
     const { isApple } = useSkin()
     const inModal = useContext(ModalChromeContext)
+    const [stickyRef, scrolled] = useScrolled(sticky)
 
     // Over-content state: buttons default to the overlay glass and the title
     // goes white. Per-button variants still override.
@@ -88,7 +92,7 @@ const PanelHeader = ({
         </Text>
     )
 
-    return (
+    const bar = (
         <div
             className={`${styles.root} ${inModal ? styles.inModal : ""} ${
                 search ? styles.withSearch : ""
@@ -135,6 +139,17 @@ const PanelHeader = ({
             </div>
         </div>
     )
+
+    if (!sticky) return bar
+
+    return (
+        <div
+            ref={stickyRef}
+            className={`${styles.sticky} ${scrolled ? styles.scrolled : ""}`}
+        >
+            {bar}
+        </div>
+    )
 }
 
 PanelHeader.BackIcon = BackIcon
@@ -159,6 +174,7 @@ PanelHeader.propTypes = {
     overlay: PropTypes.bool,
     titleGlass: PropTypes.bool,
     search: PropTypes.node,
+    sticky: PropTypes.bool,
     children: PropTypes.node,
 }
 
