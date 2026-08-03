@@ -1,0 +1,41 @@
+@font-face {
+    font-family: "Gram Sans";
+    src: url("/fonts/gram-medium.ttf") format("truetype");
+    font-weight: 500;
+    font-display: block;
+}
+
+@font-face {
+    font-family: "Roboto Mono Card";
+    src: url("/fonts/roboto-mono-variable.ttf") format("truetype");
+    font-weight: 100 700;
+    font-display: block;
+}
+
+@font-face {
+    font-family: "SF Pro Rounded";
+    src: url("/fonts/SFProRounded-Semibold.woff2") format("woff2");
+    font-weight: 600;
+    font-display: block;
+}
+
+$card-w: 361;
+$card-h: 220;
+
+.root {
+    position: relative;
+    width: 100%;
+    aspect-ratio: #{$card-w} / #{$card-h};
+}
+
+// Bleeds past the card box by the overscan so a tilted corner is never cut;
+// the camera pulls back by the same factor, so the card keeps its 2D footprint.
+.canvas {
+    position: absolute;
+    top: calc((1 - var(--card-3d-overscan)) * 50%);
+    left: calc((1 - var(--card-3d-overscan)) * 50%);
+    display: block;
+    width: calc(var(--card-3d-overscan) * 100%);
+    height: calc(var(--card-3d-overscan) * 100%);
+    pointer-events: none;
+}

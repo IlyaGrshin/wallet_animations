@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import * as m from "motion/react-m"
 import WalletCard from "../../../components/WalletCard"
+import WalletCard3D from "../../../components/WalletCard3D"
 import Page from "../../../components/Page"
 import { RegularButton } from "../../../components/Button"
 import Tabs from "../../../components/Tabs"
@@ -11,7 +12,7 @@ import { BackButton, getUser } from "../../../lib/twa"
 import Collectibles from "./components/Collectibles"
 import Feedback from "./components/Feedback"
 import Transactions from "./components/Transactions"
-import Header from "./Header"
+import Header, { CARD_MODES } from "./Header"
 import useWalletData from "./useWalletData"
 import useWalletFlight from "./useWalletFlight"
 import * as styles from "./GramWallet.module.scss"
@@ -29,6 +30,7 @@ const TABS = ["Transactions", "Collectibles"]
 
 const GramWallet = () => {
     const [tabIndex, setTabIndex] = useState(0)
+    const [cardMode, setCardMode] = useState(CARD_MODES[0])
     const {
         transactions,
         collectibles,
@@ -100,6 +102,7 @@ const GramWallet = () => {
                     flight={flight}
                     gramRef={setGramLineEl}
                     fiatRef={setFiatLineEl}
+                    onCardMode={setCardMode}
                 />
                 <div className={styles.wrapper}>
                     <m.div
@@ -110,15 +113,24 @@ const GramWallet = () => {
                             "--wallet-card-fade": flight.card.fade,
                         }}
                     >
-                        <WalletCard
-                            name={tgName || undefined}
-                            address={MY_ADDRESS}
-                            gramAmount={tonAmount || "0.00"}
-                            balance={balance || "$0.00"}
-                            amountRef={setAmountEl}
-                            balanceRef={setBalanceEl}
-                            valuesHidden
-                        />
+                        {cardMode === CARD_MODES[0] ? (
+                            <WalletCard3D
+                                name={tgName || undefined}
+                                address={MY_ADDRESS}
+                                gramAmount={tonAmount || "0.00"}
+                                balance={balance || "$0.00"}
+                            />
+                        ) : (
+                            <WalletCard
+                                name={tgName || undefined}
+                                address={MY_ADDRESS}
+                                gramAmount={tonAmount || "0.00"}
+                                balance={balance || "$0.00"}
+                                amountRef={setAmountEl}
+                                balanceRef={setBalanceEl}
+                                valuesHidden
+                            />
+                        )}
                     </m.div>
                     <div className={styles.actions}>
                         <div className={styles.action}>

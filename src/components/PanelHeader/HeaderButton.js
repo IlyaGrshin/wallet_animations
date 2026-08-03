@@ -26,6 +26,7 @@ const HeaderButton = ({
     surface = false,
     swap,
     swapped = false,
+    ...props
 }) => {
     const { isApple } = useSkin()
     const isText = typeof children === "string"
@@ -81,6 +82,7 @@ const HeaderButton = ({
             className={className}
             onClick={onClick}
             {...rootProps}
+            {...props}
         >
             {content}
         </Root>

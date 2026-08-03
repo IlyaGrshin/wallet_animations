@@ -5,7 +5,16 @@ import PanelHeader from "../../../components/PanelHeader"
 
 import HeaderBalances from "./HeaderBalances"
 
-const Header = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
+export const CARD_MODES = ["3D Card", "2D Card"]
+
+const Header = ({
+    gramAmount,
+    balance,
+    flight,
+    gramRef,
+    fiatRef,
+    onCardMode,
+}) => {
     const [, navigate] = useHashLocation()
 
     return (
@@ -14,6 +23,8 @@ const Header = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
             left={<PanelHeader.BackIcon />}
             onLeft={() => navigate("/")}
             right={<PanelHeader.MoreIcon />}
+            rightMenu={CARD_MODES}
+            onRightMenu={onCardMode}
         >
             <HeaderBalances
                 gramAmount={gramAmount}
@@ -32,6 +43,7 @@ Header.propTypes = {
     flight: PropTypes.object.isRequired,
     gramRef: PropTypes.func,
     fiatRef: PropTypes.func,
+    onCardMode: PropTypes.func,
 }
 
 export default Header

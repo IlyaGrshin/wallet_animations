@@ -288,9 +288,9 @@ $card-h: 220;
 
 .addressOuter {
     position: absolute;
-    top: cq(20.5);
+    top: cq(16.5);
     right: cq(16);
-    bottom: cq(20.5);
+    bottom: cq(16.5);
     width: cq(20);
     opacity: var(--wallet-card-fade, 1);
     display: flex;
@@ -301,7 +301,8 @@ $card-h: 220;
 }
 
 .addressRotator {
-    width: cq($card-h - 41);
+    flex: none;
+    width: cq($card-h - 33);
     height: cq(20);
     transform: rotate(90deg);
     transform-origin: center;

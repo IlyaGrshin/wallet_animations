@@ -6,6 +6,7 @@ import * as styles from "./FitText.module.scss"
 export default function FitText({
     children,
     minScale = 0.4,
+    maxScale = 1,
     fitHeight = false,
     fill = 1,
     className,
@@ -32,7 +33,7 @@ export default function FitText({
                 if (outerH && innerH)
                     ratio = Math.min(ratio, (fill * outerH) / innerH)
             }
-            const next = Math.max(minScale, Math.min(1, ratio))
+            const next = Math.max(minScale, Math.min(maxScale, ratio))
             setScale((prev) => (Math.abs(prev - next) < 0.002 ? prev : next))
         }
 
@@ -41,7 +42,7 @@ export default function FitText({
         ro.observe(outer)
         ro.observe(inner)
         return () => ro.disconnect()
-    }, [minScale, fitHeight, fill, children])
+    }, [minScale, maxScale, fitHeight, fill, children])
 
     return (
         <div
@@ -64,6 +65,7 @@ export default function FitText({
 FitText.propTypes = {
     children: PropTypes.node.isRequired,
     minScale: PropTypes.number,
+    maxScale: PropTypes.number,
     fitHeight: PropTypes.bool,
     fill: PropTypes.number,
     className: PropTypes.string,

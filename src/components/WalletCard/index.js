@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { useSmoothCorners } from "@lisse/react"
 import { Calligraph } from "calligraph"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
+import { formatAddress } from "../../utils/address"
 import * as styles from "./WalletCard.module.scss"
 import FitText from "../FitText"
 import StarField from "./StarField"
@@ -23,16 +24,6 @@ function splitAmount(raw) {
     const idx = str.lastIndexOf(".")
     if (idx === -1) return [str, ""]
     return [str.slice(0, idx), str.slice(idx)]
-}
-
-function formatAddress(raw) {
-    const clean = raw.replace(/\s+/g, "")
-    const groups = clean.match(/.{1,4}/g) || []
-    const half = Math.ceil(groups.length / 2)
-    return [
-        groups.slice(0, half).join(" "),
-        groups.slice(half).join(" "),
-    ]
 }
 
 function rectToZone(r, root, sx, sy) {
@@ -157,6 +148,7 @@ function WalletCard({
                     <FitText
                         innerClassName={styles.addressInner}
                         minScale={0.5}
+                        maxScale={1.5}
                     >
                         <span className={styles.addressLine}>{line1}</span>
                         <span className={styles.addressLine}>{line2}</span>
