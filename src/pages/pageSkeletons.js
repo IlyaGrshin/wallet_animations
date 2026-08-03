@@ -32,6 +32,7 @@ import FitTextSkeleton from "../components/FitText/FitText.skeleton"
 import NavigationBarSkeleton from "./showcases/NavigationBar/NavigationBar.skeleton"
 import BottomBarSkeleton from "./showcases/BottomBar/BottomBar.skeleton"
 import HapticFeedbackSkeleton from "./showcases/HapticFeedback/HapticFeedback.skeleton"
+import ShareMessageSkeleton from "./showcases/ShareMessage/ShareMessage.skeleton"
 import TextFieldSkeleton from "../components/TextField/TextField.skeleton"
 import NavigationSkeleton from "./prototypes/NewNavigation/NewNavigation.skeleton"
 import ColorAssetPageSkeleton from "./prototypes/ColorAssetPage/ColorAssetPage.skeleton"
@@ -68,6 +69,7 @@ const pageSkeletons = {
     "Navigation Bar": NavigationBarSkeleton,
     "Bottom Bar": BottomBarSkeleton,
     "Haptic Feedback": HapticFeedbackSkeleton,
+    "Share Message": ShareMessageSkeleton,
     "Input Page": TextFieldSkeleton,
     Navigation: NavigationSkeleton,
     "Color Asset Page": ColorAssetPageSkeleton,
