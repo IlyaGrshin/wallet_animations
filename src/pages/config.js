@@ -226,6 +226,12 @@ const config = [
                     () => import("./showcases/HapticFeedback")
                 ),
             },
+            {
+                title: "Share Message",
+                component: lazyWithPreload(
+                    () => import("./showcases/ShareMessage")
+                ),
+            },
         ],
     },
     {

@@ -1,6 +1,7 @@
 export { default } from "./webApp"
 export { default as getUser } from "./getUser"
 export { isTelegram } from "./env"
+export { canShareMessage, shareMessage } from "./share"
 export { default as BackButton } from "./BackButton"
 export { default as BottomBar } from "./BottomBar"
 export { default as MainButton } from "./MainButton"

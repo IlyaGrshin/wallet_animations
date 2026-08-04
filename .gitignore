@@ -44,3 +44,4 @@ tmp-*.png
 
 # environment
 .env.production
+shareApi/.env
