@@ -34,7 +34,6 @@ yarn-error.log*
 deploy.sh
 
 /coingeckoApi
-/shareApi
 .cursor
 .codex
 .agents
@@ -45,3 +44,4 @@ tmp-*.png
 
 # environment
 .env.production
+shareApi/.env
