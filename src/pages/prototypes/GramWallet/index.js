@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import * as m from "motion/react-m"
+import { useTransform } from "motion/react"
 import WalletCard from "../../../components/WalletCard"
+import useDeviceTilt from "../../../components/WalletCard/useDeviceTilt"
 import Page from "../../../components/Page"
 import { RegularButton } from "../../../components/Button"
 import Tabs from "../../../components/Tabs"
@@ -52,6 +54,10 @@ const GramWallet = () => {
         fiatEl: fiatLineEl,
     })
 
+    const tiltScopeRef = useRef(null)
+    const tiltDamp = useTransform(flight.progress, (p) => 1 - p)
+    useDeviceTilt(tiltScopeRef, tiltDamp)
+
     useEffect(() => {
         if (tabIndex === 1) loadCollectibles()
     }, [tabIndex, loadCollectibles])
@@ -94,67 +100,70 @@ const GramWallet = () => {
         <>
             <BackButton />
             <Page>
-                <Header
-                    gramAmount={tonAmount || "0.00"}
-                    balance={balance || "$0.00"}
-                    flight={flight}
-                    gramRef={setGramLineEl}
-                    fiatRef={setFiatLineEl}
-                />
-                <div className={styles.wrapper}>
-                    <m.div
-                        ref={setCardEl}
-                        className={styles.cardShell}
-                        style={{
-                            scale: flight.card.scale,
-                            "--wallet-card-fade": flight.card.fade,
-                        }}
-                    >
-                        <WalletCard
-                            name={tgName || undefined}
-                            address={MY_ADDRESS}
-                            gramAmount={tonAmount || "0.00"}
-                            balance={balance || "$0.00"}
-                            amountRef={setAmountEl}
-                            balanceRef={setBalanceEl}
-                            valuesHidden
-                        />
-                    </m.div>
-                    <div className={styles.actions}>
-                        <div className={styles.action}>
-                            <RegularButton
-                                variant="filled"
-                                label="Add Funds"
-                                isFill
+                <div ref={tiltScopeRef} className={styles.tiltScope}>
+                    <Header
+                        gramAmount={tonAmount || "0.00"}
+                        balance={balance || "$0.00"}
+                        flight={flight}
+                        gramRef={setGramLineEl}
+                        fiatRef={setFiatLineEl}
+                    />
+                    <div className={styles.wrapper}>
+                        <m.div
+                            ref={setCardEl}
+                            className={styles.cardShell}
+                            style={{
+                                scale: flight.card.scale,
+                                "--wallet-card-fade": flight.card.fade,
+                            }}
+                        >
+                            <WalletCard
+                                name={tgName || undefined}
+                                address={MY_ADDRESS}
+                                gramAmount={tonAmount || "0.00"}
+                                balance={balance || "$0.00"}
+                                amountRef={setAmountEl}
+                                balanceRef={setBalanceEl}
+                                valuesHidden
+                                tilt={false}
                             />
-                        </div>
-                        <div className={styles.action}>
-                            <RegularButton
-                                variant="filled"
-                                label="Send"
-                                isFill
-                            />
+                        </m.div>
+                        <div className={styles.actions}>
+                            <div className={styles.action}>
+                                <RegularButton
+                                    variant="filled"
+                                    label="Add Funds"
+                                    isFill
+                                />
+                            </div>
+                            <div className={styles.action}>
+                                <RegularButton
+                                    variant="filled"
+                                    label="Send"
+                                    isFill
+                                />
+                            </div>
                         </div>
                     </div>
+                    <SectionList>
+                        <section>
+                            <div className={styles.glassHeader}>
+                                <Tabs
+                                    tabs={TABS}
+                                    activeTabIndex={tabIndex}
+                                    onChange={setTabIndex}
+                                    variant="glass"
+                                    scrollable
+                                />
+                            </div>
+                            <div className={styles.sectionContainer}>
+                                <TabContent activeIndex={tabIndex}>
+                                    {renderTabContent()}
+                                </TabContent>
+                            </div>
+                        </section>
+                    </SectionList>
                 </div>
-                <SectionList>
-                    <section>
-                        <div className={styles.glassHeader}>
-                            <Tabs
-                                tabs={TABS}
-                                activeTabIndex={tabIndex}
-                                onChange={setTabIndex}
-                                variant="glass"
-                                scrollable
-                            />
-                        </div>
-                        <div className={styles.sectionContainer}>
-                            <TabContent activeIndex={tabIndex}>
-                                {renderTabContent()}
-                            </TabContent>
-                        </div>
-                    </section>
-                </SectionList>
             </Page>
         </>
     )

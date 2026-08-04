@@ -13,6 +13,17 @@ import * as styles from "./GramWallet.module.scss"
 // so the gem carries the difference as its own scale while it is down there.
 const CARD_GEM_SCALE = 28 / 22
 
+// The parked lines pivot in the card's plane: the pivot is the card centre in
+// line-local coordinates, measured by the flight, and the perspective matches
+// the card scene's.
+const tiltStyle = (tilt, origin) =>
+    tilt
+        ? {
+              "--line-tilt-origin": `${origin.x}px ${origin.y}px`,
+              "--line-tilt-perspective": `${tilt.perspective}px`,
+          }
+        : undefined
+
 const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
     const { isApple } = useSkin()
     const { progress, gather, ready } = flight
@@ -58,37 +69,44 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                     apple={{ variant: "body" }}
                     material={{ variant: "body" }}
                 >
-                    <span className={`${styles.lineLayer} ${styles.barLook}`}>
-                        <m.span
-                            className={styles.gem}
-                            style={{ scale: gemScale }}
-                        >
-                            <GramIcon />
-                        </m.span>
-                        <Calligraph variant="number" animation="smooth">
-                            {gramAmount}
-                        </Calligraph>
-                    </span>
-                    <m.span
-                        className={`${styles.lineLayer} ${styles.cardLook}`}
-                        style={{ clipPath: flight.gram.wipe }}
+                    <span
+                        className={styles.lineTilt}
+                        style={tiltStyle(flight.tilt, flight.tilt?.gram)}
                     >
-                        <m.span
-                            className={styles.gem}
-                            style={{ scale: gemScale }}
+                        <span
+                            className={`${styles.lineLayer} ${styles.barLook}`}
                         >
-                            <GramIcon />
-                        </m.span>
-                        <Calligraph variant="number" animation="smooth">
-                            {gramAmount}
-                        </Calligraph>
+                            <m.span
+                                className={styles.gem}
+                                style={{ scale: gemScale }}
+                            >
+                                <GramIcon />
+                            </m.span>
+                            <Calligraph variant="number" animation="smooth">
+                                {gramAmount}
+                            </Calligraph>
+                        </span>
                         <m.span
-                            className={styles.gramUnit}
-                            style={{ opacity: unitOpacity }}
+                            className={`${styles.lineLayer} ${styles.cardLook}`}
+                            style={{ clipPath: flight.gram.wipe }}
                         >
-                            GRAM
+                            <m.span
+                                className={styles.gem}
+                                style={{ scale: gemScale }}
+                            >
+                                <GramIcon />
+                            </m.span>
+                            <Calligraph variant="number" animation="smooth">
+                                {gramAmount}
+                            </Calligraph>
+                            <m.span
+                                className={styles.gramUnit}
+                                style={{ opacity: unitOpacity }}
+                            >
+                                GRAM
+                            </m.span>
                         </m.span>
-                    </m.span>
+                    </span>
                 </Text>
                 <Text
                     as={m.div}
@@ -104,19 +122,26 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                     apple={{ variant: "footnote" }}
                     material={{ variant: "subheadline2" }}
                 >
-                    <span className={`${styles.lineLayer} ${styles.barLook}`}>
-                        <Calligraph variant="number" animation="smooth">
-                            {balance}
-                        </Calligraph>
-                    </span>
-                    <m.span
-                        className={`${styles.lineLayer} ${styles.cardLook}`}
-                        style={{ clipPath: flight.fiat.wipe }}
+                    <span
+                        className={styles.lineTilt}
+                        style={tiltStyle(flight.tilt, flight.tilt?.fiat)}
                     >
-                        <Calligraph variant="number" animation="smooth">
-                            {balance}
-                        </Calligraph>
-                    </m.span>
+                        <span
+                            className={`${styles.lineLayer} ${styles.barLook}`}
+                        >
+                            <Calligraph variant="number" animation="smooth">
+                                {balance}
+                            </Calligraph>
+                        </span>
+                        <m.span
+                            className={`${styles.lineLayer} ${styles.cardLook}`}
+                            style={{ clipPath: flight.fiat.wipe }}
+                        >
+                            <Calligraph variant="number" animation="smooth">
+                                {balance}
+                            </Calligraph>
+                        </m.span>
+                    </span>
                 </Text>
             </div>
         </div>

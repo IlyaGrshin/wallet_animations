@@ -1,86 +1,26 @@
 import { useLayoutEffect, useState } from "react"
-import {
-    animate,
-    cubicBezier,
-    useMotionValue,
-    useTransform,
-} from "motion/react"
+import { animate, useMotionValue, useTransform } from "motion/react"
 
 import { findScroller } from "../../../hooks/useScrolled"
 
+import {
+    ISLAND_SCALE,
+    gatherEase,
+    measureDelta,
+    wipeClip,
+    withClearedTransforms,
+} from "./flightGeometry"
+
 const clamp01 = (value) => Math.min(1, Math.max(0, value))
-
-const fontSizeOf = (el) => parseFloat(getComputedStyle(el).fontSize) || 1
-
-// One curve drives every secondary channel (x, scale, gem, card): the slow
-// start keeps the lines riding the scroll with the card, then they sweep into
-// the centre of the bar. y stays linear so the ride is pixel-locked.
-const gatherEase = cubicBezier(0.86, 0, 0.07, 1)
-
-// Roughly the Dynamic Island's width over the card's: the card collapses to
-// about the island's footprint as it leaves the screen.
-const ISLAND_SCALE = 125 / 361
 
 // Like native large-title bars: a scroll released inside the transition zone
 // settles to whichever end is closer, so the morph never parks midway.
 const SNAP_DELAY_MS = 140
 const SNAP_EASE = [0.23, 1, 0.32, 1]
 
-// Left edges and vertical centres, matching transform-origin: left center — a
-// width difference between the two strings can't shift the start position.
-function measureDelta(element, anchor, scrolled) {
-    const start = anchor.getBoundingClientRect()
-    const rest = element.getBoundingClientRect()
-    if (!rest.height || !start.height) return null
-    return {
-        dx: start.left - rest.left,
-        dy:
-            start.top +
-            start.height / 2 -
-            (rest.top + rest.height / 2) +
-            scrolled,
-        scale: fontSizeOf(anchor) / fontSizeOf(element),
-        restTop: rest.top,
-        restHeight: rest.height,
-    }
-}
-
-// The card-look layer stays visible only where the card is still behind the
-// text: its clip edge is the card's scaled bottom edge, converted into the
-// line's local (untransformed) box. One geometric cut, so digits, gem and
-// unit can never recolour out of sync.
-function wipeClip(flights, line, p) {
-    if (!flights || !line) return "inset(0 0 0 0)"
-    if (!flights.card) {
-        return p > 0.8 ? "inset(0 0 100% 0)" : "inset(0 0 0 0)"
-    }
-    const eased = gatherEase(p)
-    const scale = 1 + (line.scale - 1) * (1 - eased)
-    const lineBottom =
-        line.restTop +
-        line.restHeight +
-        line.dy * (1 - p) +
-        ((scale - 1) * line.restHeight) / 2
-    const cardBottom =
-        flights.card.top -
-        p * flights.distance +
-        flights.card.height * (1 - (1 - ISLAND_SCALE) * eased)
-    const cut = Math.min(
-        line.restHeight,
-        Math.max(0, (lineBottom - cardBottom) / scale)
-    )
-    return `inset(0 0 ${cut}px 0)`
-}
-
-// Rects must be read with every in-flight transform cleared: the lines carry
-// their own transforms and the card shell scales the anchors.
-function withClearedTransforms(elements, fn) {
-    const saved = elements.map((el) => [el, el.style.transform])
-    for (const [el] of saved) el.style.transform = "none"
-    const result = fn()
-    for (const [el, prev] of saved) el.style.transform = prev
-    return result
-}
+// WalletCard's .scene perspective — cq(1000) against the 220-tall design —
+// converted to px through the measured card height.
+const TILT_PERSPECTIVE = 1000 / 220
 
 export default function useWalletFlight({
     cardEl,
@@ -113,14 +53,17 @@ export default function useWalletFlight({
             scrollY.set(scrolled)
             const cleared = [cardEl, gramEl, fiatEl].filter(Boolean)
             const next = withClearedTransforms(cleared, () => {
-                const gram = measureDelta(gramEl, gramAnchor, scrolled)
-                const fiat = measureDelta(fiatEl, fiatAnchor, scrolled)
-                if (!gram || !fiat) return null
                 const cardRect = cardEl?.getBoundingClientRect()
+                const gram = measureDelta(gramEl, gramAnchor, scrolled, cardRect)
+                const fiat = measureDelta(fiatEl, fiatAnchor, scrolled, cardRect)
+                if (!gram || !fiat) return null
                 return {
                     gram,
                     fiat,
                     distance: Math.max(gram.dy, fiat.dy),
+                    tiltPerspective: cardRect
+                        ? cardRect.height * TILT_PERSPECTIVE
+                        : 0,
                     card: cardRect
                         ? {
                               top: cardRect.top + scrolled,
@@ -213,6 +156,14 @@ export default function useWalletFlight({
         ready: flights ? 1 : 0,
         progress,
         gather,
+        tilt:
+            flights?.card && flights.gram.origin
+                ? {
+                      perspective: flights.tiltPerspective,
+                      gram: flights.gram.origin,
+                      fiat: flights.fiat.origin,
+                  }
+                : null,
         gram: {
             x: useTransform(gather, (v) => (flights ? flights.gram.dx * (1 - v) : 0)),
             y: useTransform(progress, (v) => (flights ? flights.gram.dy * (1 - v) : 0)),

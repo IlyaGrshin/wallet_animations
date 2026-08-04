@@ -7,7 +7,6 @@ import { formatAddress } from "../../utils/address"
 import * as styles from "./WalletCard.module.scss"
 import FitText from "../FitText"
 import StarField from "./StarField"
-import TitaniumTexture from "../TitaniumTexture"
 import useDeviceTilt from "./useDeviceTilt"
 import QrIcon from "./assets/qr.svg?react"
 import GramIcon from "../../icons/28/Gram.svg?react"
@@ -43,11 +42,13 @@ function WalletCard({
     amountRef,
     balanceRef,
     valuesHidden = false,
+    tilt = true,
     onQrClick,
     debugSafeZones = false,
 }) {
     const [line1, line2] = formatAddress(address)
     const [gramWhole, gramFraction] = splitAmount(gramAmount)
+    const sceneRef = useRef(null)
     const rootRef = useRef(null)
     const moneyRef = useRef(null)
     const nameRef = useRef(null)
@@ -56,7 +57,7 @@ function WalletCard({
     const fiatRef = useRef(null)
     const [safeZones, setSafeZones] = useState([])
 
-    useDeviceTilt(rootRef)
+    useDeviceTilt(tilt ? sceneRef : null)
 
     const measure = useCallback(() => {
         const root = rootRef.current
@@ -88,107 +89,122 @@ function WalletCard({
     )
 
     return (
-        <div ref={rootRef} className={styles.root}>
-            <div className={styles.shine} aria-hidden="true" />
+        <div ref={sceneRef} className={styles.scene}>
+            <div className={styles.body}>
+                <div className={styles.edge} aria-hidden="true" />
+                <div ref={rootRef} className={styles.root}>
+                    <div className={styles.shine} aria-hidden="true" />
 
-            <div className={styles.blur} aria-hidden="true" />
+                    <div className={styles.blur} aria-hidden="true" />
 
-            <TitaniumTexture brushed={0.35} amount={1} />
+                    <div className={styles.stars} aria-hidden="true">
+                        <StarField safeZones={safeZones} />
+                    </div>
 
-            <div className={styles.stars} aria-hidden="true">
-                <StarField safeZones={safeZones} />
-            </div>
+                    <div className={styles.fresnel} aria-hidden="true" />
 
-            <div ref={moneyRef} className={styles.money}>
-                <div
-                    ref={amountRef}
-                    className={`${styles.amount} ${
-                        valuesHidden ? styles.hiddenValue : ""
-                    }`}
-                >
-                    <GramIcon className={styles.coinIcon} />
-                    <span className={styles.amountValue}>
-                        <Calligraph variant="number" animation="smooth">
-                            {gramWhole}
-                        </Calligraph>
-                        {gramFraction && (
-                            <span className={styles.amountFraction}>
-                                <Calligraph variant="number" animation="smooth">
-                                    {gramFraction}
+                    <div ref={moneyRef} className={styles.money}>
+                        <div
+                            ref={amountRef}
+                            className={`${styles.amount} ${
+                                valuesHidden ? styles.hiddenValue : ""
+                            }`}
+                        >
+                            <GramIcon className={styles.coinIcon} />
+                            <span className={styles.amountValue}>
+                                <Calligraph
+                                    variant="number"
+                                    animation="smooth"
+                                >
+                                    {gramWhole}
                                 </Calligraph>
+                                {gramFraction && (
+                                    <span className={styles.amountFraction}>
+                                        <Calligraph
+                                            variant="number"
+                                            animation="smooth"
+                                        >
+                                            {gramFraction}
+                                        </Calligraph>
+                                    </span>
+                                )}
                             </span>
-                        )}
-                    </span>
-                    <span className={styles.amountUnit}>GRAM</span>
-                </div>
-            </div>
+                            <span className={styles.amountUnit}>GRAM</span>
+                        </div>
+                    </div>
 
-            <p
-                ref={(node) => {
-                    fiatRef.current = node
-                    balanceRef?.(node)
-                }}
-                className={`${styles.fiat} ${
-                    valuesHidden ? styles.hiddenValue : ""
-                }`}
-            >
-                <Calligraph variant="number" animation="smooth">
-                    {balance}
-                </Calligraph>
-            </p>
-
-            <p ref={nameRef} className={styles.name}>{name}</p>
-
-            <div
-                ref={addressRef}
-                className={styles.addressOuter}
-                aria-hidden="true"
-            >
-                <div className={styles.addressRotator}>
-                    <FitText
-                        innerClassName={styles.addressInner}
-                        minScale={0.5}
-                        maxScale={1.5}
+                    <p
+                        ref={(node) => {
+                            fiatRef.current = node
+                            balanceRef?.(node)
+                        }}
+                        className={`${styles.fiat} ${
+                            valuesHidden ? styles.hiddenValue : ""
+                        }`}
                     >
-                        <span className={styles.addressLine}>{line1}</span>
-                        <span className={styles.addressLine}>{line2}</span>
-                    </FitText>
+                        <Calligraph variant="number" animation="smooth">
+                            {balance}
+                        </Calligraph>
+                    </p>
+
+                    <p ref={nameRef} className={styles.name}>{name}</p>
+
+                    <div
+                        ref={addressRef}
+                        className={styles.addressOuter}
+                        aria-hidden="true"
+                    >
+                        <div className={styles.addressRotator}>
+                            <FitText
+                                innerClassName={styles.addressInner}
+                                minScale={0.5}
+                                maxScale={1.5}
+                            >
+                                <span className={styles.addressLine}>
+                                    {line1}
+                                </span>
+                                <span className={styles.addressLine}>
+                                    {line2}
+                                </span>
+                            </FitText>
+                        </div>
+                    </div>
+
+                    <button
+                        ref={qrRef}
+                        type="button"
+                        className={styles.qrButton}
+                        onClick={onQrClick}
+                        aria-label="Show QR code"
+                    >
+                        <QrIcon className={styles.qrIcon} />
+                    </button>
+
+                    <div className={styles.innerShadow} aria-hidden="true" />
+
+                    {debugSafeZones && (
+                        <svg
+                            className={styles.zonesDebug}
+                            viewBox={`0 0 ${VIEWBOX_W} ${VIEWBOX_H}`}
+                            preserveAspectRatio="none"
+                            aria-hidden="true"
+                        >
+                            {safeZones.map(([x1, y1, x2, y2], i) => (
+                                <rect
+                                    key={i}
+                                    x={x1}
+                                    y={y1}
+                                    width={x2 - x1}
+                                    height={y2 - y1}
+                                    fill="rgb(255 60 60 / 32%)"
+                                    stroke="rgb(255 60 60 / 80%)"
+                                    strokeWidth="0.5"
+                                />
+                            ))}
+                        </svg>
+                    )}
                 </div>
             </div>
-
-            <button
-                ref={qrRef}
-                type="button"
-                className={styles.qrButton}
-                onClick={onQrClick}
-                aria-label="Show QR code"
-            >
-                <QrIcon className={styles.qrIcon} />
-            </button>
-
-            <div className={styles.innerShadow} aria-hidden="true" />
-
-            {debugSafeZones && (
-                <svg
-                    className={styles.zonesDebug}
-                    viewBox={`0 0 ${VIEWBOX_W} ${VIEWBOX_H}`}
-                    preserveAspectRatio="none"
-                    aria-hidden="true"
-                >
-                    {safeZones.map(([x1, y1, x2, y2], i) => (
-                        <rect
-                            key={i}
-                            x={x1}
-                            y={y1}
-                            width={x2 - x1}
-                            height={y2 - y1}
-                            fill="rgb(255 60 60 / 32%)"
-                            stroke="rgb(255 60 60 / 80%)"
-                            strokeWidth="0.5"
-                        />
-                    ))}
-                </svg>
-            )}
         </div>
     )
 }
@@ -201,6 +217,7 @@ WalletCard.propTypes = {
     amountRef: PropTypes.func,
     balanceRef: PropTypes.func,
     valuesHidden: PropTypes.bool,
+    tilt: PropTypes.bool,
     onQrClick: PropTypes.func,
     debugSafeZones: PropTypes.bool,
 }

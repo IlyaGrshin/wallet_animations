@@ -55,6 +55,25 @@
     }
 }
 
+// The page owns the tilt: useDeviceTilt writes --tilt-x/--tilt-y here so the
+// card scene and the parked balance lines read one shared, flight-damped tilt.
+.tiltScope {
+    display: contents;
+}
+
+// Mirrors WalletCard's .body rotation (0.24rad per axis, same order and
+// signs) about the card's centre, so the parked lines ride the card's plane.
+// The pivot and perspective come from the flight's measurements.
+.lineTilt {
+    display: grid;
+    transform-origin: var(--line-tilt-origin, center);
+    will-change: transform;
+    transform:
+        perspective(var(--line-tilt-perspective, 10000px))
+        rotateX(calc(var(--tilt-y) * -0.24rad))
+        rotateY(calc(var(--tilt-x) * 0.24rad));
+}
+
 .lineLayer {
     grid-area: 1 / 1;
     position: relative;
