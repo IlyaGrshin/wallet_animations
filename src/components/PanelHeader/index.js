@@ -1,7 +1,6 @@
 import { isValidElement, useContext, useState } from "react"
 import PropTypes from "prop-types"
 
-import DropdownMenu from "../DropdownMenu"
 import { GlassContainer } from "../GlassEffect"
 import Text from "../Text"
 import { useSkin } from "../../hooks/DeviceProvider"
@@ -25,8 +24,6 @@ const PanelHeader = ({
     right,
     onRight,
     rightVariant,
-    rightMenu,
-    onRightMenu,
     overlay = false,
     titleGlass = false,
     search,
@@ -59,16 +56,8 @@ const PanelHeader = ({
 
     const exitSearch = () => document.activeElement?.blur()
 
-    const renderSide = ({
-        action,
-        onClick,
-        variant,
-        trailing,
-        exits,
-        menu,
-        onMenuChange,
-    }) => {
-        const button = (triggerProps) => (
+    const renderSide = ({ action, onClick, variant, trailing, exits }) => {
+        const button = (
             <HeaderButton
                 onClick={searchFocused && exits ? exitSearch : onClick}
                 variant={variant ?? baseVariant}
@@ -77,7 +66,6 @@ const PanelHeader = ({
                     swap: trailing ? <CloseIcon /> : <BackIcon />,
                     swapped: searchFocused,
                 })}
-                {...triggerProps}
             >
                 {action}
             </HeaderButton>
@@ -94,16 +82,7 @@ const PanelHeader = ({
                     onMouseDown: (event) => event.preventDefault(),
                 })}
             >
-                {(showsAction(action) || (exits && searchFocused)) &&
-                    (menu ? (
-                        <DropdownMenu
-                            items={menu}
-                            onChange={onMenuChange}
-                            trigger={button}
-                        />
-                    ) : (
-                        button()
-                    ))}
+                {(showsAction(action) || (exits && searchFocused)) && button}
             </div>
         )
     }
@@ -136,8 +115,6 @@ const PanelHeader = ({
                 variant: rightVariant,
                 trailing: true,
                 exits: appleSearch,
-                menu: rightMenu,
-                onMenuChange: onRightMenu,
             })}
             <div
                 className={`${styles.middle} ${
@@ -198,8 +175,6 @@ PanelHeader.propTypes = {
     right: actionType,
     onRight: PropTypes.func,
     rightVariant: PropTypes.oneOf(HEADER_BUTTON_VARIANTS),
-    rightMenu: PropTypes.arrayOf(PropTypes.string),
-    onRightMenu: PropTypes.func,
     overlay: PropTypes.bool,
     titleGlass: PropTypes.bool,
     search: PropTypes.node,

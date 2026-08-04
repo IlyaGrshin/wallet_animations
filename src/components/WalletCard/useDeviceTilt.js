@@ -1,10 +1,50 @@
 import { useEffect } from "react"
 
-import {
-    TILT_IDLE_EPSILON,
-    TILT_SMOOTH,
-    startTiltSource,
-} from "./tiltSource"
+import { clamp } from "../../utils/number"
+import WebApp, { isTelegram } from "../../lib/twa"
+
+const SMOOTH = 0.15
+const IDLE_EPSILON = 5e-4
+const MAX_DEG = 45
+const MAX_RAD = (MAX_DEG * Math.PI) / 180
+
+// A -1..1 tilt target. `live` marks the Telegram path, where gamma/beta have to
+// be polled every frame; the web path pushes updates and calls `onChange` so a
+// parked loop can re-arm.
+function startTiltSource(onChange) {
+    const target = { x: 0, y: 0 }
+    const orientation = WebApp?.DeviceOrientation
+    const live =
+        isTelegram() && !!orientation && typeof orientation.start === "function"
+
+    if (live) {
+        return {
+            target,
+            live,
+            poll: () => {
+                target.x = clamp((orientation.gamma || 0) / MAX_RAD, -1, 1)
+                target.y = clamp((orientation.beta || 0) / MAX_RAD, -1, 1)
+            },
+            stop: () => {},
+        }
+    }
+
+    const onPointerMove = (event) => {
+        const width = window.innerWidth || 1
+        const height = window.innerHeight || 1
+        target.x = clamp((event.clientX / width - 0.5) * 2, -1, 1)
+        target.y = clamp((event.clientY / height - 0.5) * 2, -1, 1)
+        onChange?.()
+    }
+
+    window.addEventListener("pointermove", onPointerMove)
+    return {
+        target,
+        live,
+        poll: () => {},
+        stop: () => window.removeEventListener("pointermove", onPointerMove),
+    }
+}
 
 export default function useDeviceTilt(targetRef) {
     useEffect(() => {
@@ -26,8 +66,8 @@ export default function useDeviceTilt(targetRef) {
             source.poll()
             const dx = source.target.x - current.x
             const dy = source.target.y - current.y
-            current.x += dx * TILT_SMOOTH
-            current.y += dy * TILT_SMOOTH
+            current.x += dx * SMOOTH
+            current.y += dy * SMOOTH
             const el = targetRef.current
             if (el) {
                 const xStr = current.x.toFixed(3)
@@ -42,8 +82,8 @@ export default function useDeviceTilt(targetRef) {
             // Web mode: park rAF once eased to target. Re-armed by pointermove.
             if (
                 !source.live &&
-                Math.abs(dx) < TILT_IDLE_EPSILON &&
-                Math.abs(dy) < TILT_IDLE_EPSILON
+                Math.abs(dx) < IDLE_EPSILON &&
+                Math.abs(dy) < IDLE_EPSILON
             ) {
                 raf = 0
                 return
