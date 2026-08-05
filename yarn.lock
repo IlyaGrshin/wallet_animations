@@ -3968,8 +3968,8 @@ __metadata:
   linkType: hard
 
 "markdown-to-jsx@npm:9":
-  version: 9.9.0
-  resolution: "markdown-to-jsx@npm:9.9.0"
+  version: 9.10.2
+  resolution: "markdown-to-jsx@npm:9.10.2"
   peerDependencies:
     react: ">= 16.0.0"
     solid-js: ">=1.0.0"
@@ -3983,7 +3983,7 @@ __metadata:
       optional: true
     vue:
       optional: true
-  checksum: 10c0/3db42e13f09ee3294d837ab003159d9caf901f5e40ec2440d6edfd4a9031a54b4b7bdf2a36064f9099996fbcd9a5710a0c4733d8cbd5610554d2ea7d47f1e4a8
+  checksum: 10c0/97316df83a637845d57236dfb60d4e337dedff6d93a7319887536925ff8e644452d03994655b7d6405de0d4068795dbf8b723658670755f2a446a58a55637d20
   languageName: node
   linkType: hard
 
