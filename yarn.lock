@@ -1552,21 +1552,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^19.2.3":
-  version: 19.2.3
-  resolution: "@types/react-dom@npm:19.2.3"
+"@types/react-dom@npm:^19.2.4":
+  version: 19.2.4
+  resolution: "@types/react-dom@npm:19.2.4"
   peerDependencies:
     "@types/react": ^19.2.0
-  checksum: 10c0/b486ebe0f4e2fb35e2e108df1d8fc0927ca5d6002d5771e8a739de11239fe62d0e207c50886185253c99eb9dedfeeb956ea7429e5ba17f6693c7acb4c02f8cd1
+  checksum: 10c0/b7d854ce17bb51a3a067168268a90f0123d10dc490f63f1ff5409f07ac715febeb8f5b7b473404a9d437106571e0312fc2937a945634d590abfc9aa46a14b01b
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.2.17":
-  version: 19.2.17
-  resolution: "@types/react@npm:19.2.17"
+"@types/react@npm:^19.2.18":
+  version: 19.2.18
+  resolution: "@types/react@npm:19.2.18"
   dependencies:
     csstype: "npm:^3.2.2"
-  checksum: 10c0/bc2c4af96b3e480604424de70d5ebda90c5f4b485df471858c0bc2d7d70364b606ec3c4d8579f94f01aa0c6c0591f56bcf14cba5689f5eea4b74250ccdc3a232
+  checksum: 10c0/d04216172b4b4362b310017c210dfbe019fb4f4e7dffd0313e70b3acb3051d5c3e76e7e84e3cf4c6a3c824993ffadfe3949e589a6398a09d4200e7670e2962de
   languageName: node
   linkType: hard
 
@@ -1825,12 +1825,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.11.6":
-  version: 2.11.6
-  resolution: "baseline-browser-mapping@npm:2.11.6"
+"baseline-browser-mapping@npm:^2.11.10":
+  version: 2.11.12
+  resolution: "baseline-browser-mapping@npm:2.11.12"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 10c0/c289e5686e6b8c036e4dd4864a24224d30db2af2ae576a017fa929c83a949555d8bd5a25a27534ac6ef7aa2d5646427d1b187b96f93fefa9af81f673d7d67da1
+  checksum: 10c0/1f4b38379784aba3681b06c304e361c9f03ed6c51205a50c9dd3b5ea87b0e203e6f580384e778374999b000e1b0a0d7351552983aab024d9c4b81b91879c8287
   languageName: node
   linkType: hard
 
@@ -5819,13 +5819,13 @@ __metadata:
     "@relative-ci/agent": "npm:^4.3.1"
     "@resvg/resvg-js": "npm:^2.6.2"
     "@tanstack/react-virtual": "npm:^3.14.9"
-    "@types/react": "npm:^19.2.17"
-    "@types/react-dom": "npm:^19.2.3"
+    "@types/react": "npm:^19.2.18"
+    "@types/react-dom": "npm:^19.2.4"
     "@vitejs/plugin-react": "npm:5"
     agentation: "npm:^3.0.2"
     babel-plugin-react-compiler: "npm:^1.0.0"
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
-    baseline-browser-mapping: "npm:^2.11.6"
+    baseline-browser-mapping: "npm:^2.11.10"
     calligraph: "npm:^1.4.1"
     colorthief: "npm:^3.4.0"
     eslint: "npm:^9"
