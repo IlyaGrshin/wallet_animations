@@ -14,7 +14,6 @@ import * as styles from "./WalletImport.module.scss"
 const WalletImport = () => {
     const {
         words,
-        validCount,
         isComplete,
         registerRef,
         setWord,
@@ -40,20 +39,18 @@ const WalletImport = () => {
             <div className={styles.page}>
                 <header className={styles.intro}>
                     <Text
-                        apple={{ variant: "title1", weight: "bold" }}
+                        apple={{ variant: "title1", weight: "semibold" }}
                         material={{ variant: "title1", weight: "medium" }}
                     >
                         Import Wallet
                     </Text>
-                    <div className={styles.description}>
-                        <Text
-                            apple={{ variant: "body", weight: "regular" }}
-                            material={{ variant: "subheadline1" }}
-                        >
-                            Enter the {PHRASE_LENGTH}-word recovery phrase from
-                            another wallet you own.
-                        </Text>
-                    </div>
+                    <Text
+                        apple={{ variant: "callout", weight: "regular" }}
+                        material={{ variant: "subheadline1" }}
+                    >
+                        Enter the {PHRASE_LENGTH}-word recovery phrase from
+                        another wallet you own.
+                    </Text>
                 </header>
 
                 <div className={styles.list}>
@@ -67,19 +64,12 @@ const WalletImport = () => {
                             onCommit={(value) => commitWord(index, value)}
                             onNavigate={(delta) => navigate(index, delta)}
                             onPasteWords={(pasted) => fillFrom(index, pasted)}
+                            canPaste={index === 0}
                         />
                     ))}
                 </div>
 
                 <div className={styles.footer}>
-                    <div className={styles.progress}>
-                        <Text
-                            apple={{ variant: "footnote" }}
-                            material={{ variant: "caption2" }}
-                        >
-                            {validCount} of {PHRASE_LENGTH} words
-                        </Text>
-                    </div>
                     <RegularButton
                         variant={isComplete ? "filled" : "disabled"}
                         label="Continue"

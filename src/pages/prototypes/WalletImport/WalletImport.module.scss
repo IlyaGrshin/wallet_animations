@@ -1,8 +1,8 @@
 .page {
     // Field + suggestion palette. The strip stays dark in both themes, like
     // the system autocomplete bar it echoes.
-    --field-surface: var(--quaternary-fill-background);
-    --field-surface-focused: var(--tertiary-fill-background);
+    --field-surface: rgb(from var(--tg-theme-secondary-bg-color) r g b / 72%);
+    --field-surface-focused: var(--tg-theme-secondary-bg-color);
     --suggestion-surface: #1c1c1e;
     --suggestion-active: rgb(255 255 255 / 16%);
     --suggestion-text: #fff;
@@ -10,8 +10,8 @@
 
     display: flex;
     flex-direction: column;
-    padding: 0 var(--side-padding) calc(24px + env(safe-area-inset-bottom, 0px));
     padding-top: calc(var(--content-inset-top) + 56px);
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 :global(body.material) .page {
@@ -50,8 +50,8 @@
 .intro {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 0 4px 24px;
+    gap: 6px;
+    padding: 0 32px 24px;
     text-align: center;
 
     :global(body.material) & {
@@ -59,16 +59,13 @@
     }
 }
 
-.description {
-    color: var(--tg-theme-subtitle-text-color);
-}
-
 // Row gap leaves room for the suggestion strip of the row above without the
 // list reflowing when it opens.
 .list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
+    padding-inline: 48px;
 }
 
 .footer {
@@ -76,9 +73,5 @@
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    padding-top: 28px;
-}
-
-.progress {
-    color: var(--tg-theme-subtitle-text-color);
+    padding: 28px 48px 0;
 }

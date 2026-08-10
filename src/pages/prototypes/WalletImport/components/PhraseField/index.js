@@ -6,6 +6,7 @@ import Text from "../../../../../components/Text"
 import TextField from "../../../../../components/TextField"
 import WebApp from "../../../../../lib/twa"
 import { PHRASE_LENGTH, isWord, sanitize, splitPhrase } from "../../bip39"
+import PasteButton from "../PasteButton"
 import SuggestionTooltip, { suggestionId } from "../SuggestionTooltip"
 import { useWordSuggestions } from "./useWordSuggestions"
 
@@ -20,6 +21,7 @@ import * as styles from "./PhraseField.module.scss"
  * @param {(word: string) => void} props.onCommit  Accept and move on.
  * @param {(delta: number) => void} props.onNavigate
  * @param {(words: string[]) => void} props.onPasteWords
+ * @param {boolean} [props.canPaste] Offer the clipboard shortcut on this slot.
  */
 const PhraseField = ({
     index,
@@ -29,6 +31,7 @@ const PhraseField = ({
     onCommit,
     onNavigate,
     onPasteWords,
+    canPaste = false,
 }) => {
     const [focused, setFocused] = useState(false)
     const [dismissed, setDismissed] = useState(false)
@@ -46,6 +49,7 @@ const PhraseField = ({
     // Anything left behind that the wordlist does not know reads as an error,
     // including slots filled by a paste that were never focused.
     const invalid = !focused && value.length > 0 && !complete
+    const showPaste = canPaste && value.length === 0
 
     const fieldId = `phrase-word-${index + 1}`
 
@@ -141,11 +145,14 @@ const PhraseField = ({
 
     return (
         <div className={styles.row}>
-            <label
+            <Text
+                as="label"
+                apple={{ variant: "body", weight: "regular" }}
+                material={{ variant: "subheadline1" }}
                 htmlFor={fieldId}
                 className={`${styles.field} ${focused ? styles.focused : ""} ${
                     invalid ? styles.invalid : ""
-                }`}
+                } ${showPaste ? styles.withPaste : ""}`}
             >
                 {/* The digit is decoration over the field's own padding; the
                     slot's real name lives in the hidden span. */}
@@ -181,7 +188,10 @@ const PhraseField = ({
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                 />
-            </label>
+                <AnimatePresence>
+                    {showPaste && <PasteButton onPaste={onPasteWords} />}
+                </AnimatePresence>
+            </Text>
             <AnimatePresence>
                 {open && (
                     <SuggestionTooltip
@@ -206,6 +216,7 @@ PhraseField.propTypes = {
     onCommit: PropTypes.func.isRequired,
     onNavigate: PropTypes.func.isRequired,
     onPasteWords: PropTypes.func.isRequired,
+    canPaste: PropTypes.bool,
 }
 
 export default PhraseField

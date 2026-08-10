@@ -5,24 +5,25 @@
 // The slot is a TextField wearing a number: the digit is painted over the
 // field's leading padding, which the input widens to clear.
 .field {
-    --field-radius: 16px;
+    --field-radius: 100px;
 
     position: relative;
     display: block;
     cursor: text;
-
-    :global(body.material) & {
-        --field-radius: 14px;
-    }
 
     // The [type] qualifier is what outweighs AppleTextField's own `.text .input`
     // padding and fill without reaching for its hashed class names.
     input[type="text"] {
         // No outlines anywhere: focus and error read through the surface tint,
         // the caret and the word itself.
+        padding-block: 15px;
         padding-inline-start: 52px;
         background: var(--field-surface);
         transition: background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    &.withPaste input[type="text"] {
+        padding-inline-end: 86px;
     }
 
     &.focused input[type="text"] {
@@ -39,8 +40,8 @@
     position: absolute;
     top: 50%;
     inset-inline-start: 16px;
-    min-width: 28px;
-    color: var(--tg-theme-subtitle-text-color);
+    min-width: 26px;
+    color: rgb(from var(--tg-theme-subtitle-text-color) r g b / 56%);
     text-align: right;
     font-variant-numeric: tabular-nums;
     transform: translateY(-50%);
