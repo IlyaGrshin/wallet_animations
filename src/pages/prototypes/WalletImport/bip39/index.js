@@ -40,9 +40,9 @@ export const suggest = (prefix, limit = MAX_SUGGESTIONS) => {
 
 export const isWord = (value) => WORDSET.has(value)
 
-// Keystrokes and pastes are both funnelled through this: BIP-39 words are
-// lowercase a-z, so anything else is separator noise.
-export const sanitize = (value) => value.toLowerCase().replace(/[^a-z]/g, "")
+// BIP-39 words are lowercase, and whitespace is what ends one. Everything else
+// the user types stays in the field and reads as a word the list does not know.
+export const sanitize = (value) => value.toLowerCase().replace(/\s/g, "")
 
 /** Splits pasted text into candidate words, e.g. a full phrase from a note. */
 export const splitPhrase = (text) =>

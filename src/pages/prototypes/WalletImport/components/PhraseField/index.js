@@ -77,9 +77,9 @@ const PhraseField = ({
     // TextField hands over the raw string, not the event.
     const handleChange = (raw) => {
         const next = sanitize(raw)
-        // A separator means the user finished the word (space bar, autocorrect):
+        // Whitespace means the user finished the word (space bar, autocorrect):
         // accept it only if the list knows it, otherwise refuse out loud.
-        if (raw !== next && next.length > 0) {
+        if (/\s/.test(raw) && next.length > 0) {
             if (isWord(next)) {
                 commit(next)
             } else {
