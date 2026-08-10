@@ -19,31 +19,26 @@ export function useWordSuggestions(value, focused, dismissed) {
 
     const hasPrefix = value.length >= MIN_PREFIX_LENGTH
     const complete = isWord(value)
-    // A word typed out in full is already in the field, so it is dropped from
-    // its own suggestions; one extra candidate is pulled so the strip still
-    // fills up after that.
-    const suggestions =
-        focused && hasPrefix
-            ? suggest(value, MAX_SUGGESTIONS + 1)
-                  .filter((word) => word !== value)
-                  .slice(0, MAX_SUGGESTIONS)
-            : []
+    const matches = focused && hasPrefix ? suggest(value, MAX_SUGGESTIONS) : []
+    // A word typed out in full keeps its place in the strip, but only while the
+    // list has something longer to offer: alone it would just repeat the field.
+    const suggestions = matches.some((word) => word !== value) ? matches : []
     const noMatches = suggestions.length === 0
 
     // Explicit means the user walked the strip with the arrow keys: only then
-    // does a suggestion win over a word already typed out in full.
+    // does a longer word win over the one already typed out in full, which is
+    // what the strip opens on.
     const explicit = selection.prefix === value
     const activeIndex = explicit
         ? Math.min(selection.index, Math.max(suggestions.length - 1, 0))
-        : complete
-          ? -1
-          : 0
+        : 0
 
     const moveSelection = (delta) => {
         const count = suggestions.length
-        // Nothing highlighted yet: step in from whichever end was asked for.
-        const from = activeIndex < 0 ? (delta > 0 ? -1 : 0) : activeIndex
-        setSelection({ prefix: value, index: (from + delta + count) % count })
+        setSelection({
+            prefix: value,
+            index: (activeIndex + delta + count) % count,
+        })
     }
 
     return {
