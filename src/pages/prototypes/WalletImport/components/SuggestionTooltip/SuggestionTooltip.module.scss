@@ -1,0 +1,74 @@
+.anchor {
+    position: absolute;
+    top: calc(100% + 7px);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    transform-origin: top center;
+    pointer-events: none;
+}
+
+// Solid, never translucent: the strip scales on enter, and Safari drops a
+// backdrop-filter mid-transform.
+.bubble {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    max-width: 100%;
+    padding: 3px;
+    border-radius: 18px;
+    background: var(--suggestion-surface);
+    box-shadow: 0 6px 20px rgb(0 0 0 / 18%);
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+.tail {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    width: 18px;
+    height: 8px;
+    background: var(--suggestion-surface);
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    transform: translateX(-50%);
+}
+
+.chip {
+    appearance: none;
+    display: flex;
+    align-items: center;
+    padding: 9px 14px;
+    border: 0;
+    border-radius: 15px;
+    background: transparent;
+    color: var(--suggestion-text);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &.active {
+        background: var(--suggestion-active);
+    }
+}
+
+// The letters already typed carry the emphasis; the completion stays quiet so
+// the eye lands on what it just entered.
+.typed {
+    color: var(--suggestion-text);
+}
+
+.rest {
+    color: var(--suggestion-rest);
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    padding: 9px 14px;
+    color: var(--suggestion-rest);
+    white-space: nowrap;
+}

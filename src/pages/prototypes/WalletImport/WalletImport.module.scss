@@ -1,0 +1,108 @@
+.page {
+    // Field + suggestion palette. The strip stays dark in both themes, like
+    // the system autocomplete bar it echoes.
+    --field-surface: var(--quaternary-fill-background);
+    --field-surface-focused: var(--tertiary-fill-background);
+    --suggestion-surface: #1c1c1e;
+    --suggestion-active: rgb(255 255 255 / 16%);
+    --suggestion-text: #fff;
+    --suggestion-rest: rgb(255 255 255 / 55%);
+
+    display: flex;
+    flex-direction: column;
+    padding: 0 var(--side-padding) calc(24px + env(safe-area-inset-bottom, 0px));
+    padding-top: calc(var(--content-inset-top) + 56px);
+}
+
+:global(body.material) .page {
+    --suggestion-surface: #303338;
+}
+
+// On a dark page the strip has to lift off the background instead of sinking
+// into it. Cover the system preference and Telegram's forced theme alike.
+@media (prefers-color-scheme: dark) {
+    .page {
+        --suggestion-surface: #3a3a3c;
+    }
+
+    :global(body.material) .page {
+        --suggestion-surface: #43474d;
+    }
+}
+
+// The theme attribute and the skin class share the same <body> element.
+:global(body[data-color-scheme="dark"]) .page {
+    --suggestion-surface: #3a3a3c;
+}
+
+:global(body.material[data-color-scheme="dark"]) .page {
+    --suggestion-surface: #43474d;
+}
+
+:global(body[data-color-scheme="light"]) .page {
+    --suggestion-surface: #1c1c1e;
+}
+
+:global(body.material[data-color-scheme="light"]) .page {
+    --suggestion-surface: #303338;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 4px 24px;
+    text-align: center;
+
+    :global(body.material) & {
+        text-align: start;
+    }
+}
+
+.description {
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+// Row gap leaves room for the suggestion strip of the row above without the
+// list reflowing when it opens.
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hotkeys {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--tg-theme-subtitle-text-color);
+
+    li > * {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+}
+
+.key {
+    padding: 2px 6px;
+    border-radius: 6px;
+    background: var(--tertiary-fill-background);
+    color: var(--tg-theme-text-color);
+    white-space: nowrap;
+}
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding-top: 28px;
+}
+
+.progress {
+    color: var(--tg-theme-subtitle-text-color);
+}
