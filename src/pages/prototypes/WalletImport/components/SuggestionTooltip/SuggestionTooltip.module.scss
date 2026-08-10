@@ -1,6 +1,6 @@
+// `top` is set inline from the Tooltip's gap and tail height.
 .anchor {
     position: absolute;
-    top: calc(100% + 7px);
     left: 0;
     right: 0;
     z-index: 20;
@@ -26,14 +26,13 @@
     overflow: hidden;
 }
 
+// Size and clip-path come from the Tooltip's own tail geometry, applied inline.
 .tail {
     position: absolute;
-    top: -6px;
+    bottom: 100%;
     left: 50%;
-    width: 18px;
-    height: 8px;
+    margin-bottom: -1px;
     background: var(--suggestion-surface);
-    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
     transform: translateX(-50%);
 }
 

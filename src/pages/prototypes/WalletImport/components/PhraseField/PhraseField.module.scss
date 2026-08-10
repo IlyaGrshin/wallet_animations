@@ -2,57 +2,62 @@
     position: relative;
 }
 
+// The slot is a TextField wearing a number: the digit is painted over the
+// field's leading padding, which the input widens to clear.
 .field {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 16px;
-    background: var(--field-surface);
-    color: var(--tg-theme-text-color);
+    --field-radius: 16px;
+
+    position: relative;
+    display: block;
     cursor: text;
 
-    // No outlines anywhere: focus and error read through the surface tint, the
-    // caret and the word itself.
-    transition: background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    :global(body.material) & {
+        --field-radius: 14px;
+    }
 
-    &.focused {
+    // The [type] qualifier is what outweighs AppleTextField's own `.text .input`
+    // padding and fill without reaching for its hashed class names.
+    input[type="text"] {
+        // No outlines anywhere: focus and error read through the surface tint,
+        // the caret and the word itself.
+        padding-inline-start: 52px;
+        background: var(--field-surface);
+        transition: background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    &.focused input[type="text"] {
         background: var(--field-surface-focused);
     }
 
-    :global(body.material) & {
-        border-radius: 14px;
-        padding: 13px 16px;
+    &.invalid input[type="text"] {
+        color: var(--tg-theme-destructive-text-color);
     }
 }
 
 // Fixed column so words line up whether the slot is 1 or 24.
 .index {
-    flex: 0 0 auto;
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 16px;
     min-width: 28px;
     color: var(--tg-theme-subtitle-text-color);
     text-align: right;
     font-variant-numeric: tabular-nums;
+    transform: translateY(-50%);
+    pointer-events: none;
     user-select: none;
+    z-index: 1;
 }
 
-.input {
-    flex: 1 1 auto;
-    min-width: 0;
-    width: 100%;
+// Carries the slot's accessible name so the visible digit can stay decorative.
+.name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
     padding: 0;
     border: 0;
-    outline: none;
-    background: transparent;
-    font: inherit;
-    letter-spacing: inherit;
-    line-height: inherit;
-    color: inherit;
-    caret-color: var(--tg-theme-accent-text-color);
-    user-select: text;
-
-    .invalid & {
-        color: var(--tg-theme-destructive-text-color);
-    }
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
 }

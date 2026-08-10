@@ -4,6 +4,24 @@ export const TAIL_HEIGHT_REGULAR = 9
 export const TAIL_HEIGHT_COMPACT = 7
 const BORDER_RADIUS = 12
 
+// The tail's two cubics, at a fixed origin: the same curve buildClipPath cuts
+// into a shell, exposed for callers that draw the tail as its own element
+// (a shell whose size animates cannot carry the tail in its clip-path without
+// deforming it).
+export const buildTailClipPath = ({
+    breadth: b,
+    protrusion: p,
+    pointing = "up",
+}) => {
+    const base = pointing === "up" ? p : 0
+    const apex = pointing === "up" ? 0 : p
+    return (
+        `path("M 0 ${base}` +
+        ` C ${b / 4} ${base} ${(b * 3) / 8} ${apex} ${b / 2} ${apex}` +
+        ` C ${(b * 5) / 8} ${apex} ${(b * 3) / 4} ${base} ${b} ${base} Z")`
+    )
+}
+
 const computeCorners = (shape, placement, w, h, ox, oy, b) => {
     const R = BORDER_RADIUS
     const r = [R, R, R, R] // [TL, TR, BL, BR]

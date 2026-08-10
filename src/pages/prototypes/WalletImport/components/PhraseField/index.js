@@ -8,6 +8,7 @@ import {
 } from "motion/react"
 
 import Text from "../../../../../components/Text"
+import TextField from "../../../../../components/TextField"
 import WebApp from "../../../../../lib/twa"
 import { PHRASE_LENGTH, isWord, sanitize, splitPhrase } from "../../bip39"
 import SuggestionTooltip, { suggestionId } from "../SuggestionTooltip"
@@ -73,8 +74,8 @@ const PhraseField = ({
         onCommit(word)
     }
 
-    const handleChange = (event) => {
-        const raw = event.target.value
+    // TextField hands over the raw string, not the event.
+    const handleChange = (raw) => {
         const next = sanitize(raw)
         // A separator means the user finished the word (space bar, autocorrect):
         // accept it only if the list knows it, otherwise refuse out loud.
@@ -152,30 +153,35 @@ const PhraseField = ({
 
     return (
         <div className={styles.row}>
-            <Text
-                as={m.label}
+            <m.label
                 animate={controls}
                 htmlFor={fieldId}
-                apple={{ variant: "body", weight: "regular" }}
-                material={{ variant: "subheadline1" }}
                 className={`${styles.field} ${focused ? styles.focused : ""} ${
                     invalid ? styles.invalid : ""
                 }`}
             >
-                <span className={styles.index}>{index + 1}.</span>
-                <input
+                {/* The digit is decoration over the field's own padding; the
+                    slot's real name lives in the hidden span. */}
+                <span className={styles.index} aria-hidden="true">
+                    <Text
+                        apple={{ variant: "body", weight: "regular" }}
+                        material={{ variant: "subheadline1" }}
+                    >
+                        {index + 1}.
+                    </Text>
+                </span>
+                <span className={styles.name}>Word {index + 1}</span>
+                <TextField
                     id={fieldId}
                     ref={(element) => registerRef(index, element)}
-                    className={styles.input}
                     value={value}
-                    type="text"
+                    onChange={handleChange}
                     inputMode="text"
                     enterKeyHint={index === PHRASE_LENGTH - 1 ? "done" : "next"}
                     autoComplete="off"
                     autoCorrect="off"
                     autoCapitalize="none"
                     spellCheck={false}
-                    aria-label={`Word ${index + 1}`}
                     aria-autocomplete="list"
                     aria-controls={`${fieldId}-suggestions`}
                     aria-activedescendant={
@@ -183,13 +189,12 @@ const PhraseField = ({
                             ? suggestionId(fieldId, activeIndex)
                             : undefined
                     }
-                    onChange={handleChange}
                     onPaste={handlePaste}
                     onKeyDown={handleKeyDown}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                 />
-            </Text>
+            </m.label>
             <AnimatePresence>
                 {open && (
                     <SuggestionTooltip
