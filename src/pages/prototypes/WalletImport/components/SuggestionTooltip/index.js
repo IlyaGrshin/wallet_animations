@@ -18,11 +18,8 @@ import { EASING, SPRING } from "../../../../../utils/animations"
 
 import * as styles from "./SuggestionTooltip.module.scss"
 
-// Tail tip sits the Tooltip's own gap below the field it belongs to.
 const ANCHOR_STYLE = { top: `calc(100% + ${GAP + TAIL_HEIGHT_REGULAR}px)` }
 
-// Same tail the app's Tooltip draws, cut into its own element: the bubble's
-// box animates, and a clip-path riding along with it would deform the curve.
 const TAIL_STYLE = {
     width: TAIL_WIDTH_VERTICAL,
     height: TAIL_HEIGHT_REGULAR,
@@ -69,29 +66,26 @@ const REDUCED_VARIANTS = {
 
 const RESIZE_SPRING = { type: "spring", stiffness: 700, damping: 55 }
 
-const CHIP_ENTER = { opacity: 0, scale: 0.96 }
-const CHIP_VISIBLE = { opacity: 1, scale: 1 }
-const CHIP_TRANSITION = {
+const ITEM_HIDDEN = { opacity: 0, scale: 0.96 }
+const ITEM_VISIBLE = { opacity: 1, scale: 1 }
+const ITEM_TRANSITION = {
     ...RESIZE_SPRING,
     opacity: { duration: 0.12, ease: EASING.QUINT_OUT },
 }
 
-const ERROR_ENTER = { opacity: 0, scale: 0.94 }
-const ERROR_VISIBLE = { opacity: 1, scale: 1 }
-
-// Every further wrong letter nudges the copy, never the bubble around it.
 const ERROR_PULSE = { scale: [1, 1.05, 1] }
-const ERROR_PULSE_TRANSITION = { duration: 0.4, ease: "easeInOut" }
+const ERROR_PULSE_TRANSITION = { duration: 0.4, ease: EASING.EASE_IN_OUT }
 
-const suggestionId = (fieldId, index) => `${fieldId}-suggestion-${index}`
+export const suggestionsId = (fieldId) => `${fieldId}-suggestions`
+export const suggestionId = (fieldId, index) =>
+    `${fieldId}-suggestion-${index}`
 
 /**
  * Word strip anchored under a phrase field. Resizes itself as the match count
- * changes and swaps to an inline error when the prefix matches no BIP-39 word.
+ * changes and swaps to an inline error when nothing is left to suggest.
  * @param {string[]} props.suggestions Words to offer, already limited.
  * @param {string} props.prefix        Letters typed so far — rendered highlighted.
  * @param {number} props.activeIndex   Keyboard-selected suggestion.
- * @param {boolean} [props.invalid]    Show the error copy instead of words.
  * @param {(word: string) => void} props.onPick
  * @example
  * <SuggestionTooltip suggestions={["word"]} prefix="wor" activeIndex={0} onPick={fill} />
@@ -100,7 +94,6 @@ const SuggestionTooltip = ({
     suggestions,
     prefix,
     activeIndex,
-    invalid = false,
     fieldId,
     onPick,
 }) => {
@@ -108,10 +101,9 @@ const SuggestionTooltip = ({
     const errorControls = useAnimationControls()
     const pulsedPrefix = useRef(null)
 
-    // A resize is a layout change, so motion animates it on the compositor
-    // (projection + scale correction) instead of tweening width/height.
+    const invalid = suggestions.length === 0
     const layoutTransition = reduced ? INSTANT : RESIZE_SPRING
-    const chipTransition = reduced ? INSTANT : CHIP_TRANSITION
+    const itemTransition = reduced ? INSTANT : ITEM_TRANSITION
 
     // With nothing to choose between, the highlight has no work to do — the lone
     // word is what Enter takes either way.
@@ -149,7 +141,7 @@ const SuggestionTooltip = ({
                 style={BUBBLE_STYLE}
                 className={styles.bubble}
                 role="listbox"
-                id={`${fieldId}-suggestions`}
+                id={suggestionsId(fieldId)}
                 aria-label="Word suggestions"
             >
                 <AnimatePresence mode="popLayout" initial={false}>
@@ -158,9 +150,9 @@ const SuggestionTooltip = ({
                             key="invalid"
                             layout="position"
                             transition={layoutTransition}
-                            initial={ERROR_ENTER}
-                            animate={ERROR_VISIBLE}
-                            exit={ERROR_ENTER}
+                            initial={ITEM_HIDDEN}
+                            animate={ITEM_VISIBLE}
+                            exit={ITEM_HIDDEN}
                             className={styles.error}
                             role="alert"
                         >
@@ -190,14 +182,16 @@ const SuggestionTooltip = ({
                                 key={word}
                                 type="button"
                                 layout="position"
-                                transition={chipTransition}
-                                initial={CHIP_ENTER}
-                                animate={CHIP_VISIBLE}
-                                exit={CHIP_ENTER}
+                                transition={itemTransition}
+                                initial={ITEM_HIDDEN}
+                                animate={ITEM_VISIBLE}
+                                exit={ITEM_HIDDEN}
                                 whileTap={reduced ? undefined : { scale: 0.94 }}
-                                className={`${styles.chip} ${
-                                    index === highlighted ? styles.active : ""
-                                }`}
+                                className={
+                                    index === highlighted
+                                        ? `${styles.chip} ${styles.active}`
+                                        : styles.chip
+                                }
                                 id={suggestionId(fieldId, index)}
                                 role="option"
                                 aria-selected={index === activeIndex}
@@ -216,7 +210,7 @@ const SuggestionTooltip = ({
                                         weight: "medium",
                                     }}
                                 >
-                                    <span className={styles.typed}>
+                                    <span>
                                         {word.slice(0, prefix.length)}
                                     </span>
                                     <span className={styles.rest}>
@@ -236,10 +230,8 @@ SuggestionTooltip.propTypes = {
     suggestions: PropTypes.arrayOf(PropTypes.string).isRequired,
     prefix: PropTypes.string.isRequired,
     activeIndex: PropTypes.number.isRequired,
-    invalid: PropTypes.bool,
     fieldId: PropTypes.string.isRequired,
     onPick: PropTypes.func.isRequired,
 }
 
-export { suggestionId }
 export default SuggestionTooltip

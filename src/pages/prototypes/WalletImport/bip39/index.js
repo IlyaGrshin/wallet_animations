@@ -2,7 +2,6 @@ import WORDLIST from "./wordlist"
 
 export const PHRASE_LENGTH = 24
 
-// Suggestions appear only once the guess is narrow enough to be useful.
 export const MIN_PREFIX_LENGTH = 2
 
 export const MAX_SUGGESTIONS = 3
@@ -24,8 +23,7 @@ const lowerBound = (prefix) => {
 
 /**
  * Up to `limit` wordlist entries starting with `prefix`, in list order.
- * Empty for a prefix no BIP-39 word can complete — that is what drives the
- * tooltip's error state.
+ * Empty for a prefix no BIP-39 word can complete.
  */
 export const suggest = (prefix, limit = MAX_SUGGESTIONS) => {
     if (!prefix) return []
@@ -40,8 +38,8 @@ export const suggest = (prefix, limit = MAX_SUGGESTIONS) => {
 
 export const isWord = (value) => WORDSET.has(value)
 
-// BIP-39 words are lowercase, and whitespace is what ends one. Everything else
-// the user types stays in the field and reads as a word the list does not know.
+// Only whitespace goes: everything else the user types stays in the field and
+// reads as a word the list does not know.
 export const sanitize = (value) => value.toLowerCase().replace(/\s/g, "")
 
 /** Splits pasted text into candidate words, e.g. a full phrase from a note. */
@@ -50,5 +48,3 @@ export const splitPhrase = (text) =>
         .split(/[^a-zA-Z]+/)
         .map((part) => part.toLowerCase())
         .filter(Boolean)
-
-export default WORDLIST

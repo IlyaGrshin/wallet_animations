@@ -1,11 +1,6 @@
 import { useState } from "react"
 
-import {
-    MAX_SUGGESTIONS,
-    MIN_PREFIX_LENGTH,
-    isWord,
-    suggest,
-} from "../../bip39"
+import { MIN_PREFIX_LENGTH, isWord, suggest } from "../../bip39"
 
 const NO_SELECTION = { prefix: "", index: 0 }
 
@@ -19,15 +14,11 @@ export function useWordSuggestions(value, focused, dismissed) {
 
     const hasPrefix = value.length >= MIN_PREFIX_LENGTH
     const complete = isWord(value)
-    const matches = focused && hasPrefix ? suggest(value, MAX_SUGGESTIONS) : []
+    const matches = focused && hasPrefix ? suggest(value) : []
     // A word typed out in full keeps its place in the strip, but only while the
     // list has something longer to offer: alone it would just repeat the field.
     const suggestions = matches.some((word) => word !== value) ? matches : []
-    const noMatches = suggestions.length === 0
 
-    // Explicit means the user walked the strip with the arrow keys: only then
-    // does a longer word win over the one already typed out in full, which is
-    // what the strip opens on.
     const explicit = selection.prefix === value
     const activeIndex = explicit
         ? Math.min(selection.index, Math.max(suggestions.length - 1, 0))
@@ -42,12 +33,14 @@ export function useWordSuggestions(value, focused, dismissed) {
     }
 
     return {
-        complete,
         suggestions,
-        noMatches,
         activeIndex,
         // A complete word with nothing left to offer needs no strip at all.
-        open: focused && hasPrefix && !dismissed && !(complete && noMatches),
+        open:
+            focused &&
+            hasPrefix &&
+            !dismissed &&
+            !(complete && suggestions.length === 0),
         moveSelection,
         resetSelection: () => setSelection(NO_SELECTION),
     }

@@ -1,5 +1,23 @@
-// `top` is set inline from the Tooltip's gap and tail height.
+// The strip stays dark on a light page, like the system autocomplete bar it
+// echoes, and lightens on a dark one so it still lifts off the background.
 .anchor {
+    --suggestion-surface: #1c1c1e;
+    --suggestion-active: rgb(255 255 255 / 16%);
+    --suggestion-text: #fff;
+    --suggestion-rest: rgb(255 255 255 / 55%);
+
+    :global(body.material) & {
+        --suggestion-surface: #303338;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        --suggestion-surface: #3a3a3c;
+
+        :global(body.material) & {
+            --suggestion-surface: #43474d;
+        }
+    }
+
     position: absolute;
     left: 0;
     right: 0;
@@ -24,7 +42,6 @@
     overflow: hidden;
 }
 
-// Size and clip-path come from the Tooltip's own tail geometry, applied inline.
 .tail {
     position: absolute;
     bottom: 100%;
@@ -34,16 +51,20 @@
     transform: translateX(-50%);
 }
 
-.chip {
-    appearance: none;
+.chip,
+.error {
     display: flex;
     align-items: center;
     padding: 9px 14px;
+    white-space: nowrap;
+}
+
+.chip {
+    appearance: none;
     border: 0;
     border-radius: 15px;
     background: transparent;
     color: var(--suggestion-text);
-    white-space: nowrap;
     cursor: pointer;
 
     &.active {
@@ -51,25 +72,15 @@
     }
 }
 
-// The letters already typed carry the emphasis; the completion stays quiet so
-// the eye lands on what it just entered.
-.typed {
-    color: var(--suggestion-text);
-}
-
+// The completion stays quiet so the eye lands on what was just typed.
 .rest {
     color: var(--suggestion-rest);
 }
 
 .error {
-    display: flex;
-    align-items: center;
-    padding: 9px 14px;
     color: var(--suggestion-rest);
-    white-space: nowrap;
 }
 
 .errorLabel {
     display: inline-flex;
-    transform-origin: center;
 }

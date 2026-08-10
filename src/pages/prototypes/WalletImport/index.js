@@ -22,7 +22,6 @@ const WalletImport = () => {
         fillFrom,
     } = usePhraseImport()
 
-    // Prototype end of the road: the phrase is complete and valid.
     const handleContinue = () => {
         WebApp.HapticFeedback?.notificationOccurred("success")
     }
@@ -60,10 +59,10 @@ const WalletImport = () => {
                             index={index}
                             value={word}
                             registerRef={registerRef}
-                            onChange={(value) => setWord(index, value)}
-                            onCommit={(value) => commitWord(index, value)}
-                            onNavigate={(delta) => navigate(index, delta)}
-                            onPasteWords={(pasted) => fillFrom(index, pasted)}
+                            onChange={setWord}
+                            onCommit={commitWord}
+                            onNavigate={navigate}
+                            onPasteWords={fillFrom}
                             canPaste={index === 0}
                         />
                     ))}

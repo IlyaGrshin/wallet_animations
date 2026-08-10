@@ -1,50 +1,8 @@
 .page {
-    // Field + suggestion palette. The strip stays dark in both themes, like
-    // the system autocomplete bar it echoes.
-    --field-surface: rgb(from var(--tg-theme-secondary-bg-color) r g b / 72%);
-    --field-surface-focused: var(--tg-theme-secondary-bg-color);
-    --suggestion-surface: #1c1c1e;
-    --suggestion-active: rgb(255 255 255 / 16%);
-    --suggestion-text: #fff;
-    --suggestion-rest: rgb(255 255 255 / 55%);
-
     display: flex;
     flex-direction: column;
     padding-top: calc(var(--content-inset-top) + 56px);
     padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-}
-
-:global(body.material) .page {
-    --suggestion-surface: #303338;
-}
-
-// On a dark page the strip has to lift off the background instead of sinking
-// into it. Cover the system preference and Telegram's forced theme alike.
-@media (prefers-color-scheme: dark) {
-    .page {
-        --suggestion-surface: #3a3a3c;
-    }
-
-    :global(body.material) .page {
-        --suggestion-surface: #43474d;
-    }
-}
-
-// The theme attribute and the skin class share the same <body> element.
-:global(body[data-color-scheme="dark"]) .page {
-    --suggestion-surface: #3a3a3c;
-}
-
-:global(body.material[data-color-scheme="dark"]) .page {
-    --suggestion-surface: #43474d;
-}
-
-:global(body[data-color-scheme="light"]) .page {
-    --suggestion-surface: #1c1c1e;
-}
-
-:global(body.material[data-color-scheme="light"]) .page {
-    --suggestion-surface: #303338;
 }
 
 .intro {
@@ -69,9 +27,5 @@
 }
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
     padding: 28px 48px 0;
 }

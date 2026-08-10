@@ -1,10 +1,9 @@
 import { useRef, useState } from "react"
 
+import { clamp } from "../../../utils/number"
 import { PHRASE_LENGTH, isWord } from "./bip39"
 
 const emptyPhrase = () => Array.from({ length: PHRASE_LENGTH }, () => "")
-
-const clamp = (index) => Math.min(Math.max(index, 0), PHRASE_LENGTH - 1)
 
 /**
  * Phrase state plus the focus choreography between the 24 slots: committing a
@@ -14,6 +13,15 @@ const clamp = (index) => Math.min(Math.max(index, 0), PHRASE_LENGTH - 1)
 export function usePhraseImport() {
     const [words, setWords] = useState(emptyPhrase)
     const inputsRef = useRef([])
+    // The writers below are handed to all 24 slots, so they read the phrase
+    // through a ref: closing over the state would give each of them a new
+    // identity per keystroke and re-render every slot.
+    const phraseRef = useRef(words)
+
+    const write = (next) => {
+        phraseRef.current = next
+        setWords(next)
+    }
 
     const registerRef = (index, element) => {
         inputsRef.current[index] = element
@@ -23,19 +31,17 @@ export function usePhraseImport() {
         const element = inputsRef.current[index]
         if (!element) return
         element.focus()
-        // Caret to the end so typing continues the word instead of splitting it.
         const end = element.value.length
         element.setSelectionRange(end, end)
         element.scrollIntoView({ block: "nearest" })
     }
 
     const setWord = (index, value) => {
-        setWords((prev) => {
-            if (prev[index] === value) return prev
-            const next = [...prev]
-            next[index] = value
-            return next
-        })
+        const prev = phraseRef.current
+        if (prev[index] === value) return
+        const next = [...prev]
+        next[index] = value
+        write(next)
     }
 
     const commitWord = (index, word) => {
@@ -48,21 +54,19 @@ export function usePhraseImport() {
     }
 
     const navigate = (index, delta) => {
-        focusField(clamp(index + delta))
+        focusField(clamp(index + delta, 0, PHRASE_LENGTH - 1))
     }
 
     // A full phrase pasted anywhere lands from slot 1; a fragment fills forward
     // from the slot that received it.
     const fillFrom = (index, pasted) => {
         const start = pasted.length >= PHRASE_LENGTH ? 0 : index
-        const next = [...words]
+        const next = [...phraseRef.current]
         pasted.slice(0, PHRASE_LENGTH - start).forEach((word, offset) => {
             next[start + offset] = word
         })
-        setWords(next)
+        write(next)
 
-        // Land on the first slot still missing a valid word; a phrase that
-        // came in whole needs no cursor at all.
         const firstGap = next.findIndex((word) => !isWord(word))
         if (firstGap === -1) {
             document.activeElement?.blur()
@@ -71,12 +75,9 @@ export function usePhraseImport() {
         focusField(firstGap)
     }
 
-    const validCount = words.filter(isWord).length
-
     return {
         words,
-        validCount,
-        isComplete: validCount === PHRASE_LENGTH,
+        isComplete: words.every(isWord),
         registerRef,
         setWord,
         commitWord,
