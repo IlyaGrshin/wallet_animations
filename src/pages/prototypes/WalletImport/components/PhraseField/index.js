@@ -1,11 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
-import * as m from "motion/react-m"
-import {
-    AnimatePresence,
-    useAnimationControls,
-    useReducedMotion,
-} from "motion/react"
+import { AnimatePresence } from "motion/react"
 
 import Text from "../../../../../components/Text"
 import TextField from "../../../../../components/TextField"
@@ -15,9 +10,6 @@ import SuggestionTooltip, { suggestionId } from "../SuggestionTooltip"
 import { useWordSuggestions } from "./useWordSuggestions"
 
 import * as styles from "./PhraseField.module.scss"
-
-const REJECT_SHAKE = { x: [0, -6, 6, -4, 4, 0] }
-const REJECT_TRANSITION = { duration: 0.36, ease: [0.23, 1, 0.32, 1] }
 
 /**
  * One numbered slot of the recovery phrase. Owns its suggestion strip, the
@@ -38,8 +30,6 @@ const PhraseField = ({
     onNavigate,
     onPasteWords,
 }) => {
-    const reduced = useReducedMotion()
-    const controls = useAnimationControls()
     const [focused, setFocused] = useState(false)
     const [dismissed, setDismissed] = useState(false)
 
@@ -59,12 +49,10 @@ const PhraseField = ({
 
     const fieldId = `phrase-word-${index + 1}`
 
-    // Refusing a word the list does not contain: a shake in place, never a
-    // silent no-op.
+    // Refusing a word the list does not contain: the strip already says so, the
+    // haptic just confirms it did not go through.
     const reject = () => {
         WebApp.HapticFeedback?.notificationOccurred("error")
-        if (reduced) return
-        controls.start({ ...REJECT_SHAKE, transition: REJECT_TRANSITION })
     }
 
     const commit = (word) => {
@@ -153,8 +141,7 @@ const PhraseField = ({
 
     return (
         <div className={styles.row}>
-            <m.label
-                animate={controls}
+            <label
                 htmlFor={fieldId}
                 className={`${styles.field} ${focused ? styles.focused : ""} ${
                     invalid ? styles.invalid : ""
@@ -194,7 +181,7 @@ const PhraseField = ({
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                 />
-            </m.label>
+            </label>
             <AnimatePresence>
                 {open && (
                     <SuggestionTooltip
