@@ -13,19 +13,12 @@
     color: var(--tg-theme-text-color);
     cursor: text;
 
-    // Ring lives on an inset shadow so focus/error never nudge the layout.
-    box-shadow: inset 0 0 0 0 transparent;
-    transition:
-        box-shadow 0.2s cubic-bezier(0.23, 1, 0.32, 1),
-        background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    // No outlines anywhere: focus and error read through the surface tint, the
+    // caret and the word itself.
+    transition: background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 
     &.focused {
         background: var(--field-surface-focused);
-        box-shadow: inset 0 0 0 1.5px var(--tg-theme-accent-text-color);
-    }
-
-    &.invalid {
-        box-shadow: inset 0 0 0 1.5px var(--tg-theme-destructive-text-color);
     }
 
     :global(body.material) & {
@@ -37,7 +30,7 @@
 // Fixed column so words line up whether the slot is 1 or 24.
 .index {
     flex: 0 0 auto;
-    min-width: 22px;
+    min-width: 28px;
     color: var(--tg-theme-subtitle-text-color);
     text-align: right;
     font-variant-numeric: tabular-nums;

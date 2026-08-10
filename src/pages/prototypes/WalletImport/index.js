@@ -3,7 +3,6 @@ import { useEffect } from "react"
 import Page from "../../../components/Page"
 import Text from "../../../components/Text"
 import { RegularButton } from "../../../components/Button"
-import { useMediaQuery } from "../../../hooks/useMediaQuery"
 import WebApp, { BackButton } from "../../../lib/twa"
 
 import PhraseField from "./components/PhraseField"
@@ -11,13 +10,6 @@ import { PHRASE_LENGTH } from "./bip39"
 import { usePhraseImport } from "./usePhraseImport"
 
 import * as styles from "./WalletImport.module.scss"
-
-const HOTKEYS = [
-    ["← →", "choose word"],
-    ["Enter", "accept"],
-    ["↑ ↓", "move between words"],
-    ["Esc", "hide suggestions"],
-]
 
 const WalletImport = () => {
     const {
@@ -30,9 +22,6 @@ const WalletImport = () => {
         navigate,
         fillFrom,
     } = usePhraseImport()
-
-    // Hardware keyboard present: only then are the shortcuts reachable.
-    const isDesktop = useMediaQuery("(hover: hover) and (pointer: fine)")
 
     // Prototype end of the road: the phrase is complete and valid.
     const handleContinue = () => {
@@ -81,22 +70,6 @@ const WalletImport = () => {
                         />
                     ))}
                 </div>
-
-                {isDesktop && (
-                    <ul className={styles.hotkeys}>
-                        {HOTKEYS.map(([keys, action]) => (
-                            <li key={keys}>
-                                <Text
-                                    apple={{ variant: "caption1" }}
-                                    material={{ variant: "caption2" }}
-                                >
-                                    <span className={styles.key}>{keys}</span>
-                                    {action}
-                                </Text>
-                            </li>
-                        ))}
-                    </ul>
-                )}
 
                 <div className={styles.footer}>
                     <div className={styles.progress}>

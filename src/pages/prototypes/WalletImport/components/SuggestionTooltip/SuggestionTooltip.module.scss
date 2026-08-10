@@ -72,3 +72,8 @@
     color: var(--suggestion-rest);
     white-space: nowrap;
 }
+
+.errorLabel {
+    display: inline-flex;
+    transform-origin: center;
+}

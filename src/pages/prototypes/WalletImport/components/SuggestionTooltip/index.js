@@ -1,6 +1,11 @@
+import { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
-import { AnimatePresence, useReducedMotion } from "motion/react"
+import {
+    AnimatePresence,
+    useAnimationControls,
+    useReducedMotion,
+} from "motion/react"
 
 import Text from "../../../../../components/Text"
 import { SPRING } from "../../../../../utils/animations"
@@ -13,6 +18,10 @@ const EXIT = { opacity: 0, scale: 0.92, y: -4 }
 
 const CHIP_ENTER = { opacity: 0, scale: 0.7 }
 const CHIP_VISIBLE = { opacity: 1, scale: 1 }
+
+// Every further wrong letter nudges the copy, never the bubble around it.
+const ERROR_PULSE = { scale: [1, 1.12, 1] }
+const ERROR_PULSE_TRANSITION = { duration: 0.32, ease: [0.23, 1, 0.32, 1] }
 
 const suggestionId = (fieldId, index) => `${fieldId}-suggestion-${index}`
 
@@ -36,11 +45,29 @@ const SuggestionTooltip = ({
     onPick,
 }) => {
     const reduced = useReducedMotion()
+    const errorControls = useAnimationControls()
+    const pulsedPrefix = useRef(null)
 
     // A resize is a layout change, so motion animates it on the compositor
     // (projection + scale correction) instead of tweening width/height.
     const layoutTransition = reduced ? { duration: 0 } : SPRING.GENTLE
     const shellTransition = reduced ? { duration: 0 } : SPRING.DROPDOWN
+
+    useEffect(() => {
+        if (!invalid) {
+            pulsedPrefix.current = null
+            return
+        }
+        const previous = pulsedPrefix.current
+        pulsedPrefix.current = prefix
+        // The first wrong letter rides the strip's own entrance; only the ones
+        // typed after it get a pulse of their own.
+        if (previous === null || previous === prefix || reduced) return
+        errorControls.start({
+            ...ERROR_PULSE,
+            transition: ERROR_PULSE_TRANSITION,
+        })
+    }, [invalid, prefix, reduced, errorControls])
 
     return (
         <m.div
@@ -71,15 +98,25 @@ const SuggestionTooltip = ({
                             className={styles.error}
                             role="alert"
                         >
-                            <Text
-                                apple={{ variant: "body", weight: "semibold" }}
-                                material={{
-                                    variant: "subheadline1",
-                                    weight: "medium",
-                                }}
+                            {/* Scaling an inner span keeps the pulse a pure
+                                transform: the bubble never resizes with it. */}
+                            <m.span
+                                animate={errorControls}
+                                className={styles.errorLabel}
                             >
-                                Invalid Word
-                            </Text>
+                                <Text
+                                    apple={{
+                                        variant: "body",
+                                        weight: "semibold",
+                                    }}
+                                    material={{
+                                        variant: "subheadline1",
+                                        weight: "medium",
+                                    }}
+                                >
+                                    Invalid Word
+                                </Text>
+                            </m.span>
                         </m.span>
                     ) : (
                         suggestions.map((word, index) => (

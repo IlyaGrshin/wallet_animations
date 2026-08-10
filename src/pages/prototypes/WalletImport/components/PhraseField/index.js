@@ -9,15 +9,9 @@ import {
 
 import Text from "../../../../../components/Text"
 import WebApp from "../../../../../lib/twa"
-import {
-    MIN_PREFIX_LENGTH,
-    PHRASE_LENGTH,
-    isWord,
-    sanitize,
-    splitPhrase,
-    suggest,
-} from "../../bip39"
+import { PHRASE_LENGTH, isWord, sanitize, splitPhrase } from "../../bip39"
 import SuggestionTooltip, { suggestionId } from "../SuggestionTooltip"
+import { useWordSuggestions } from "./useWordSuggestions"
 
 import * as styles from "./PhraseField.module.scss"
 
@@ -47,20 +41,20 @@ const PhraseField = ({
     const controls = useAnimationControls()
     const [focused, setFocused] = useState(false)
     const [dismissed, setDismissed] = useState(false)
-    // Selection is keyed by the prefix that produced it, so a new keystroke
-    // resets to the first match without an effect.
-    const [selection, setSelection] = useState({ prefix: "", index: 0 })
 
-    const hasPrefix = value.length >= MIN_PREFIX_LENGTH
-    const suggestions = focused && hasPrefix ? suggest(value) : []
-    const open = focused && hasPrefix && !dismissed
-    const activeIndex =
-        selection.prefix === value
-            ? Math.min(selection.index, Math.max(suggestions.length - 1, 0))
-            : 0
+    const {
+        complete,
+        suggestions,
+        noMatches,
+        activeIndex,
+        open,
+        moveSelection,
+        resetSelection,
+    } = useWordSuggestions(value, focused, dismissed)
+
     // Anything left behind that the wordlist does not know reads as an error,
     // including slots filled by a paste that were never focused.
-    const invalid = !focused && value.length > 0 && !isWord(value)
+    const invalid = !focused && value.length > 0 && !complete
 
     const fieldId = `phrase-word-${index + 1}`
 
@@ -75,7 +69,7 @@ const PhraseField = ({
     const commit = (word) => {
         WebApp.HapticFeedback?.selectionChanged()
         setDismissed(false)
-        setSelection({ prefix: "", index: 0 })
+        resetSelection()
         onCommit(word)
     }
 
@@ -105,16 +99,8 @@ const PhraseField = ({
         onPasteWords(words)
     }
 
-    const moveSelection = (delta) => {
-        const count = suggestions.length
-        setSelection({
-            prefix: value,
-            index: (activeIndex + delta + count) % count,
-        })
-    }
-
     const handleKeyDown = (event) => {
-        const listOpen = open && suggestions.length > 0
+        const listOpen = open && !noMatches
 
         if (event.key === "Escape") {
             setDismissed(true)
@@ -143,7 +129,8 @@ const PhraseField = ({
         if (event.key === "Enter" || event.key === "Tab" || event.key === " ") {
             if (event.key === "Tab" && !value) return
             if (event.key === " ") event.preventDefault()
-            const word = listOpen ? suggestions[activeIndex] : value
+            const word =
+                listOpen && activeIndex >= 0 ? suggestions[activeIndex] : value
             if (isWord(word)) {
                 event.preventDefault()
                 commit(word)
@@ -169,20 +156,13 @@ const PhraseField = ({
                 as={m.label}
                 animate={controls}
                 htmlFor={fieldId}
-                apple={{ variant: "body", weight: "semibold" }}
-                material={{ variant: "subheadline1", weight: "medium" }}
+                apple={{ variant: "body", weight: "regular" }}
+                material={{ variant: "subheadline1" }}
                 className={`${styles.field} ${focused ? styles.focused : ""} ${
                     invalid ? styles.invalid : ""
                 }`}
             >
-                <span className={styles.index}>
-                    <Text
-                        apple={{ variant: "body", weight: "regular" }}
-                        material={{ variant: "subheadline1" }}
-                    >
-                        {index + 1}
-                    </Text>
-                </span>
+                <span className={styles.index}>{index + 1}.</span>
                 <input
                     id={fieldId}
                     ref={(element) => registerRef(index, element)}
@@ -199,7 +179,7 @@ const PhraseField = ({
                     aria-autocomplete="list"
                     aria-controls={`${fieldId}-suggestions`}
                     aria-activedescendant={
-                        open && suggestions.length > 0
+                        open && activeIndex >= 0
                             ? suggestionId(fieldId, activeIndex)
                             : undefined
                     }
@@ -216,7 +196,7 @@ const PhraseField = ({
                         suggestions={suggestions}
                         prefix={value}
                         activeIndex={activeIndex}
-                        invalid={suggestions.length === 0}
+                        invalid={noMatches}
                         fieldId={fieldId}
                         onPick={commit}
                     />
