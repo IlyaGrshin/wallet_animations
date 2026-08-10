@@ -14,7 +14,7 @@ import {
     buildTailClipPath,
 } from "../../../../../components/Tooltip/tooltipPath"
 import { GAP } from "../../../../../components/Tooltip/tooltipPosition"
-import { POPOVER_VARIANTS, SPRING } from "../../../../../utils/animations"
+import { EASING, SPRING } from "../../../../../utils/animations"
 
 import * as styles from "./SuggestionTooltip.module.scss"
 
@@ -32,18 +32,56 @@ const TAIL_STYLE = {
     }),
 }
 
-const REDUCED_VARIANTS = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0 } },
-    exit: { opacity: 0, transition: { duration: 0 } },
+const STRIP_VARIANTS = {
+    hidden: { opacity: 0, scale: 0.92, filter: "blur(5px)" },
+    visible: {
+        opacity: 1,
+        scale: 1,
+        filter: "blur(0px)",
+        transition: {
+            ...SPRING.APPLE,
+            opacity: { duration: 0.12, ease: EASING.QUINT_OUT },
+            filter: { duration: 0.16, ease: EASING.QUINT_OUT },
+        },
+    },
+    exit: {
+        opacity: 0,
+        scale: 0.96,
+        filter: "blur(4px)",
+        transition: { duration: 0.14, ease: EASING.QUINT_OUT },
+    },
 }
 
-const CHIP_ENTER = { opacity: 0, scale: 0.7 }
+// Both live here rather than in the stylesheet: motion only undoes the scale
+// distortion of a layout animation for values it owns.
+const BUBBLE_STYLE = {
+    borderRadius: 18,
+    boxShadow: "0 6px 20px rgba(0, 0, 0, 0.18)",
+}
+
+const INSTANT = { duration: 0 }
+
+const REDUCED_VARIANTS = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: INSTANT },
+    exit: { opacity: 0, transition: INSTANT },
+}
+
+const RESIZE_SPRING = { type: "spring", stiffness: 700, damping: 55 }
+
+const CHIP_ENTER = { opacity: 0, scale: 0.96 }
 const CHIP_VISIBLE = { opacity: 1, scale: 1 }
+const CHIP_TRANSITION = {
+    ...RESIZE_SPRING,
+    opacity: { duration: 0.12, ease: EASING.QUINT_OUT },
+}
+
+const ERROR_ENTER = { opacity: 0, scale: 0.94 }
+const ERROR_VISIBLE = { opacity: 1, scale: 1 }
 
 // Every further wrong letter nudges the copy, never the bubble around it.
-const ERROR_PULSE = { scale: [1, 1.12, 1] }
-const ERROR_PULSE_TRANSITION = { duration: 0.32, ease: [0.23, 1, 0.32, 1] }
+const ERROR_PULSE = { scale: [1, 1.05, 1] }
+const ERROR_PULSE_TRANSITION = { duration: 0.4, ease: "easeInOut" }
 
 const suggestionId = (fieldId, index) => `${fieldId}-suggestion-${index}`
 
@@ -72,7 +110,12 @@ const SuggestionTooltip = ({
 
     // A resize is a layout change, so motion animates it on the compositor
     // (projection + scale correction) instead of tweening width/height.
-    const layoutTransition = reduced ? { duration: 0 } : SPRING.GENTLE
+    const layoutTransition = reduced ? INSTANT : RESIZE_SPRING
+    const chipTransition = reduced ? INSTANT : CHIP_TRANSITION
+
+    // With nothing to choose between, the highlight has no work to do — the lone
+    // word is what Enter takes either way.
+    const highlighted = suggestions.length > 1 ? activeIndex : -1
 
     useEffect(() => {
         if (!invalid) {
@@ -97,12 +140,13 @@ const SuggestionTooltip = ({
             initial="hidden"
             animate="visible"
             exit="exit"
-            variants={reduced ? REDUCED_VARIANTS : POPOVER_VARIANTS}
+            variants={reduced ? REDUCED_VARIANTS : STRIP_VARIANTS}
         >
             <span className={styles.tail} style={TAIL_STYLE} />
             <m.div
                 layout
                 transition={layoutTransition}
+                style={BUBBLE_STYLE}
                 className={styles.bubble}
                 role="listbox"
                 id={`${fieldId}-suggestions`}
@@ -114,9 +158,9 @@ const SuggestionTooltip = ({
                             key="invalid"
                             layout="position"
                             transition={layoutTransition}
-                            initial={CHIP_ENTER}
-                            animate={CHIP_VISIBLE}
-                            exit={CHIP_ENTER}
+                            initial={ERROR_ENTER}
+                            animate={ERROR_VISIBLE}
+                            exit={ERROR_ENTER}
                             className={styles.error}
                             role="alert"
                         >
@@ -128,11 +172,11 @@ const SuggestionTooltip = ({
                             >
                                 <Text
                                     apple={{
-                                        variant: "body",
+                                        variant: "subheadline2",
                                         weight: "semibold",
                                     }}
                                     material={{
-                                        variant: "subheadline1",
+                                        variant: "subheadline2",
                                         weight: "medium",
                                     }}
                                 >
@@ -146,13 +190,13 @@ const SuggestionTooltip = ({
                                 key={word}
                                 type="button"
                                 layout="position"
-                                transition={layoutTransition}
+                                transition={chipTransition}
                                 initial={CHIP_ENTER}
                                 animate={CHIP_VISIBLE}
                                 exit={CHIP_ENTER}
                                 whileTap={reduced ? undefined : { scale: 0.94 }}
                                 className={`${styles.chip} ${
-                                    index === activeIndex ? styles.active : ""
+                                    index === highlighted ? styles.active : ""
                                 }`}
                                 id={suggestionId(fieldId, index)}
                                 role="option"
@@ -164,11 +208,11 @@ const SuggestionTooltip = ({
                             >
                                 <Text
                                     apple={{
-                                        variant: "body",
+                                        variant: "subheadline2",
                                         weight: "semibold",
                                     }}
                                     material={{
-                                        variant: "subheadline1",
+                                        variant: "subheadline2",
                                         weight: "medium",
                                     }}
                                 >
