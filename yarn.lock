@@ -789,21 +789,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lisse/core@npm:0.6.2":
-  version: 0.6.2
-  resolution: "@lisse/core@npm:0.6.2"
-  checksum: 10c0/274579c452b4bc5b6a5671428c5cd686a478d18857b95971f2ea2640def3812110e4803dd0fcc21a765cf47d0e2aa89f037ac356b6ce37f9d6ca0776f5eff741
+"@lisse/core@npm:0.6.3":
+  version: 0.6.3
+  resolution: "@lisse/core@npm:0.6.3"
+  checksum: 10c0/89dfdb138e8bae6e8c71ec6158104dae6ac295aac94a731badcd80df2c10a00a55dcee16d5d0ca5a40ef4529eb0a2a1f362cabba1dab53951247045f319e1265
   languageName: node
   linkType: hard
 
-"@lisse/react@npm:^0.6.2":
-  version: 0.6.2
-  resolution: "@lisse/react@npm:0.6.2"
+"@lisse/react@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "@lisse/react@npm:0.6.3"
   dependencies:
-    "@lisse/core": "npm:0.6.2"
+    "@lisse/core": "npm:0.6.3"
   peerDependencies:
     react: ">=18.0.0"
-  checksum: 10c0/42aa06f142fbd3c295612dcaabf0398c57db718e7107f8fc725532a57526d729639c0c6ae5c6b285f0fe0ae2d58ac56acb516f0513fc585b93a224d6ed9ec59a
+  checksum: 10c0/9c2da90daaae67de113b23e6b4936790ab79ef9b9b5a55a5fc0b48f25f6e1584ee7e669e7b36a7c8d0aabb6dee398bc0ff7f13c4a59049dc72c3dfad3ddcb32c
   languageName: node
   linkType: hard
 
@@ -2012,9 +2012,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colorthief@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "colorthief@npm:3.4.0"
+"colorthief@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "colorthief@npm:3.5.0"
   peerDependencies:
     sharp: ">=0.33.0"
   peerDependenciesMeta:
@@ -2022,7 +2022,7 @@ __metadata:
       optional: true
   bin:
     colorthief: dist/cli.js
-  checksum: 10c0/d1de00d5db86c8fb5baa0fa59348473de5d52c7f260c73db20fcda69b7b06187c044b4cd2c4c7043e672e998ead079afd3f41f788e5b74d9c836744f7946591a
+  checksum: 10c0/c6c0ef9ffe14faf90729544d1d5d3e28d9d26f9ebc1be1a23a5f1295c3a2da44c53297b074ca360bf27928c160c03173e03dbfcde6ed701378f4fe918364486a
   languageName: node
   linkType: hard
 
@@ -5814,8 +5814,8 @@ __metadata:
     "@babel/core": "npm:^7.29.7"
     "@babel/preset-react": "npm:^7.29.7"
     "@eslint/js": "npm:^10.0.1"
-    "@lisse/core": "npm:0.6.2"
-    "@lisse/react": "npm:^0.6.2"
+    "@lisse/core": "npm:0.6.3"
+    "@lisse/react": "npm:^0.6.3"
     "@relative-ci/agent": "npm:^4.3.1"
     "@resvg/resvg-js": "npm:^2.6.2"
     "@tanstack/react-virtual": "npm:^3.14.9"
@@ -5827,7 +5827,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
     baseline-browser-mapping: "npm:^2.11.10"
     calligraph: "npm:^1.4.1"
-    colorthief: "npm:^3.4.0"
+    colorthief: "npm:^3.5.0"
     eslint: "npm:^9"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-react: "npm:^7.37.5"
