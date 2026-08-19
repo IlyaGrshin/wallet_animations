@@ -1825,12 +1825,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"baseline-browser-mapping@npm:^2.11.13":
-  version: 2.11.13
-  resolution: "baseline-browser-mapping@npm:2.11.13"
+"baseline-browser-mapping@npm:^2.11.14":
+  version: 2.11.15
+  resolution: "baseline-browser-mapping@npm:2.11.15"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 10c0/a02511614ebe0311d4831e7ba11e88e5997d5bf0733e5eadd7d97b4bb69d76f468a982862108cb90721e1a41f4ef36c1a5f9fa18569923702ad2875ca3abfe58
+  checksum: 10c0/d89578cc74cd2d788c3cf2dad73bf2a21c4d1bac27fa5498da17caa1c135fe1f99c968b6f8e41c2eaafde21ac8092ec00ad28746aa01e80156908c2bdcc91f76
   languageName: node
   linkType: hard
 
@@ -3174,10 +3174,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.9.0":
-  version: 17.9.0
-  resolution: "globals@npm:17.9.0"
-  checksum: 10c0/776116bffb916e462d548c26a44c9a5d8f4e551935a883991e9f5d68cbcb21b63e4c688e36bbc564f97d3025e304d8b2bb0a611ecf944825aeee164898dcfbdd
+"globals@npm:^17.11.0":
+  version: 17.11.0
+  resolution: "globals@npm:17.11.0"
+  checksum: 10c0/5e1be3d816e04d4d0d01b1cdd40e46b5fb6b5e9f15aece9a5919b060e0fb1b3f1b9e7327dce97ef19e05513a6d65872e0834999ddea251557556dddd0f5fde30
   languageName: node
   linkType: hard
 
@@ -5825,14 +5825,14 @@ __metadata:
     agentation: "npm:^3.0.2"
     babel-plugin-react-compiler: "npm:^1.0.0"
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
-    baseline-browser-mapping: "npm:^2.11.13"
+    baseline-browser-mapping: "npm:^2.11.14"
     calligraph: "npm:^1.4.1"
     colorthief: "npm:^3.5.0"
     eslint: "npm:^9"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-react: "npm:^7.37.5"
     eslint-plugin-react-hooks: "npm:^7.1.1"
-    globals: "npm:^17.9.0"
+    globals: "npm:^17.11.0"
     lottie-react: "npm:^2.4.1"
     markdown-to-jsx: "npm:9"
     motion: "npm:^12.43.0"
