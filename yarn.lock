@@ -796,14 +796,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lisse/react@npm:^0.6.3":
-  version: 0.6.3
-  resolution: "@lisse/react@npm:0.6.3"
+"@lisse/react@npm:^0.6.4":
+  version: 0.6.4
+  resolution: "@lisse/react@npm:0.6.4"
   dependencies:
     "@lisse/core": "npm:0.6.3"
   peerDependencies:
     react: ">=18.0.0"
-  checksum: 10c0/9c2da90daaae67de113b23e6b4936790ab79ef9b9b5a55a5fc0b48f25f6e1584ee7e669e7b36a7c8d0aabb6dee398bc0ff7f13c4a59049dc72c3dfad3ddcb32c
+  checksum: 10c0/74a95496cc89bc81a42008f033ddcbb67eea5f37762f9b2682a2dcb8bf16d28d50d6e5249ff89405e8807d658095c88566585100a1b21e6383f695563354dfad
   languageName: node
   linkType: hard
 
@@ -5815,7 +5815,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.29.7"
     "@eslint/js": "npm:^10.0.1"
     "@lisse/core": "npm:0.6.3"
-    "@lisse/react": "npm:^0.6.3"
+    "@lisse/react": "npm:^0.6.4"
     "@relative-ci/agent": "npm:^4.3.1"
     "@resvg/resvg-js": "npm:^2.6.2"
     "@tanstack/react-virtual": "npm:^3.14.9"
