@@ -5,7 +5,7 @@
   "type": "module",
   "packageManager": "yarn@4.5.3",
   "resolutions": {
-    "baseline-browser-mapping": "^2.11.13"
+    "baseline-browser-mapping": "^2.11.14"
   },
   "homepage": ".",
   "dependencies": {
@@ -65,12 +65,12 @@
     "agentation": "^3.0.2",
     "babel-plugin-react-compiler": "^1.0.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "baseline-browser-mapping": "^2.11.13",
+    "baseline-browser-mapping": "^2.11.14",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "globals": "^17.9.0",
+    "globals": "^17.11.0",
     "prettier": "^3.9.6",
     "prop-types": "^15.8.1",
     "rollup-plugin-webpack-stats": "^3.1.3",
