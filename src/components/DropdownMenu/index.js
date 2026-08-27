@@ -4,8 +4,10 @@ import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import { POPOVER_VARIANTS } from "../../utils/animations"
+import Tappable from "../Tappable"
 import Text from "../Text"
 import { GlassBorder } from "../GlassEffect"
+import { useSkin } from "../../hooks/DeviceProvider"
 import { useSplitViewContext } from "../SplitView/context"
 import {
     useClickOutside,
@@ -16,7 +18,7 @@ import {
 import * as styles from "./DropdownMenu.module.scss"
 
 const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
-    <div
+    <Tappable
         ref={itemRef}
         role="menuitem"
         tabIndex={-1}
@@ -25,7 +27,7 @@ const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
         className={`${styles.item} ${isSelected ? styles.selected : ""}`}
     >
         <Text variant="body">{item}</Text>
-    </div>
+    </Tappable>
 )
 
 MenuItem.propTypes = {
@@ -39,7 +41,17 @@ MenuItem.propTypes = {
     ]),
 }
 
-const DropdownMenu = ({ items, trigger }) => {
+/**
+ * Portal-rendered menu with keyboard nav (arrows / Enter / Esc) and edge-aware
+ * placement. Without `trigger` it renders the selected item as the button.
+ * @param {string[]} props.items Menu options (required, non-empty).
+ * @param {import("react").ReactNode} [props.trigger] Custom trigger; defaults to selected item.
+ * @param {(item: string) => void} [props.onChange] Fires with the picked item.
+ * @example
+ * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
+ */
+const DropdownMenu = ({ items, trigger, onChange }) => {
+    const { isApple } = useSkin()
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
     const [activeIndex, setActiveIndex] = useState(-1)
@@ -86,6 +98,7 @@ const DropdownMenu = ({ items, trigger }) => {
 
     const handleSelectItem = (item) => {
         setSelectedItem(item)
+        if (onChange) onChange(item)
         setIsOpen(false)
         resetPosition()
         setActiveIndex(-1)
@@ -210,7 +223,7 @@ const DropdownMenu = ({ items, trigger }) => {
                                     zIndex: 1000,
                                 }}
                             >
-                                <GlassBorder />
+                                {isApple && <GlassBorder muted />}
                                 {items.map((item, index) => (
                                     <MenuItem
                                         key={index}
@@ -238,5 +251,6 @@ const DropdownMenu = ({ items, trigger }) => {
 DropdownMenu.propTypes = {
     items: PropTypes.arrayOf(PropTypes.string).isRequired,
     trigger: PropTypes.node,
+    onChange: PropTypes.func,
 }
 export default DropdownMenu

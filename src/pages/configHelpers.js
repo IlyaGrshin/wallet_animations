@@ -1,3 +1,5 @@
+import pageSkeletons from "./pageSkeletons"
+
 const PREFIX_MAP = {
     Components: "showcase",
     "Text Effects": "text-effects",
@@ -39,16 +41,24 @@ export function isSplitEligible(location) {
 }
 
 export function flattenRoutes(config) {
-    return sortedPages(config).flatMap(({ category, pages }) => {
-        const prefix = categoryToPrefix(category)
-        return pages.map((page) => {
-            const slug = page.slug || titleToSlug(page.title)
-            return {
-                path: `/${prefix}/${slug}${page.routeSuffix || ""}`,
-                component: page.component,
-                title: page.title,
-                slug,
-            }
-        })
-    })
+    return sortedPages(config).flatMap(
+        ({ category, pages, header: groupHeader }) => {
+            const prefix = categoryToPrefix(category)
+            return pages.map((page) => {
+                const slug = page.slug || titleToSlug(page.title)
+                return {
+                    path: `/${prefix}/${slug}${page.routeSuffix || ""}`,
+                    component: page.component,
+                    // Per-screen loading skeleton: an explicit page.skeleton wins,
+                    // otherwise fall back to the title-keyed registry (router uses
+                    // PageSkeleton when neither is set).
+                    skeleton: page.skeleton ?? pageSkeletons[page.title],
+                    title: page.title,
+                    slug,
+                    // Browser-only AppBar; opt a route or whole group out.
+                    header: page.header ?? groupHeader ?? true,
+                }
+            })
+        }
+    )
 }

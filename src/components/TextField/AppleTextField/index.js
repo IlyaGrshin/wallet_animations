@@ -33,7 +33,7 @@ export const AppleTextField = forwardRef(
         return (
             <AppleText
                 variant="body"
-                weight="regular"
+                weight={type === "search" ? "medium" : "regular"}
                 className={[
                     styles.root,
                     className,
@@ -87,6 +87,7 @@ export const AppleTextField = forwardRef(
                         className={[styles.icon, styles.clearButtonIcon]
                             .filter(Boolean)
                             .join(" ")}
+                        onMouseDown={(event) => event.preventDefault()}
                         onClick={onClear}
                     >
                         <ClearAppleSVG />

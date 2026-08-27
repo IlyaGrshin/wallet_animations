@@ -63,7 +63,6 @@
         scroll-snap-type: y mandatory;
         padding: 100px 0;
         margin: 0;
-        transform-style: preserve-3d;
 
         &::-webkit-scrollbar {
             display: none;
@@ -79,8 +78,6 @@
         flex-direction: column;
         justify-content: center;
         color: var(--tg-theme-text-color);
-
-        // background-color: rgba(red, 0.2);
         transform-origin: center center;
         will-change: transform;
     }

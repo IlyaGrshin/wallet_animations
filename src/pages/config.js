@@ -11,6 +11,12 @@ const config = [
                 ),
             },
             {
+                title: "Cell Stack",
+                component: lazyWithPreload(
+                    () => import("../components/CellStack/CellStack.showcase")
+                ),
+            },
+            {
                 title: "Picker",
                 component: lazyWithPreload(
                     () => import("../components/Picker/Picker.showcase")
@@ -26,6 +32,13 @@ const config = [
                 title: "Modal Pages",
                 component: lazyWithPreload(
                     () => import("../components/ModalView/ModalView.showcase")
+                ),
+            },
+            {
+                title: "Panel Header",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/PanelHeader/PanelHeader.showcase")
                 ),
             },
             {
@@ -113,6 +126,12 @@ const config = [
                 ),
             },
             {
+                title: "Skeleton",
+                component: lazyWithPreload(
+                    () => import("../components/Skeleton/Skeleton.showcase")
+                ),
+            },
+            {
                 title: "Markdown",
                 component: lazyWithPreload(
                     () => import("../components/Markdown/Markdown.showcase")
@@ -148,6 +167,19 @@ const config = [
                     () => import("../components/Snackbar/Snackbar.showcase")
                 ),
             },
+            {
+                title: "Gradient",
+                component: lazyWithPreload(
+                    () => import("../components/Gradient/Gradient.showcase")
+                ),
+            },
+            {
+                title: "Glass Effect",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/GlassEffect/GlassEffect.showcase")
+                ),
+            },
         ],
     },
     {
@@ -164,16 +196,19 @@ const config = [
                 title: "Particle Effect",
                 component: lazyWithPreload(
                     () =>
-                        import(
-                            "../components/ParticleEffect/ParticleEffect.showcase"
-                        )
+                        import("../components/ParticleEffect/ParticleEffect.showcase")
                 ),
             },
             {
                 title: "Calligraph",
                 component: lazyWithPreload(
-                    () =>
-                        import("../components/Calligraph/Calligraph.showcase")
+                    () => import("../components/Calligraph/Calligraph.showcase")
+                ),
+            },
+            {
+                title: "Fit Text",
+                component: lazyWithPreload(
+                    () => import("../components/FitText/FitText.showcase")
                 ),
             },
         ],
@@ -199,10 +234,18 @@ const config = [
                     () => import("./showcases/HapticFeedback")
                 ),
             },
+            {
+                title: "Share Message",
+                component: lazyWithPreload(
+                    () => import("./showcases/ShareMessage")
+                ),
+            },
         ],
     },
     {
         category: "Prototypes",
+        // Full app prototypes own their chrome — no browser AppBar.
+        header: false,
         pages: [
             {
                 title: "Input Page",

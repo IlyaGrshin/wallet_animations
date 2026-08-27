@@ -39,7 +39,6 @@ const SkinSwitcher = () => {
                 segments={SKINS.map((s) => s.label)}
                 defaultIndex={defaultIndex}
                 onChange={handleChange}
-                type="circled"
             />
         </GlassContainer>
     )

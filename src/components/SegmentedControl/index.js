@@ -5,12 +5,20 @@ import Text from "../Text"
 
 import * as styles from "./SegmentedControl.module.scss"
 
+/**
+ * Segmented picker with an animated active indicator. Uncontrolled — tracks
+ * its own index from `defaultIndex`; onChange receives the selected index.
+ * @param {Array<import("react").ReactNode>} props.segments Labels, one per segment.
+ * @param {number} [props.defaultIndex=0]
+ * @param {(index: number) => void} [props.onChange]
+ * @example
+ * <SegmentedControl segments={["Day", "Week", "Month"]} onChange={setRange} />
+ */
 const SegmentedControl = ({
     segments,
     onChange,
     defaultIndex = 0,
     colorScheme: forceColorScheme,
-    type,
     ...props
 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
@@ -21,11 +29,12 @@ const SegmentedControl = ({
         if (onChange) onChange(index)
     }
 
-    const controlType =
-        type === "circled" ? `${styles.root} ${styles.circled}` : styles.root
-
     return (
-        <div className={controlType} data-color-scheme={colorScheme} {...props}>
+        <div
+            className={styles.root}
+            data-color-scheme={colorScheme}
+            {...props}
+        >
             {segments.map((segment, index) => (
                 <button
                     key={index}
@@ -49,10 +58,8 @@ const SegmentedControl = ({
             <div
                 className={styles.activeIndicator}
                 style={{
-                    width: `calc(${100 / segments.length}% - 4px)`,
-                    transform: `translateX(calc(${activeIndex} * (100% + 4px)))`,
-                    marginLeft: "2px",
-                    marginRight: "2px",
+                    width: `calc(${100 / segments.length}% - var(--track-inset) * 2)`,
+                    transform: `translateX(calc(${activeIndex} * (100% + var(--track-inset) * 2)))`,
                 }}
             />
         </div>
@@ -64,6 +71,5 @@ SegmentedControl.propTypes = {
     onChange: PropTypes.func,
     defaultIndex: PropTypes.number,
     colorScheme: PropTypes.string,
-    type: PropTypes.string,
 }
 export default SegmentedControl

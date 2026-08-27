@@ -5,12 +5,24 @@ import { useSplitViewContext } from "../SplitView/context"
 
 const { setHeaderColor, setBackgroundColor } = WebApp
 
+/**
+ * Screen wrapper that syncs the TWA header/background colors and the
+ * --page-background var (drives AppBar/TabBar fades). Renders children as-is.
+ * @param {"primary"|"secondary"} [props.mode] Which --tg-theme bg to use.
+ * @param {string} [props.headerColor]     Hex without '#', overrides mode.
+ * @param {string} [props.backgroundColor] Hex without '#', overrides mode.
+ * @param {boolean} [props.expandOnMount]  Call WebApp.expand() on mount.
+ * @param {boolean} [props.deferHeader]    Let a child own the header color.
+ * @example
+ * <Page mode="primary" expandOnMount>{content}</Page>
+ */
 const Page = ({
     children,
     mode = "secondary",
     headerColor,
     backgroundColor,
     expandOnMount,
+    deferHeader = false,
 }) => {
     const { inDetailPane, setPaneBackground } = useSplitViewContext()
 
@@ -44,11 +56,24 @@ const Page = ({
         if (inDetailPane) return
         if (WebApp.initData) {
             setBackgroundColor(tgBackgroundColor)
-            setHeaderColor(tgHeaderColor)
+            // deferHeader: leave the header to whoever bakes it (e.g. a hero
+            // Gradient paints it from its top colour). Page still owns the
+            // background. Without this, Page's effect runs after the child's and
+            // would clobber the baked header with the mode default.
+            if (!deferHeader) setHeaderColor(tgHeaderColor)
         } else {
             document.body.style.backgroundColor = CSSBackgroundColor
         }
-    }, [tgBackgroundColor, tgHeaderColor, CSSBackgroundColor, inDetailPane])
+        // Page-color fade gradients (AppBar top, TabBar bottom) follow the
+        // actual page background, whatever the mode.
+        document.body.style.setProperty("--page-background", CSSBackgroundColor)
+    }, [
+        tgBackgroundColor,
+        tgHeaderColor,
+        CSSBackgroundColor,
+        inDetailPane,
+        deferHeader,
+    ])
 
     // In a detail pane, report the page color to the shell so the whole pane
     // takes it (full height, including the bottom-inset area), not just content.
@@ -66,5 +91,6 @@ Page.propTypes = {
     headerColor: PropTypes.string,
     backgroundColor: PropTypes.string,
     expandOnMount: PropTypes.bool,
+    deferHeader: PropTypes.bool,
 }
 export default Page

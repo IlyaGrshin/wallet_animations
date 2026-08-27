@@ -36,8 +36,8 @@ const CellText = ({ type, title, description, caption, bold }) => {
 
 CellText.propTypes = {
     type: PropTypes.string,
-    title: PropTypes.string,
-    description: PropTypes.string,
+    title: PropTypes.node,
+    description: PropTypes.node,
     caption: PropTypes.string,
     bold: PropTypes.bool,
 }

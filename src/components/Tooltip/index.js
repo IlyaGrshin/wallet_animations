@@ -18,6 +18,19 @@ import {
 
 import * as styles from "./Tooltip.module.scss"
 
+/**
+ * Hover/tap tooltip rendered in a portal with edge-aware placement and a
+ * pointing tail. `children` is the trigger; opens on hover or tap, closes on
+ * outside click / Esc.
+ * @param {import("react").ReactNode} props.content Tooltip body (required).
+ * @param {string} [props.badge]
+ * @param {"regular"|"compact"} [props.type="regular"]
+ * @param {"auto"|"top"|"bottom"|"left"|"right"} [props.placement="auto"]
+ * @example
+ * <Tooltip content="Copied to clipboard" placement="top">
+ *   <InfoIcon />
+ * </Tooltip>
+ */
 const Tooltip = ({
     content,
     badge,

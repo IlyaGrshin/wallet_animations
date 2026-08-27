@@ -14,6 +14,15 @@
     .material {
         --side-padding: 20px;
     }
+
+    --shell-height: 100dvh;
+    --content-inset-top: calc(env(safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px));
+
+    --material-surface-background: rgb(from var(--tg-theme-section-bg-color) r g b / 84%);
+    --material-surface-filter: blur(30px) saturate(10);
+    --material-surface-shadow:
+        0 1px 2px 0 rgb(0 0 0 / 8%),
+        0 2px 16px 1px rgb(0 0 0 / 10%);
 }
 
 :root {
@@ -43,6 +52,7 @@
     --background-material-regular-color-2: rgb(255 255 255 / 0.6);
     --background-material-regular-blend-mode-1: plus-lighter;
     --background-material-regular-blend-mode-2: normal;
+    --glass-tint-background: transparent;
     --toast-background: rgb(45 45 45 / 0.8);
     --toast-text: #FFFFFF;
     --toast-link: #5AC8FA;
@@ -81,6 +91,7 @@ body.material {
         --background-material-regular-color-2: rgba(0, 0, 0, 0);
         --background-material-regular-blend-mode-1: normal;
         --background-material-regular-blend-mode-2: normal;
+        --glass-tint-background: rgb(255 255 255 / 0.05);
     }
 }
 
@@ -111,6 +122,7 @@ body.material {
     --background-material-regular-color-2: rgb(255 255 255 / 0.6);
     --background-material-regular-blend-mode-1: plus-lighter;
     --background-material-regular-blend-mode-2: normal;
+    --glass-tint-background: transparent;
 }
 
 :where([data-color-scheme="dark"]) {
@@ -140,6 +152,7 @@ body.material {
     --background-material-regular-color-2: rgba(0, 0, 0, 0);
     --background-material-regular-blend-mode-1: normal;
     --background-material-regular-blend-mode-2: normal;
+    --glass-tint-background: rgb(255 255 255 / 0.05);
 }
 
 html, body {
@@ -152,7 +165,7 @@ body {
 	-webkit-font-smoothing: antialiased;
     will-change: background-color;
     transition: background-color 200ms ease;
-    padding-top: calc(env(safe-area-inset-top) + var(--tg-content-safe-area-inset-top));
+    padding-top: var(--content-inset-top);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
 

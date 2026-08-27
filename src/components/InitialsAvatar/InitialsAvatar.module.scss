@@ -1,4 +1,7 @@
 .root {
+    --skeleton-radius: 50%;
+    --skeleton-inset-bottom: 0px;
+
     border-radius: 50%;
     color: #fff;
     display: flex;
@@ -18,4 +21,12 @@
         font-weight: 500;
         margin-left: var(--image-cell-offset);
     }
+}
+
+.initials {
+    transition: opacity 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hiddenInitials {
+    opacity: 0;
 }

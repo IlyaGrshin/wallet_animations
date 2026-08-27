@@ -1,5 +1,6 @@
 export const EASING = {
     MATERIAL_STANDARD: [0.26, 0.08, 0.25, 1],
+    QUINT_OUT: [0.23, 1, 0.32, 1],
     LINEAR: "linear",
     EASE_IN_OUT: "easeInOut",
 }
@@ -42,6 +43,11 @@ export const SPRING = {
         type: "spring",
         stiffness: 280,
         damping: 26,
+    },
+    MODAL: {
+        type: "spring",
+        stiffness: 250,
+        damping: 30,
     },
 }
 

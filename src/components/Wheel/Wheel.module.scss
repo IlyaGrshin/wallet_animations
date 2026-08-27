@@ -158,6 +158,8 @@
     align-items: center;
     justify-content: flex-end;
     padding-bottom: 16px;
+    transform-origin: center center;
+    will-change: transform;
 }
 
 .tickNumber {

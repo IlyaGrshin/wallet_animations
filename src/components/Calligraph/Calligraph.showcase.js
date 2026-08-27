@@ -90,9 +90,7 @@ const CalligraphShowcase = () => {
                             <Cell.Text type="Accent" title="Decrease" />
                         </Cell>
                         <Cell
-                            onClick={() =>
-                                setBalance(generateRandomBalance())
-                            }
+                            onClick={() => setBalance(generateRandomBalance())}
                         >
                             <Cell.Text type="Accent" title="Randomize" />
                         </Cell>
@@ -109,7 +107,6 @@ const CalligraphShowcase = () => {
                     <SectionList.Item header="Animation preset">
                         <div style={{ padding: "12px var(--side-padding)" }}>
                             <SegmentedControl
-                                type="circled"
                                 segments={ANIMATIONS}
                                 defaultIndex={animIdx}
                                 onChange={setAnimIdx}

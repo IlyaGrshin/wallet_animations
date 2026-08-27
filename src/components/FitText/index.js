@@ -6,6 +6,8 @@ import * as styles from "./FitText.module.scss"
 export default function FitText({
     children,
     minScale = 0.4,
+    fitHeight = false,
+    fill = 1,
     className,
     innerClassName,
 }) {
@@ -22,7 +24,15 @@ export default function FitText({
             const outerW = outer.clientWidth
             const innerW = inner.offsetWidth
             if (!outerW || !innerW) return
-            const next = Math.max(minScale, Math.min(1, outerW / innerW))
+            // `fill` caps how much of the container the content may occupy
+            let ratio = (fill * outerW) / innerW
+            if (fitHeight) {
+                const outerH = outer.clientHeight
+                const innerH = inner.offsetHeight
+                if (outerH && innerH)
+                    ratio = Math.min(ratio, (fill * outerH) / innerH)
+            }
+            const next = Math.max(minScale, Math.min(1, ratio))
             setScale((prev) => (Math.abs(prev - next) < 0.002 ? prev : next))
         }
 
@@ -31,7 +41,7 @@ export default function FitText({
         ro.observe(outer)
         ro.observe(inner)
         return () => ro.disconnect()
-    }, [minScale, children])
+    }, [minScale, fitHeight, fill, children])
 
     return (
         <div
@@ -54,6 +64,8 @@ export default function FitText({
 FitText.propTypes = {
     children: PropTypes.node.isRequired,
     minScale: PropTypes.number,
+    fitHeight: PropTypes.bool,
+    fill: PropTypes.number,
     className: PropTypes.string,
     innerClassName: PropTypes.string,
 }

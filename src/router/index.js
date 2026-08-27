@@ -4,7 +4,8 @@ import { Router, Switch, Route } from "wouter"
 import { useHashLocation } from "wouter/use-hash-location"
 import { useLocation } from "wouter"
 import PageTransition from "../components/PageTransition"
-import Spinner from "../components/Spinner"
+import { useFrozenLocation } from "../components/PageTransition/context"
+import PageSkeleton from "../components/PageSkeleton"
 import SkinSwitcher from "../components/SkinSwitcher"
 import ErrorBoundary from "../components/ErrorBoundary"
 import RouteErrorFallback from "./RouteErrorFallback"
@@ -15,11 +16,13 @@ import CatalogList from "../components/CatalogList"
 import useSplitView from "../hooks/useSplitView"
 
 import Page from "../components/Page"
+import AppBar from "../components/AppBar"
 import config from "../pages/config"
 import { flattenRoutes, isSplitEligible } from "../pages/configHelpers"
 import CatalogPage from "../pages/CatalogPage"
 
 const routes = flattenRoutes(config)
+const CATALOG_TITLE = "UI Prototype"
 
 function Redirect({ to }) {
     const [, navigate] = useLocation()
@@ -34,18 +37,38 @@ Redirect.propTypes = {
 }
 
 const Routes = () => {
-    const [location] = useLocation()
+    const [liveLocation] = useLocation()
+    // Inside PageTransition, match against the screen's frozen location: the
+    // exiting copy must keep rendering ITS route during the crossfade instead
+    // of snapping to the new one.
+    const location = useFrozenLocation() ?? liveLocation
     return (
         <ErrorBoundary fallback={<RouteErrorFallback />} resetKeys={[location]}>
-            <Switch>
-                <Route path="/" component={CatalogPage} />
-                {routes.map(({ path, component: Component }) => (
-                    <Route key={path} path={path}>
-                        <Suspense fallback={<Spinner centered size={48} />}>
-                            <Component />
-                        </Suspense>
-                    </Route>
-                ))}
+            <Switch location={location}>
+                <Route path="/">
+                    <AppBar title={CATALOG_TITLE} back={false} />
+                    <CatalogPage />
+                </Route>
+                {routes.map(
+                    ({
+                        path,
+                        component: Component,
+                        skeleton: Fallback,
+                        title,
+                        header,
+                    }) => (
+                        <Route key={path} path={path}>
+                            <AppBar title={title} header={header} />
+                            <Suspense
+                                fallback={
+                                    Fallback ? <Fallback /> : <PageSkeleton />
+                                }
+                            >
+                                <Component />
+                            </Suspense>
+                        </Route>
+                    )
+                )}
                 <Route>
                     <Redirect to="/" />
                 </Route>
@@ -61,7 +84,10 @@ function AppRoutes() {
 
     const stack = (contained) => (
         <>
-            <PageTransition contained={contained} bottomInset={showSkinSwitcher}>
+            <PageTransition
+                contained={contained}
+                bottomInset={showSkinSwitcher}
+            >
                 <Routes />
             </PageTransition>
             {showSkinSwitcher && <SkinSwitcher />}
@@ -84,6 +110,7 @@ function AppRoutes() {
             <Page mode="secondary" key={location} />
             <SplitView>
                 <SplitView.Sidebar>
+                    <AppBar title={CATALOG_TITLE} back={false} />
                     <CatalogList />
                 </SplitView.Sidebar>
                 <SplitView.Detail>

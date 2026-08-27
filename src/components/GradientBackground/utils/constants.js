@@ -8,5 +8,4 @@ export const DEFAULT_POSITIONS = [
 export const MAX_CANVAS_SIZE = 1920 * 1080
 export const RESIZE_DEBOUNCE_GRADIENT = 150
 export const RESIZE_DEBOUNCE_PATTERN = 300
-export const PATTERN_INITIAL_DELAY = 100
 export const DEVICE_PIXEL_RATIO_MAX = 2

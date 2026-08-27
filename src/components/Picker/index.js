@@ -3,18 +3,21 @@ import PropTypes from "prop-types"
 import * as styles from "./Picker.module.scss"
 
 import WebApp from "../../lib/twa"
+import { drumTransform } from "../../utils/drum"
 
 const Picker = ({ items, onPickerIndex }) => {
     const pickerRef = useRef(null)
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [scrollPosition, setScrollPosition] = useState(0)
     const [itemHeight, setItemHeight] = useState(34)
+    const [radius, setRadius] = useState(100)
     const [baseline, setBaseline] = useState(0)
     const ticking = useRef(false)
 
     useEffect(() => {
         if (pickerRef.current?.children.length > 0) {
             setItemHeight(pickerRef.current.children[0].offsetHeight)
+            setRadius(pickerRef.current.clientHeight / 2)
             setBaseline(pickerRef.current.scrollTop)
         }
     }, [])
@@ -68,22 +71,14 @@ const Picker = ({ items, onPickerIndex }) => {
                     const itemCoordinate =
                         -scrollPosition + baseline + index * itemHeight
 
-                    const radius = itemHeight * 3
-
-                    const itemDegree = Math.min(
-                        radius -
-                            Math.sqrt(
-                                Math.pow(radius, 2) -
-                                    Math.pow(itemCoordinate, 2)
-                            ),
-                        90
-                    )
+                    const transform = drumTransform(itemCoordinate, radius)
 
                     return (
                         <li
                             key={index}
                             style={{
-                                transform: `rotateX(${itemDegree}deg) translateZ(0px)`,
+                                transform: transform ?? undefined,
+                                visibility: transform ? undefined : "hidden",
                                 height: `${itemHeight}px`,
                             }}
                         >

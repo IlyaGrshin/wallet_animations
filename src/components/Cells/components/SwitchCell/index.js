@@ -1,5 +1,7 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
+import WebApp from "../../../../lib/twa"
+import { useSkin } from "../../../../hooks/DeviceProvider"
 import Cell from "../../index"
 import Switch from "../../../Switch"
 
@@ -12,6 +14,7 @@ const SwitchCell = ({
     disabled = false,
     ...props
 }) => {
+    const { isApple } = useSkin()
     const isControlled = value !== undefined
     const [uncontrolled, setUncontrolled] = useState(defaultValue)
     const checked = isControlled ? value : uncontrolled
@@ -27,6 +30,7 @@ const SwitchCell = ({
 
     const handleClick = () => {
         if (disabled) return
+        WebApp.HapticFeedback.selectionChanged()
         if (isControlled) {
             handleChange(!checked)
             return
@@ -52,6 +56,7 @@ const SwitchCell = ({
                 </Cell.Part>
             }
             onClick={handleClick}
+            tappable={!isApple}
             {...props}
         >
             {children}
