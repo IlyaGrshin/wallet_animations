@@ -4,7 +4,13 @@ import * as m from "motion/react-m"
 
 import * as styles from "./Tab.module.scss"
 
-const Lottie = lazy(() => import("lottie-react"))
+const Lottie = lazy(() => import("./lottieLight.js"))
+
+const settleAt = (lottie, frame) => {
+    lottie.resetSegments()
+    lottie.stop()
+    lottie.seek(frame)
+}
 
 const Tab = ({
     isActive,
@@ -34,44 +40,45 @@ const Tab = ({
         return (lottieIcon.op || 0) - (lottieIcon.ip || 0) + 1
     }, [lottieIcon])
 
+    const handleReady = () => {
+        const lottie = lottieRef.current
+        if (!lottie) return
+        settleAt(lottie, isActive ? activeFrame : 0)
+        wasActiveRef.current = isActive
+    }
+
+    const handleComplete = () => {
+        const lottie = lottieRef.current
+        if (!lottie || isActive) return
+        settleAt(lottie, 0)
+    }
+
     useEffect(() => {
         const lottie = lottieRef.current
         if (!showLottie || !lottie) return
 
-        const handleComplete = () => {
-            if (!isActive) lottie.goToAndStop?.(0, true)
-        }
-
-        lottie.addEventListener?.("complete", handleComplete)
-
         if (isActive && !wasActiveRef.current) {
-            // Activate: play from 0 to activeFrame
-            lottie.stop?.()
-            if (activeFrame > 0 && lottie.playSegments) {
-                lottie.playSegments([0, activeFrame], true)
+            lottie.resetSegments()
+            lottie.stop()
+            if (activeFrame > 0) {
+                lottie.playSegments([0, activeFrame])
             } else {
-                lottie.goToAndStop?.(activeFrame, true)
+                lottie.seek(activeFrame)
             }
             wasActiveRef.current = true
         } else if (!isActive && wasActiveRef.current) {
-            // Deactivate: play from activeFrame to end
-            if (activeFrame < totalFrames - 1 && lottie.playSegments) {
-                lottie.playSegments([activeFrame, totalFrames - 1], true)
+            lottie.resetSegments()
+            if (activeFrame < totalFrames - 1) {
+                lottie.playSegments([activeFrame, totalFrames - 1])
             } else {
-                lottie.goToAndStop?.(0, true)
+                lottie.seek(0)
             }
             wasActiveRef.current = false
         } else if (isActive) {
-            // Stay active: show activeFrame
-            lottie.stop?.()
-            lottie.goToAndStop?.(activeFrame, true)
+            settleAt(lottie, activeFrame)
         } else {
-            // Stay inactive: show frame 0
-            lottie.stop?.()
-            lottie.goToAndStop?.(0, true)
+            settleAt(lottie, 0)
         }
-
-        return () => lottie.removeEventListener?.("complete", handleComplete)
     }, [isActive, playKey, showLottie, activeFrame, totalFrames])
 
     return (
@@ -87,9 +94,11 @@ const Tab = ({
                     <Suspense fallback={icon || null}>
                         <Lottie
                             lottieRef={lottieRef}
-                            animationData={lottieIcon}
-                            autoplay={false}
-                            loop={false}
+                            src={lottieIcon}
+                            subscriptions={{
+                                ready: handleReady,
+                                complete: handleComplete,
+                            }}
                         />
                     </Suspense>
                 ) : (

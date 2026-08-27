@@ -3941,15 +3941,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lottie-react@npm:^2.4.2":
-  version: 2.4.2
-  resolution: "lottie-react@npm:2.4.2"
+"lottie-react@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "lottie-react@npm:3.1.0"
   dependencies:
     lottie-web: "npm:^5.13.0"
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/ef893073be335f8a1fc24fd49ab40db0a63722e6fd257c2d5f1e9b5853895cda708cd5293d8d6174fe0bf6057c09ca1762b21aacf193f71ef9b8a07fc02e41eb
+    react: ^18.2.0 || ^19.0.0
+    react-dom: ^18.2.0 || ^19.0.0
+  checksum: 10c0/501c06309c2e5ce2c3d445801d96359c68ca7ec6315f3c7c9c1be421716a548285c96b1915faf881bb4372b230a13ff47dcc4bda1ac12570ddb44a8b0a022766
   languageName: node
   linkType: hard
 
@@ -5843,7 +5843,7 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.5"
     eslint-plugin-react-hooks: "npm:^7.1.1"
     globals: "npm:^17.11.0"
-    lottie-react: "npm:^2.4.2"
+    lottie-react: "npm:^3.1.0"
     markdown-to-jsx: "npm:9"
     motion: "npm:^13.1.1"
     prettier: "npm:^3.9.6"

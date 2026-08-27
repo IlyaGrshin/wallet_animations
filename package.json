@@ -14,7 +14,7 @@
     "@tanstack/react-virtual": "^3.14.10",
     "calligraph": "^1.4.1",
     "colorthief": "^3.5.0",
-    "lottie-react": "^2.4.2",
+    "lottie-react": "^3.1.0",
     "markdown-to-jsx": "9",
     "motion": "^13.1.1",
     "react": "^19.2.8",
