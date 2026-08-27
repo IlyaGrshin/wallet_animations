@@ -18,7 +18,7 @@ const AppBar = ({ title, header = true, back = true }) => {
 
     return (
         <PanelHeader
-            sticky
+            pin={inDetailPane ? "sticky" : "fixed"}
             {...(showBack && {
                 left: <PanelHeader.BackIcon />,
                 onLeft: () => navigate("/"),

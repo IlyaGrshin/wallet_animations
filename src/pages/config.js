@@ -167,6 +167,19 @@ const config = [
                     () => import("../components/Snackbar/Snackbar.showcase")
                 ),
             },
+            {
+                title: "Gradient",
+                component: lazyWithPreload(
+                    () => import("../components/Gradient/Gradient.showcase")
+                ),
+            },
+            {
+                title: "Glass Effect",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/GlassEffect/GlassEffect.showcase")
+                ),
+            },
         ],
     },
     {

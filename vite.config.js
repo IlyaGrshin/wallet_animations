@@ -98,7 +98,6 @@ export default defineConfig(({ command }) => ({
   },
   resolve: {
     alias: {
-      'lottie-web': 'lottie-web/build/player/lottie_light',
       '@': srcPath,
       '@components': `${srcPath}/components`,
       '@hooks': `${srcPath}/hooks`,
