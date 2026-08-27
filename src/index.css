@@ -23,6 +23,11 @@
     --material-surface-shadow:
         0 1px 2px 0 rgb(0 0 0 / 8%),
         0 2px 16px 1px rgb(0 0 0 / 10%);
+
+    --glass-surface-shadow: 0 8px 48px 0 rgb(0 0 0 / 6%);
+    --glass-surface-contour: 0 0 0 0.5px rgb(0 0 0 / 14%);
+    --glass-tint-raised: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
+    --glass-surface-filter: blur(8px);
 }
 
 :root {
@@ -91,7 +96,7 @@ body.material {
         --background-material-regular-color-2: rgba(0, 0, 0, 0);
         --background-material-regular-blend-mode-1: normal;
         --background-material-regular-blend-mode-2: normal;
-        --glass-tint-background: rgb(255 255 255 / 0.05);
+        --glass-tint-background: rgb(153 153 153 / 17%);
     }
 }
 
@@ -152,7 +157,7 @@ body.material {
     --background-material-regular-color-2: rgba(0, 0, 0, 0);
     --background-material-regular-blend-mode-1: normal;
     --background-material-regular-blend-mode-2: normal;
-    --glass-tint-background: rgb(255 255 255 / 0.05);
+    --glass-tint-background: rgb(153 153 153 / 17%);
 }
 
 html, body {

@@ -41,8 +41,8 @@
         border-radius: 36px;
         padding: 16px;
         background: var(--glass-tint-background);
-        backdrop-filter: blur(8px);
-        box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+        backdrop-filter: var(--glass-surface-filter);
+        box-shadow: var(--glass-surface-shadow), var(--glass-surface-contour);
 
         @supports (-apple-visual-effect: -apple-system-glass-material) {
             -apple-visual-effect: -apple-system-glass-material;
