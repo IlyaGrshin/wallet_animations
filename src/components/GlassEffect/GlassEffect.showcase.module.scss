@@ -7,6 +7,7 @@
 .stage,
 .scroller {
     position: relative;
+    isolation: isolate;
     overflow: hidden;
 
     :global(body.apple) & {
@@ -36,12 +37,14 @@
     position: absolute;
     inset: 0;
     z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     pointer-events: none;
 }
 
 .panel {
     position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,7 +57,6 @@
 
 .overlayHost {
     position: relative;
-    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,7 +69,6 @@
 
 .rims {
     position: relative;
-    z-index: 1;
     display: flex;
     gap: 16px;
 }
@@ -116,7 +117,6 @@
 
 .scrollRow {
     position: relative;
-    z-index: 1;
 }
 
 .scroller .scrollBar {
@@ -124,7 +124,6 @@
     top: 0;
     right: 0;
     left: 0;
-    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;

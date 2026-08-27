@@ -4,26 +4,24 @@ import Page from "../Page"
 import SectionList from "../SectionList"
 import SectionHeader from "../SectionHeader"
 import Text from "../Text"
-import GradientBackground from "../GradientBackground"
+import Image from "../Image"
 import GlassContainer, { GlassBorder } from "../GlassEffect"
 
 import { BackButton } from "../../lib/twa"
 
-import patternSvg from "../../images/pattern.svg"
 import * as styles from "./GlassEffect.showcase.module.scss"
 
-const COLORS = ["#fbc2eb", "#a6c1ee", "#ffd3a5", "#8fd3f4"]
-const COLORS_DARK = ["#7028e4", "#e5b2ca", "#2b5876", "#4e4376"]
+const PICSUM = "https://picsum.photos"
+const wide = (slot) => `${PICSUM}/1200/400?random=${slot}`
+const tall = (slot) => `${PICSUM}/800/1600?random=${slot}`
 
-const Backdrop = () => (
-    <GradientBackground
-        colors={COLORS}
-        colorsDark={COLORS_DARK}
-        patternUrl={patternSvg}
-        patternIntensity={0.5}
-        className={styles.backdrop}
-    />
+const Backdrop = ({ src }) => (
+    <Image src={src} alt="" className={styles.backdrop} />
 )
+
+Backdrop.propTypes = {
+    src: PropTypes.string.isRequired,
+}
 
 const Demo = ({ title, footer, children }) => (
     <section data-header="" data-footer="">
@@ -41,14 +39,15 @@ Demo.propTypes = {
     children: PropTypes.node,
 }
 
-const Stage = ({ children }) => (
+const Stage = ({ src, children }) => (
     <div className={styles.stage}>
-        <Backdrop />
+        <Backdrop src={src} />
         {children}
     </div>
 )
 
 Stage.propTypes = {
+    src: PropTypes.string.isRequired,
     children: PropTypes.node,
 }
 
@@ -76,7 +75,7 @@ const GlassEffectShowcase = () => (
                     title="Surface"
                     footer="GlassContainer with children wraps them in a background, a shadow and a single rim."
                 >
-                    <Stage>
+                    <Stage src={wide(1)}>
                         <GlassContainer className={styles.panel}>
                             <Label>Glass surface</Label>
                         </GlassContainer>
@@ -87,7 +86,7 @@ const GlassEffectShowcase = () => (
                     title="Overlay"
                     footer="Without children it renders the bare layers, which fill the nearest positioned parent."
                 >
-                    <Stage>
+                    <Stage src={wide(2)}>
                         <div className={styles.overlayHost}>
                             <GlassContainer />
                             <Label>Overlay</Label>
@@ -99,7 +98,7 @@ const GlassEffectShowcase = () => (
                     title="Rim"
                     footer="A glass surface carries exactly one border. Pass muted inside an element that owns a backdrop-filter: the filter isolates blending, so the default overlay rim would turn into a stark white ring."
                 >
-                    <Stage>
+                    <Stage src={wide(3)}>
                         <div className={styles.rims}>
                             <div className={`${styles.rim} ${styles.rimPlain}`}>
                                 <GlassBorder />
@@ -122,7 +121,7 @@ const GlassEffectShowcase = () => (
                     <div className={styles.scroller}>
                         <div className={styles.scrollArea}>
                             <div className={styles.scrollContent}>
-                                <Backdrop />
+                                <Backdrop src={tall(4)} />
                                 {Array.from({ length: 12 }, (_, index) => (
                                     <div
                                         key={index}
