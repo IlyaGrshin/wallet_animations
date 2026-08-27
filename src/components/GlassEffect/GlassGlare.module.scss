@@ -1,0 +1,26 @@
+// Blends have nothing to read inside an isolating ancestor, where this would
+// flatten into a dark wash.
+:global([data-glass-isolated]) .glassGlare {
+    display: none;
+}
+
+.glassGlare {
+    --glass-glare-reach: 40px;
+    --glass-glare-blur: 20px;
+    --glass-glare-color: #282828;
+
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+
+    @supports (mix-blend-mode: plus-lighter) {
+        mix-blend-mode: plus-lighter;
+        box-shadow:
+            inset 0 var(--glass-glare-reach) var(--glass-glare-blur)
+                calc(-1 * var(--glass-glare-reach)) var(--glass-glare-color),
+            inset 0 calc(-1 * var(--glass-glare-reach)) var(--glass-glare-blur)
+                calc(-1 * var(--glass-glare-reach)) var(--glass-glare-color);
+    }
+}

@@ -23,6 +23,11 @@
     --material-surface-shadow:
         0 1px 2px 0 rgb(0 0 0 / 8%),
         0 2px 16px 1px rgb(0 0 0 / 10%);
+
+    --glass-surface-shadow: 0 8px 48px 0 rgb(0 0 0 / 6%);
+    --glass-surface-contour: 0 0 0 0.5px rgb(0 0 0 / 14%);
+    --glass-tint-raised: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
+    --glass-surface-filter: blur(8px);
 }
 
 :root {
