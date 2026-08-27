@@ -16,10 +16,7 @@ export const HEADER_BUTTON_VARIANTS = [
 ]
 
 // A glass action in the panel header: a text label (auto-sized pill) or an
-// icon (44x44 square). The childless GlassContainer supplies the whole glass
-// stack; the variants only retune its tokens. Where an ancestor isolates the
-// blends — a modal panel's clip-path, a filtered popover — that ancestor marks
-// itself `data-glass-isolated` and the layers step down on their own.
+// icon (44x44 square).
 const HeaderButton = ({
     children,
     onClick,
@@ -81,6 +78,7 @@ const HeaderButton = ({
             type="button"
             className={className}
             onClick={onClick}
+            {...(variant === "overlay" && { "data-color-scheme": "dark" })}
             {...rootProps}
         >
             {content}

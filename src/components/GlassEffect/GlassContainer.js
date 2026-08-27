@@ -4,22 +4,17 @@ import GlassBorder from "./GlassBorder"
 import GlassGlare from "./GlassGlare"
 
 /**
- * Frosted-glass surface: a tinted backdrop-filtered background, a shadow layer
- * that also carries the outer contour ring, a glare along the inside edges and
- * a single GlassBorder rim. With children it wraps them; with none it renders
- * overlay layers meant to fill a positioned parent. Do NOT wrap a scaling
- * element — put backdrop-filter on the scaled node itself (Safari drops the
- * filter mid-animation).
+ * Frosted-glass surface: tinted backdrop-filtered background, shadow carrying
+ * the contour ring, glare, and a single rim. With children it wraps them; with
+ * none it renders the layers into a positioned parent. Do NOT wrap a scaling
+ * element — backdrop-filter belongs on the scaled node (Safari drops it
+ * mid-animation).
  *
- * Retune it with tokens rather than by restyling the layers:
- * `--glass-tint-background`, `--glass-surface-filter`, `--glass-surface-shadow`,
- * `--glass-surface-contour`, `--glass-glare-*`.
- *
- * The blended layers (glare, rim) need to see the page to look right. An
- * ancestor owning a filter, clip-path or opacity confines them to its own
- * group, where they flatten into a dark wash and a stark white ring; such an
- * ancestor marks itself `data-glass-isolated` and the layers step down to their
- * blend-free forms on their own.
+ * Retune with tokens, never by restyling the layers: `--glass-tint-background`,
+ * `--glass-surface-filter`, `--glass-surface-shadow`, `--glass-surface-contour`,
+ * `--glass-glare-*`. An ancestor that isolates blending (filter, clip-path,
+ * opacity) marks itself `data-glass-isolated`, and the blended layers step down
+ * to their blend-free forms.
  * @example
  * <GlassContainer className={styles.bar}>{children}</GlassContainer>
  */

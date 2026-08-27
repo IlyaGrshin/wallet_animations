@@ -151,7 +151,6 @@ const PanelHeader = ({
         </div>
     )
 
-    // Fixed leaves the flow, so a spacer holds the bar's place in it.
     if (pin !== "fixed") return pinnedBar
 
     return (

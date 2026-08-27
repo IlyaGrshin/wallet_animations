@@ -5,9 +5,8 @@
     overflow: hidden;
     isolation: isolate;
 
-    // The 0.5px lip outside the pill, in the fill's own colour. Drawn with
-    // box-shadow spread (grows the corner radius correctly), so it survives
-    // the button's own overflow clip, which only cuts children.
+    // A child ring would be cut by the button's own overflow; its own shadow
+    // is not.
     background-color: var(--button-fill, transparent);
     box-shadow: 0 0 0 0.5px var(--button-fill, transparent);
 

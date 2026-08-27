@@ -12,6 +12,7 @@ $swap-duration: 0.2s;
     padding: 0;
     border: 0;
     border-radius: 22px;
+    background: none;
     font: inherit;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -27,8 +28,6 @@ $swap-duration: 0.2s;
     }
 }
 
-// Glass comes from the childless GlassContainer inside the button (see
-// HeaderButton.js); the variants only retune its tokens.
 .regular {
     --glass-tint-background: var(--glass-tint-raised);
 
@@ -39,12 +38,11 @@ $swap-duration: 0.2s;
     }
 }
 
-// Translucent glass for sitting over content; white glyph.
+// Over content: the button forces the dark palette on itself (HeaderButton.js)
+// rather than picking a colour of its own.
 .overlay {
-    --glass-tint-background: rgb(
-        from var(--tg-theme-section-bg-color) r g b / 10%
-    );
     --glass-surface-filter: blur(20px);
+    --glass-glare-color: transparent;
 
     color: var(--tg-theme-button-text-color);
 }

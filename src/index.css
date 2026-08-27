@@ -96,7 +96,7 @@ body.material {
         --background-material-regular-color-2: rgba(0, 0, 0, 0);
         --background-material-regular-blend-mode-1: normal;
         --background-material-regular-blend-mode-2: normal;
-        --glass-tint-background: rgb(255 255 255 / 0.05);
+        --glass-tint-background: rgb(153 153 153 / 17%);
     }
 }
 
@@ -157,7 +157,7 @@ body.material {
     --background-material-regular-color-2: rgba(0, 0, 0, 0);
     --background-material-regular-blend-mode-1: normal;
     --background-material-regular-blend-mode-2: normal;
-    --glass-tint-background: rgb(255 255 255 / 0.05);
+    --glass-tint-background: rgb(153 153 153 / 17%);
 }
 
 html, body {
