@@ -27,12 +27,12 @@ const PanelHeader = ({
     overlay = false,
     titleGlass = false,
     search,
-    sticky = false,
+    pin,
     children,
 }) => {
     const { isApple } = useSkin()
     const inModal = useContext(ModalChromeContext)
-    const [stickyRef, scrolled] = useScrolled(sticky)
+    const [stickyRef, scrolled] = useScrolled(Boolean(pin))
 
     // Over-content state: buttons default to the overlay glass and the title
     // goes white. Per-button variants still override.
@@ -140,15 +140,25 @@ const PanelHeader = ({
         </div>
     )
 
-    if (!sticky) return bar
+    if (!pin) return bar
 
-    return (
+    const pinnedBar = (
         <div
             ref={stickyRef}
-            className={`${styles.sticky} ${scrolled ? styles.scrolled : ""}`}
+            className={`${styles[pin]} ${scrolled ? styles.scrolled : ""}`}
         >
             {bar}
         </div>
+    )
+
+    // Fixed leaves the flow, so a spacer holds the bar's place in it.
+    if (pin !== "fixed") return pinnedBar
+
+    return (
+        <>
+            <div className={styles.spacer} aria-hidden="true" />
+            {pinnedBar}
+        </>
     )
 }
 
@@ -174,7 +184,7 @@ PanelHeader.propTypes = {
     overlay: PropTypes.bool,
     titleGlass: PropTypes.bool,
     search: PropTypes.node,
-    sticky: PropTypes.bool,
+    pin: PropTypes.oneOf(["sticky", "fixed"]),
     children: PropTypes.node,
 }
 
