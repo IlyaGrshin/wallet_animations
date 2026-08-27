@@ -4,7 +4,7 @@ import * as m from "motion/react-m"
 
 import * as styles from "./Tab.module.scss"
 
-const Lottie = lazy(() => import("./lottieLight.js"))
+const Lottie = lazy(() => import("@lib/lottie.js"))
 
 const settleAt = (lottie, frame) => {
     lottie.resetSegments()
