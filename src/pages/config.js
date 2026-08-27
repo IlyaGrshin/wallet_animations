@@ -173,6 +173,13 @@ const config = [
                     () => import("../components/Gradient/Gradient.showcase")
                 ),
             },
+            {
+                title: "Glass Effect",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/GlassEffect/GlassEffect.showcase")
+                ),
+            },
         ],
     },
     {

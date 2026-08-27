@@ -1,0 +1,134 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+}
+
+.stage,
+.scroller {
+    position: relative;
+    overflow: hidden;
+
+    :global(body.apple) & {
+        border-radius: 26px;
+    }
+
+    :global(body.material) & {
+        border-radius: 16px;
+    }
+}
+
+.stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+    padding: 16px;
+}
+
+.label {
+    position: relative;
+    z-index: 3;
+}
+
+.stage .backdrop,
+.scrollContent .backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.panel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    padding: 16px 24px;
+    border-radius: 20px;
+    color: rgb(255 255 255 / 92%);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 25%);
+}
+
+.overlayHost {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    border-radius: 28px;
+    color: rgb(255 255 255 / 92%);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 25%);
+}
+
+.rims {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 16px;
+}
+
+.rim {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 104px;
+    height: 96px;
+    border-radius: 24px;
+    color: rgb(255 255 255 / 92%);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 25%);
+}
+
+.rimPlain {
+    background: rgb(255 255 255 / 12%);
+}
+
+.rimFiltered {
+    background: var(--glass-tint-background);
+    backdrop-filter: blur(8px);
+}
+
+.scroller {
+    height: 220px;
+}
+
+.scrollArea {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.scrollContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 620px;
+    padding: 64px 20px 20px;
+    color: rgb(255 255 255 / 92%);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 25%);
+}
+
+.scrollRow {
+    position: relative;
+    z-index: 1;
+}
+
+.scroller .scrollBar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    color: rgb(255 255 255 / 92%);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 25%);
+}
