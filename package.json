@@ -27,6 +27,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "./deploy.sh",
+    "typecheck": "tsc --noEmit",
     "lint": "yarn lint:js && yarn lint:scss",
     "lint:js": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:scss": "stylelint 'src/**/*.scss'",

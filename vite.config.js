@@ -31,6 +31,7 @@ export default defineConfig(({ command, mode }) => ({
     command === 'serve' &&
       checker({
         overlay: { initialIsOpen: false },
+        typescript: true,
         eslint: {
           useFlatConfig: true,
           lintCommand: "eslint 'src/**/*.{js,jsx,ts,tsx}'"
