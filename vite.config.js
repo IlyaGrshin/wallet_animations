@@ -1,20 +1,32 @@
 import { defineConfig } from 'vite';
 import { fileURLToPath } from 'node:url';
-import react from '@vitejs/plugin-react';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
 import svgr from 'vite-plugin-svgr';
 import checker from 'vite-plugin-checker';
 import webpackStatsPlugin from 'rollup-plugin-webpack-stats';
 
 const srcPath = fileURLToPath(new URL('./src', import.meta.url));
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, mode }) => ({
   base: './',
   plugins: [
-    react({
-      include: /\.(jsx?|tsx?)$/,
-      babel: {
-        configFile: true
-      }
+    react(),
+    babel({
+      include: /src\/.*\.[jt]sx?$/,
+      // Babel runs plugins before presets, so the propTypes remover sees plain
+      // components: react-compiler rewrites them into a form it no longer
+      // matches, which would leave propTypes in the production bundle.
+      plugins:
+        mode === 'production'
+          ? [
+              [
+                'transform-react-remove-prop-types',
+                { removeImport: true, additionalLibraries: ['prop-types'] }
+              ]
+            ]
+          : [],
+      presets: [reactCompilerPreset()]
     }),
     command === 'serve' &&
       checker({
@@ -81,20 +93,11 @@ export default defineConfig(({ command }) => ({
       },
     })
   ],
-  esbuild: {
-    loader: 'jsx',
-    include: /src\/.*\.js$/
-  },
   optimizeDeps: {
     entries: 'index.html',
     // Only list deps that Vite can't statically discover (lazy-loaded via
     // dynamic import). Statically imported deps are auto-detected.
-    include: ['lottie-react', 'agentation'],
-    esbuildOptions: {
-      loader: {
-        '.js': 'jsx'
-      }
-    }
+    include: ['lottie-react', 'agentation']
   },
   resolve: {
     alias: {
@@ -135,15 +138,15 @@ export default defineConfig(({ command }) => ({
     open: false,
     warmup: {
       clientFiles: [
-        './src/index.js',
-        './src/App.js',
-        './src/router/index.js',
+        './src/index.jsx',
+        './src/App.jsx',
+        './src/router/index.jsx',
         './src/pages/config.js',
-        './src/pages/CatalogPage/index.js',
-        './src/components/PageTransition/index.js',
-        './src/components/Page/index.js',
-        './src/components/Text/index.js',
-        './src/components/Cells/index.js'
+        './src/pages/CatalogPage/index.jsx',
+        './src/components/PageTransition/index.jsx',
+        './src/components/Page/index.jsx',
+        './src/components/Text/index.jsx',
+        './src/components/Cells/index.jsx'
       ]
     }
   }

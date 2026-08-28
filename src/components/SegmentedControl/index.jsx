@@ -38,7 +38,7 @@ const SegmentedControl = ({
             {segments.map((segment, index) => (
                 <button
                     key={index}
-                    className={`${styles.segment} ${index === activeIndex ? styles.active : ""}`}
+                    className={styles.segment}
                     onClick={() => handleSegmentClick(index)}
                 >
                     <Text
