@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import * as styles from "./GlassBorder.module.scss"
 
 /**
@@ -15,9 +16,7 @@ import * as styles from "./GlassBorder.module.scss"
 const GlassBorder = ({ className = "", muted = false }) => {
     return (
         <div
-            className={`${styles.glassBorder} ${
-                muted ? styles.muted : ""
-            } ${className}`}
+            className={cx(styles.glassBorder, muted && styles.muted, className)}
             aria-hidden="true"
         />
     )

@@ -1,6 +1,7 @@
 import { useContext, useRef } from "react"
 import PropTypes from "prop-types"
 import { useSmoothCorners } from "@lisse/react"
+import cx from "clsx"
 import * as styles from "./SectionList.module.scss"
 import SectionHeader from "../../components/SectionHeader"
 import { SectionListContext } from "./context"
@@ -27,10 +28,7 @@ const SMOOTHING = 0.6 // Figma iOS squircle smoothing
 const SectionList = ({ children, type = "insetGrouped", ...props }) => {
     return (
         <SectionListContext.Provider value={type}>
-            <section
-                className={`${styles.root} ${styles[type] ?? ""}`}
-                {...props}
-            >
+            <section className={cx(styles.root, styles[type])} {...props}>
                 {children}
             </section>
         </SectionListContext.Provider>

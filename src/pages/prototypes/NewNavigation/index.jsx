@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
+import cx from "clsx"
 import WebApp, { BackButton } from "../../../lib/twa"
 import Page from "../../../components/Page"
 
@@ -112,9 +113,10 @@ function NewNavigation() {
                             {activeSegment === 0 && (
                                 <div
                                     ref={headerRef}
-                                    className={`${styles.searchHeader} ${
-                                        headerScrolled ? styles.scrolled : ""
-                                    }`}
+                                    className={cx(
+                                        styles.searchHeader,
+                                        headerScrolled && styles.scrolled
+                                    )}
                                 >
                                     <SearchHeader />
                                 </div>

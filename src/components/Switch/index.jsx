@@ -1,5 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 import WebApp from "../../lib/twa"
 import * as styles from "./Switch.module.scss"
 
@@ -49,11 +50,11 @@ function Switch({
         toggle()
     }
 
-    const cx = className ? `${styles.root} ${className}` : styles.root
+    const rootClass = cx(styles.root, className)
 
     return (
         <div
-            className={cx}
+            className={rootClass}
             data-state={checked}
             data-disabled={disabled || undefined}
             onClick={handleClick}

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import Text from "../index"
 import * as styles from "./Badge.module.scss"
 
@@ -44,7 +45,7 @@ const Badge = ({
         <Text
             apple={apple}
             material={material}
-            className={`${styles.badge} ${styles[variant]} ${className || ""}`}
+            className={cx(styles.badge, styles[variant], className)}
             style={badgeStyle}
             {...dynamicProps}
             {...textProps}

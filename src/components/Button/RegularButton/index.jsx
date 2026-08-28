@@ -1,5 +1,6 @@
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
+import cx from "clsx"
 
 import { GlassBorder } from "../../GlassEffect"
 import Tappable from "../../Tappable"
@@ -59,9 +60,12 @@ export const RegularButton = ({
     return (
         <Root
             ref={skeleton ? waveRef : undefined}
-            className={`${styles.button} ${styles[variant]} ${
-                skeleton ? styles.skeleton : ""
-            } ${redactionClassName}`}
+            className={cx(
+                styles.button,
+                styles[variant],
+                skeleton && styles.skeleton,
+                redactionClassName
+            )}
             {...tapProps}
             {...dynamicProps}
             {...props}

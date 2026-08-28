@@ -2,6 +2,7 @@ import { useEffect, useId, useRef } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { animate, useReducedMotion } from "motion/react"
+import cx from "clsx"
 import Text from "../Text"
 import { GlassContainer } from "../GlassEffect"
 
@@ -100,7 +101,7 @@ const Tabs = ({
                 ref={(el) => {
                     tabRefs.current[index] = el
                 }}
-                className={`${styles.tab} ${isActive ? styles.active : ""}`}
+                className={cx(styles.tab, isActive && styles.active)}
                 onClick={() => handleClick(index)}
             >
                 {isActive && (
@@ -120,10 +121,7 @@ const Tabs = ({
 
     if (isGlass) {
         return (
-            <div
-                className={`${styles.glassRoot} ${className || ""}`.trim()}
-                {...props}
-            >
+            <div className={cx(styles.glassRoot, className)} {...props}>
                 <GlassContainer />
                 <div
                     ref={rootRef}
@@ -141,7 +139,7 @@ const Tabs = ({
         <div
             ref={rootRef}
             role="tablist"
-            className={`${listClass} ${className || ""}`.trim()}
+            className={cx(listClass, className)}
             onKeyDown={handleKeyDown}
             {...props}
         >

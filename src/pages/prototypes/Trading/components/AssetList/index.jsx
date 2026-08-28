@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { Calligraph } from "calligraph"
+import cx from "clsx"
 
 import { formatPercentage, formatPrice } from "../../../../../utils/number"
 
@@ -43,7 +44,7 @@ const assetIcon = (asset) =>
 const Delta = ({ value }) => {
     const up = value >= 0
     return (
-        <span className={`${styles.delta} ${up ? styles.up : styles.down}`}>
+        <span className={cx(styles.delta, up ? styles.up : styles.down)}>
             {up ? "↑" : "↓"}
             <Calligraph variant="number" animation="smooth" autoSize={false}>
                 {formatPercentage(Math.abs(value))}

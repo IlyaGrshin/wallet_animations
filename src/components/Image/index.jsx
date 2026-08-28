@@ -1,5 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import * as styles from "./Image.module.scss"
 
@@ -28,7 +29,7 @@ export const Image = ({ className, onLoad, ...restProps }) => {
                 setIsLoaded(true)
                 onLoad?.(event)
             }}
-            className={`${styles.root} ${isLoaded ? styles.loaded : ""} ${className || ""}`}
+            className={cx(styles.root, isLoaded && styles.loaded, className)}
             {...restProps}
         />
     )

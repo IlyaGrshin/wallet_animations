@@ -1,6 +1,7 @@
 import { Children, createContext, isValidElement, useContext } from "react"
 import PropTypes from "prop-types"
 import MarkdownToJsx from "markdown-to-jsx"
+import cx from "clsx"
 
 import Text from "../Text"
 import SharedTable from "../Table"
@@ -14,9 +15,7 @@ function textTag(as, apple, material, className) {
             as={as}
             apple={apple}
             material={material}
-            className={
-                [className, incoming].filter(Boolean).join(" ") || undefined
-            }
+            className={cx(className, incoming) || undefined}
             {...props}
         >
             {children}
@@ -31,12 +30,7 @@ function textTag(as, apple, material, className) {
 
 function plainTag(Tag, className) {
     const Component = ({ children, className: incoming, ...props }) => (
-        <Tag
-            className={
-                [className, incoming].filter(Boolean).join(" ") || undefined
-            }
-            {...props}
-        >
+        <Tag className={cx(className, incoming) || undefined} {...props}>
             {children}
         </Tag>
     )
@@ -208,7 +202,7 @@ const MARKDOWN_OPTIONS = {
 const Markdown = ({ children, className }) => (
     <MarkdownToJsx
         options={MARKDOWN_OPTIONS}
-        className={[styles.root, className].filter(Boolean).join(" ")}
+        className={cx(styles.root, className)}
     >
         {children || ""}
     </MarkdownToJsx>

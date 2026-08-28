@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
+import cx from "clsx"
 import { POPOVER_VARIANTS } from "../../utils/animations"
 import Tappable from "../Tappable"
 import Text from "../Text"
@@ -24,7 +25,7 @@ const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
         tabIndex={-1}
         onClick={onClick}
         onMouseEnter={onMouseEnter}
-        className={`${styles.item} ${isSelected ? styles.selected : ""}`}
+        className={cx(styles.item, isSelected && styles.selected)}
     >
         <Text variant="body">{item}</Text>
     </Tappable>

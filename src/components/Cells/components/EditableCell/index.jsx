@@ -1,5 +1,6 @@
 import { forwardRef } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import Text from "../../../Text"
 import ClearAppleSVG from "../../../../images/clear_apple.svg?react"
@@ -15,9 +16,7 @@ const EditableCell = forwardRef(
             <Text
                 variant="body"
                 weight="regular"
-                className={[styles.root, !value && styles.empty]
-                    .filter(Boolean)
-                    .join(" ")}
+                className={cx(styles.root, !value && styles.empty)}
             >
                 <input
                     aria-label={label}
@@ -33,9 +32,7 @@ const EditableCell = forwardRef(
                 {onClear && (
                     <button
                         type="button"
-                        className={[styles.icon, styles.clearButtonIcon]
-                            .filter(Boolean)
-                            .join(" ")}
+                        className={cx(styles.icon, styles.clearButtonIcon)}
                         onClick={onClear}
                     >
                         <ClearAppleSVG />

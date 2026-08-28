@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import Text from "../Text"
 import * as styles from "./Table.module.scss"
@@ -7,7 +8,7 @@ const Table = ({ head = null, rows, align = [], className }) => {
     const cellStyle = (i) => (align[i] ? { textAlign: align[i] } : undefined)
 
     return (
-        <div className={[styles.wrap, className].filter(Boolean).join(" ")}>
+        <div className={cx(styles.wrap, className)}>
             <div className={styles.scroll}>
                 <table className={styles.table}>
                     {head ? (

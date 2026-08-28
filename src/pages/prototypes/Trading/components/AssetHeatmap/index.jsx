@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import Text from "../../../../../components/Text"
 import SectionList from "../../../../../components/SectionList"
@@ -13,8 +14,6 @@ import useAssets from "../../../../../hooks/useAssets"
 import { squarify } from "./treemap"
 
 import * as styles from "./AssetHeatmap.module.scss"
-
-const cx = (...classes) => classes.filter(Boolean).join(" ")
 
 const MAP_ASPECT = 1074 / 743
 const TOP_COUNT = 25

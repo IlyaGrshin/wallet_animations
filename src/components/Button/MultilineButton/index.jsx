@@ -1,5 +1,6 @@
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
+import cx from "clsx"
 import Tappable from "../../Tappable"
 import Text from "../../Text"
 import Skeleton, {
@@ -43,9 +44,12 @@ export function MultilineButton({ variant, icon, label, style, ...props }) {
     return (
         <Root
             ref={skeleton ? waveRef : undefined}
-            className={`${styles.button} ${styles[variant]} ${
-                skeleton ? styles.skeleton : ""
-            } ${redactionClassName}`}
+            className={cx(
+                styles.button,
+                styles[variant],
+                skeleton && styles.skeleton,
+                redactionClassName
+            )}
             {...tapProps}
             style={style}
             {...props}

@@ -1,5 +1,6 @@
 import { forwardRef } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import { useSkin } from "../../hooks/DeviceProvider"
 import { useSkeletonContext, useRedactionClassName, waveRef } from "../Skeleton"
@@ -23,11 +24,12 @@ const ImageAvatar = forwardRef(
                         ref.current = node
                     }
                 }}
-                className={`
-                    ${shape === "circle" ? styles.shapeCircle : ""}
-                    ${shape === "rounded" ? styles.shapeRounded : ""}
-                    ${redactionClassName}
-                    ${className || ""}`}
+                className={cx(
+                    shape === "circle" && styles.shapeCircle,
+                    shape === "rounded" && styles.shapeRounded,
+                    redactionClassName,
+                    className
+                )}
                 style={{
                     width: resolvedSize,
                     height: resolvedSize,
@@ -36,7 +38,7 @@ const ImageAvatar = forwardRef(
             >
                 <Image
                     src={src}
-                    className={`${styles.img} ${redacted ? styles.imgRedacted : ""}`}
+                    className={cx(styles.img, redacted && styles.imgRedacted)}
                 />
             </div>
         )

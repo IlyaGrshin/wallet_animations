@@ -1,5 +1,6 @@
 import { useSkin } from "../../hooks/DeviceProvider"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import { useSkeletonContext, useRedactionClassName, waveRef } from "../Skeleton"
 import { isUnicode } from "../../utils/common"
@@ -34,7 +35,7 @@ const InitialsAvatar = ({ size = 40, userId, name }) => {
     return (
         <div
             ref={redacted ? waveRef : undefined}
-            className={`${styles.root} ${redactionClassName}`}
+            className={cx(styles.root, redactionClassName)}
             style={{
                 width: size,
                 height: size,
@@ -43,7 +44,10 @@ const InitialsAvatar = ({ size = 40, userId, name }) => {
             }}
         >
             <div
-                className={`${styles.initials} ${redacted ? styles.hiddenInitials : ""}`}
+                className={cx(
+                    styles.initials,
+                    redacted && styles.hiddenInitials
+                )}
             >
                 {isUnicode(firstName.charAt(0)) &&
                     firstName.charAt(0).toLocaleUpperCase()}

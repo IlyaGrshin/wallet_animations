@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { Calligraph } from "calligraph"
+import cx from "clsx"
 import * as styles from "./Wheel.module.scss"
 
 import Tick from "./Tick"
@@ -81,10 +82,10 @@ const Wheel = ({
         action()
     }
 
-    const cx = className ? `${styles.root} ${className}` : styles.root
+    const rootClass = cx(styles.root, className)
 
     return (
-        <div className={cx} data-disabled={disabled || undefined}>
+        <div className={rootClass} data-disabled={disabled || undefined}>
             <div className={styles.header}>
                 <m.button
                     className={styles.button}
