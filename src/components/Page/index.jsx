@@ -85,7 +85,7 @@ const Page = ({
     return <>{children}</>
 }
 
-Page.propTypes = {
+Page.propTypes /* remove-proptypes */ = {
     children: PropTypes.node,
     mode: PropTypes.oneOf(["primary", "secondary"]),
     headerColor: PropTypes.string,

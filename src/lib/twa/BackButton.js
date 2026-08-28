@@ -19,7 +19,7 @@ const BackButton = ({ onClick }) => {
     return null
 }
 
-BackButton.propTypes = {
+BackButton.propTypes /* remove-proptypes */ = {
     onClick: PropTypes.func,
 }
 

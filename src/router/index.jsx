@@ -32,7 +32,7 @@ function Redirect({ to }) {
     return null
 }
 
-Redirect.propTypes = {
+Redirect.propTypes /* remove-proptypes */ = {
     to: PropTypes.string,
 }
 

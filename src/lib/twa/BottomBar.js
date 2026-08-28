@@ -15,7 +15,7 @@ const BottomBar = ({ color }) => {
     return null
 }
 
-BottomBar.propTypes = {
+BottomBar.propTypes /* remove-proptypes */ = {
     color: PropTypes.string.isRequired,
 }
 
