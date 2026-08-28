@@ -1,20 +1,12 @@
-import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
-import { createPortal } from "react-dom"
+import { FloatingPortal } from "@floating-ui/react"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 
 import { POPOVER_VARIANTS } from "../../utils/animations"
 import TooltipBody from "./TooltipBody"
-import { useClickOutside, useTooltipPosition } from "./tooltipUtils"
-import { useHoverToggle } from "./useHoverToggle"
-import {
-    TAIL_WIDTH_VERTICAL,
-    TAIL_WIDTH_HORIZONTAL,
-    TAIL_HEIGHT_REGULAR,
-    TAIL_HEIGHT_COMPACT,
-    buildClipPath,
-} from "./tooltipPath"
+import { useTooltipFloating } from "./useTooltipFloating"
+import { TAIL_HEIGHT_COMPACT, TAIL_HEIGHT_REGULAR } from "./tooltipPath"
 
 import * as styles from "./Tooltip.module.scss"
 
@@ -38,155 +30,50 @@ const Tooltip = ({
     placement = "auto",
     children,
 }) => {
-    const [isOpen, setIsOpen] = useState(false)
-    const triggerRef = useRef(null)
-    const tooltipRef = useRef(null)
-    const animatedTooltipRef = useRef(null)
-
     const compact = type === "compact"
-    const tailHeight = compact ? TAIL_HEIGHT_COMPACT : TAIL_HEIGHT_REGULAR
 
-    const { position, isPositioned, resetPosition } = useTooltipPosition(
+    const {
         isOpen,
-        triggerRef,
-        tooltipRef,
-        TAIL_WIDTH_VERTICAL,
-        TAIL_WIDTH_HORIZONTAL,
-        tailHeight,
-        placement
-    )
-
-    const openTooltip = () => {
-        setIsOpen(true)
-        resetPosition()
-    }
-
-    const closeTooltip = () => {
-        setIsOpen(false)
-        resetPosition()
-    }
-
-    const { onPointerEnter, onPointerLeave, clearOpenTimer, clearCloseTimer } =
-        useHoverToggle({ onOpen: openTooltip, onClose: closeTooltip })
-
-    const toggleTooltip = () => {
-        clearOpenTimer()
-        clearCloseTimer()
-        setIsOpen((prev) => !prev)
-        resetPosition()
-    }
-
-    useClickOutside(
-        isOpen,
-        closeTooltip,
-        triggerRef,
-        tooltipRef,
-        animatedTooltipRef
-    )
-
-    useEffect(() => {
-        if (!isOpen) return
-        const handleKeyDown = (e) => {
-            if (e.key === "Escape") {
-                e.preventDefault()
-                closeTooltip()
-                triggerRef.current?.focus()
-            }
-        }
-        document.addEventListener("keydown", handleKeyDown)
-        return () => document.removeEventListener("keydown", handleKeyDown)
-    }, [isOpen, closeTooltip])
-
-    const handleTriggerKeyDown = (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault()
-            toggleTooltip()
-        }
-    }
-
-    const isHorizontal =
-        position.placement === "left" || position.placement === "right"
-    const tailBreadth = isHorizontal
-        ? TAIL_WIDTH_HORIZONTAL
-        : TAIL_WIDTH_VERTICAL
-
-    const shellStyle = isPositioned
-        ? {
-              position: "fixed",
-              top: position.top,
-              left: position.left,
-              transformOrigin: `${position.originX} ${position.originY}`,
-              zIndex: 1000,
-              paddingTop:
-                  position.placement === "bottom" ? position.tailProtrusion : 0,
-              paddingBottom:
-                  position.placement === "top" ? position.tailProtrusion : 0,
-              paddingLeft:
-                  position.placement === "right" ? position.tailProtrusion : 0,
-              paddingRight:
-                  position.placement === "left" ? position.tailProtrusion : 0,
-              clipPath: buildClipPath({
-                  width: position.width,
-                  height: position.height,
-                  tailOffsetX: position.tailOffsetX,
-                  tailOffsetY: position.tailOffsetY,
-                  tailBreadth,
-                  tailProtrusion: position.tailProtrusion,
-                  placement: position.placement,
-                  shape: position.shape,
-              }),
-          }
-        : null
+        isPositioned,
+        setReference,
+        setFloating,
+        floatingStyles,
+        shellStyle,
+        getReferenceProps,
+        getFloatingProps,
+    } = useTooltipFloating({
+        placement,
+        protrusion: compact ? TAIL_HEIGHT_COMPACT : TAIL_HEIGHT_REGULAR,
+    })
 
     return (
         <span className={styles.container}>
             <span
+                ref={setReference}
                 className={styles.trigger}
-                onClick={toggleTooltip}
-                onKeyDown={handleTriggerKeyDown}
-                onPointerEnter={onPointerEnter}
-                onPointerLeave={onPointerLeave}
-                ref={triggerRef}
                 role="button"
                 tabIndex={0}
                 aria-expanded={isOpen}
-                aria-haspopup="dialog"
+                {...getReferenceProps()}
             >
                 {children}
             </span>
-            {createPortal(
-                <>
-                    {isOpen && !isPositioned && (
+            <FloatingPortal>
+                <AnimatePresence>
+                    {isOpen && (
                         <div
-                            ref={tooltipRef}
-                            className={styles.shell}
-                            style={{
-                                position: "fixed",
-                                top: 0,
-                                left: 0,
-                                visibility: "hidden",
-                                zIndex: 1000,
-                            }}
+                            key="tooltip"
+                            ref={setFloating}
+                            className={styles.positioner}
+                            style={floatingStyles}
+                            {...getFloatingProps()}
                         >
-                            <TooltipBody
-                                content={content}
-                                badge={badge}
-                                compact={compact}
-                            />
-                        </div>
-                    )}
-                    <AnimatePresence>
-                        {isOpen && isPositioned && (
                             <m.div
-                                ref={animatedTooltipRef}
-                                role="tooltip"
                                 className={styles.shell}
                                 initial="hidden"
-                                animate="visible"
+                                animate={isPositioned ? "visible" : "hidden"}
                                 exit="exit"
                                 variants={POPOVER_VARIANTS}
-                                onPointerEnter={onPointerEnter}
-                                onPointerLeave={onPointerLeave}
                                 style={shellStyle}
                             >
                                 <TooltipBody
@@ -195,11 +82,10 @@ const Tooltip = ({
                                     compact={compact}
                                 />
                             </m.div>
-                        )}
-                    </AnimatePresence>
-                </>,
-                document.body
-            )}
+                        </div>
+                    )}
+                </AnimatePresence>
+            </FloatingPortal>
         </span>
     )
 }

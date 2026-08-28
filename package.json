@@ -9,6 +9,7 @@
   },
   "homepage": ".",
   "dependencies": {
+    "@floating-ui/react": "^0.27.20",
     "@lisse/core": "0.7.2",
     "@lisse/react": "^0.7.2",
     "@tanstack/react-virtual": "^3.14.10",

@@ -1,45 +1,17 @@
 import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
-import { createPortal } from "react-dom"
+import { FloatingFocusManager, FloatingPortal } from "@floating-ui/react"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
+
 import { POPOVER_VARIANTS } from "../../utils/animations"
-import Tappable from "../Tappable"
-import Text from "../Text"
+import MenuItem from "./MenuItem"
+import { useDropdownFloating } from "./useDropdownFloating"
 import { GlassBorder } from "../GlassEffect"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { useSplitViewContext } from "../SplitView/context"
-import {
-    useClickOutside,
-    useDropdownPosition,
-    getViewportBounds,
-} from "./dropdownUtils"
 
 import * as styles from "./DropdownMenu.module.scss"
-
-const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
-    <Tappable
-        ref={itemRef}
-        role="menuitem"
-        tabIndex={-1}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        className={`${styles.item} ${isSelected ? styles.selected : ""}`}
-    >
-        <Text variant="body">{item}</Text>
-    </Tappable>
-)
-
-MenuItem.propTypes = {
-    item: PropTypes.string,
-    isSelected: PropTypes.bool,
-    onClick: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    itemRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.any }),
-    ]),
-}
 
 /**
  * Portal-rendered menu with keyboard nav (arrows / Enter / Esc) and edge-aware
@@ -54,196 +26,112 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
     const { isApple } = useSkin()
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
-    const [activeIndex, setActiveIndex] = useState(-1)
-    const buttonRef = useRef(null)
-    const dropdownRef = useRef(null)
-    const animatedDropdownRef = useRef(null)
-    const itemRefs = useRef([])
-    const activeIndexRef = useRef(activeIndex)
+    const [activeIndex, setActiveIndex] = useState(null)
+    const listRef = useRef([])
 
+    // Menus inside a SplitView detail pane stay within that pane's rect.
     const { paneRef } = useSplitViewContext()
-    const getBounds = () => {
-        const el = paneRef?.current
-        if (!el) return getViewportBounds()
-        const { left, top, right, bottom } = el.getBoundingClientRect()
-        return { left, top, right, bottom }
-    }
 
-    const { position, isPositioned, resetPosition } = useDropdownPosition(
+    const selectedIndex = items.indexOf(selectedItem)
+    const {
+        setReference,
+        setFloating,
+        floatingStyles,
+        context,
+        isPositioned,
+        origin,
+        getReferenceProps,
+        getFloatingProps,
+        getItemProps,
+    } = useDropdownFloating({
         isOpen,
-        buttonRef,
-        dropdownRef,
-        getBounds
-    )
-
-    useEffect(() => {
-        activeIndexRef.current = activeIndex
-    }, [activeIndex])
+        setIsOpen,
+        activeIndex,
+        setActiveIndex,
+        selectedIndex: selectedIndex < 0 ? null : selectedIndex,
+        listRef,
+        getBoundary: () => paneRef?.current,
+    })
 
     useEffect(() => {
         if (!items.includes(selectedItem)) setSelectedItem(items[0])
     }, [items, selectedItem])
 
-    const closeDropdown = () => {
-        setIsOpen(false)
-        resetPosition()
-        setActiveIndex(-1)
-    }
-
-    const toggleDropdown = () => {
-        setIsOpen((prev) => !prev)
-        resetPosition()
-        setActiveIndex(-1)
-    }
-
     const handleSelectItem = (item) => {
         setSelectedItem(item)
         if (onChange) onChange(item)
         setIsOpen(false)
-        resetPosition()
-        setActiveIndex(-1)
-        buttonRef.current?.focus()
-    }
-
-    useClickOutside(
-        isOpen,
-        closeDropdown,
-        buttonRef,
-        dropdownRef,
-        animatedDropdownRef
-    )
-
-    useEffect(() => {
-        if (!isOpen || !isPositioned) return
-        const idx = Math.max(0, items.indexOf(selectedItem))
-        setActiveIndex(idx)
-        itemRefs.current[idx]?.focus()
-    }, [isOpen, isPositioned])
-
-    useEffect(() => {
-        if (!isOpen) return
-        const handleKeyDown = (e) => {
-            if (e.key === "Escape") {
-                e.preventDefault()
-                closeDropdown()
-                buttonRef.current?.focus()
-                return
-            }
-            if (e.key === "ArrowDown") {
-                e.preventDefault()
-                setActiveIndex((prev) => {
-                    const base = prev < 0 ? -1 : prev
-                    const next = (base + 1 + items.length) % items.length
-                    itemRefs.current[next]?.focus()
-                    return next
-                })
-                return
-            }
-            if (e.key === "ArrowUp") {
-                e.preventDefault()
-                setActiveIndex((prev) => {
-                    const base = prev < 0 ? 0 : prev
-                    const next = (base - 1 + items.length) % items.length
-                    itemRefs.current[next]?.focus()
-                    return next
-                })
-                return
-            }
-            if (e.key === "Enter" || e.key === " ") {
-                const current = activeIndexRef.current
-                if (current < 0) return
-                e.preventDefault()
-                handleSelectItem(items[current])
-            }
-        }
-        document.addEventListener("keydown", handleKeyDown)
-        return () => document.removeEventListener("keydown", handleKeyDown)
-    }, [isOpen, items, closeDropdown, handleSelectItem])
-
-    const handleButtonKeyDown = (e) => {
-        if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
-            e.preventDefault()
-            if (!isOpen) toggleDropdown()
-        }
     }
 
     return (
         <div className={styles.container}>
             <div
+                ref={setReference}
                 className={trigger ? styles.trigger : styles.selected}
-                onClick={toggleDropdown}
-                onKeyDown={handleButtonKeyDown}
-                ref={buttonRef}
                 role="button"
                 tabIndex={0}
-                aria-haspopup="menu"
-                aria-expanded={isOpen}
+                {...getReferenceProps()}
             >
                 {trigger ?? selectedItem}
             </div>
-            {createPortal(
-                <>
-                    {isOpen && !isPositioned && (
-                        <div
-                            ref={dropdownRef}
-                            className={styles.root}
-                            style={{
-                                position: "fixed",
-                                top: position.top,
-                                left: position.left,
-                                visibility: "hidden",
-                                pointerEvents: "none",
-                                zIndex: 1000,
-                            }}
+            <FloatingPortal>
+                <AnimatePresence>
+                    {isOpen && (
+                        // List navigation owns focus: it lands on the
+                        // selected item, so the manager must not claim it.
+                        <FloatingFocusManager
+                            key="menu"
+                            context={context}
+                            modal={false}
+                            initialFocus={-1}
                         >
-                            {items.map((item, index) => (
-                                <MenuItem
-                                    key={index}
-                                    item={item}
-                                    isSelected={false}
-                                />
-                            ))}
-                        </div>
-                    )}
-                    <AnimatePresence>
-                        {isOpen && isPositioned && (
-                            <m.div
-                                ref={animatedDropdownRef}
-                                role="menu"
-                                className={styles.root}
-                                initial="hidden"
-                                animate="visible"
-                                exit="exit"
-                                variants={POPOVER_VARIANTS}
-                                style={{
-                                    position: "fixed",
-                                    top: position.top,
-                                    left: position.left,
-                                    transformOrigin: `${position.originX} ${position.originY}`,
-                                    zIndex: 1000,
-                                }}
+                            <div
+                                ref={setFloating}
+                                className={styles.positioner}
+                                style={floatingStyles}
+                                {...getFloatingProps()}
                             >
-                                {isApple && <GlassBorder muted />}
-                                {items.map((item, index) => (
-                                    <MenuItem
-                                        key={index}
-                                        item={item}
-                                        isSelected={item === selectedItem}
-                                        onClick={() => handleSelectItem(item)}
-                                        onMouseEnter={() =>
-                                            setActiveIndex(index)
-                                        }
-                                        itemRef={(el) => {
-                                            itemRefs.current[index] = el
-                                        }}
-                                    />
-                                ))}
-                            </m.div>
-                        )}
-                    </AnimatePresence>
-                </>,
-                document.body
-            )}
+                                <m.div
+                                    className={styles.root}
+                                    initial="hidden"
+                                    animate={
+                                        isPositioned ? "visible" : "hidden"
+                                    }
+                                    exit="exit"
+                                    variants={POPOVER_VARIANTS}
+                                    style={{ transformOrigin: origin }}
+                                >
+                                    {isApple && <GlassBorder muted />}
+                                    {items.map((item, index) => (
+                                        <MenuItem
+                                            key={item}
+                                            item={item}
+                                            isSelected={item === selectedItem}
+                                            itemRef={(el) => {
+                                                listRef.current[index] = el
+                                            }}
+                                            tabIndex={-1}
+                                            {...getItemProps({
+                                                onClick: () =>
+                                                    handleSelectItem(item),
+                                                onKeyDown: (event) => {
+                                                    if (
+                                                        event.key !== "Enter" &&
+                                                        event.key !== " "
+                                                    )
+                                                        return
+                                                    event.preventDefault()
+                                                    handleSelectItem(item)
+                                                },
+                                            })}
+                                        />
+                                    ))}
+                                </m.div>
+                            </div>
+                        </FloatingFocusManager>
+                    )}
+                </AnimatePresence>
+            </FloatingPortal>
         </div>
     )
 }
