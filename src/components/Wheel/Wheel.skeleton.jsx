@@ -1,3 +1,4 @@
+import cx from "clsx"
 import Page from "../Page"
 import SectionList from "../SectionList"
 import Cell from "../Cells"
@@ -13,9 +14,7 @@ const SECTIONS = [
 ]
 
 // `styles.block` carries the shared shimmer fill; the second class its shape.
-const block = (shape) => (
-    <SkeletonBlock className={`${styles.block} ${shape}`} />
-)
+const block = (shape) => <SkeletonBlock className={cx(styles.block, shape)} />
 
 // Mirrors one Wheel: the Min/Max header buttons, the large current value and
 // the 140px tick strip with its centered indicator.

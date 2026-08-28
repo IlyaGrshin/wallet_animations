@@ -1,5 +1,6 @@
 import { useRef, Activity } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import { useColorScheme } from "../../hooks/useColorScheme"
 import { useGradientCanvas } from "./hooks/useGradientCanvas"
@@ -77,7 +78,7 @@ function GradientBackground({
     return (
         <div
             ref={containerRef}
-            className={`${styles.root} ${className}`}
+            className={cx(styles.root, className)}
             style={restStyle}
             {...otherRestProps}
         >
@@ -97,9 +98,11 @@ function GradientBackground({
             <Activity mode={patternUrl ? "visible" : "hidden"}>
                 <canvas
                     ref={patternCanvasRef}
-                    className={`${styles.canvas} ${styles.patternCanvas} ${
-                        !activeIsDarkPattern ? styles.blend : ""
-                    }`}
+                    className={cx(
+                        styles.canvas,
+                        styles.patternCanvas,
+                        !activeIsDarkPattern && styles.blend
+                    )}
                     style={
                         patternOpacity !== null
                             ? {

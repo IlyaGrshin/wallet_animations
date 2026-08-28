@@ -13,6 +13,7 @@
     "@lisse/react": "^0.7.2",
     "@tanstack/react-virtual": "^3.14.10",
     "calligraph": "^1.4.1",
+    "clsx": "^2.1.1",
     "colorthief": "^3.5.0",
     "lottie-react": "^3.1.0",
     "markdown-to-jsx": "9",

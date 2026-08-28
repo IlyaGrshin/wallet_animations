@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { Calligraph } from "calligraph"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
+import cx from "clsx"
 
 import Train from "../../../../../components/Train"
 import Text from "../../../../../components/Text"
@@ -70,11 +71,7 @@ export default function BalanceCard({
         variant === "overlay" ? styles.cardOverlay : styles.cardDefault
 
     return (
-        <div
-            className={[styles.card, variantClass, className]
-                .filter(Boolean)
-                .join(" ")}
-        >
+        <div className={cx(styles.card, variantClass, className)}>
             <div className={styles.data}>
                 <Text
                     variant="subheadline2"

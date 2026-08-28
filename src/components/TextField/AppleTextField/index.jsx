@@ -1,5 +1,6 @@
 import { forwardRef } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import AppleText from "../../Text/AppleText"
 import TextArea from "../TextArea"
@@ -34,15 +35,13 @@ export const AppleTextField = forwardRef(
             <AppleText
                 variant="body"
                 weight={type === "search" ? "medium" : "regular"}
-                className={[
+                className={cx(
                     styles.root,
                     className,
                     (type === "text" || type === "password") && styles.text,
                     type === "search" && styles.search,
-                    !value && styles.empty,
-                ]
-                    .filter(Boolean)
-                    .join(" ")}
+                    !value && styles.empty
+                )}
                 style={{ "--input-bg-color": BackgroundColor[backgroundColor] }}
             >
                 {rest.multiline ? (
@@ -75,18 +74,14 @@ export const AppleTextField = forwardRef(
                 )}
                 {type === "search" && (
                     <SearchAppleSVG
-                        className={[styles.icon, styles.searchIcon]
-                            .filter(Boolean)
-                            .join(" ")}
+                        className={cx(styles.icon, styles.searchIcon)}
                     />
                 )}
 
                 {onClear && (
                     <button
                         type="button"
-                        className={[styles.icon, styles.clearButtonIcon]
-                            .filter(Boolean)
-                            .join(" ")}
+                        className={cx(styles.icon, styles.clearButtonIcon)}
                         onMouseDown={(event) => event.preventDefault()}
                         onClick={onClear}
                     >

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import Text from "../Text"
 
@@ -6,13 +7,11 @@ import * as styles from "./Tooltip.module.scss"
 
 const TooltipBody = ({ content, badge, compact }) => (
     <div
-        className={[
+        className={cx(
             styles.body,
-            compact ? styles.compact : "",
-            badge && !compact ? styles.withBadge : "",
-        ]
-            .filter(Boolean)
-            .join(" ")}
+            compact && styles.compact,
+            badge && !compact && styles.withBadge
+        )}
     >
         {badge && !compact && (
             <span className={styles.badge}>

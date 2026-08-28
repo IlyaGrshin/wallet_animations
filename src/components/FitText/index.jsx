@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import * as styles from "./FitText.module.scss"
 
@@ -44,15 +45,10 @@ export default function FitText({
     }, [minScale, fitHeight, fill, children])
 
     return (
-        <div
-            ref={outerRef}
-            className={[styles.outer, className].filter(Boolean).join(" ")}
-        >
+        <div ref={outerRef} className={cx(styles.outer, className)}>
             <div
                 ref={innerRef}
-                className={[styles.inner, innerClassName]
-                    .filter(Boolean)
-                    .join(" ")}
+                className={cx(styles.inner, innerClassName)}
                 style={{ transform: `scale(${scale})` }}
             >
                 {children}

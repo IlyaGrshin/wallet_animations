@@ -1,5 +1,6 @@
 import { useId } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import * as styles from "../../TabBar.module.scss"
 
@@ -34,7 +35,7 @@ function GradientMask({
             viewBox={`0 0 ${overlayWidth} ${overlayHeight}`}
             preserveAspectRatio="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={[styles.gradient, className].filter(Boolean).join(" ")}
+            className={cx(styles.gradient, className)}
             style={{
                 "--overlay-padding-x": `${overlayPaddingX}px`,
                 "--overlay-padding-y": `${overlayPaddingY}px`,

@@ -1,5 +1,6 @@
 import { isValidElement, useContext, useState } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import { GlassContainer } from "../GlassEffect"
 import Text from "../Text"
@@ -58,11 +59,11 @@ const PanelHeader = ({
 
     const renderSide = ({ action, onClick, variant, trailing, exits }) => (
         <div
-            className={`${styles.side} ${trailing ? styles.trailing : ""} ${
-                (trailing ? materialSearch : appleSearch)
-                    ? styles.collapsing
-                    : ""
-            }`}
+            className={cx(
+                styles.side,
+                trailing && styles.trailing,
+                (trailing ? materialSearch : appleSearch) && styles.collapsing
+            )}
             {...(searchFocused && {
                 onMouseDown: (event) => event.preventDefault(),
             })}
@@ -94,9 +95,12 @@ const PanelHeader = ({
 
     const bar = (
         <div
-            className={`${styles.root} ${inModal ? styles.inModal : ""} ${
-                search ? styles.withSearch : ""
-            } ${searchFocused ? styles.searching : ""}`}
+            className={cx(
+                styles.root,
+                inModal && styles.inModal,
+                search && styles.withSearch,
+                searchFocused && styles.searching
+            )}
             data-modal-drag=""
         >
             {renderSide({
@@ -113,9 +117,7 @@ const PanelHeader = ({
                 exits: appleSearch,
             })}
             <div
-                className={`${styles.middle} ${
-                    overlay ? styles.middleOverlay : ""
-                }`}
+                className={cx(styles.middle, overlay && styles.middleOverlay)}
                 {...(search && {
                     onFocus: () => setSearchFocused(true),
                     onBlur: (event) => {
@@ -145,7 +147,7 @@ const PanelHeader = ({
     const pinnedBar = (
         <div
             ref={stickyRef}
-            className={`${styles[pin]} ${scrolled ? styles.scrolled : ""}`}
+            className={cx(styles[pin], scrolled && styles.scrolled)}
         >
             {bar}
         </div>

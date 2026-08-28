@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import Page from "../Page"
 import SectionList from "../SectionList"
@@ -18,9 +19,10 @@ const SegmentBar = ({ segments }) => (
                 {segments.map((label, index) => (
                     <div
                         key={index}
-                        className={`${styles.segment} ${
-                            index === 0 ? styles.active : ""
-                        }`}
+                        className={cx(
+                            styles.segment,
+                            index === 0 && styles.active
+                        )}
                     >
                         <Text
                             apple={{

@@ -1,12 +1,10 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import * as styles from "./Train.module.scss"
 
 function Train({ divider = "space", children, className, ...props }) {
     return (
-        <div
-            className={`${styles.root} ${styles[divider]} ${className || ""}`}
-            {...props}
-        >
+        <div className={cx(styles.root, styles[divider], className)} {...props}>
             {children}
         </div>
     )

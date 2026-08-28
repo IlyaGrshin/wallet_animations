@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import Text from "../../../Text"
 import * as styles from "./CellPart.module.scss"
 
@@ -47,11 +48,7 @@ export const CellPart = ({
     }
 
     return (
-        <div
-            className={[styles[type.toLowerCase()], styles[className]]
-                .filter(Boolean)
-                .join(" ")}
-        >
+        <div className={cx(styles[type.toLowerCase()], styles[className])}>
             {children}
         </div>
     )

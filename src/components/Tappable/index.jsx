@@ -1,13 +1,12 @@
 import PropTypes from "prop-types"
 import { useState } from "react"
+import cx from "clsx"
 
 import { useSkin } from "../../hooks/DeviceProvider"
 
 import { useTapHighlight } from "./useTapHighlight"
 
 import * as styles from "./Tappable.module.scss"
-
-const cx = (...classes) => classes.filter(Boolean).join(" ")
 
 // Compose the caller's event handlers with the ones the tap-highlight needs so
 // that handlers on the same events (e.g. an onTouchStart used to preload a

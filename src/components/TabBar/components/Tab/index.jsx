@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useMemo } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
+import cx from "clsx"
 
 import * as styles from "./Tab.module.scss"
 
@@ -86,7 +87,7 @@ const Tab = ({
             layout
             transition={{ type: "spring", stiffness: 800, damping: 50 }}
             {...rest}
-            className={`${styles.tab} ${isActive ? styles.active : ""} ${className}`.trim()}
+            className={cx(styles.tab, isActive && styles.active, className)}
             onClick={onClick}
         >
             <m.div layout className={styles.icon}>

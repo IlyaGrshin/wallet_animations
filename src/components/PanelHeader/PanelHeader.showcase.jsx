@@ -1,5 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import Page from "../Page"
 import SectionHeader from "../SectionHeader"
@@ -22,9 +23,11 @@ const Sample = ({ label, over = false, plain = false, children }) => (
     <div className={styles.section}>
         <SectionHeader title={label} />
         <div
-            className={`${styles.canvas} ${over ? styles.over : ""} ${
-                plain ? styles.plain : ""
-            }`}
+            className={cx(
+                styles.canvas,
+                over && styles.over,
+                plain && styles.plain
+            )}
         >
             {children}
         </div>

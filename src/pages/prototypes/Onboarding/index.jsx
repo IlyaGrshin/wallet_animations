@@ -1,5 +1,6 @@
 import PropTypes from "prop-types"
 import { useState, useEffect } from "react"
+import cx from "clsx"
 
 import Page from "../../../components/Page"
 import Gallery from "../../../components/Gallery"
@@ -34,7 +35,7 @@ const GalleryPages = [
 const GalleryPage = ({ imageClass, title, description }) => (
     <div className={styles.root}>
         <div className={styles.cover}>
-            <div className={`${styles.image} ${imageClass}`}></div>
+            <div className={cx(styles.image, imageClass)}></div>
         </div>
         <div className={styles.content}>
             <StartView title={title} description={description} />

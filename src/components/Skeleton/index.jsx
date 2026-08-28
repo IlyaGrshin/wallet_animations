@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import * as styles from "./Skeleton.module.scss"
 
@@ -60,10 +61,11 @@ export const Redaction = ({ active, width, children }) => {
     return (
         <span
             ref={active ? waveRef : undefined}
-            className={`
-                ${styles.redaction}
-                ${active ? styles.active : ""}
-                ${barWidth ? styles.sized : ""}`}
+            className={cx(
+                styles.redaction,
+                active && styles.active,
+                barWidth && styles.sized
+            )}
             style={barWidth ? { width: `${barWidth}ch` } : undefined}
         >
             {hasContent ? children : "\u00A0"}
@@ -89,7 +91,7 @@ export const SkeletonBlock = ({ className = "", as: Tag = "div", active }) => {
     return (
         <Tag
             ref={on ? waveRef : undefined}
-            className={`${className} ${redactionClassName}`.trim()}
+            className={cx(className, redactionClassName)}
         />
     )
 }

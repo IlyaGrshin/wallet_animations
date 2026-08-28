@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence, useIsPresent } from "motion/react"
 import { useLocation } from "wouter"
+import cx from "clsx"
 import useScrollRestoration from "../../hooks/useScrollRestoration"
 import { EASING } from "../../utils/animations"
 import { FrozenLocationContext } from "./context"
@@ -87,7 +88,10 @@ const PageTransition = ({
                 <PageScroll
                     key={location}
                     location={location}
-                    className={`${styles.scroll} ${bottomInset ? styles.withBottomInset : ""}`}
+                    className={cx(
+                        styles.scroll,
+                        bottomInset && styles.withBottomInset
+                    )}
                 >
                     {children}
                 </PageScroll>

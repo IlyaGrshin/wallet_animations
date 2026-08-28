@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import * as styles from "./GlassContainer.module.scss"
 import GlassBorder from "./GlassBorder"
 
@@ -24,7 +25,7 @@ const GlassContainer = ({ children, className = "", style = {}, ...rest }) => {
 
     // With children, render as wrapper
     return (
-        <div className={`${styles.root} ${className}`} style={style} {...rest}>
+        <div className={cx(styles.root, className)} style={style} {...rest}>
             <div className={styles.glassBackground} aria-hidden="true" />
             <div className={styles.glassShadow} aria-hidden="true" />
             <GlassBorder />

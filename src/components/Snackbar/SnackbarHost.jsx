@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom"
 import PropTypes from "prop-types"
 import { AnimatePresence } from "motion/react"
+import cx from "clsx"
 import SnackbarItem from "./SnackbarItem"
 import * as styles from "./Snackbar.module.scss"
 
@@ -21,7 +22,7 @@ const SnackbarHost = ({ snackbars, onDismiss }) =>
                 return (
                     <div
                         key={position}
-                        className={`${styles.host} ${positionClass[position]}`}
+                        className={cx(styles.host, positionClass[position])}
                     >
                         <AnimatePresence initial={false}>
                             {items.map((item) => (
