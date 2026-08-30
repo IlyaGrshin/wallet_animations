@@ -1,0 +1,86 @@
+// The strip stays dark on a light page, like the system autocomplete bar it
+// echoes, and lightens on a dark one so it still lifts off the background.
+.anchor {
+    --suggestion-surface: #1c1c1e;
+    --suggestion-active: rgb(255 255 255 / 16%);
+    --suggestion-text: #fff;
+    --suggestion-rest: rgb(255 255 255 / 55%);
+
+    :global(body.material) & {
+        --suggestion-surface: #303338;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        --suggestion-surface: #3a3a3c;
+
+        :global(body.material) & {
+            --suggestion-surface: #43474d;
+        }
+    }
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    transform-origin: top center;
+    pointer-events: none;
+}
+
+// Solid, never translucent: the strip scales on enter, and Safari drops a
+// backdrop-filter mid-transform.
+.bubble {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    max-width: 100%;
+    padding: 3px;
+    background: var(--suggestion-surface);
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+.tail {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-bottom: -1px;
+    background: var(--suggestion-surface);
+    transform: translateX(-50%);
+}
+
+.chip,
+.error {
+    display: flex;
+    align-items: center;
+    padding: 9px 14px;
+    white-space: nowrap;
+}
+
+.chip {
+    appearance: none;
+    border: 0;
+    border-radius: 15px;
+    background: transparent;
+    color: var(--suggestion-text);
+    cursor: pointer;
+
+    &.active {
+        background: var(--suggestion-active);
+    }
+}
+
+// The completion stays quiet so the eye lands on what was just typed.
+.rest {
+    color: var(--suggestion-rest);
+}
+
+.error {
+    color: var(--suggestion-rest);
+}
+
+.errorLabel {
+    display: inline-flex;
+}
