@@ -3,11 +3,10 @@ import PropTypes from "prop-types"
 
 import Cell from "../../../../../components/Cells"
 import ImageAvatar from "../../../../../components/ImageAvatar"
-import Spinner from "../../../../../components/Spinner"
 import Text from "../../../../../components/Text"
 import useModal from "../../../../../hooks/useModal"
 import CollectibleModal from "../CollectibleModal"
-import Feedback from "../Feedback"
+import ListSkeleton from "../ListSkeleton"
 
 import * as styles from "./Collectibles.module.scss"
 
@@ -17,11 +16,7 @@ const Collectibles = ({ items }) => {
     const { handlers } = useModal({ detail: false })
 
     if (items === null) {
-        return (
-            <Feedback>
-                <Spinner centered />
-            </Feedback>
-        )
+        return <ListSkeleton end={<Cell.Part type="Chevron" />} />
     }
 
     const toggleWear = (id) => setWornId((current) => (current === id ? null : id))

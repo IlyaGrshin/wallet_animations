@@ -4,9 +4,8 @@ import PropTypes from "prop-types"
 import Cell from "../../../../../components/Cells"
 import ImageAvatar from "../../../../../components/ImageAvatar"
 import InitialsAvatar from "../../../../../components/InitialsAvatar"
-import Spinner from "../../../../../components/Spinner"
 import useModal from "../../../../../hooks/useModal"
-import Feedback from "../Feedback"
+import ListSkeleton from "../ListSkeleton"
 import ArrowDownCircleFill from "../../../../../icons/28/Arrow Down Circle Fill.svg?react"
 import ArrowUpCircleFill from "../../../../../icons/28/Arrow Up Circle Fill.svg?react"
 import ArrowLeftRightCircleFill from "../../../../../icons/28/Arrow Left & Right Circle Fill.svg?react"
@@ -63,13 +62,7 @@ const Transactions = ({ items, hasMore, loadMore }) => {
         return () => observer.disconnect()
     }, [hasMore, loadMore])
 
-    if (items === null) {
-        return (
-            <Feedback>
-                <Spinner centered />
-            </Feedback>
-        )
-    }
+    if (items === null) return <ListSkeleton caption />
 
     return (
         <>
