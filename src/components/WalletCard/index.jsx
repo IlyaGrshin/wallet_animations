@@ -1,6 +1,7 @@
 import { useCallback, useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { useSmoothCorners } from "@lisse/react"
+import { CORNER_RADIUS, CORNER_SMOOTHING } from "./corners"
 import { Calligraph } from "calligraph"
 import cx from "clsx"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
@@ -16,8 +17,6 @@ const DEFAULT_ADDRESS = "UQAl1dViv82p5sllNyPXJenPJqRfaHrVGkhmhFcrIjYinqYK"
 const VIEWBOX_W = 361
 const VIEWBOX_H = 220
 const ZONE_PADDING = 8
-const CORNER_RADIUS = 20 // px, matches the SCSS reference radius at card width
-const CORNER_SMOOTHING = 0.6 // Figma iOS squircle smoothing
 
 function splitAmount(raw) {
     const str = String(raw)
