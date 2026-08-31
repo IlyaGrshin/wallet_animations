@@ -2,17 +2,21 @@ import PropTypes from "prop-types"
 import { useHashLocation } from "wouter/use-hash-location"
 
 import PanelHeader from "../../../components/PanelHeader"
+import { useSplitViewContext } from "../../../components/SplitView/context"
 
 import HeaderBalances from "./HeaderBalances"
 
 const Header = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
     const [, navigate] = useHashLocation()
+    const { inDetailPane } = useSplitViewContext()
 
     return (
         <PanelHeader
             pin="sticky"
-            left={<PanelHeader.BackIcon />}
-            onLeft={() => navigate("/")}
+            {...(!inDetailPane && {
+                left: <PanelHeader.BackIcon />,
+                onLeft: () => navigate("/"),
+            })}
             right={<PanelHeader.MoreIcon />}
         >
             <HeaderBalances
