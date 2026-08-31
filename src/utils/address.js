@@ -35,3 +35,40 @@ export function rawToFriendly(rawAddress, { bounceable = false } = {}) {
     for (const b of bytes) bin += String.fromCharCode(b)
     return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_")
 }
+
+const SPLITS = [
+    [4, 4],
+    [3, 5],
+    [2, 6],
+    [1, 7],
+    [5, 3],
+    [6, 2],
+    [7, 1],
+]
+
+const shortByAddress = new Map()
+const addressByShort = new Map()
+
+export function shortenFriendly(friendly) {
+    if (!friendly) return ""
+    const cached = shortByAddress.get(friendly)
+    if (cached) return cached
+    if (friendly.length <= 9) return friendly
+
+    for (const [head, tail] of SPLITS) {
+        const short = `${friendly.slice(0, head)}…${friendly.slice(-tail)}`
+        if (!addressByShort.has(short)) {
+            addressByShort.set(short, friendly)
+            shortByAddress.set(friendly, short)
+            return short
+        }
+    }
+
+    shortByAddress.set(friendly, friendly)
+    return friendly
+}
+
+export function shortenAddress(raw) {
+    if (!raw) return ""
+    return shortenFriendly(rawToFriendly(raw))
+}

@@ -1,5 +1,3 @@
-import { rawToFriendly } from "../../../utils/address"
-
 const moneyFmt = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -15,16 +13,6 @@ function rawToFloat(raw, decimals) {
 function formatBalance(raw, decimals) {
     if (raw == null) return null
     return moneyFmt.format(rawToFloat(raw, decimals))
-}
-
-export function shortenFriendly(friendly) {
-    if (!friendly) return ""
-    return `${friendly.slice(0, 4)}…${friendly.slice(-4)}`
-}
-
-export function shortenAddress(addr) {
-    if (!addr) return ""
-    return shortenFriendly(rawToFriendly(addr))
 }
 
 export function formatDate(unixSeconds) {

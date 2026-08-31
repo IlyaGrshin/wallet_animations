@@ -1,4 +1,5 @@
-import { formatTimestamp, shortenAddress, shortenFriendly } from "./helpers"
+import { formatTimestamp } from "./helpers"
+import { shortenAddress, shortenFriendly } from "../../../utils/address"
 import { isFragmentUri, rawKey } from "./nft"
 
 const TON_DECIMALS = 9

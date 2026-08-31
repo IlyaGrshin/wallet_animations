@@ -1,4 +1,5 @@
-import { formatDate, shortenFriendly } from "./helpers"
+import { formatDate } from "./helpers"
+import { shortenFriendly } from "../../../utils/address"
 
 const FRAGMENT_HOST = "https://nft.fragment.com/"
 
