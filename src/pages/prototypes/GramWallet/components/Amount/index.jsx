@@ -10,7 +10,7 @@ const Amount = ({ value, unit }) => (
     <span className={styles.root}>
         {value}
         {unit === GRAM_UNIT && <GramIcon className={styles.icon} />}
-        {unit && unit !== GRAM_UNIT && unit}
+        {unit && unit !== GRAM_UNIT && <span>{unit}</span>}
     </span>
 )
 

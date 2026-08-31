@@ -8,6 +8,7 @@ const moneyFmt = new Intl.NumberFormat("en-US", {
 export const EMPTY_WALLET = { tonAmount: null, balance: null }
 
 const ALLOWED_JETTON_SYMBOLS = new Set(["USDT", "USD₮", "XAUt0"])
+const UNIT_LABELS = { NFT: "Gift" }
 const TRANSFER_TYPES = new Set([
     "TonTransfer",
     "JettonTransfer",
@@ -116,7 +117,7 @@ function mapEvent(event, myRawAddress) {
         description,
         caption: formatTimestamp(event.timestamp),
         amount: value ? `${sign}${value}` : null,
-        unit,
+        unit: UNIT_LABELS[unit] ?? unit,
         icon: counterparty?.icon || fallback?.icon,
         nftAddress: typeof nft === "string" ? nft : nft?.address,
     }
