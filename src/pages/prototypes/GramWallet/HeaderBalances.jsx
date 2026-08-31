@@ -2,6 +2,7 @@ import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { useTransform } from "motion/react"
 import { Calligraph } from "calligraph"
+import cx from "clsx"
 
 import Text from "../../../components/Text"
 import { useSkin } from "../../../hooks/DeviceProvider"
@@ -73,9 +74,7 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                         className={styles.lineTilt}
                         style={tiltStyle(flight.tilt, flight.tilt?.gram)}
                     >
-                        <span
-                            className={`${styles.lineLayer} ${styles.barLook}`}
-                        >
+                        <span className={cx(styles.lineLayer, styles.barLook)}>
                             <m.span
                                 className={styles.gem}
                                 style={{ scale: gemScale }}
@@ -87,7 +86,7 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                             </Calligraph>
                         </span>
                         <m.span
-                            className={`${styles.lineLayer} ${styles.cardLook}`}
+                            className={cx(styles.lineLayer, styles.cardLook)}
                             style={{ clipPath: flight.gram.wipe }}
                         >
                             <m.span
@@ -126,15 +125,13 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                         className={styles.lineTilt}
                         style={tiltStyle(flight.tilt, flight.tilt?.fiat)}
                     >
-                        <span
-                            className={`${styles.lineLayer} ${styles.barLook}`}
-                        >
+                        <span className={cx(styles.lineLayer, styles.barLook)}>
                             <Calligraph variant="number" animation="smooth">
                                 {balance}
                             </Calligraph>
                         </span>
                         <m.span
-                            className={`${styles.lineLayer} ${styles.cardLook}`}
+                            className={cx(styles.lineLayer, styles.cardLook)}
                             style={{ clipPath: flight.fiat.wipe }}
                         >
                             <Calligraph variant="number" animation="smooth">

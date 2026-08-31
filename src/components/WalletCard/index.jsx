@@ -2,6 +2,7 @@ import { useCallback, useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { useSmoothCorners } from "@lisse/react"
 import { Calligraph } from "calligraph"
+import cx from "clsx"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
 import { formatAddress } from "../../utils/address"
 import * as styles from "./WalletCard.module.scss"
@@ -106,9 +107,10 @@ function WalletCard({
                     <div ref={moneyRef} className={styles.money}>
                         <div
                             ref={amountRef}
-                            className={`${styles.amount} ${
-                                valuesHidden ? styles.hiddenValue : ""
-                            }`}
+                            className={cx(
+                                styles.amount,
+                                valuesHidden && styles.hiddenValue
+                            )}
                         >
                             <GramIcon className={styles.coinIcon} />
                             <span className={styles.amountValue}>
@@ -138,9 +140,10 @@ function WalletCard({
                             fiatRef.current = node
                             balanceRef?.(node)
                         }}
-                        className={`${styles.fiat} ${
-                            valuesHidden ? styles.hiddenValue : ""
-                        }`}
+                        className={cx(
+                            styles.fiat,
+                            valuesHidden && styles.hiddenValue
+                        )}
                     >
                         <Calligraph variant="number" animation="smooth">
                             {balance}
