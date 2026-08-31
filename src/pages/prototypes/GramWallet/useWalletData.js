@@ -1,33 +1,15 @@
 import { useEffect, useRef, useState } from "react"
-import { getAccount, getEvents, getJettons, getRates } from "../../../lib/tonapi"
-import { getNftsByAddress, getOwnedNfts } from "../../../lib/toncenter"
-import { EMPTY_WALLET, computeBalance, mapEvents } from "./helpers"
-import { isFragmentItem, mapNft, rawKey } from "./nft"
+import { getRates } from "../../../lib/tonapi"
+import {
+    getAccountState,
+    getActions,
+    getOwnedNfts,
+} from "../../../lib/toncenter"
+import { EMPTY_WALLET, computeBalance } from "./helpers"
+import { ACTION_TYPES, lastActionLt, mapActions } from "./actions"
+import { isFragmentItem, mapNft } from "./nft"
 
-async function withFragmentNfts(rows) {
-    const addresses = [...new Set(rows.map((r) => r.nftAddress).filter(Boolean))]
-    if (!addresses.length) return rows
-    try {
-        const data = await getNftsByAddress(addresses)
-        const byAddress = new Map(
-            (data.nft_items || [])
-                .filter(isFragmentItem)
-                .map((item) => [rawKey(item.address), mapNft(item, data)])
-        )
-        return rows
-            .filter(
-                (row) =>
-                    !row.nftAddress || byAddress.has(rawKey(row.nftAddress))
-            )
-            .map((row) =>
-                row.nftAddress
-                    ? { ...row, nft: byAddress.get(rawKey(row.nftAddress)) }
-                    : row
-            )
-    } catch {
-        return rows
-    }
-}
+const PAGE_SIZE = 100
 
 export default function useWalletData(address) {
     const [wallet, setWallet] = useState(EMPTY_WALLET)
@@ -37,7 +19,7 @@ export default function useWalletData(address) {
     const [collectibles, setCollectibles] = useState(null)
     const [isLoadingCollectibles, setIsLoadingCollectibles] = useState(false)
     const [error, setError] = useState(null)
-    const pageRef = useRef({ rawAddress: null, nextFrom: null })
+    const pageRef = useRef({ rawAddress: null, endLt: null })
     const collectiblesLoadedRef = useRef(false)
 
     useEffect(() => {
@@ -47,30 +29,28 @@ export default function useWalletData(address) {
         setHasMoreTransactions(false)
         setCollectibles(null)
         setError(null)
-        pageRef.current = { rawAddress: null, nextFrom: null }
+        pageRef.current = { rawAddress: null, endLt: null }
         collectiblesLoadedRef.current = false
 
-        const accountPromise = getAccount(address)
+        const accountPromise = getAccountState(address)
         const fail = (err) => !cancelled && setError(err.message || String(err))
 
-        Promise.all([
-            accountPromise,
-            getJettons(address),
-            getRates(["ton"], ["usd"]),
-        ])
-            .then((r) => !cancelled && setWallet(computeBalance(...r)))
+        Promise.all([accountPromise, getRates(["ton"], ["usd"])])
+            .then(([state, rates]) => {
+                if (cancelled) return
+                setWallet(computeBalance(state.accounts[0], rates))
+            })
             .catch(fail)
 
-        Promise.all([accountPromise, getEvents(address, 20)])
-            .then(async ([acc, evt]) => {
+        Promise.all([accountPromise, getActions(address, ACTION_TYPES, PAGE_SIZE)])
+            .then(([state, page]) => {
                 if (cancelled) return
-                pageRef.current = { rawAddress: acc.address, nextFrom: evt.next_from || null }
-                const rows = await withFragmentNfts(
-                    mapEvents(evt.events, acc.address)
+                const rawAddress = state.accounts[0].address
+                pageRef.current = { rawAddress, endLt: lastActionLt(page) }
+                setTransactions(mapActions(page, rawAddress))
+                setHasMoreTransactions(
+                    (page.actions || []).length === PAGE_SIZE
                 )
-                if (cancelled) return
-                setTransactions(rows)
-                setHasMoreTransactions(!!evt.next_from)
             })
             .catch(fail)
 
@@ -81,16 +61,14 @@ export default function useWalletData(address) {
 
     async function loadMoreTransactions() {
         const page = pageRef.current
-        if (!page.nextFrom || !page.rawAddress || isLoadingMoreTransactions) return
+        if (!page.endLt || !page.rawAddress || isLoadingMoreTransactions) return
         setIsLoadingMoreTransactions(true)
         try {
-            const data = await getEvents(address, 20, page.nextFrom)
-            const more = await withFragmentNfts(
-                mapEvents(data.events, page.rawAddress)
-            )
-            setTransactions((prev) => [...(prev || []), ...more])
-            pageRef.current = { ...pageRef.current, nextFrom: data.next_from || null }
-            setHasMoreTransactions(!!data.next_from)
+            const next = await getActions(address, ACTION_TYPES, PAGE_SIZE, page.endLt)
+            const rows = mapActions(next, page.rawAddress)
+            setTransactions((prev) => [...(prev || []), ...rows])
+            pageRef.current = { ...page, endLt: lastActionLt(next) }
+            setHasMoreTransactions((next.actions || []).length === PAGE_SIZE)
         } finally {
             setIsLoadingMoreTransactions(false)
         }

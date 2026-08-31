@@ -9,9 +9,12 @@ const COLLECTION_LABELS = {
 
 export const rawKey = (address) => (address ? address.toUpperCase() : address)
 
+export function isFragmentUri(uri) {
+    return Boolean(uri) && uri.startsWith(FRAGMENT_HOST)
+}
+
 export function isFragmentItem(item) {
-    const uri = item.collection?.collection_content?.uri || ""
-    return uri.startsWith(FRAGMENT_HOST)
+    return isFragmentUri(item.collection?.collection_content?.uri)
 }
 
 function tokenInfo(response, address) {

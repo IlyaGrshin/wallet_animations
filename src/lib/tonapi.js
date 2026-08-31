@@ -29,52 +29,8 @@ function get(path) {
     })
 }
 
-export function getAccount(address) {
-    return get(`/v2/accounts/${address}`)
-}
-
-export function getEvents(address, limit = 20, beforeLt = null) {
-    const before = beforeLt ? `&before_lt=${beforeLt}` : ""
-    return get(`/v2/accounts/${address}/events?limit=${limit}${before}`)
-}
-
-export function getJettons(address) {
-    return get(`/v2/accounts/${address}/jettons`)
-}
-
 export function getRates(tokens, currencies = ["usd"]) {
     const t = tokens.join(",")
     const c = currencies.join(",")
     return get(`/v2/rates?tokens=${t}&currencies=${c}`)
-}
-
-function crc16(bytes) {
-    let crc = 0
-    for (const byte of bytes) {
-        crc ^= byte << 8
-        for (let i = 0; i < 8; i++) {
-            crc = crc & 0x8000 ? (crc << 1) ^ 0x1021 : crc << 1
-            crc &= 0xffff
-        }
-    }
-    return crc
-}
-
-export function rawToFriendly(rawAddress, { bounceable = false } = {}) {
-    if (!rawAddress || !rawAddress.includes(":")) return rawAddress || ""
-    const [wcStr, hexHash] = rawAddress.split(":")
-    if (hexHash.length !== 64) return rawAddress
-    const workchain = parseInt(wcStr, 10)
-    const bytes = new Uint8Array(36)
-    bytes[0] = bounceable ? 0x11 : 0x51
-    bytes[1] = workchain & 0xff
-    for (let i = 0; i < 32; i++) {
-        bytes[2 + i] = parseInt(hexHash.substr(i * 2, 2), 16)
-    }
-    const crc = crc16(bytes.subarray(0, 34))
-    bytes[34] = (crc >> 8) & 0xff
-    bytes[35] = crc & 0xff
-    let bin = ""
-    for (const b of bytes) bin += String.fromCharCode(b)
-    return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_")
 }
