@@ -62,6 +62,19 @@
     border-radius: 100px;
 }
 
+.list.hug {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    width: max-content;
+    margin-inline: auto;
+}
+
+.glassRoot.hug {
+    width: max-content;
+    margin-inline: auto;
+}
+
 .tab {
     position: relative;
     flex: 1 0 auto;

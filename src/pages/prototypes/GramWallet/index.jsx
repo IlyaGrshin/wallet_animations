@@ -153,7 +153,7 @@ const GramWallet = () => {
                                     activeTabIndex={tabIndex}
                                     onChange={setTabIndex}
                                     variant="glass"
-                                    scrollable
+                                    hug
                                 />
                             </div>
                             <div className={styles.sectionContainer}>
