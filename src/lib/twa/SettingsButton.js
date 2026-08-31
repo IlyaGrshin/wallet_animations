@@ -32,7 +32,7 @@ const SettingsButton = ({ onClick }) => {
     return null
 }
 
-SettingsButton.propTypes = {
+SettingsButton.propTypes /* remove-proptypes */ = {
     onClick: PropTypes.func,
 }
 

@@ -1,1 +1,1 @@
-export { default } from "./GradientBackground.js"
+export { default } from "./GradientBackground.jsx"

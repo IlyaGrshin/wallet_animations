@@ -1,0 +1,126 @@
+.stage {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 12px;
+}
+
+// Full-bleed like the real hero: edge to edge, no side padding or radius (the
+// 402x530 viewBox stretches to any width).
+.frame {
+    position: relative;
+    width: 100%;
+    height: 530px;
+    overflow: hidden;
+    background: var(--tg-theme-secondary-bg-color, #0a0f1e);
+}
+
+.readout {
+    padding: 0 16px;
+    color: var(--tg-theme-subtitle-text-color, #8e8e93);
+    font-family: ui-monospace, "SF Mono", monospace;
+    font-size: 12px;
+    text-align: center;
+}
+
+.segmented {
+    padding: 12px var(--side-padding);
+}
+
+.slider {
+    width: 140px;
+    max-width: 45vw;
+    accent-color: var(--tg-theme-accent-text-color, #4c9dff);
+    touch-action: manipulation;
+}
+
+// Draggable layer over the frame; only the handles capture pointer events.
+.overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.guideV,
+.guideH {
+    position: absolute;
+    z-index: 0;
+    background: var(--tg-theme-accent-text-color, #4c9dff);
+    opacity: 0.7;
+}
+
+.guideV {
+    inset-block: 0;
+    width: 1px;
+    transform: translateX(-50%);
+}
+
+.guideH {
+    inset-inline: 0;
+    height: 1px;
+    transform: translateY(-50%);
+}
+
+.centerHandle,
+.axisHandle {
+    position: absolute;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    touch-action: none;
+    pointer-events: auto;
+
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+.centerHandle {
+    z-index: 2;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #fff;
+    background: rgb(255 255 255 / 25%);
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 30%);
+}
+
+.axisHandle {
+    z-index: 1;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--tg-theme-accent-text-color, #4c9dff);
+    background: rgb(76 157 255 / 35%);
+}
+
+.fadeLine {
+    position: absolute;
+    inset-inline: 0;
+    z-index: 1;
+    height: 16px;
+    transform: translateY(-50%);
+    cursor: ns-resize;
+    touch-action: none;
+    pointer-events: auto;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        top: 50%;
+        border-top: 1px dashed rgb(255 255 255 / 70%);
+    }
+}
+
+.fadeLabel {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    padding: 1px 6px;
+    border-radius: 6px;
+    background: rgb(0 0 0 / 45%);
+    color: #fff;
+    font-size: 10px;
+    white-space: nowrap;
+}

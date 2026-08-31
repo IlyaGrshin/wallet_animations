@@ -2,8 +2,14 @@ $search-easing: cubic-bezier(0.23, 1, 0.32, 1);
 $search-duration: 0.25s;
 $search-fade-duration: 0.15s;
 
-.sticky {
-    position: sticky;
+// Bar heights, read by .root (the bar) and .spacer (its stand-in under a
+// fixed pin). One source, so the two cannot drift apart.
+$bar-height: 44px;
+$bar-height-apple: 64px;
+$bar-height-material: 56px;
+
+.sticky,
+.fixed {
     top: 0;
     z-index: 10;
     padding-top: var(--appbar-inset-top, var(--content-inset-top));
@@ -35,6 +41,36 @@ $search-fade-duration: 0.15s;
         inset: 0;
         background: rgb(from var(--fade-color) r g b / 80%);
         box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
+    }
+}
+
+.sticky {
+    position: sticky;
+}
+
+// Fixed pin: out of the scroller's compositing chain, so the sticky-in-scroller
+// filter-kill (see glass-rim-backdrop-isolation) never arms and the header's
+// buttons can carry the full glass stack. The spacer holds the bar's place in
+// the flow.
+.fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+.spacer {
+    --appbar-height: #{$bar-height};
+
+    height: calc(
+        var(--appbar-inset-top, var(--content-inset-top)) + var(--appbar-height)
+    );
+
+    :global(body.apple) & {
+        --appbar-height: #{$bar-height-apple};
+    }
+
+    :global(body.material) & {
+        --appbar-height: #{$bar-height-material};
     }
 }
 
@@ -166,7 +202,7 @@ $search-fade-duration: 0.15s;
     // Content is pinned 10px above the bottom, so the taller in-modal bar lands
     // its extra height as a larger top inset (10px standalone, 16px in a modal).
     :global(body.apple) & {
-        height: 64px;
+        height: $bar-height-apple;
         padding: 0 16px 10px;
         align-items: flex-end;
 
@@ -185,7 +221,7 @@ $search-fade-duration: 0.15s;
     :global(body.material) & {
         --header-gap: 16px;
 
-        height: 56px;
+        height: $bar-height-material;
         gap: var(--header-gap);
         padding: 6px 7px;
 
