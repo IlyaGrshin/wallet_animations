@@ -10,7 +10,7 @@ const Header = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
 
     return (
         <PanelHeader
-            sticky
+            pin="sticky"
             left={<PanelHeader.BackIcon />}
             onLeft={() => navigate("/")}
             right={<PanelHeader.MoreIcon />}
