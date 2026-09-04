@@ -67,8 +67,6 @@ $card-h: 220;
     // are material response, not separate lights.
     --light-swing: calc(var(--tilt-x) * 60deg);
     --shadow-angle: calc(212deg + var(--light-swing));
-    --rounded-stack: "Google Sans", "SF Pro Rounded", ui-rounded, -apple-system,
-        system-ui, sans-serif;
 
     position: relative;
     width: 100%;
@@ -86,8 +84,6 @@ $card-h: 220;
             from var(--tg-theme-accent-text-color)
             calc(l + 0.2) calc(c * 0.95) h
         );
-        --rounded-stack: ui-rounded, "SF Pro Rounded", -apple-system, system-ui,
-            sans-serif;
     }
 }
 

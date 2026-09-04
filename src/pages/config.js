@@ -287,9 +287,11 @@ const config = [
                 ? [
                       {
                           title: "Gram Wallet",
+                          slug: "gramWallet",
                           component: lazyWithPreload(
                               () => import("./prototypes/GramWallet")
                           ),
+                          routeSuffix: "/:rest*?",
                       },
                   ]
                 : []),

@@ -1,10 +1,11 @@
 import { formatTimestamp } from "./helpers"
 import { shortenAddress, shortenFriendly } from "../../../utils/address"
 import { isFragmentUri, rawKey } from "./nft"
+import { TON_DECIMALS } from "./constants"
 
-const TON_DECIMALS = 9
-
-const amountFmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 9 })
+const amountFmt = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: TON_DECIMALS,
+})
 
 const PARTIES = {
     ton_transfer: (d) => [d.source, d.destination],

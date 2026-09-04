@@ -1,9 +1,7 @@
-const moneyFmt = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-})
+import { TON_DECIMALS } from "./constants"
+import { format } from "./currency"
 
-export const EMPTY_WALLET = { tonAmount: null, balance: null }
+export const EMPTY_WALLET = { tonAmount: null, balance: null, rate: null }
 
 function rawToFloat(raw, decimals) {
     if (raw == null) return 0
@@ -12,7 +10,7 @@ function rawToFloat(raw, decimals) {
 
 function formatBalance(raw, decimals) {
     if (raw == null) return null
-    return moneyFmt.format(rawToFloat(raw, decimals))
+    return format(rawToFloat(raw, decimals))
 }
 
 export function formatDate(unixSeconds) {
@@ -43,10 +41,11 @@ export function formatTimestamp(unixSeconds) {
 }
 
 export function computeBalance(account, ratesData) {
-    const tonValue = rawToFloat(account.balance, 9)
+    const tonValue = rawToFloat(account.balance, TON_DECIMALS)
     const tonRate = ratesData.rates?.TON?.prices?.USD || 0
     return {
-        tonAmount: formatBalance(account.balance, 9),
-        balance: `$${moneyFmt.format(tonValue * tonRate)}`,
+        tonAmount: formatBalance(account.balance, TON_DECIMALS),
+        balance: `$${format(tonValue * tonRate)}`,
+        rate: tonRate,
     }
 }

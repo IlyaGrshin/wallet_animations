@@ -38,13 +38,7 @@
     transform-origin: left center;
     white-space: nowrap;
     will-change: transform;
-    font-family: "Google Sans", "SF Pro Rounded", ui-rounded, -apple-system,
-        system-ui, sans-serif;
-
-    :global(body.apple) & {
-        font-family: ui-rounded, "SF Pro Rounded", -apple-system, system-ui,
-            sans-serif;
-    }
+    font-family: var(--rounded-stack);
 }
 
 .gramLine {
