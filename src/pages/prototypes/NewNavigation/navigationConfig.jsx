@@ -8,38 +8,33 @@ import WalletIcon from "../../../icons/tabbar/Wallet.svg?react"
 import TradeIcon from "../../../icons/tabbar/Chartline.svg?react"
 import HistoryIcon from "../../../icons/tabbar/Clock.svg?react"
 
-import lottieIconWallet from "../../../icons/lottie/wallet"
-import lottieIconChartline from "../../../icons/lottie/chartline"
-import lottieIconBag from "../../../icons/lottie/bag"
-import lottieIconClock from "../../../icons/lottie/clock"
-
-export const getTabsConfig = (skin, onOpenTonWallet) => ({
+export const getTabsConfig = (onOpenTonWallet) => ({
     wallet: [
         {
             label: "Wallet",
             icon: <WalletIcon />,
             view: <Wallet onOpenTonWallet={onOpenTonWallet} />,
-            lottieIcon: lottieIconWallet(skin),
+            lottieIcon: "wallet",
             activeSegment: [0, 50],
         },
         {
             label: "Trade",
             icon: <TradeIcon />,
             view: <Trading />,
-            lottieIcon: lottieIconChartline(skin),
+            lottieIcon: "chartline",
             activeSegment: [0, 50],
         },
         {
             label: "Earn",
             view: <Trading />,
-            lottieIcon: lottieIconBag(skin),
+            lottieIcon: "bag",
             activeSegment: [0, 45],
         },
         {
             label: "History",
             icon: <HistoryIcon />,
             view: <History />,
-            lottieIcon: lottieIconClock(skin),
+            lottieIcon: "clock",
             activeSegment: [0, 80],
         },
     ],
@@ -48,19 +43,19 @@ export const getTabsConfig = (skin, onOpenTonWallet) => ({
             label: "TON Space",
             icon: <WalletIcon />,
             view: <TONWallet />,
-            lottieIcon: lottieIconWallet(skin),
+            lottieIcon: "wallet",
         },
         {
             label: "Activity",
             icon: <HistoryIcon />,
             view: <History />,
-            lottieIcon: lottieIconClock(skin),
+            lottieIcon: "clock",
         },
         {
             label: "Browser",
             icon: <TradeIcon />,
             view: <Trading />,
-            lottieIcon: lottieIconChartline(skin),
+            lottieIcon: "chartline",
         },
     ],
 })
