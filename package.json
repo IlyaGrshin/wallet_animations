@@ -11,16 +11,16 @@
   "dependencies": {
     "@lisse/core": "0.7.2",
     "@lisse/react": "^0.7.2",
-    "@tanstack/react-virtual": "^3.14.10",
+    "@tanstack/react-virtual": "^3.14.12",
     "calligraph": "^1.4.1",
     "clsx": "^2.1.1",
     "colorthief": "^3.5.0",
-    "lottie-react": "^3.1.1",
+    "lottie-react": "^3.1.2",
     "markdown-to-jsx": "9",
-    "motion": "^13.1.1",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "wouter": "^3.10.0"
+    "motion": "^13.2.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "wouter": "^3.11.0"
   },
   "scripts": {
     "dev": "vite",
@@ -61,8 +61,8 @@
     "@relative-ci/agent": "^4.3.1",
     "@resvg/resvg-js": "^2.6.2",
     "@rolldown/plugin-babel": "^0.2.3",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6",
     "agentation": "^3.0.2",
     "babel-plugin-react-compiler": "^1.0.0",
