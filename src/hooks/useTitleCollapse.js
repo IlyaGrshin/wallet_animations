@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 
 import { findScroller } from "./useScrolled"
 
@@ -28,7 +28,7 @@ export function useTitleCollapse(enabled = true) {
     const titleRef = useRef(null)
     const [collapsed, setCollapsed] = useState(false)
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!enabled) return
 
         const bar = barRef.current
@@ -68,7 +68,10 @@ export function useTitleCollapse(enabled = true) {
             raf = requestAnimationFrame(measure)
         }
 
+        // Layout effects run child-first, so a scroll offset PageTransition
+        // restores lands after this one. The rAF still beats the first paint.
         measure()
+        schedule()
         target.addEventListener("scroll", schedule, { passive: true })
         window.addEventListener("resize", schedule)
 
