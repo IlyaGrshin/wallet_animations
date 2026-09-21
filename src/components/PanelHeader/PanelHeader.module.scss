@@ -2,6 +2,12 @@ $search-easing: cubic-bezier(0.23, 1, 0.32, 1);
 $search-duration: 0.25s;
 $search-fade-duration: 0.15s;
 
+// Large-title handover. The outgoing half is scroll-linked (see
+// useTitleCollapse); these drive the inline title rising in to meet it.
+$title-easing: cubic-bezier(0.23, 1, 0.32, 1);
+$title-duration: 0.25s;
+$title-rise: 6px;
+
 // Bar heights, read by .root (the bar) and .spacer (its stand-in under a
 // fixed pin). One source, so the two cannot drift apart.
 $bar-height: 44px;
@@ -82,6 +88,22 @@ $bar-height-material: 56px;
     backdrop-filter: blur(10px);
 }
 
+// Expanded iOS title row. Left-aligned under the bar, 34/41 bold on Apple and
+// the Material large app-bar headline otherwise. It rides the scroll, and
+// useTitleCollapse writes its opacity per frame — no transition here, or the
+// two would fight.
+.largeTitle {
+    display: flex;
+    align-items: center;
+    padding: 2px 16px 10px;
+    color: var(--tg-theme-text-color);
+    pointer-events: none;
+
+    :global(body.material) & {
+        padding: 4px 16px 12px;
+    }
+}
+
 .root {
     --header-control-size: 44px;
 
@@ -117,6 +139,21 @@ $bar-height-material: 56px;
     // Over-content state: the title inherits white, matching overlay buttons.
     .middleOverlay {
         color: var(--tg-theme-button-text-color);
+    }
+
+    // Inline title while a large title is expanded: hidden below its resting
+    // spot, rising into it as the large one fades out.
+    .handover {
+        opacity: 0;
+        transform: translateY($title-rise);
+        transition:
+            opacity $title-duration $title-easing,
+            transform $title-duration $title-easing;
+    }
+
+    .handedOver {
+        opacity: 1;
+        transform: none;
     }
 
     .titlePill {
