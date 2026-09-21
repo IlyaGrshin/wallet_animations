@@ -12,6 +12,7 @@ import HeaderButton, { HEADER_BUTTON_VARIANTS } from "./HeaderButton"
 import { BackIcon, CloseIcon, MoreIcon } from "./icons"
 import { ModalChromeContext } from "./context"
 import * as styles from "./PanelHeader.module.scss"
+import * as pinStyles from "./PanelHeader.pin.module.scss"
 
 // The modal "шапка": a glass navigation bar with left/right actions and a
 // centered title. 64px tall standalone, 70px inside a ModalView (via
@@ -158,7 +159,13 @@ const PanelHeader = ({
     // Stays in the flow so it scrolls at content speed and slides under the
     // pinned bar, dimming in step with the scroll rather than on a timer.
     const expandedTitle = expands && (
-        <div ref={largeTitleRef} className={styles.largeTitle}>
+        <div
+            ref={largeTitleRef}
+            className={cx(
+                pinStyles.largeTitle,
+                overlay && pinStyles.largeTitleOverlay
+            )}
+        >
             <Text
                 apple={{ variant: "largeTitle", weight: "bold" }}
                 material={{ variant: "largeTitle", weight: "medium" }}
@@ -179,7 +186,7 @@ const PanelHeader = ({
     const pinnedBar = (
         <div
             ref={stickyRef}
-            className={cx(styles[pin], scrolled && styles.scrolled)}
+            className={cx(pinStyles[pin], scrolled && pinStyles.scrolled)}
         >
             {bar}
         </div>
@@ -189,7 +196,7 @@ const PanelHeader = ({
     return (
         <>
             {pin === "fixed" && (
-                <div className={styles.spacer} aria-hidden="true" />
+                <div className={pinStyles.spacer} aria-hidden="true" />
             )}
             {pinnedBar}
             {expandedTitle}

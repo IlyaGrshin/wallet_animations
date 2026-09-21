@@ -1,3 +1,5 @@
+@use "./metrics" as *;
+
 $search-easing: cubic-bezier(0.23, 1, 0.32, 1);
 $search-duration: 0.25s;
 $search-fade-duration: 0.15s;
@@ -7,102 +9,6 @@ $search-fade-duration: 0.15s;
 $title-easing: cubic-bezier(0.23, 1, 0.32, 1);
 $title-duration: 0.25s;
 $title-rise: 6px;
-
-// Bar heights, read by .root (the bar) and .spacer (its stand-in under a
-// fixed pin). One source, so the two cannot drift apart.
-$bar-height: 44px;
-$bar-height-apple: 64px;
-$bar-height-material: 56px;
-
-.sticky,
-.fixed {
-    top: 0;
-    z-index: 10;
-    padding-top: var(--appbar-inset-top, var(--content-inset-top));
-
-    // Page-bg -> transparent fade (TabBar-style), 16px past the bar, fading in
-    // on scroll instead of a hard material edge.
-    &::before {
-        content: "";
-        position: absolute;
-        inset: 0 0 -16px;
-        z-index: -1;
-
-        --fade-color: var(
-            --page-background,
-            var(--tg-theme-secondary-bg-color)
-        );
-
-        background: linear-gradient(
-            to bottom,
-            var(--fade-color),
-            rgb(from var(--fade-color) r g b / 0%)
-        );
-        opacity: 0;
-        transition: opacity 0.2s $search-easing;
-        pointer-events: none;
-    }
-
-    :global(body.material) &::before {
-        inset: 0;
-        background: rgb(from var(--fade-color) r g b / 80%);
-        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
-    }
-}
-
-.sticky {
-    position: sticky;
-}
-
-// Fixed pin: out of the scroller's compositing chain, so the sticky-in-scroller
-// filter-kill (see glass-rim-backdrop-isolation) never arms and the header's
-// buttons can carry the full glass stack. The spacer holds the bar's place in
-// the flow.
-.fixed {
-    position: fixed;
-    left: 0;
-    right: 0;
-}
-
-.spacer {
-    --appbar-height: #{$bar-height};
-
-    height: calc(
-        var(--appbar-inset-top, var(--content-inset-top)) + var(--appbar-height)
-    );
-
-    :global(body.apple) & {
-        --appbar-height: #{$bar-height-apple};
-    }
-
-    :global(body.material) & {
-        --appbar-height: #{$bar-height-material};
-    }
-}
-
-.scrolled::before {
-    opacity: 1;
-}
-
-:global(body.material) .scrolled::before {
-    backdrop-filter: blur(10px);
-}
-
-// Expanded iOS title row. Left-aligned under the bar, 34/41 bold on Apple and
-// the Material large app-bar headline otherwise. It rides the scroll, and
-// useTitleCollapse writes its opacity per frame — no transition here, or the
-// two would fight.
-.largeTitle {
-    display: flex;
-    align-items: center;
-    padding: 2px 16px 10px;
-    color: var(--tg-theme-text-color);
-    pointer-events: none;
-
-    :global(body.material) & {
-        padding: 4px 16px 12px;
-    }
-}
 
 .root {
     --header-control-size: 44px;
