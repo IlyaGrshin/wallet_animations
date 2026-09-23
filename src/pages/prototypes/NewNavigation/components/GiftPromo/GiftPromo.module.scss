@@ -1,0 +1,47 @@
+.root {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+    overflow: hidden;
+}
+
+.layer,
+.label {
+    grid-area: 1 / 1;
+    display: flex;
+    justify-content: center;
+}
+
+.label {
+    padding: 0 16px;
+    white-space: nowrap;
+}
+
+.shine {
+    --shine-base: var(--tg-theme-text-color);
+    --shine-highlight: var(--tg-theme-hint-color);
+
+    background: linear-gradient(
+            110deg,
+            var(--shine-base) 28%,
+            var(--shine-highlight) 44%,
+            var(--shine-highlight) 56%,
+            var(--shine-base) 72%
+        )
+        100% 0 / 300% 100% no-repeat;
+    background-clip: text;
+    color: transparent;
+    animation: shine 3s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0.35s infinite;
+}
+
+@keyframes shine {
+    0% {
+        background-position-x: 100%;
+    }
+
+    65%,
+    100% {
+        background-position-x: 0%;
+    }
+}

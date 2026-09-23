@@ -5,6 +5,7 @@ import ImageAvatar from "../../../../../components/ImageAvatar"
 import TextField from "../../../../../components/TextField"
 import { useAvatarUrl } from "../../../../../hooks/useAvatarUrl"
 import { useSkin } from "../../../../../hooks/DeviceProvider"
+import GiftPromo from "../GiftPromo"
 
 import GiftIcon from "../../../../../icons/28/Gift Fill.svg?react"
 
@@ -16,7 +17,13 @@ export default function SearchHeader() {
     return (
         <PanelHeader
             left={<ImageAvatar src={avatarUrl} size={isApple ? 38 : 36} />}
-            right={<GiftIcon />}
+            right={
+                isApple ? (
+                    <GiftPromo icon={<GiftIcon />} label="Get $50" />
+                ) : (
+                    <GiftIcon />
+                )
+            }
             search={
                 <TextField
                     type="search"
