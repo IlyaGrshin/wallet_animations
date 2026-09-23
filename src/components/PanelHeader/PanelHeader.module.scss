@@ -175,6 +175,10 @@ $bar-height-material: 56px;
                 transform $search-duration $search-easing;
         }
 
+        .collapsing:has([data-header-wide]) {
+            width: auto;
+        }
+
         &.searching {
             .collapsing {
                 width: 0;
