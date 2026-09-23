@@ -17,13 +17,7 @@ export default function SearchHeader() {
     return (
         <PanelHeader
             left={<ImageAvatar src={avatarUrl} size={isApple ? 38 : 36} />}
-            right={
-                isApple ? (
-                    <GiftPromo icon={<GiftIcon />} label="Get $50" />
-                ) : (
-                    <GiftIcon />
-                )
-            }
+            right={<GiftPromo icon={<GiftIcon />} label="Get $50" />}
             search={
                 <TextField
                     type="search"

@@ -28,10 +28,12 @@ let playedThisLoad = false
 
 export default function GiftPromo({ icon, label }) {
     const [expanded, setExpanded] = useState(false)
+    const [wide, setWide] = useState(false)
     const rootRef = useRef(null)
 
     const toggle = (next) => {
         setExpanded(next)
+        if (next) setWide(true)
         const pill = rootRef.current?.closest("button")
         if (!pill) return
         animate(1, 1, {
@@ -64,6 +66,10 @@ export default function GiftPromo({ icon, label }) {
             initial={false}
             animate={{ width: expanded ? "auto" : COLLAPSED_WIDTH }}
             transition={pillSpring}
+            onAnimationComplete={() => {
+                if (!expanded) setWide(false)
+            }}
+            data-header-wide={wide || undefined}
         >
             <m.span
                 className={styles.layer}
@@ -81,7 +87,10 @@ export default function GiftPromo({ icon, label }) {
                 aria-hidden={!expanded}
             >
                 <span className={cx(expanded && styles.shine)}>
-                    <Text apple={{ variant: "body", weight: "semibold" }}>
+                    <Text
+                        apple={{ variant: "body", weight: "semibold" }}
+                        material={{ variant: "body", weight: "medium" }}
+                    >
                         {label}
                     </Text>
                 </span>
