@@ -278,6 +278,12 @@ const config = [
                     () => import("./prototypes/ColorChanging")
                 ),
             },
+            {
+                title: "Wallet Import",
+                component: lazyWithPreload(
+                    () => import("./prototypes/WalletImport")
+                ),
+            },
         ],
     },
 ]

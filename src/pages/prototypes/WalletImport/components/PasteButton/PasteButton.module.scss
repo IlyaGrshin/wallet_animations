@@ -1,0 +1,21 @@
+.root {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: 16px;
+    z-index: 1;
+    display: flex;
+    transform-origin: right center;
+    translate: 0 -50%;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    padding: 4px 12px;
+    border: 0;
+    border-radius: 30px;
+    background: var(--tg-theme-section-bg-color);
+    color: var(--tg-theme-accent-text-color);
+    white-space: nowrap;
+    cursor: pointer;
+}

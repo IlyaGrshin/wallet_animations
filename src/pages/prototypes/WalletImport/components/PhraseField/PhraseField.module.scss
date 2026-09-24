@@ -1,0 +1,64 @@
+.row {
+    position: relative;
+}
+
+// The digit is painted over the field's leading padding, which the input
+// widens to clear.
+.field {
+    --field-radius: 100px;
+    --field-surface: rgb(from var(--tg-theme-secondary-bg-color) r g b / 72%);
+    --field-surface-focused: var(--tg-theme-secondary-bg-color);
+
+    position: relative;
+    display: block;
+    cursor: text;
+
+    // The [type] qualifier is what outweighs AppleTextField's own `.text .input`
+    // padding and fill without reaching for its hashed class names.
+    input[type="text"] {
+        padding-block: 15px;
+        padding-inline-start: 52px;
+        background: var(--field-surface);
+        transition: background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    &.withPaste input[type="text"] {
+        padding-inline-end: 86px;
+    }
+
+    &.focused input[type="text"] {
+        background: var(--field-surface-focused);
+    }
+
+    &.invalid input[type="text"] {
+        color: var(--tg-theme-destructive-text-color);
+    }
+}
+
+// Fixed column so words line up whether the slot is 1 or 24.
+.index {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 16px;
+    min-width: 26px;
+    color: rgb(from var(--tg-theme-subtitle-text-color) r g b / 56%);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    transform: translateY(-50%);
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+}
+
+// Carries the slot's accessible name so the visible digit can stay decorative.
+.name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
