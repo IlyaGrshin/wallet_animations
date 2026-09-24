@@ -16,7 +16,7 @@ import { getTabsConfig, pageVariants } from "./navigationConfig"
 import * as styles from "./NewNavigation.module.scss"
 
 function NewNavigation() {
-    const { isApple, skin } = useSkin()
+    const { isApple } = useSkin()
     const { activeSegment, handleSegmentChange } = useSegmentNavigation()
     const [headerRef, headerScrolled] = useScrolled(activeSegment === 0)
     const currentPrefix = activeSegment === 0 ? "wallet" : "ton"
@@ -47,7 +47,7 @@ function NewNavigation() {
         return () => window.removeEventListener("popstate", returnToWallet)
     }, [activeSegment, handleSegmentChange])
 
-    const tabsConfig = getTabsConfig(skin, openTonWallet)
+    const tabsConfig = getTabsConfig(openTonWallet)
 
     // Tab State
     const [tabIndices, setTabIndices] = useState({ wallet: 0, ton: 0 })
