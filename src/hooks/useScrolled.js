@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-const findScroller = (node) => {
+export const findScroller = (node) => {
     let el = node?.parentElement
     while (el) {
         const overflowY = getComputedStyle(el).overflowY

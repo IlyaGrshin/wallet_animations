@@ -7,6 +7,7 @@ import SectionHeader from "../SectionHeader"
 import PanelHeader from "../PanelHeader"
 import ImageAvatar from "../ImageAvatar"
 import TextField from "../TextField"
+import Text from "../Text"
 
 import CheckmarkIcon from "../../icons/28/Checkmark.svg?react"
 import GiftIcon from "../../icons/28/Gift Fill.svg?react"
@@ -19,14 +20,21 @@ import * as styles from "./PanelHeader.showcase.module.scss"
 
 const noop = () => {}
 
-const Sample = ({ label, over = false, plain = false, children }) => (
+const Sample = ({
+    label,
+    over = false,
+    plain = false,
+    scroll = false,
+    children,
+}) => (
     <div className={styles.section}>
         <SectionHeader title={label} />
         <div
             className={cx(
                 styles.canvas,
                 over && styles.over,
-                plain && styles.plain
+                plain && styles.plain,
+                scroll && styles.scroller
             )}
         >
             {children}
@@ -38,6 +46,7 @@ Sample.propTypes = {
     label: PropTypes.string,
     over: PropTypes.bool,
     plain: PropTypes.bool,
+    scroll: PropTypes.bool,
     children: PropTypes.node,
 }
 
@@ -124,6 +133,27 @@ const PanelHeaderShowcase = () => {
                             />
                         }
                     />
+                </Sample>
+
+                <Sample label="Large title" scroll>
+                    <PanelHeader
+                        pin="sticky"
+                        largeTitle
+                        left={<PanelHeader.BackIcon />}
+                        onLeft={noop}
+                        right={<PanelHeader.MoreIcon />}
+                        onRight={noop}
+                    >
+                        Title
+                    </PanelHeader>
+                    <div className={styles.filler}>
+                        <Text
+                            apple={{ variant: "body" }}
+                            material={{ variant: "body" }}
+                        >
+                            Scroll to hand the title over to the bar.
+                        </Text>
+                    </div>
                 </Sample>
 
                 <Sample label="Overlay" over>

@@ -6,11 +6,13 @@ import { GlassContainer } from "../GlassEffect"
 import Text from "../Text"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { useScrolled } from "../../hooks/useScrolled"
+import { useTitleCollapse } from "../../hooks/useTitleCollapse"
 
 import HeaderButton, { HEADER_BUTTON_VARIANTS } from "./HeaderButton"
 import { BackIcon, CloseIcon, MoreIcon } from "./icons"
 import { ModalChromeContext } from "./context"
 import * as styles from "./PanelHeader.module.scss"
+import * as pinStyles from "./PanelHeader.pin.module.scss"
 
 // The modal "шапка": a glass navigation bar with left/right actions and a
 // centered title. 64px tall standalone, 70px inside a ModalView (via
@@ -18,6 +20,8 @@ import * as styles from "./PanelHeader.module.scss"
 // only (a text action is dropped), and no side actions at all inside a modal.
 // data-modal-drag makes the whole bar a swipe-to-dismiss handle. `sticky` pins
 // the bar to the top of its page scroller and fades its surface in on scroll.
+// `largeTitle` adds the iOS expanded title row below the bar: it scrolls with
+// the content and hands over to the inline title as it passes under the bar.
 const PanelHeader = ({
     left,
     onLeft,
@@ -29,11 +33,14 @@ const PanelHeader = ({
     titleGlass = false,
     search,
     pin,
+    largeTitle = false,
     children,
 }) => {
     const { isApple } = useSkin()
     const inModal = useContext(ModalChromeContext)
     const [stickyRef, scrolled] = useScrolled(Boolean(pin))
+    const expands = largeTitle && !search && children != null
+    const [barRef, largeTitleRef, collapsed] = useTitleCollapse(expands)
 
     // Over-content state: buttons default to the overlay glass and the title
     // goes white. Per-button variants still override.
@@ -95,6 +102,7 @@ const PanelHeader = ({
 
     const bar = (
         <div
+            ref={barRef}
             className={cx(
                 styles.root,
                 inModal && styles.inModal,
@@ -117,7 +125,13 @@ const PanelHeader = ({
                 exits: appleSearch,
             })}
             <div
-                className={cx(styles.middle, overlay && styles.middleOverlay)}
+                className={cx(
+                    styles.middle,
+                    overlay && styles.middleOverlay,
+                    expands && styles.handover,
+                    expands && collapsed && styles.handedOver
+                )}
+                {...(expands && { "aria-hidden": true })}
                 {...(search && {
                     onFocus: () => setSearchFocused(true),
                     onBlur: (event) => {
@@ -142,24 +156,50 @@ const PanelHeader = ({
         </div>
     )
 
-    if (!pin) return bar
+    // Stays in the flow so it scrolls at content speed and slides under the
+    // pinned bar, dimming in step with the scroll rather than on a timer.
+    const expandedTitle = expands && (
+        <div
+            ref={largeTitleRef}
+            className={cx(
+                pinStyles.largeTitle,
+                overlay && pinStyles.largeTitleOverlay
+            )}
+        >
+            <Text
+                apple={{ variant: "largeTitle", weight: "bold" }}
+                material={{ variant: "largeTitle", weight: "medium" }}
+            >
+                {children}
+            </Text>
+        </div>
+    )
+
+    if (!pin)
+        return (
+            <>
+                {bar}
+                {expandedTitle}
+            </>
+        )
 
     const pinnedBar = (
         <div
             ref={stickyRef}
-            className={cx(styles[pin], scrolled && styles.scrolled)}
+            className={cx(pinStyles[pin], scrolled && pinStyles.scrolled)}
         >
             {bar}
         </div>
     )
 
     // Fixed leaves the flow, so a spacer holds the bar's place in it.
-    if (pin !== "fixed") return pinnedBar
-
     return (
         <>
-            <div className={styles.spacer} aria-hidden="true" />
+            {pin === "fixed" && (
+                <div className={pinStyles.spacer} aria-hidden="true" />
+            )}
             {pinnedBar}
+            {expandedTitle}
         </>
     )
 }
@@ -187,6 +227,7 @@ PanelHeader.propTypes = {
     titleGlass: PropTypes.bool,
     search: PropTypes.node,
     pin: PropTypes.oneOf(["sticky", "fixed"]),
+    largeTitle: PropTypes.bool,
     children: PropTypes.node,
 }
 
