@@ -7,6 +7,7 @@ import Page from "../../../components/Page"
 
 import { useSegmentNavigation } from "./hooks/useSegmentNavigation"
 import SearchHeader from "./components/SearchHeader"
+import TonWalletHeader from "./components/TonWalletHeader"
 import { useScrolled } from "../../../hooks/useScrolled"
 
 import TabBar from "../../../components/TabBar"
@@ -121,6 +122,7 @@ function NewNavigation() {
                                     <SearchHeader />
                                 </div>
                             )}
+                            {activeSegment === 1 && <TonWalletHeader />}
                             {currentView}
                         </div>
                     </m.div>

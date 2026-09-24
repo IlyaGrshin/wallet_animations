@@ -12,7 +12,9 @@ function TONWallet() {
     return (
         <Page headerColor="131314" backgroundColor="131314">
             <div className="ton-space">
-                <Profile />
+                <div data-header-scheme="dark">
+                    <Profile />
+                </div>
                 <SectionList>
                     <Assets />
                     <Staking />
