@@ -1,7 +1,6 @@
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
-import { mergeRefs } from "../../../utils/mergeRefs"
 import Tappable from "../../Tappable"
 import Text from "../../Text"
 import Skeleton, {
@@ -21,15 +20,7 @@ import { useSkin } from "../../../hooks/DeviceProvider"
  * @example
  * <MultilineButton variant="filled" icon={<ArrowUpIcon />} label="Send" />
  */
-export function MultilineButton({
-    variant,
-    icon,
-    label,
-    style,
-    className,
-    ref,
-    ...props
-}) {
+export function MultilineButton({ variant, icon, label, style, ...props }) {
     const { isApple } = useSkin()
     // Under a Skeleton provider the whole button becomes a neutral gray pill;
     // the icon and label stay in flow (for size) but are hidden.
@@ -52,13 +43,12 @@ export function MultilineButton({
 
     return (
         <Root
-            ref={mergeRefs(skeleton && waveRef, ref)}
+            ref={skeleton ? waveRef : undefined}
             className={cx(
                 styles.button,
                 styles[variant],
                 skeleton && styles.skeleton,
-                redactionClassName,
-                className
+                redactionClassName
             )}
             {...tapProps}
             style={style}
@@ -75,9 +65,4 @@ MultilineButton.propTypes = {
     icon: PropTypes.node,
     label: PropTypes.string,
     style: PropTypes.object,
-    className: PropTypes.string,
-    ref: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.any }),
-    ]),
 }

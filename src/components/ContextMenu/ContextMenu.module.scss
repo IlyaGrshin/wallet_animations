@@ -1,11 +1,8 @@
+// Carries the gesture without a box of its own, so the wrapped element keeps
+// its layout (flex item, full-width row...). The callout setting inherits.
 .trigger {
+    display: contents;
     -webkit-touch-callout: none;
-
-    // The lifted copy stands in for the element while held or open. Opacity,
-    // not visibility, so it keeps receiving the pointer events of the hold.
-    &.hidden {
-        opacity: 0;
-    }
 }
 
 .overlay {
@@ -33,19 +30,6 @@
 .menu {
     position: fixed;
     z-index: 1002;
-}
-
-// Over the dim overlay the native glass turns grey and lets the rows behind
-// bleed through. A near-opaque section tint with a heavier blur keeps the
-// menu light and legible. Doubled class outranks DropdownMenu's skin rule.
-:global(body.apple) .menu.menu {
-    background: color-mix(
-        in srgb,
-        var(--tg-theme-section-bg-color) 82%,
-        transparent
-    );
-    backdrop-filter: blur(24px) saturate(180%);
-    -apple-visual-effect: none;
 }
 
 .measuring {

@@ -211,5 +211,4 @@ DropdownMenu.propTypes = {
     trigger: PropTypes.node,
     onChange: PropTypes.func,
 }
-export { default as MenuPanel } from "./MenuPanel"
 export default DropdownMenu

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
@@ -33,14 +33,14 @@ const SwipeCell = ({ actions, children, className }) => {
     const count = actions.length
     const primary = actions[count - 1]
 
-    const measure = () => {
-        const el = rootRef.current
-        if (!el) return
-        sizeRef.current = { width: el.offsetWidth, height: el.offsetHeight }
-        setWidth(el.offsetWidth)
-    }
-    useLayoutEffect(measure, [])
-    useResizeObserver(rootRef, measure)
+    // The observer's first callback lands before the first paint, so it is
+    // the only measurement: the ref feeds per-frame transforms, the state the
+    // drag constraint.
+    useResizeObserver(rootRef, (entry) => {
+        const [{ inlineSize, blockSize }] = entry.borderBoxSize
+        sizeRef.current = { width: inlineSize, height: blockSize }
+        setWidth(inlineSize)
+    })
 
     const { x, arm, revealed, commit, close, contentHandlers } = useSwipeCell({
         rootRef,

@@ -4,9 +4,13 @@ import * as m from "motion/react-m"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import cx from "clsx"
 
-import { MenuPanel } from "../DropdownMenu"
-import { itemShape } from "../DropdownMenu/MenuPanel"
-import { POPOVER_VARIANTS, SPRING } from "../../utils/animations"
+import MenuPanel, { itemShape } from "../DropdownMenu/MenuPanel"
+import {
+    DURATION,
+    EASING,
+    POPOVER_VARIANTS,
+    SPRING,
+} from "../../utils/animations"
 import { DELAY, PRESS_DELAY } from "../../hooks/useLongPress"
 import { placeMenu } from "./placement"
 
@@ -16,9 +20,9 @@ import * as styles from "./ContextMenu.module.scss"
 // with the finger staying down.
 const GROW = {
     duration: (DELAY - PRESS_DELAY) / 1000,
-    ease: [0.23, 1, 0.32, 1],
+    ease: EASING.QUINT_OUT,
 }
-const FADE = { duration: 0.2, ease: "easeOut" }
+const FADE = { duration: DURATION.OPACITY / 1000, ease: "easeOut" }
 const INSTANT = { duration: 0 }
 const REDUCED_VARIANTS = {
     hidden: { opacity: 0 },
@@ -36,7 +40,6 @@ const shadow = (alpha) => `drop-shadow(0px 6px 20px rgb(0 0 0 / ${alpha}))`
 const ContextMenuLayer = ({
     isOpen,
     shape,
-    point,
     surface,
     items,
     onSelect,
@@ -46,7 +49,7 @@ const ContextMenuLayer = ({
     const reduceMotion = useReducedMotion()
     const menuRef = useRef(null)
     const [place, setPlace] = useState(null)
-    const { rect, radiusFrom, radiusTo } = shape
+    const { rect, point, radiusFrom, radiusTo } = shape
     const scale = reduceMotion ? 1 : shape.scale
 
     // offsetWidth/Height ignore the menu's entry scale, so this measures the
@@ -110,6 +113,7 @@ const ContextMenuLayer = ({
                         ref={menuRef}
                         items={items}
                         onSelect={onSelect}
+                        opaque
                         className={cx(styles.menu, !place && styles.measuring)}
                         initial="hidden"
                         animate="visible"
@@ -145,9 +149,9 @@ ContextMenuLayer.propTypes = {
         radiusFrom: PropTypes.string.isRequired,
         radiusTo: PropTypes.string.isRequired,
         scale: PropTypes.number.isRequired,
+        point: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
+            .isRequired,
     }).isRequired,
-    point: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
-        .isRequired,
     surface: PropTypes.bool,
     items: PropTypes.arrayOf(itemShape).isRequired,
     onSelect: PropTypes.func.isRequired,

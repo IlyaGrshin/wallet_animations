@@ -42,9 +42,9 @@ const ContextMenuShowcase = () => {
         snackbar.show({ title: `${item.label}: ${name}` })
     }
 
-    const notify = (title) => () => snackbar.show({ title })
+    const notify = (title) => snackbar.show({ title })
     const bareLongPress = useLongPress({
-        onLongPress: notify("Long press, no menu"),
+        onLongPress: () => notify("Long press, no menu"),
     })
 
     return (
@@ -102,24 +102,24 @@ const ContextMenuShowcase = () => {
                         <div className={styles.buttons}>
                             <ContextMenu
                                 items={["To Contact", "To Address", "Scan QR"]}
-                                onSelect={(item) => notify(`Send ${item}`)()}
+                                onSelect={(item) => notify(`Send ${item}`)}
                             >
                                 <MultilineButton
                                     variant="filled"
                                     icon={<ArrowUpIcon />}
                                     label="Send"
-                                    onClick={notify("Send")}
+                                    onClick={() => notify("Send")}
                                 />
                             </ContextMenu>
                             <ContextMenu
                                 items={["Show Address", "Copy Address"]}
-                                onSelect={(item) => notify(item)()}
+                                onSelect={(item) => notify(item)}
                             >
                                 <MultilineButton
                                     variant="filled"
                                     icon={<ArrowDownIcon />}
                                     label="Receive"
-                                    onClick={notify("Receive")}
+                                    onClick={() => notify("Receive")}
                                 />
                             </ContextMenu>
                         </div>
@@ -132,7 +132,7 @@ const ContextMenuShowcase = () => {
                                     key={ticker}
                                     items={["Open", "Copy Ticker"]}
                                     onSelect={(item) =>
-                                        notify(`${item}: ${name}`)()
+                                        notify(`${item}: ${name}`)
                                     }
                                 >
                                     <ImageAvatar
@@ -153,7 +153,7 @@ const ContextMenuShowcase = () => {
                                 {...bareLongPress}
                                 variant="outlined"
                                 label="Tap or hold"
-                                onClick={notify("Tap")}
+                                onClick={() => notify("Tap")}
                             />
                         </div>
                     </SectionList.Item>

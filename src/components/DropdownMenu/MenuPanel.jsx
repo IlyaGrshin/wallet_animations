@@ -19,8 +19,6 @@ export const itemShape = PropTypes.oneOfType([
     }),
 ])
 
-const getLabel = (item) => (typeof item === "string" ? item : item.label)
-
 export const MenuItem = ({
     item,
     isSelected,
@@ -28,7 +26,8 @@ export const MenuItem = ({
     onMouseEnter,
     itemRef,
 }) => {
-    const icon = typeof item === "string" ? null : item.icon
+    const { label, icon, destructive } =
+        typeof item === "string" ? { label: item } : item
     return (
         <Tappable
             ref={itemRef}
@@ -40,10 +39,10 @@ export const MenuItem = ({
                 styles.item,
                 isSelected && styles.selected,
                 icon && styles.withIcon,
-                item.destructive && styles.destructive
+                destructive && styles.destructive
             )}
         >
-            <Text variant="body">{getLabel(item)}</Text>
+            <Text variant="body">{label}</Text>
             {icon && <span className={styles.itemIcon}>{icon}</span>}
         </Tappable>
     )
@@ -63,6 +62,8 @@ MenuItem.propTypes = {
 /**
  * The animated menu surface shared by DropdownMenu and ContextMenu. Extra
  * props (variants, style, initial...) go to the motion root.
+ * @param {boolean} [props.opaque] Near-opaque surface for menus shown over a
+ * dim overlay, where the iOS glass would turn grey and let content bleed through.
  */
 const MenuPanel = ({
     ref,
@@ -71,6 +72,7 @@ const MenuPanel = ({
     onSelect,
     onItemHover,
     itemRefs,
+    opaque = false,
     className,
     ...props
 }) => {
@@ -79,7 +81,7 @@ const MenuPanel = ({
         <m.div
             ref={ref}
             role="menu"
-            className={cx(styles.root, className)}
+            className={cx(styles.root, opaque && styles.opaque, className)}
             {...props}
         >
             {isApple && <GlassBorder muted />}
@@ -90,9 +92,12 @@ const MenuPanel = ({
                     isSelected={item === selectedItem}
                     onClick={() => onSelect?.(item, index)}
                     onMouseEnter={() => onItemHover?.(index)}
-                    itemRef={(el) => {
-                        if (itemRefs) itemRefs.current[index] = el
-                    }}
+                    itemRef={
+                        itemRefs &&
+                        ((el) => {
+                            itemRefs.current[index] = el
+                        })
+                    }
                 />
             ))}
         </m.div>
@@ -109,6 +114,7 @@ MenuPanel.propTypes = {
     onSelect: PropTypes.func,
     onItemHover: PropTypes.func,
     itemRefs: PropTypes.shape({ current: PropTypes.array }),
+    opaque: PropTypes.bool,
     className: PropTypes.string,
 }
 

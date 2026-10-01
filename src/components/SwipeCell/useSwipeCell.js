@@ -6,21 +6,13 @@ import {
     useTransform,
 } from "motion/react"
 
-import WebApp from "../../lib/twa"
-import { SPRING } from "../../utils/animations"
+import { haptic } from "../../lib/twa"
+import { EASING, SPRING } from "../../utils/animations"
 import { armThreshold, HYSTERESIS, restWidth } from "./geometry"
 
 const FLING_VELOCITY = 400
-const COMMIT_TRANSITION = { duration: 0.25, ease: [0.23, 1, 0.32, 1] }
+const COMMIT_TRANSITION = { duration: 0.25, ease: EASING.QUINT_OUT }
 const INSTANT = { duration: 0 }
-
-const haptic = (style) => {
-    try {
-        WebApp.HapticFeedback?.impactOccurred(style)
-    } catch {
-        // older clients may not support HapticFeedback
-    }
-}
 
 // Drag state for a row with trailing actions: rest closed, rest open on the
 // action strip, or armed for the full swipe that runs the trailing action.
@@ -33,13 +25,14 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
     const armedRef = useRef(false)
     const draggedRef = useRef(false)
     const committingRef = useRef(false)
+    const thresholdRef = useRef(0)
 
     const spring = reduceMotion ? INSTANT : SPRING.APPLE
 
     const setArmed = (next) => {
         if (armedRef.current === next) return
         armedRef.current = next
-        haptic(next ? "medium" : "light")
+        haptic.impact(next ? "medium" : "light")
         animate(arm, next ? 1 : 0, spring)
     }
 
@@ -76,10 +69,11 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
 
     const onDragStart = () => {
         draggedRef.current = true
+        thresholdRef.current = armThreshold(count, sizeRef.current.width)
     }
 
     const onDrag = () => {
-        const threshold = armThreshold(count, sizeRef.current.width)
+        const threshold = thresholdRef.current
         const pulled = revealed.get()
         if (!armedRef.current && pulled > threshold) setArmed(true)
         else if (armedRef.current && pulled < threshold - HYSTERESIS)

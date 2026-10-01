@@ -1,3 +1,5 @@
+import { clamp } from "../../utils/number"
+
 // How the pressed element lifts: its box, corner radius and growth. Read from
 // the element itself so the menu works on any tappable — a full-width cell,
 // a round avatar, a pill button — without per-element configuration.
@@ -7,8 +9,6 @@ const MAX_GROW = 0.1
 // Roughly how many px the larger side grows by; small targets get a
 // stronger relative lift so the hold is visible, big rows stay subtle.
 const GROW_PX = 12
-
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
 /**
  * @param {HTMLElement} el The pressed element

@@ -74,6 +74,18 @@
             backdrop-filter: none;
         }
 
+        // Over a dim overlay the glass greys out; a near-opaque tint keeps
+        // the menu light. Declared after the glass rule so it wins.
+        &.opaque {
+            background: color-mix(
+                in srgb,
+                var(--tg-theme-section-bg-color) 92%,
+                transparent
+            );
+            backdrop-filter: blur(12px);
+            -apple-visual-effect: none;
+        }
+
         .item {
             padding: 11px 8px;
             border-radius: 50px;

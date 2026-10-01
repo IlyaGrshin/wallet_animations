@@ -1,10 +1,12 @@
+import { clamp } from "../../utils/number"
+
 // Pure layout math for the trailing swipe actions. Distances are measured
 // from the row's trailing (right) edge, so "revealed" is how far the content
 // has been pulled left and every action is placed inside that strip.
 
 export const SIZE = 44
-export const GAP = 8
-export const PAD = 8
+const GAP = 8
+const PAD = 8
 
 // Past the resting strip the full-swipe arms at this extra pull, or at this
 // share of the row width — whichever is further. Disarming needs HYSTERESIS
@@ -13,7 +15,6 @@ const ARM_EXTRA = 48
 const ARM_SHARE = 0.55
 export const HYSTERESIS = 16
 
-const clamp01 = (v) => Math.min(1, Math.max(0, v))
 const mix = (a, b, t) => a + (b - a) * t
 
 export const restWidth = (count) =>
@@ -29,11 +30,12 @@ export const armThreshold = (count, width) =>
  * @param {number} count total actions
  */
 export const layoutAction = (revealed, arm, slot, count) => {
-    const progress = clamp01(revealed / restWidth(count))
-    const overflow = Math.max(0, revealed - restWidth(count))
+    const rest = restWidth(count)
+    const progress = clamp(revealed / rest, 0, 1)
+    const overflow = Math.max(0, revealed - rest)
     const center = (PAD + SIZE / 2 + slot * (SIZE + GAP)) * progress
     const half = (SIZE / 2) * progress
-    const opacity = clamp01(progress * 1.5)
+    const opacity = clamp(progress * 1.5, 0, 1)
 
     if (slot > 0) {
         // Secondary actions ride the content edge and fold away once the

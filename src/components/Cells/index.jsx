@@ -1,5 +1,4 @@
 import PropTypes from "prop-types"
-import cx from "clsx"
 import Text from "../Text"
 import Tappable from "../Tappable"
 
@@ -29,7 +28,6 @@ const CellComponent = ({
     end,
     onClick,
     tappable,
-    className,
     ...props
 }) => {
     // A cell shows press feedback only when it does something: it has an
@@ -47,11 +45,7 @@ const CellComponent = ({
 
     if (!interactive) {
         return (
-            <Component
-                className={cx(styles.root, className)}
-                onClick={onClick}
-                {...props}
-            >
+            <Component className={styles.root} onClick={onClick} {...props}>
                 {content}
             </Component>
         )
@@ -60,7 +54,7 @@ const CellComponent = ({
     return (
         <Tappable
             as={Component}
-            className={cx(styles.root, className)}
+            className={styles.root}
             onClick={onClick}
             {...props}
         >
@@ -111,7 +105,6 @@ CellComponent.propTypes = {
     end: PropTypes.node,
     onClick: PropTypes.func,
     tappable: PropTypes.bool,
-    className: PropTypes.string,
 }
 
 CellStart.propTypes = {
