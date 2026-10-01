@@ -56,6 +56,7 @@ const SwipeRow = ({ actions, children, className }) => {
     } = useSwipeCell({
         rootRef,
         sizeRef,
+        width,
         count,
         onCommit: async () => {
             // Without a callback nothing can remove the row, so it stays.

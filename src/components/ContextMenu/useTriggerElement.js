@@ -15,16 +15,35 @@ const prepare = (el) => {
  * restoring its own inline opacity afterwards.
  */
 export const useTriggerElement = (wrapperRef, hidden) => {
-    const savedOpacityRef = useRef(null)
+    // The node currently hidden and its own inline opacity, so a root swap
+    // mid-gesture hands the hidden state to the new node and each node gets
+    // back exactly what it had.
+    const hiddenRef = useRef(null)
+    const hiddenNow = useRef(hidden)
     const getElement = () => wrapperRef.current?.firstElementChild ?? null
+
+    const hide = (el) => {
+        if (!el || hiddenRef.current?.el === el) return
+        hiddenRef.current = { el, opacity: el.style.opacity }
+        el.style.opacity = "0"
+    }
+    const show = () => {
+        const entry = hiddenRef.current
+        hiddenRef.current = null
+        if (entry?.el.isConnected) entry.el.style.opacity = entry.opacity
+    }
 
     useLayoutEffect(() => {
         const wrapper = wrapperRef.current
         if (!wrapper) return
         prepare(wrapper.firstElementChild)
-        const observer = new MutationObserver(() =>
-            prepare(wrapper.firstElementChild)
-        )
+        const observer = new MutationObserver(() => {
+            const el = wrapper.firstElementChild
+            prepare(el)
+            if (!hiddenNow.current) return
+            show()
+            hide(el)
+        })
         observer.observe(wrapper, { childList: true })
         return () => observer.disconnect()
     }, [wrapperRef])
@@ -32,15 +51,9 @@ export const useTriggerElement = (wrapperRef, hidden) => {
     // The lifted copy stands in for the element while held or open. Opacity,
     // not visibility, so it keeps receiving the pointer events of the hold.
     useLayoutEffect(() => {
-        const el = getElement()
-        if (!el) return
-        if (hidden && savedOpacityRef.current === null) {
-            savedOpacityRef.current = el.style.opacity
-            el.style.opacity = "0"
-        } else if (!hidden && savedOpacityRef.current !== null) {
-            el.style.opacity = savedOpacityRef.current
-            savedOpacityRef.current = null
-        }
+        hiddenNow.current = hidden
+        if (hidden) hide(getElement())
+        else show()
     }, [hidden])
 
     return getElement

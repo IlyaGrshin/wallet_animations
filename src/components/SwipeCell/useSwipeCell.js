@@ -23,7 +23,7 @@ const INSTANT = { duration: 0 }
 
 // Drag state for a row with trailing actions: rest closed, rest open on the
 // action strip, or armed for the full swipe that runs the trailing action.
-export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
+export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
     const reduceMotion = useReducedMotion()
     const { isApple } = useSkin()
     // `pull` is the finger (drag writes it via _dragX); `x` is what the
@@ -86,7 +86,12 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
             armedRef.current = false
             if (!removed) {
                 animate(arm, 0, spring)
-                if (keepOpen) settle(true)
+                // Reopen only if the action still has focus: the user may
+                // have tabbed away while an async action was running.
+                const focused = rootRef.current?.contains(
+                    document.activeElement
+                )
+                if (keepOpen && focused) settle(true)
                 else animate(pull, 0, spring)
             }
         }
@@ -143,6 +148,14 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
         event.stopPropagation()
         if (isOpen) settle(false)
     }
+
+    // The raw pull belongs to the old bands: when the row resizes or its
+    // action set changes, an open (or half-dragged) row closes rather than
+    // rendering off its new geometry.
+    useEffect(() => {
+        if (pull.get() === 0 || committingRef.current) return
+        settle(false)
+    }, [width, count])
 
     useEffect(() => {
         if (!isOpen) return

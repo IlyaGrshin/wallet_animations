@@ -6,6 +6,7 @@ import cx from "clsx"
 
 import MenuPanel, { itemShape } from "../DropdownMenu/MenuPanel"
 import { useSkin } from "../../hooks/DeviceProvider"
+import { useResizeObserver } from "../../hooks/useResizeObserver"
 import {
     DURATION,
     EASING,
@@ -67,14 +68,17 @@ const ContextMenuLayer = ({
     const openScale = reduceMotion ? 1 : shape.settledScale
     const scale = isOpen ? openScale : heldScale
 
-    // offsetWidth/Height ignore the menu's entry scale, so this measures the
-    // final size before the first paint.
-    useLayoutEffect(() => {
+    // offsetWidth / scrollHeight ignore the menu's entry scale and its own
+    // max-height cap, so this measures the natural size before the first
+    // paint, and again whenever the panel's contents resize it.
+    const measure = () => {
         const el = menuRef.current
         if (!isOpen || !el) return
-        const size = { width: el.offsetWidth, height: el.offsetHeight }
+        const size = { width: el.offsetWidth, height: el.scrollHeight }
         setPlace(placeMenu(rect, size, point.x, openScale))
-    }, [isOpen, rect, point, openScale])
+    }
+    useLayoutEffect(measure, [isOpen, rect, point, openScale])
+    useResizeObserver(menuRef, measure, { enabled: isOpen })
 
     useMenuInteraction({
         menuRef,
