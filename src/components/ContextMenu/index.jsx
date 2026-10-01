@@ -23,28 +23,17 @@ const haptic = () => {
     }
 }
 
-// The row is mid press-in (scaled) when the menu fires; take its resting box
-// so the lifted copy matches the layout slot it came from.
-const unscaledRect = (el) => {
-    const box = el.getBoundingClientRect()
-    const width = el.offsetWidth
-    const height = el.offsetHeight
-    const left = box.left + box.width / 2 - width / 2
-    const top = box.top + box.height / 2 - height / 2
-    return {
-        left,
-        top,
-        width,
-        height,
-        right: left + width,
-        bottom: top + height,
-    }
+const getRect = (el) => {
+    const { left, top, right, bottom, width, height } =
+        el.getBoundingClientRect()
+    return { left, top, right, bottom, width, height }
 }
 
 /**
- * Long-press (or right-click) context menu. While held the row presses in;
- * on activation (haptic) it lifts above a dim overlay with rounded corners
- * and the menu opens in the remaining space. Tap the overlay or Esc to close.
+ * Long-press (or right-click) context menu. A plain tap leaves the row
+ * untouched; an intentional hold lifts it out of the list and slowly scales
+ * it up with rounded corners. On activation (haptic) a dim overlay fades in
+ * under it and the menu opens in the remaining space. Tap the overlay or Esc to close.
  * @param {Array} props.items Menu entries: strings or `{ label, icon, destructive }`.
  * @param {(item, index: number) => void} [props.onSelect] Fires with the picked entry.
  * @example
@@ -57,23 +46,33 @@ const ContextMenu = ({ items, onSelect, children, className }) => {
     const { isApple } = useSkin()
     const radius = isApple ? APPLE_RADIUS : MATERIAL_RADIUS
     const triggerRef = useRef(null)
-    // `target` outlives `isOpen` so the original row stays hidden until the
-    // lifted copy has flown back into place.
+    // `target` outlives `phase` so the original row stays hidden until the
+    // lifted copy has settled back into place.
     const [target, setTarget] = useState(null)
-    const [isOpen, setIsOpen] = useState(false)
+    // "idle" | "pressing" (hold in progress) | "open" (menu shown)
+    const [phase, setPhase] = useState("idle")
+    const isOpen = phase === "open"
 
-    const open = (point) => {
+    const lift = (point) => {
         const el = triggerRef.current
-        if (!el) return
-        haptic()
-        setTarget({ rect: unscaledRect(el), point })
-        setIsOpen(true)
+        if (el) setTarget({ rect: getRect(el), point })
     }
-    const close = () => setIsOpen(false)
+    const close = () => setPhase("idle")
 
-    const { pressing, handlers } = useLongPress({
-        onLongPress: open,
-        disabled: Boolean(target),
+    const handlers = useLongPress({
+        onPressStart: (point) => {
+            lift(point)
+            setPhase("pressing")
+        },
+        onCancel: close,
+        onLongPress: (point) => {
+            // Right-click skips the hold, so the row may not be lifted yet.
+            lift(point)
+            haptic()
+            setPhase("open")
+        },
+        // Busy while the menu is open or the copy is still settling back.
+        disabled: isOpen || (phase === "idle" && target !== null),
     })
 
     const handleSelect = (item, index) => {
@@ -104,19 +103,18 @@ const ContextMenu = ({ items, onSelect, children, className }) => {
                 ref={triggerRef}
                 className={cx(
                     styles.trigger,
-                    pressing && styles.pressing,
                     target && styles.hidden,
                     className
                 )}
-                style={{ "--context-menu-radius": `${radius}px` }}
                 {...handlers}
             >
                 {children}
             </div>
             {createPortal(
                 <AnimatePresence onExitComplete={() => setTarget(null)}>
-                    {isOpen && target && (
+                    {phase !== "idle" && target && (
                         <ContextMenuLayer
+                            isOpen={isOpen}
                             rect={target.rect}
                             point={target.point}
                             radius={radius}

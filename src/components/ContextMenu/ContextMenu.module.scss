@@ -1,38 +1,10 @@
 .trigger {
     -webkit-touch-callout: none;
-    clip-path: inset(0 round 0);
-    transition:
-        transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
-        clip-path 200ms cubic-bezier(0.23, 1, 0.32, 1);
 
-    // Held down: the row presses in and its corners round off, so the
-    // shrinking highlight reads as a card lifting out of the list rather than
-    // a tint that stops short of the edges. Scale and radius must match
-    // PRESSED_SCALE / the lifted radius in ContextMenuLayer.
-    &.pressing {
-        transform: scale(0.97);
-        clip-path: inset(0 round var(--context-menu-radius));
-        transition:
-            transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 100ms,
-            clip-path 400ms cubic-bezier(0.23, 1, 0.32, 1) 100ms;
-
-        // The lifting card has no separator (Cell reads this on itself).
-        > * {
-            --last-cell-separator-height: 0px;
-        }
-    }
-
+    // The lifted copy stands in for the row while held or open. Opacity, not
+    // visibility, so the row keeps receiving the pointer events of the hold.
     &.hidden {
-        visibility: hidden;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        &,
-        &.pressing {
-            transform: none;
-            clip-path: none;
-            transition: none;
-        }
+        opacity: 0;
     }
 }
 
@@ -47,9 +19,13 @@
 .lifted {
     position: fixed;
     z-index: 1001;
+    pointer-events: none;
+}
+
+.card {
+    height: 100%;
     overflow: hidden;
     background-color: var(--tg-theme-section-bg-color);
-    pointer-events: none;
 }
 
 .menu {
