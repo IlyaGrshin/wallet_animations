@@ -1,4 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import {
+    cloneElement,
+    isValidElement,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import { AnimatePresence } from "motion/react"
@@ -43,6 +50,10 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
     const { isApple } = useSkin()
     const fallbackRadius = isApple ? APPLE_RADIUS : MATERIAL_RADIUS
     const triggerRef = useRef(null)
+    // The element's own inline opacity while it is hidden, to put back after.
+    const savedOpacityRef = useRef(null)
+    // Where focus was when the menu opened, restored once it is gone.
+    const returnFocusRef = useRef(null)
     // `target` outlives `phase` so the original row stays hidden until the
     // lifted copy has settled back into place.
     const [target, setTarget] = useState(null)
@@ -62,6 +73,12 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
             return { ...measureShape(el, fallbackRadius), point }
         })
     const close = () => setPhase("idle")
+    const open = (point) => {
+        lift(point)
+        haptic.impact("medium")
+        returnFocusRef.current = document.activeElement
+        setPhase("open")
+    }
 
     const handlers = useLongPress({
         onPressStart: (point) => {
@@ -69,22 +86,53 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
             setPhase("pressing")
         },
         onCancel: close,
-        onLongPress: (point) => {
-            lift(point)
-            haptic.impact("medium")
-            setPhase("open")
-        },
+        onLongPress: open,
         // Busy while the menu is open or the copy is still settling back.
         disabled: isOpen || (phase === "idle" && target !== null),
     })
 
     // The lifted copy stands in for the element while held or open. Opacity,
     // not visibility, so it keeps receiving the pointer events of the hold.
+    // Any inline opacity of its own is saved and put back afterwards.
     useLayoutEffect(() => {
         const el = getElement()
         if (!el) return
-        el.style.opacity = target ? "0" : ""
+        if (target && savedOpacityRef.current === null) {
+            savedOpacityRef.current = el.style.opacity
+            el.style.opacity = "0"
+        } else if (!target && savedOpacityRef.current !== null) {
+            el.style.opacity = savedOpacityRef.current
+            savedOpacityRef.current = null
+        }
     }, [target])
+
+    // Keyboard: Shift+F10 or the Menu key opens the menu for a focused element.
+    const handleKeyDown = (event) => {
+        const isMenuKey =
+            event.key === "ContextMenu" ||
+            (event.shiftKey && event.key === "F10")
+        if (!isMenuKey || isOpen || target) return
+        event.preventDefault()
+        const el = getElement()
+        if (!el) return
+        const box = el.getBoundingClientRect()
+        open({ x: box.left + box.width / 2, y: box.top + box.height / 2 })
+    }
+
+    const handleExitComplete = () => {
+        setTarget(null)
+        // Focus left with the menu; hand it back to where it came from.
+        const ret = returnFocusRef.current
+        returnFocusRef.current = null
+        // Exit completes just before the menu unmounts, so focus may still
+        // sit on one of its items; anywhere else, the user has moved on.
+        const active = document.activeElement
+        const stranded =
+            !active ||
+            active === document.body ||
+            active.closest('[role="menu"]')
+        if (ret?.isConnected && stranded) ret.focus({ preventScroll: true })
+    }
 
     const handleSelect = (item, index) => {
         close()
@@ -110,11 +158,16 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
 
     return (
         <>
-            <span ref={triggerRef} className={styles.trigger} {...handlers}>
+            <span
+                ref={triggerRef}
+                className={styles.trigger}
+                onKeyDown={handleKeyDown}
+                {...handlers}
+            >
                 {children}
             </span>
             {createPortal(
-                <AnimatePresence onExitComplete={() => setTarget(null)}>
+                <AnimatePresence onExitComplete={handleExitComplete}>
                     {phase !== "idle" && target && (
                         <ContextMenuLayer
                             isOpen={isOpen}
@@ -124,7 +177,11 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
                             onSelect={handleSelect}
                             onClose={close}
                         >
-                            {children}
+                            {/* A visual copy: the caller's ref stays on the
+                                real element. */}
+                            {isValidElement(children)
+                                ? cloneElement(children, { ref: null })
+                                : children}
                         </ContextMenuLayer>
                     )}
                 </AnimatePresence>,

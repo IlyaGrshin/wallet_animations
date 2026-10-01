@@ -7,6 +7,7 @@ import {
 } from "motion/react"
 
 import { haptic } from "../../lib/twa"
+import { useSkin } from "../../hooks/DeviceProvider"
 import { EASING, SPRING } from "../../utils/animations"
 import { armThreshold, HYSTERESIS, restWidth } from "./geometry"
 
@@ -18,6 +19,7 @@ const INSTANT = { duration: 0 }
 // action strip, or armed for the full swipe that runs the trailing action.
 export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
     const reduceMotion = useReducedMotion()
+    const { isApple } = useSkin()
     const x = useMotionValue(0)
     const arm = useMotionValue(0)
     const revealed = useTransform(x, (v) => Math.max(0, -v))
@@ -27,7 +29,8 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
     const committingRef = useRef(false)
     const thresholdRef = useRef(0)
 
-    const spring = reduceMotion ? INSTANT : SPRING.APPLE
+    const platformSpring = isApple ? SPRING.APPLE : SPRING.MATERIAL
+    const spring = reduceMotion ? INSTANT : platformSpring
 
     const setArmed = (next) => {
         if (armedRef.current === next) return
@@ -117,6 +120,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
         x,
         arm,
         revealed,
+        isOpen,
         commit,
         close: () => settle(false),
         contentHandlers: {

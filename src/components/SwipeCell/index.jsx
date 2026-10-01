@@ -42,15 +42,16 @@ const SwipeCell = ({ actions, children, className }) => {
         setWidth(inlineSize)
     })
 
-    const { x, arm, revealed, commit, close, contentHandlers } = useSwipeCell({
-        rootRef,
-        sizeRef,
-        count,
-        onCommit: async () => {
-            const result = await primary.onClick?.()
-            return Boolean(primary.destructive) && result !== false
-        },
-    })
+    const { x, arm, revealed, isOpen, commit, close, contentHandlers } =
+        useSwipeCell({
+            rootRef,
+            sizeRef,
+            count,
+            onCommit: async () => {
+                const result = await primary.onClick?.()
+                return Boolean(primary.destructive) && result !== false
+            },
+        })
 
     const handlePress = (action) => {
         if (action === primary) {
@@ -73,6 +74,7 @@ const SwipeCell = ({ actions, children, className }) => {
                         revealed={revealed}
                         arm={arm}
                         sizeRef={sizeRef}
+                        hidden={!isOpen}
                         onPress={() => handlePress(action)}
                     />
                 ))}

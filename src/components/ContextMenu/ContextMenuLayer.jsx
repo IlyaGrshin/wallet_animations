@@ -1,10 +1,11 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import cx from "clsx"
 
 import MenuPanel, { itemShape } from "../DropdownMenu/MenuPanel"
+import { useSkin } from "../../hooks/DeviceProvider"
 import {
     DURATION,
     EASING,
@@ -47,6 +48,7 @@ const ContextMenuLayer = ({
     children,
 }) => {
     const reduceMotion = useReducedMotion()
+    const { isApple } = useSkin()
     const menuRef = useRef(null)
     const [place, setPlace] = useState(null)
     const { rect, point, radiusFrom, radiusTo } = shape
@@ -61,8 +63,36 @@ const ContextMenuLayer = ({
         setPlace(placeMenu(rect, size, point.x, scale))
     }, [isOpen, rect, point, scale])
 
+    // Keyboard reach: focus lands on the first item once the menu is placed;
+    // arrows move between items, Enter / Space pick the focused one.
+    useEffect(() => {
+        const menu = menuRef.current
+        if (!isOpen || !place || !menu) return
+        const getItems = () => [...menu.querySelectorAll('[role="menuitem"]')]
+        getItems()[0]?.focus({ preventScroll: true })
+        const onKeyDown = (event) => {
+            const list = getItems()
+            const index = list.indexOf(document.activeElement)
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                event.preventDefault()
+                const step = event.key === "ArrowDown" ? 1 : -1
+                const next = (index + step + list.length) % list.length
+                list[next]?.focus()
+            } else if (
+                (event.key === "Enter" || event.key === " ") &&
+                index >= 0
+            ) {
+                event.preventDefault()
+                list[index].click()
+            }
+        }
+        document.addEventListener("keydown", onKeyDown)
+        return () => document.removeEventListener("keydown", onKeyDown)
+    }, [isOpen, place])
+
     const grow = reduceMotion ? INSTANT : GROW
-    const settle = reduceMotion ? INSTANT : SPRING.APPLE
+    const platformSpring = isApple ? SPRING.APPLE : SPRING.MATERIAL
+    const settle = reduceMotion ? INSTANT : platformSpring
     const fade = reduceMotion ? INSTANT : FADE
 
     return (

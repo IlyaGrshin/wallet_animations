@@ -20,8 +20,13 @@ const mix = (a, b, t) => a + (b - a) * t
 export const restWidth = (count) =>
     2 * PAD + count * SIZE + Math.max(0, count - 1) * GAP
 
+// Capped just short of the full row width, which is as far as the drag
+// constraint lets the content go, so narrow rows can still arm.
 export const armThreshold = (count, width) =>
-    Math.max(restWidth(count) + ARM_EXTRA, width * ARM_SHARE)
+    Math.min(
+        Math.max(restWidth(count) + ARM_EXTRA, width * ARM_SHARE),
+        width - PAD
+    )
 
 /**
  * @param {number} revealed px the content is pulled left (>= 0)
