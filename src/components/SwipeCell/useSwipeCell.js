@@ -63,7 +63,9 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
     // Runs the trailing action with the row swiped fully out. `onCommit`
     // resolves true when the row is being removed (the parent collapses it);
     // otherwise, or if the action throws, the row springs back closed.
-    const commit = async () => {
+    // `keepOpen` (a keyboard press): when the row survives, it settles open
+    // so the focused action stays visible.
+    const commit = async ({ keepOpen = false } = {}) => {
         if (committingRef.current) return
         committingRef.current = true
         // Out of the open state, so an outside touch can't drag it back in.
@@ -84,7 +86,8 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
             armedRef.current = false
             if (!removed) {
                 animate(arm, 0, spring)
-                animate(pull, 0, spring)
+                if (keepOpen) settle(true)
+                else animate(pull, 0, spring)
             }
         }
     }

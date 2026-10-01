@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import { AnimatePresence } from "motion/react"
@@ -8,6 +8,7 @@ import { useSkin } from "../../hooks/DeviceProvider"
 import { itemShape } from "../DropdownMenu/MenuPanel"
 import ContextMenuLayer from "./ContextMenuLayer"
 import { measureShape } from "./shape"
+import { useTriggerElement } from "./useTriggerElement"
 import { useLongPress } from "../../hooks/useLongPress"
 
 import * as styles from "./ContextMenu.module.scss"
@@ -43,8 +44,6 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
     const { isApple } = useSkin()
     const fallbackRadius = isApple ? APPLE_RADIUS : MATERIAL_RADIUS
     const triggerRef = useRef(null)
-    // The element's own inline opacity while it is hidden, to put back after.
-    const savedOpacityRef = useRef(null)
     // Where focus was when the menu opened, restored once it is gone.
     const returnFocusRef = useRef(null)
     // `target` outlives `phase` so the original row stays hidden until the
@@ -55,8 +54,8 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
     const isOpen = phase === "open"
 
     // The wrapper is `display: contents` (no box), so the visual target is
-    // its element child.
-    const getElement = () => triggerRef.current?.firstElementChild
+    // its element child; hidden while the lifted copy stands in for it.
+    const getElement = useTriggerElement(triggerRef, target !== null)
     // Measures once per gesture: a hold lifts on press start, and the later
     // activation reuses that shape; right-click arrives with nothing lifted.
     const lift = (point) =>
@@ -113,30 +112,6 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
             longPress.onPointerDown(event)
         },
     }
-
-    // The lifted copy stands in for the element while held or open. Opacity,
-    // not visibility, so it keeps receiving the pointer events of the hold.
-    // Any inline opacity of its own is saved and put back afterwards.
-    useLayoutEffect(() => {
-        const el = getElement()
-        if (!el) return
-        if (target && savedOpacityRef.current === null) {
-            savedOpacityRef.current = el.style.opacity
-            el.style.opacity = "0"
-        } else if (!target && savedOpacityRef.current !== null) {
-            el.style.opacity = savedOpacityRef.current
-            savedOpacityRef.current = null
-        }
-    }, [target])
-
-    // Any element can carry a menu, so the trigger is made reachable by
-    // keyboard and announced as a menu button when it isn't focusable itself.
-    useLayoutEffect(() => {
-        const el = getElement()
-        if (!el) return
-        if (el.tabIndex < 0 && !el.hasAttribute("tabindex")) el.tabIndex = 0
-        el.setAttribute("aria-haspopup", "menu")
-    }, [])
 
     // Keyboard: Shift+F10 or the Menu key opens the menu for a focused element.
     const handleKeyDown = (event) => {

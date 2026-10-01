@@ -66,14 +66,14 @@ const SwipeRow = ({ actions, children, className }) => {
     })
 
     const handlePress = (action, event) => {
-        if (action === primary) {
-            commit()
-            return
-        }
         // A keyboard press (detail 0) keeps the row open so the focused
         // action stays visible; focus leaving the row closes it. A tap
         // closes it right away, like iOS.
         const keyboard = event?.detail === 0
+        if (action === primary) {
+            commit({ keepOpen: keyboard })
+            return
+        }
         try {
             Promise.resolve(action.onClick?.()).catch(console.error)
         } catch (error) {

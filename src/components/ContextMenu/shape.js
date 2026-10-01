@@ -20,13 +20,16 @@ const WIDE_SHARE = 0.6
  * which round off as they lift, iOS-style.
  */
 export const measureShape = (el, fallbackRadius) => {
-    // Layout size, not the painted box: the element may already be mid
-    // press-scale of its own (e.g. a button's whileTap).
-    const box = el.getBoundingClientRect()
-    const width = el.offsetWidth
-    const height = el.offsetHeight
-    const left = box.left + box.width / 2 - width / 2
-    const top = box.top + box.height / 2 - height / 2
+    // The layout box, without the element's transforms: the preview re-applies
+    // its resting transform, and a press scale (a button's whileTap) must not
+    // skew the slot. Transitions are paused so the swap back doesn't animate.
+    const { transform, transition } = el.style
+    el.style.transition = "none"
+    el.style.transform = "none"
+    const { left, top, width, height } = el.getBoundingClientRect()
+    el.style.transform = transform
+    void el.offsetWidth
+    el.style.transition = transition
     const own = getComputedStyle(el).borderRadius
     const isSquare = !own || own.split(" ").every((v) => parseFloat(v) === 0)
     const grown =
