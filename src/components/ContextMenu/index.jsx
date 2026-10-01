@@ -72,8 +72,15 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
             if (prev || !el) return prev
             return { ...measureShape(el, fallbackRadius), point }
         })
-    const close = () => setPhase("idle")
+    // The exiting menu keeps its last (open) props during the exit animation,
+    // so whether it still accepts a pick is tracked here, not in state.
+    const acceptingRef = useRef(false)
+    const close = () => {
+        acceptingRef.current = false
+        setPhase("idle")
+    }
     const open = (point) => {
+        acceptingRef.current = true
         lift(point)
         haptic.impact("medium")
         returnFocusRef.current = document.activeElement
@@ -143,7 +150,10 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
         if (ret?.isConnected && stranded) ret.focus({ preventScroll: true })
     }
 
+    // Only the first pick counts: a double tap or repeated Enter during the
+    // exit animation must not run the action twice.
     const handleSelect = (item, index) => {
+        if (!acceptingRef.current) return
         close()
         onSelect?.(item, index)
     }

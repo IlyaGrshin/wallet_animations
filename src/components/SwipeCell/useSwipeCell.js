@@ -107,6 +107,9 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
     }
     const onClickCapture = (event) => {
         if (!draggedRef.current && !isOpen) return
+        // One gesture swallows one click; a later keyboard click (no pointer
+        // down to reset it) must go through.
+        draggedRef.current = false
         event.preventDefault()
         event.stopPropagation()
         if (isOpen) settle(false)

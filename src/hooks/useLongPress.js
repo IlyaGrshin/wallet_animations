@@ -52,6 +52,12 @@ export const useLongPress = ({
 
     useEffect(() => clearTimers, [])
 
+    // Turning disabled mid-hold cancels the gesture: the pending timers hold
+    // the old callbacks and would still fire.
+    useEffect(() => {
+        if (disabled) cancel()
+    }, [disabled])
+
     return {
         onPointerDown: (event) => {
             firedRef.current = false
