@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
 
-import { useSkin } from "../../hooks/DeviceProvider"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
 import SwipeAction, { actionShape } from "./SwipeAction"
 import { useSwipeCell } from "./useSwipeCell"
@@ -26,7 +25,6 @@ import * as styles from "./SwipeCell.module.scss"
  * </SwipeCell>
  */
 const SwipeCell = ({ actions, children, className }) => {
-    const { isApple } = useSkin()
     const rootRef = useRef(null)
     const sizeRef = useRef({ width: 0, height: 0 })
     const [width, setWidth] = useState(0)
@@ -62,14 +60,7 @@ const SwipeCell = ({ actions, children, className }) => {
     }
 
     return (
-        <div
-            ref={rootRef}
-            className={cx(
-                styles.root,
-                isApple ? styles.apple : styles.material,
-                className
-            )}
-        >
+        <div ref={rootRef} className={cx(styles.root, className)}>
             <div className={styles.actions}>
                 {actions.map((action, index) => (
                     <SwipeAction
@@ -80,7 +71,6 @@ const SwipeCell = ({ actions, children, className }) => {
                         revealed={revealed}
                         arm={arm}
                         sizeRef={sizeRef}
-                        isApple={isApple}
                         onPress={() => handlePress(action)}
                     />
                 ))}

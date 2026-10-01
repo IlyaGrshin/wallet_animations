@@ -32,15 +32,8 @@
     width: 44px;
     height: 44px;
     margin-top: -22px;
+    border-radius: 50%;
     transform-origin: center;
-
-    .apple & {
-        border-radius: 50%;
-    }
-
-    .material & {
-        border-radius: 14px;
-    }
 }
 
 .icon {

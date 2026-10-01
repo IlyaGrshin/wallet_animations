@@ -1,12 +1,25 @@
 .trigger {
     -webkit-touch-callout: none;
-    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    clip-path: inset(0 round 0);
+    transition:
+        transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+        clip-path 200ms cubic-bezier(0.23, 1, 0.32, 1);
 
-    // Held down: the row slowly presses in until the menu fires. Scale must
-    // match PRESSED_SCALE in ContextMenuLayer so the lift starts seamlessly.
+    // Held down: the row presses in and its corners round off, so the
+    // shrinking highlight reads as a card lifting out of the list rather than
+    // a tint that stops short of the edges. Scale and radius must match
+    // PRESSED_SCALE / the lifted radius in ContextMenuLayer.
     &.pressing {
         transform: scale(0.97);
-        transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 100ms;
+        clip-path: inset(0 round var(--context-menu-radius));
+        transition:
+            transform 400ms cubic-bezier(0.23, 1, 0.32, 1) 100ms,
+            clip-path 400ms cubic-bezier(0.23, 1, 0.32, 1) 100ms;
+
+        // The lifting card has no separator (Cell reads this on itself).
+        > * {
+            --last-cell-separator-height: 0px;
+        }
     }
 
     &.hidden {
@@ -17,6 +30,7 @@
         &,
         &.pressing {
             transform: none;
+            clip-path: none;
             transition: none;
         }
     }
@@ -41,6 +55,19 @@
 .menu {
     position: fixed;
     z-index: 1002;
+}
+
+// Over the dim overlay the native glass turns grey and lets the rows behind
+// bleed through. A near-opaque section tint with a heavier blur keeps the
+// menu light and legible. Doubled class outranks DropdownMenu's skin rule.
+:global(body.apple) .menu.menu {
+    background: color-mix(
+        in srgb,
+        var(--tg-theme-section-bg-color) 82%,
+        transparent
+    );
+    backdrop-filter: blur(24px) saturate(180%);
+    -apple-visual-effect: none;
 }
 
 .measuring {

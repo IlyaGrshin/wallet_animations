@@ -8,9 +8,6 @@ import { layoutAction, SIZE } from "./geometry"
 
 import * as styles from "./SwipeCell.module.scss"
 
-// Material keeps a rounded-square silhouette instead of the iOS pill.
-const MATERIAL_RADIUS = 14
-
 const SwipeAction = ({
     action,
     slot,
@@ -18,7 +15,6 @@ const SwipeAction = ({
     revealed,
     arm,
     sizeRef,
-    isApple,
     onPress,
 }) => {
     const layout = () => layoutAction(revealed.get(), arm.get(), slot, count)
@@ -30,9 +26,8 @@ const SwipeAction = ({
         if (!isPrimary) return "none"
         const { left, right, half } = layout()
         const { width, height } = sizeRef.current
-        const radius = isApple ? half : Math.min(half, MATERIAL_RADIUS)
         const vertical = Math.max(0, height / 2 - half)
-        return `inset(${vertical}px ${right}px ${vertical}px ${width - left}px round ${radius}px)`
+        return `inset(${vertical}px ${right}px ${vertical}px ${width - left}px round ${half}px)`
     })
     const transform = useTransform(() => {
         const { center, iconCenter, scale } = layout()
@@ -92,7 +87,6 @@ SwipeAction.propTypes = {
     revealed: PropTypes.object.isRequired,
     arm: PropTypes.object.isRequired,
     sizeRef: PropTypes.shape({ current: PropTypes.object }).isRequired,
-    isApple: PropTypes.bool,
     onPress: PropTypes.func,
 }
 

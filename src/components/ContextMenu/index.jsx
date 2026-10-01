@@ -55,6 +55,7 @@ const unscaledRect = (el) => {
  */
 const ContextMenu = ({ items, onSelect, children, className }) => {
     const { isApple } = useSkin()
+    const radius = isApple ? APPLE_RADIUS : MATERIAL_RADIUS
     const triggerRef = useRef(null)
     // `target` outlives `isOpen` so the original row stays hidden until the
     // lifted copy has flown back into place.
@@ -107,6 +108,7 @@ const ContextMenu = ({ items, onSelect, children, className }) => {
                     target && styles.hidden,
                     className
                 )}
+                style={{ "--context-menu-radius": `${radius}px` }}
                 {...handlers}
             >
                 {children}
@@ -117,7 +119,7 @@ const ContextMenu = ({ items, onSelect, children, className }) => {
                         <ContextMenuLayer
                             rect={target.rect}
                             point={target.point}
-                            radius={isApple ? APPLE_RADIUS : MATERIAL_RADIUS}
+                            radius={radius}
                             items={items}
                             onSelect={handleSelect}
                             onClose={close}
