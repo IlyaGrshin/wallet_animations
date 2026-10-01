@@ -48,7 +48,9 @@ export const useLongPress = ({
     const fire = (point, source) => {
         clearTimers()
         pressedRef.current = false
-        firedRef.current = true
+        // Only a held press is followed by a click to swallow; a right-click
+        // emits none, and a stale marker would eat the next keyboard click.
+        firedRef.current = source === "hold"
         onLongPress(point, source)
     }
 

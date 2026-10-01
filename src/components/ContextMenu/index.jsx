@@ -70,6 +70,8 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
                 point,
                 source: el,
                 savedOpacity: el.style.opacity,
+                savedTransform:
+                    restingTransformRef.current ?? el.style.transform,
             }
         })
     // The exiting menu keeps its last (open) props during the exit animation,
@@ -90,7 +92,11 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
         setPhase("open")
     }
 
-    const handlers = useLongPress({
+    // The element's inline transform before the press: press feedback of its
+    // own (a button's whileTap) starts animating only after this pointerdown,
+    // so the preview keeps resting rotations/scales but not the press.
+    const restingTransformRef = useRef(null)
+    const longPress = useLongPress({
         onPressStart: (point) => {
             lift(point)
             setPhase("pressing")
@@ -100,6 +106,13 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
         // Busy while the menu is open or the copy is still settling back.
         disabled: isOpen || (phase === "idle" && target !== null),
     })
+    const handlers = {
+        ...longPress,
+        onPointerDown: (event) => {
+            restingTransformRef.current = getElement()?.style.transform ?? null
+            longPress.onPointerDown(event)
+        },
+    }
 
     // The lifted copy stands in for the element while held or open. Opacity,
     // not visibility, so it keeps receiving the pointer events of the hold.

@@ -117,10 +117,21 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
 
     // A drag or a tap on the open row's content only closes it — it must not
     // reach the cell's own onClick.
-    const onPointerDownCapture = () => {
+    // While a full swipe commits, the row takes no new drag or click: the
+    // capture-phase stop keeps the pointer from reaching motion's drag.
+    const onPointerDownCapture = (event) => {
+        if (committingRef.current) {
+            event.stopPropagation()
+            return
+        }
         draggedRef.current = false
     }
     const onClickCapture = (event) => {
+        if (committingRef.current) {
+            event.preventDefault()
+            event.stopPropagation()
+            return
+        }
         if (!draggedRef.current && !isOpen) return
         // One gesture swallows one click; a later keyboard click (no pointer
         // down to reset it) must go through.

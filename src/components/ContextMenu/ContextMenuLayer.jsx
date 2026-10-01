@@ -53,7 +53,15 @@ const ContextMenuLayer = ({
     const menuRef = useRef(null)
     const cardRef = useRef(null)
     const [place, setPlace] = useState(null)
-    const { rect, point, radiusFrom, radiusTo, source, savedOpacity } = shape
+    const {
+        rect,
+        point,
+        radiusFrom,
+        radiusTo,
+        source,
+        savedOpacity,
+        savedTransform,
+    } = shape
     // Grows while held, then settles (a row slightly narrower) once open.
     const heldScale = reduceMotion ? 1 : shape.scale
     const openScale = reduceMotion ? 1 : shape.settledScale
@@ -83,8 +91,9 @@ const ContextMenuLayer = ({
         const copy = source.cloneNode(true)
         copy.style.opacity = savedOpacity ?? ""
         // The press feedback caught mid-hold (Tappable tint / ripple, a
-        // button's whileTap scale) must not freeze into the preview.
-        copy.style.transform = ""
+        // button's whileTap scale) must not freeze into the preview; the
+        // element's resting transform stays.
+        copy.style.transform = savedTransform ?? ""
         for (const el of copy.querySelectorAll("[data-tap-feedback]"))
             el.remove()
         for (const el of [copy, ...copy.querySelectorAll("[id], [tabindex]")]) {
@@ -93,7 +102,7 @@ const ContextMenuLayer = ({
         }
         card.appendChild(copy)
         return () => copy.remove()
-    }, [source, savedOpacity])
+    }, [source, savedOpacity, savedTransform])
 
     // HIG: read from the edge nearest the finger, so a menu above the row
     // lists its items bottom-up.
@@ -206,6 +215,7 @@ ContextMenuLayer.propTypes = {
             .isRequired,
         source: PropTypes.object,
         savedOpacity: PropTypes.string,
+        savedTransform: PropTypes.string,
     }).isRequired,
     surface: PropTypes.bool,
     dragSelect: PropTypes.bool,
