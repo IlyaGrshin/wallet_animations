@@ -26,7 +26,7 @@ import * as styles from "./SwipeCell.module.scss"
  *   <Cell><Cell.Text title="Wallet" /></Cell>
  * </SwipeCell>
  */
-const SwipeCell = ({ actions, children, className }) => {
+const SwipeRow = ({ actions, children, className }) => {
     const rootRef = useRef(null)
     const sizeRef = useRef({ width: 0, height: 0 })
     const [width, setWidth] = useState(0)
@@ -95,7 +95,11 @@ const SwipeCell = ({ actions, children, className }) => {
     )
 }
 
-SwipeCell.propTypes = {
+// No actions (e.g. all filtered out by permissions): a plain row, no gesture.
+const SwipeCell = (props) =>
+    props.actions.length > 0 ? <SwipeRow {...props} /> : props.children
+
+SwipeRow.propTypes = SwipeCell.propTypes = {
     actions: PropTypes.arrayOf(actionShape).isRequired,
     children: PropTypes.node,
     className: PropTypes.string,

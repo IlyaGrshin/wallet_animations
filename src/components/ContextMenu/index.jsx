@@ -10,7 +10,7 @@ import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import { AnimatePresence } from "motion/react"
 
-import { haptic } from "../../lib/twa"
+import { BackButton, haptic } from "../../lib/twa"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { itemShape } from "../DropdownMenu/MenuPanel"
 import ContextMenuLayer from "./ContextMenuLayer"
@@ -144,7 +144,11 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
     useEffect(() => {
         if (!isOpen) return
         const onKeyDown = (event) => {
-            if (event.key === "Escape") close()
+            if (event.key !== "Escape") return
+            // Consumed here: an enclosing modal must not close on the same press.
+            event.preventDefault()
+            event.stopPropagation()
+            close()
         }
         document.addEventListener("keydown", onKeyDown)
         window.addEventListener("scroll", close, true)
@@ -158,6 +162,9 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
 
     return (
         <>
+            {/* While open the menu is the topmost back target: Telegram's Back
+                dismisses it instead of leaving the page. */}
+            {isOpen && <BackButton onClick={close} />}
             <span
                 ref={triggerRef}
                 className={styles.trigger}

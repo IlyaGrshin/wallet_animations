@@ -64,7 +64,8 @@ const ContextMenuLayer = ({
     }, [isOpen, rect, point, scale])
 
     // Keyboard reach: focus lands on the first item once the menu is placed;
-    // arrows move between items, Enter / Space pick the focused one.
+    // arrows move between items, Enter / Space pick the focused one. Tab
+    // would walk focus out under the overlay, so it dismisses instead.
     useEffect(() => {
         const menu = menuRef.current
         if (!isOpen || !place || !menu) return
@@ -73,7 +74,10 @@ const ContextMenuLayer = ({
         const onKeyDown = (event) => {
             const list = getItems()
             const index = list.indexOf(document.activeElement)
-            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            if (event.key === "Tab") {
+                event.preventDefault()
+                onClose()
+            } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
                 event.preventDefault()
                 const step = event.key === "ArrowDown" ? 1 : -1
                 const next = (index + step + list.length) % list.length
@@ -88,7 +92,7 @@ const ContextMenuLayer = ({
         }
         document.addEventListener("keydown", onKeyDown)
         return () => document.removeEventListener("keydown", onKeyDown)
-    }, [isOpen, place])
+    }, [isOpen, place, onClose])
 
     const grow = reduceMotion ? INSTANT : GROW
     const platformSpring = isApple ? SPRING.APPLE : SPRING.MATERIAL
@@ -154,6 +158,8 @@ const ContextMenuLayer = ({
                         style={{
                             top: place?.top ?? 0,
                             left: place?.left ?? 0,
+                            maxHeight: place?.maxHeight,
+                            overflowY: "auto",
                             transformOrigin: place
                                 ? `${place.originX} ${place.originY}`
                                 : undefined,
