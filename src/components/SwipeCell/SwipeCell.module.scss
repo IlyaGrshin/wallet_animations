@@ -1,0 +1,76 @@
+.root {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--tg-theme-section-bg-color);
+}
+
+.actions {
+    position: absolute;
+    inset: 0;
+}
+
+.action {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    color: white;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+// Full-row layer; the visible pill is carved out with clip-path in JS.
+.primary {
+    inset: 0;
+}
+
+.circle {
+    top: 50%;
+    right: 0;
+    width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    transform-origin: center;
+
+    .apple & {
+        border-radius: 50%;
+    }
+
+    .material & {
+        border-radius: 14px;
+    }
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    transform-origin: center;
+
+    .primary & {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        margin-top: -22px;
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    path[fill] {
+        fill: currentcolor;
+    }
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    background-color: var(--tg-theme-section-bg-color);
+    touch-action: pan-y;
+}

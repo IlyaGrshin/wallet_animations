@@ -24,6 +24,31 @@
         cursor: pointer;
         color: var(--tg-theme-text-color);
         position: relative;
+
+        &.withIcon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        &.destructive {
+            color: var(--tg-theme-destructive-text-color);
+        }
+    }
+
+    .itemIcon {
+        display: flex;
+        flex-shrink: 0;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        path[fill] {
+            fill: currentcolor;
+        }
     }
 
     :global(body.material) & {
