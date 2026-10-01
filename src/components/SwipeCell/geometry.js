@@ -8,11 +8,11 @@ export const SIZE = 44
 const GAP = 8
 const PAD = 8
 
-// Past the resting strip the full-swipe arms at this extra pull, or at this
-// share of the row width — whichever is further. Disarming needs HYSTERESIS
-// less, so the haptic does not chatter around the threshold.
-const ARM_EXTRA = 48
-const ARM_SHARE = 0.55
+// The full-swipe arms at this share of the row width (at least a little past
+// the resting strip). Disarming needs HYSTERESIS less, so the haptic does not
+// chatter around the threshold.
+const ARM_EXTRA = 16
+const ARM_SHARE = 0.6
 export const HYSTERESIS = 16
 
 const mix = (a, b, t) => a + (b - a) * t
@@ -34,26 +34,33 @@ export const armThreshold = (count, width) =>
     )
 
 /**
+ * iOS layout: every action sits at its resting slot from the start and the
+ * content slides off over it. Each circle grows from its own centre as the
+ * revealed strip reaches its slot, so they appear one after another from the
+ * trailing edge. Past the strip the secondaries ride the content edge and the
+ * full-swipe action stretches.
  * @param {number} revealed px the content is pulled left (>= 0)
  * @param {number} arm 0..1 progress of the full-swipe state
  * @param {number} slot position from the trailing edge, 0 = full-swipe action
  * @param {number} count total actions
+ * @param {number} width row width; a strip wider than the row is squeezed
  */
-export const layoutAction = (revealed, arm, slot, count) => {
+export const layoutAction = (revealed, arm, slot, count, width) => {
     const rest = restWidth(count)
-    const progress = clamp(revealed / rest, 0, 1)
-    const overflow = Math.max(0, revealed - rest)
-    const center = (PAD + SIZE / 2 + slot * (SIZE + GAP)) * progress
-    const half = (SIZE / 2) * progress
-    const opacity = clamp(progress * 1.5, 0, 1)
+    const squeeze = width > 0 ? Math.min(1, openOffset(count, width) / rest) : 1
+    const slotStart = (PAD + slot * (SIZE + GAP)) * squeeze
+    const center = slotStart + (SIZE / 2) * squeeze
+    const grow = clamp((revealed - slotStart) / (SIZE + GAP), 0, 1)
+    const half = (SIZE / 2) * squeeze * grow
+    const overflow = Math.max(0, revealed - rest * squeeze)
 
     if (slot > 0) {
         // Secondary actions ride the content edge and fold away once the
         // full-swipe action takes over the strip.
         return {
             center: center + overflow,
-            scale: progress * (1 - arm * 0.5),
-            opacity: opacity * (1 - arm),
+            scale: squeeze * grow * (1 - arm * 0.5),
+            opacity: grow * (1 - arm),
         }
     }
 
@@ -65,8 +72,8 @@ export const layoutAction = (revealed, arm, slot, count) => {
         right,
         left,
         half,
-        scale: progress,
-        opacity,
+        scale: squeeze * grow,
+        opacity: grow,
         iconCenter: mix((left + right) / 2, left - SIZE / 2, arm),
     }
 }

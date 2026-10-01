@@ -52,7 +52,10 @@ const ContextMenuLayer = ({
     const menuRef = useRef(null)
     const [place, setPlace] = useState(null)
     const { rect, point, radiusFrom, radiusTo } = shape
-    const scale = reduceMotion ? 1 : shape.scale
+    // Grows while held, then settles (a row slightly narrower) once open.
+    const heldScale = reduceMotion ? 1 : shape.scale
+    const openScale = reduceMotion ? 1 : shape.settledScale
+    const scale = isOpen ? openScale : heldScale
 
     // offsetWidth/Height ignore the menu's entry scale, so this measures the
     // final size before the first paint.
@@ -60,8 +63,8 @@ const ContextMenuLayer = ({
         const el = menuRef.current
         if (!isOpen || !el) return
         const size = { width: el.offsetWidth, height: el.offsetHeight }
-        setPlace(placeMenu(rect, size, point.x, scale))
-    }, [isOpen, rect, point, scale])
+        setPlace(placeMenu(rect, size, point.x, openScale))
+    }, [isOpen, rect, point, openScale])
 
     // Keyboard reach: focus lands on the first item once the menu is placed;
     // arrows move between items, Enter / Space pick the focused one. Tab
@@ -109,7 +112,10 @@ const ContextMenuLayer = ({
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1, transition: fade }}
                         exit={{ opacity: 0, transition: fade }}
-                        onClick={onClose}
+                        // A new touch dismisses, not a click: releasing the
+                        // finger that opened the menu fires a click on
+                        // whatever is under it, which is now this overlay.
+                        onPointerDown={onClose}
                     />
                 )}
             </AnimatePresence>
@@ -127,7 +133,10 @@ const ContextMenuLayer = ({
                     y: place?.shift ?? 0,
                     scale,
                     filter: shadow(0.14),
-                    transition: { default: grow, y: settle },
+                    // The hold grows slowly; opening springs to the settled size.
+                    transition: isOpen
+                        ? { default: grow, y: settle, scale: settle }
+                        : { default: grow, y: settle },
                 }}
                 exit={{ y: 0, scale: 1, filter: shadow(0), transition: settle }}
             >
@@ -185,6 +194,7 @@ ContextMenuLayer.propTypes = {
         radiusFrom: PropTypes.string.isRequired,
         radiusTo: PropTypes.string.isRequired,
         scale: PropTypes.number.isRequired,
+        settledScale: PropTypes.number.isRequired,
         point: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
             .isRequired,
     }).isRequired,

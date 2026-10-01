@@ -21,7 +21,13 @@ const SwipeAction = ({
     const isPrimary = slot === 0
     // One layout pass per frame; the styles below only read from it.
     const layout = useTransform(() =>
-        layoutAction(revealed.get(), arm.get(), slot, count)
+        layoutAction(
+            revealed.get(),
+            arm.get(),
+            slot,
+            count,
+            sizeRef.current.width
+        )
     )
 
     // Secondary: a circle translated into place. Primary: a full-row layer
