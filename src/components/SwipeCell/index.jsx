@@ -16,7 +16,9 @@ import * as styles from "./SwipeCell.module.scss"
  * full-swipe action.
  * @param {Array} props.actions `{ key, label, icon, color, destructive, onClick }`.
  * A destructive full-swipe action leaves the row swiped out so the parent can
- * collapse it; any other action springs the row back after `onClick`.
+ * collapse it; its `onClick` may return (or resolve) `false` to keep the row
+ * (cancelled confirm, undo). Any other action, or one that throws, springs
+ * the row back.
  * @example
  * <SwipeCell actions={[{ key: "delete", label: "Delete", icon: <Trash />,
  *   color: "var(--tg-theme-destructive-text-color)", destructive: true,
@@ -45,8 +47,8 @@ const SwipeCell = ({ actions, children, className }) => {
         sizeRef,
         count,
         onCommit: async () => {
-            await primary.onClick?.()
-            return !primary.destructive
+            const result = await primary.onClick?.()
+            return Boolean(primary.destructive) && result !== false
         },
     })
 

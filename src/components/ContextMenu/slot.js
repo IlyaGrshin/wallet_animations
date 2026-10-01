@@ -1,10 +1,6 @@
 import { cloneElement } from "react"
 import cx from "clsx"
-
-const setRef = (ref, node) => {
-    if (typeof ref === "function") ref(node)
-    else if (ref) ref.current = node
-}
+import { mergeRefs } from "../../utils/mergeRefs"
 
 /**
  * Puts the gesture straight onto the child element instead of a wrapper, so
@@ -27,9 +23,6 @@ export const withGesture = (child, { ref, className, handlers }) => {
     return cloneElement(child, {
         ...merged,
         className: cx(own.className, className),
-        ref: (node) => {
-            setRef(own.ref, node)
-            setRef(ref, node)
-        },
+        ref: mergeRefs(own.ref, ref),
     })
 }

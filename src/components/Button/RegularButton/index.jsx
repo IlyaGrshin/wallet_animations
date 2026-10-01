@@ -1,6 +1,7 @@
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
+import { mergeRefs } from "../../../utils/mergeRefs"
 
 import { GlassBorder } from "../../GlassEffect"
 import Tappable from "../../Tappable"
@@ -29,6 +30,7 @@ export const RegularButton = ({
     isShine = false,
     isFill = false,
     className,
+    ref,
     ...props
 }) => {
     const { isApple } = useSkin()
@@ -60,7 +62,7 @@ export const RegularButton = ({
 
     return (
         <Root
-            ref={skeleton ? waveRef : undefined}
+            ref={mergeRefs(skeleton && waveRef, ref)}
             className={cx(
                 styles.button,
                 styles[variant],
@@ -90,4 +92,8 @@ RegularButton.propTypes = {
     isShine: PropTypes.bool,
     isFill: PropTypes.bool,
     className: PropTypes.string,
+    ref: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.any }),
+    ]),
 }

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
+import { mergeRefs } from "../../../utils/mergeRefs"
 import Tappable from "../../Tappable"
 import Text from "../../Text"
 import Skeleton, {
@@ -26,6 +27,7 @@ export function MultilineButton({
     label,
     style,
     className,
+    ref,
     ...props
 }) {
     const { isApple } = useSkin()
@@ -50,7 +52,7 @@ export function MultilineButton({
 
     return (
         <Root
-            ref={skeleton ? waveRef : undefined}
+            ref={mergeRefs(skeleton && waveRef, ref)}
             className={cx(
                 styles.button,
                 styles[variant],
@@ -74,4 +76,8 @@ MultilineButton.propTypes = {
     label: PropTypes.string,
     style: PropTypes.object,
     className: PropTypes.string,
+    ref: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.any }),
+    ]),
 }

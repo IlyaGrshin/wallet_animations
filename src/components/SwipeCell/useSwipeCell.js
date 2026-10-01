@@ -49,16 +49,29 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
         animate(x, open ? -restWidth(count) : 0, spring)
     }
 
+    // Runs the trailing action with the row swiped fully out. `onCommit`
+    // resolves true when the row is being removed (the parent collapses it);
+    // otherwise, or if the action throws, the row springs back closed.
     const commit = async () => {
         if (committingRef.current) return
         committingRef.current = true
-        armedRef.current = true
+        // Out of the open state, so an outside touch can't drag it back in.
+        setIsOpen(false)
         const transition = reduceMotion ? INSTANT : COMMIT_TRANSITION
         animate(arm, 1, transition)
         await animate(x, -sizeRef.current.width, transition)
-        const keep = await onCommit()
-        committingRef.current = false
-        if (keep) settle(false)
+        let removed = false
+        try {
+            removed = await onCommit()
+        } finally {
+            committingRef.current = false
+            // Reset silently: this is not a disarm the user dragged back from.
+            armedRef.current = false
+            if (!removed) {
+                animate(arm, 0, spring)
+                animate(x, 0, spring)
+            }
+        }
     }
 
     const onDragStart = () => {
