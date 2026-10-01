@@ -20,7 +20,14 @@ import { useSkin } from "../../../hooks/DeviceProvider"
  * @example
  * <MultilineButton variant="filled" icon={<ArrowUpIcon />} label="Send" />
  */
-export function MultilineButton({ variant, icon, label, style, ...props }) {
+export function MultilineButton({
+    variant,
+    icon,
+    label,
+    style,
+    className,
+    ...props
+}) {
     const { isApple } = useSkin()
     // Under a Skeleton provider the whole button becomes a neutral gray pill;
     // the icon and label stay in flow (for size) but are hidden.
@@ -48,7 +55,8 @@ export function MultilineButton({ variant, icon, label, style, ...props }) {
                 styles.button,
                 styles[variant],
                 skeleton && styles.skeleton,
-                redactionClassName
+                redactionClassName,
+                className
             )}
             {...tapProps}
             style={style}
@@ -65,4 +73,5 @@ MultilineButton.propTypes = {
     icon: PropTypes.node,
     label: PropTypes.string,
     style: PropTypes.object,
+    className: PropTypes.string,
 }

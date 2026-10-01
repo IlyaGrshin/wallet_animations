@@ -28,6 +28,7 @@ export const RegularButton = ({
     label,
     isShine = false,
     isFill = false,
+    className,
     ...props
 }) => {
     const { isApple } = useSkin()
@@ -64,7 +65,8 @@ export const RegularButton = ({
                 styles.button,
                 styles[variant],
                 skeleton && styles.skeleton,
-                redactionClassName
+                redactionClassName,
+                className
             )}
             {...tapProps}
             {...dynamicProps}
@@ -87,4 +89,5 @@ RegularButton.propTypes = {
     label: PropTypes.string,
     isShine: PropTypes.bool,
     isFill: PropTypes.bool,
+    className: PropTypes.string,
 }

@@ -7,14 +7,13 @@ import cx from "clsx"
 import { MenuPanel } from "../DropdownMenu"
 import { itemShape } from "../DropdownMenu/MenuPanel"
 import { POPOVER_VARIANTS, SPRING } from "../../utils/animations"
-import { DELAY, PRESS_DELAY } from "./useLongPress"
+import { DELAY, PRESS_DELAY } from "../../hooks/useLongPress"
 import { placeMenu } from "./placement"
 
 import * as styles from "./ContextMenu.module.scss"
 
-// The row grows to this scale over the rest of the hold, so the lift feels
-// continuous with the finger staying down.
-const LIFTED_SCALE = 1.03
+// The element grows over the rest of the hold, so the lift feels continuous
+// with the finger staying down.
 const GROW = {
     duration: (DELAY - PRESS_DELAY) / 1000,
     ease: [0.23, 1, 0.32, 1],
@@ -27,7 +26,7 @@ const REDUCED_VARIANTS = {
     exit: { opacity: 0, transition: FADE },
 }
 
-const inset = (radius) => `inset(0px round ${radius}px)`
+const inset = (radius) => `inset(0px round ${radius})`
 // drop-shadow on the unclipped wrapper follows the clipped card's shape.
 const shadow = (alpha) => `drop-shadow(0px 6px 20px rgb(0 0 0 / ${alpha}))`
 
@@ -36,9 +35,9 @@ const shadow = (alpha) => `drop-shadow(0px 6px 20px rgb(0 0 0 / ${alpha}))`
 // space left over.
 const ContextMenuLayer = ({
     isOpen,
-    rect,
+    shape,
     point,
-    radius,
+    surface,
     items,
     onSelect,
     onClose,
@@ -47,6 +46,8 @@ const ContextMenuLayer = ({
     const reduceMotion = useReducedMotion()
     const menuRef = useRef(null)
     const [place, setPlace] = useState(null)
+    const { rect, radiusFrom, radiusTo } = shape
+    const scale = reduceMotion ? 1 : shape.scale
 
     // offsetWidth/Height ignore the menu's entry scale, so this measures the
     // final size before the first paint.
@@ -54,8 +55,8 @@ const ContextMenuLayer = ({
         const el = menuRef.current
         if (!isOpen || !el) return
         const size = { width: el.offsetWidth, height: el.offsetHeight }
-        setPlace(placeMenu(rect, size, point.x))
-    }, [isOpen, rect, point])
+        setPlace(placeMenu(rect, size, point.x, scale))
+    }, [isOpen, rect, point, scale])
 
     const grow = reduceMotion ? INSTANT : GROW
     const settle = reduceMotion ? INSTANT : SPRING.APPLE
@@ -87,17 +88,17 @@ const ContextMenuLayer = ({
                 initial={{ y: 0, scale: 1, filter: shadow(0) }}
                 animate={{
                     y: place?.shift ?? 0,
-                    scale: reduceMotion ? 1 : LIFTED_SCALE,
+                    scale,
                     filter: shadow(0.14),
                     transition: { default: grow, y: settle },
                 }}
                 exit={{ y: 0, scale: 1, filter: shadow(0), transition: settle }}
             >
                 <m.div
-                    className={styles.card}
-                    initial={{ clipPath: inset(0) }}
-                    animate={{ clipPath: inset(radius), transition: grow }}
-                    exit={{ clipPath: inset(0), transition: settle }}
+                    className={cx(styles.card, surface && styles.surface)}
+                    initial={{ clipPath: inset(radiusFrom) }}
+                    animate={{ clipPath: inset(radiusTo), transition: grow }}
+                    exit={{ clipPath: inset(radiusFrom), transition: settle }}
                 >
                     {children}
                 </m.div>
@@ -132,17 +133,22 @@ const ContextMenuLayer = ({
 
 ContextMenuLayer.propTypes = {
     isOpen: PropTypes.bool,
-    rect: PropTypes.shape({
-        top: PropTypes.number,
-        left: PropTypes.number,
-        right: PropTypes.number,
-        bottom: PropTypes.number,
-        width: PropTypes.number,
-        height: PropTypes.number,
+    shape: PropTypes.shape({
+        rect: PropTypes.shape({
+            top: PropTypes.number,
+            left: PropTypes.number,
+            right: PropTypes.number,
+            bottom: PropTypes.number,
+            width: PropTypes.number,
+            height: PropTypes.number,
+        }).isRequired,
+        radiusFrom: PropTypes.string.isRequired,
+        radiusTo: PropTypes.string.isRequired,
+        scale: PropTypes.number.isRequired,
     }).isRequired,
     point: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
         .isRequired,
-    radius: PropTypes.number.isRequired,
+    surface: PropTypes.bool,
     items: PropTypes.arrayOf(itemShape).isRequired,
     onSelect: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,

@@ -1,8 +1,8 @@
 .trigger {
     -webkit-touch-callout: none;
 
-    // The lifted copy stands in for the row while held or open. Opacity, not
-    // visibility, so the row keeps receiving the pointer events of the hold.
+    // The lifted copy stands in for the element while held or open. Opacity,
+    // not visibility, so it keeps receiving the pointer events of the hold.
     &.hidden {
         opacity: 0;
     }
@@ -24,7 +24,9 @@
 
 .card {
     height: 100%;
-    overflow: hidden;
+}
+
+.surface {
     background-color: var(--tg-theme-section-bg-color);
 }
 

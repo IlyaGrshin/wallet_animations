@@ -9,10 +9,14 @@ export const DELAY = 500
 const MOVE_TOLERANCE = 10
 
 /**
- * Long-press detection on pointer events, with right-click (contextmenu) as
- * the desktop shortcut. `onPressStart` marks an intentional hold, `onCancel`
- * its abandonment, `onLongPress` the activation. The click that follows an
- * activation is swallowed.
+ * Long-press detection for any element: spread the returned handlers on it.
+ * Right-click (contextmenu) is the desktop shortcut. `onPressStart` marks an
+ * intentional hold, `onCancel` its abandonment, `onLongPress` the activation.
+ * A plain tap passes through untouched; the click that follows an activation
+ * is swallowed, so the element's own onClick does not fire for it.
+ * @example
+ * const longPress = useLongPress({ onLongPress: () => setEditing(true) })
+ * <RegularButton {...longPress} label="Hold me" onClick={send} />
  */
 export const useLongPress = ({
     onPressStart,
