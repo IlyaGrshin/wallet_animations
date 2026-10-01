@@ -20,6 +20,11 @@ const mix = (a, b, t) => a + (b - a) * t
 export const restWidth = (count) =>
     2 * PAD + count * SIZE + Math.max(0, count - 1) * GAP
 
+// How far an open row rests: the action strip, but never past the row
+// itself (many actions in a narrow row squeeze inside it instead).
+export const openOffset = (count, width) =>
+    Math.min(restWidth(count), width - PAD)
+
 // Capped just short of the full row width, which is as far as the drag
 // constraint lets the content go, so narrow rows can still arm.
 export const armThreshold = (count, width) =>

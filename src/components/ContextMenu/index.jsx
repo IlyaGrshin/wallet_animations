@@ -106,6 +106,15 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
         }
     }, [target])
 
+    // Any element can carry a menu, so the trigger is made reachable by
+    // keyboard and announced as a menu button when it isn't focusable itself.
+    useLayoutEffect(() => {
+        const el = getElement()
+        if (!el) return
+        if (el.tabIndex < 0 && !el.hasAttribute("tabindex")) el.tabIndex = 0
+        el.setAttribute("aria-haspopup", "menu")
+    }, [])
+
     // Keyboard: Shift+F10 or the Menu key opens the menu for a focused element.
     const handleKeyDown = (event) => {
         const isMenuKey =
@@ -151,11 +160,20 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
             close()
         }
         document.addEventListener("keydown", onKeyDown)
-        window.addEventListener("scroll", close, true)
+        // Scrolling inside the (capped, scrollable) menu is not a page move.
+        const onScroll = (event) => {
+            if (
+                event.target instanceof Element &&
+                event.target.closest('[role="menu"]')
+            )
+                return
+            close()
+        }
+        window.addEventListener("scroll", onScroll, true)
         window.addEventListener("resize", close)
         return () => {
             document.removeEventListener("keydown", onKeyDown)
-            window.removeEventListener("scroll", close, true)
+            window.removeEventListener("scroll", onScroll, true)
             window.removeEventListener("resize", close)
         }
     }, [isOpen])

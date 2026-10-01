@@ -15,7 +15,7 @@ const SwipeAction = ({
     revealed,
     arm,
     sizeRef,
-    hidden,
+    onFocus,
     onPress,
 }) => {
     const isPrimary = slot === 0
@@ -47,10 +47,9 @@ const SwipeAction = ({
             as={m.button}
             type="button"
             aria-label={action.label}
-            // Behind the content while the row is closed: keep it out of the
-            // tab order and the accessibility tree until revealed.
-            tabIndex={hidden ? -1 : undefined}
-            aria-hidden={hidden || undefined}
+            // Keyboard path: focusing an action reveals the row, so focus never
+            // lands on a control hidden behind the content.
+            onFocus={onFocus}
             className={cx(
                 styles.action,
                 isPrimary ? styles.primary : styles.circle
@@ -87,7 +86,7 @@ SwipeAction.propTypes = {
     revealed: PropTypes.object.isRequired,
     arm: PropTypes.object.isRequired,
     sizeRef: PropTypes.shape({ current: PropTypes.object }).isRequired,
-    hidden: PropTypes.bool,
+    onFocus: PropTypes.func,
     onPress: PropTypes.func,
 }
 

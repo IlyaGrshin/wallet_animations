@@ -42,7 +42,7 @@ const SwipeRow = ({ actions, children, className }) => {
         setWidth(inlineSize)
     })
 
-    const { x, arm, revealed, isOpen, commit, close, contentHandlers } =
+    const { x, arm, revealed, isOpen, commit, open, close, contentHandlers } =
         useSwipeCell({
             rootRef,
             sizeRef,
@@ -63,7 +63,15 @@ const SwipeRow = ({ actions, children, className }) => {
     }
 
     return (
-        <div ref={rootRef} className={cx(styles.root, className)}>
+        <div
+            ref={rootRef}
+            className={cx(styles.root, className)}
+            // Tabbing past the last action closes the row again.
+            onBlur={(event) => {
+                if (isOpen && !rootRef.current?.contains(event.relatedTarget))
+                    close()
+            }}
+        >
             <div className={styles.actions}>
                 {actions.map((action, index) => (
                     <SwipeAction
@@ -74,7 +82,9 @@ const SwipeRow = ({ actions, children, className }) => {
                         revealed={revealed}
                         arm={arm}
                         sizeRef={sizeRef}
-                        hidden={!isOpen}
+                        onFocus={() => {
+                            if (!isOpen) open()
+                        }}
                         onPress={() => handlePress(action)}
                     />
                 ))}

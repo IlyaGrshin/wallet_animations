@@ -9,7 +9,7 @@ import {
 import { haptic } from "../../lib/twa"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { EASING, SPRING } from "../../utils/animations"
-import { armThreshold, HYSTERESIS, restWidth } from "./geometry"
+import { armThreshold, HYSTERESIS, openOffset } from "./geometry"
 
 const FLING_VELOCITY = 400
 const COMMIT_TRANSITION = { duration: 0.25, ease: EASING.QUINT_OUT }
@@ -42,7 +42,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
     const settle = (open) => {
         setIsOpen(open)
         setArmed(false)
-        animate(x, open ? -restWidth(count) : 0, spring)
+        animate(x, open ? -openOffset(count, sizeRef.current.width) : 0, spring)
     }
 
     // Runs the trailing action with the row swiped fully out. `onCommit`
@@ -59,6 +59,10 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
         let removed = false
         try {
             removed = await onCommit()
+        } catch (error) {
+            // A failed action keeps the row; report it without an unhandled
+            // rejection from the fire-and-forget callers.
+            console.error(error)
         } finally {
             committingRef.current = false
             // Reset silently: this is not a disarm the user dragged back from.
@@ -91,7 +95,8 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
         const pulled = revealed.get()
         const open =
             velocity.x < -FLING_VELOCITY ||
-            (velocity.x < FLING_VELOCITY && pulled > restWidth(count) / 2)
+            (velocity.x < FLING_VELOCITY &&
+                pulled > openOffset(count, sizeRef.current.width) / 2)
         settle(open)
     }
 
@@ -123,6 +128,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
         isOpen,
         commit,
         close: () => settle(false),
+        open: () => settle(true),
         contentHandlers: {
             onDragStart,
             onDrag,
