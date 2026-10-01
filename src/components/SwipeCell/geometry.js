@@ -34,10 +34,10 @@ export const armThreshold = (count, width) =>
     )
 
 /**
- * iOS layout: the content slides off over the action slots. Each circle sits
- * centred in the part of its slot already uncovered and is as large as that
- * space allows, so it is never cut by the content edge; at full size it rests
- * in its slot. They appear one after another from the trailing edge. Past the
+ * iOS layout: the content slides off over the action slots. Each circle is
+ * pinned to its slot centre and scales in place: it starts once the content
+ * edge passes that centre and its radius never exceeds the distance to the
+ * edge, so it is never cut and never moves. They appear one after another from the trailing edge. Past the
  * strip the secondaries ride the content edge and the full-swipe action
  * stretches.
  * @param {number} revealed px the content is pulled left (>= 0)
