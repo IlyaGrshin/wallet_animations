@@ -9,7 +9,13 @@ import {
 import { haptic } from "../../lib/twa"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { EASING, SPRING } from "../../utils/animations"
-import { armThreshold, HYSTERESIS, openOffset } from "./geometry"
+import {
+    armThreshold,
+    HYSTERESIS,
+    openOffset,
+    rawPull,
+    rubberBand,
+} from "./geometry"
 
 const FLING_VELOCITY = 400
 const COMMIT_TRANSITION = { duration: 0.25, ease: EASING.QUINT_OUT }
@@ -20,7 +26,12 @@ const INSTANT = { duration: 0 }
 export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
     const reduceMotion = useReducedMotion()
     const { isApple } = useSkin()
-    const x = useMotionValue(0)
+    // `pull` is the finger (drag writes it via _dragX); `x` is what the
+    // content shows after rubber-banding. Animations target `pull`.
+    const pull = useMotionValue(0)
+    const x = useTransform(
+        () => -rubberBand(-pull.get(), count, sizeRef.current.width)
+    )
     const arm = useMotionValue(0)
     const revealed = useTransform(x, (v) => Math.max(0, -v))
     const [isOpen, setIsOpen] = useState(false)
@@ -39,10 +50,14 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
         animate(arm, next ? 1 : 0, spring)
     }
 
-    const settle = (open) => {
+    const toPull = (shown) => -rawPull(shown, count, sizeRef.current.width)
+
+    // Settles with the finger's release velocity, so a flick carries on.
+    const settle = (open, velocity = 0) => {
         setIsOpen(open)
         setArmed(false)
-        animate(x, open ? -openOffset(count, sizeRef.current.width) : 0, spring)
+        const target = open ? openOffset(count, sizeRef.current.width) : 0
+        animate(pull, toPull(target), { ...spring, velocity })
     }
 
     // Runs the trailing action with the row swiped fully out. `onCommit`
@@ -55,7 +70,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
         setIsOpen(false)
         const transition = reduceMotion ? INSTANT : COMMIT_TRANSITION
         animate(arm, 1, transition)
-        await animate(x, -sizeRef.current.width, transition)
+        await animate(pull, toPull(sizeRef.current.width), transition)
         let removed = false
         try {
             removed = await onCommit()
@@ -69,7 +84,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
             armedRef.current = false
             if (!removed) {
                 animate(arm, 0, spring)
-                animate(x, 0, spring)
+                animate(pull, 0, spring)
             }
         }
     }
@@ -97,7 +112,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
             velocity.x < -FLING_VELOCITY ||
             (velocity.x < FLING_VELOCITY &&
                 pulled > openOffset(count, sizeRef.current.width) / 2)
-        settle(open)
+        settle(open, velocity.x)
     }
 
     // A drag or a tap on the open row's content only closes it — it must not
@@ -126,6 +141,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, count, onCommit }) => {
 
     return {
         x,
+        pull,
         arm,
         revealed,
         isOpen,

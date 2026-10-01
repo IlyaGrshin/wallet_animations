@@ -43,11 +43,13 @@ export const useLongPress = ({
         onCancel?.()
     }
 
-    const fire = (point) => {
+    // `source` tells a held finger ("hold", still down) from a one-shot
+    // right-click or Menu key ("contextmenu").
+    const fire = (point, source) => {
         clearTimers()
         pressedRef.current = false
         firedRef.current = true
-        onLongPress(point)
+        onLongPress(point, source)
     }
 
     useEffect(() => clearTimers, [])
@@ -68,7 +70,7 @@ export const useLongPress = ({
                 pressedRef.current = true
                 onPressStart?.(point)
             }, PRESS_DELAY)
-            fireTimerRef.current = setTimeout(() => fire(point), DELAY)
+            fireTimerRef.current = setTimeout(() => fire(point, "hold"), DELAY)
         },
         onPointerMove: (event) => {
             const start = startRef.current
@@ -83,7 +85,7 @@ export const useLongPress = ({
         onContextMenu: (event) => {
             event.preventDefault()
             if (disabled || firedRef.current) return
-            fire({ x: event.clientX, y: event.clientY })
+            fire({ x: event.clientX, y: event.clientY }, "contextmenu")
         },
         onClickCapture: (event) => {
             if (!firedRef.current) return

@@ -6,6 +6,7 @@ import cx from "clsx"
 
 import MenuPanel, { itemShape } from "../DropdownMenu/MenuPanel"
 import { useSkin } from "../../hooks/DeviceProvider"
+import { haptic } from "../../lib/twa"
 import {
     DURATION,
     EASING,
@@ -42,6 +43,7 @@ const ContextMenuLayer = ({
     isOpen,
     shape,
     surface,
+    dragSelect,
     items,
     onSelect,
     onClose,
@@ -96,6 +98,52 @@ const ContextMenuLayer = ({
         document.addEventListener("keydown", onKeyDown)
         return () => document.removeEventListener("keydown", onKeyDown)
     }, [isOpen, place, onClose])
+
+    // iOS drag-to-select: the finger that opened the menu is still down; the
+    // item under it is highlighted (selection haptic on each change) and
+    // picked on release. Hit-testing, since a touch stays captured to the
+    // element it started on and items never see pointerenter.
+    useEffect(() => {
+        const menu = menuRef.current
+        if (!isOpen || !place || !dragSelect || !menu) return
+        let current = null
+        const highlight = (el) => {
+            if (el === current) return
+            current?.removeAttribute("data-highlighted")
+            current = el
+            if (!el) return
+            el.setAttribute("data-highlighted", "")
+            haptic.selection()
+        }
+        const onMove = (event) => {
+            const hit = document
+                .elementFromPoint(event.clientX, event.clientY)
+                ?.closest('[role="menuitem"]')
+            highlight(hit && menu.contains(hit) ? hit : null)
+        }
+        const stop = () => {
+            document.removeEventListener("pointermove", onMove)
+            document.removeEventListener("pointerup", onUp)
+            document.removeEventListener("pointercancel", onCancel)
+        }
+        const end = (pick) => {
+            const el = current
+            highlight(null)
+            stop()
+            if (pick && el) el.click()
+        }
+        const onUp = () => end(true)
+        const onCancel = () => end(false)
+        document.addEventListener("pointermove", onMove)
+        document.addEventListener("pointerup", onUp)
+        document.addEventListener("pointercancel", onCancel)
+        return stop
+    }, [isOpen, place, dragSelect])
+
+    // HIG: read from the edge nearest the finger, so a menu above the row
+    // lists its items bottom-up.
+    const above = place?.originY === "100%"
+    const orderedItems = above ? [...items].reverse() : items
 
     const grow = reduceMotion ? INSTANT : GROW
     const platformSpring = isApple ? SPRING.APPLE : SPRING.MATERIAL
@@ -154,8 +202,8 @@ const ContextMenuLayer = ({
                     <MenuPanel
                         key="menu"
                         ref={menuRef}
-                        items={items}
-                        onSelect={onSelect}
+                        items={orderedItems}
+                        onSelect={(item) => onSelect(item, items.indexOf(item))}
                         opaque
                         className={cx(styles.menu, !place && styles.measuring)}
                         initial="hidden"
@@ -199,6 +247,7 @@ ContextMenuLayer.propTypes = {
             .isRequired,
     }).isRequired,
     surface: PropTypes.bool,
+    dragSelect: PropTypes.bool,
     items: PropTypes.arrayOf(itemShape).isRequired,
     onSelect: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,

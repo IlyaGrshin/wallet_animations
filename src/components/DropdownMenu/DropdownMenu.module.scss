@@ -35,6 +35,11 @@
         &.destructive {
             color: var(--tg-theme-destructive-text-color);
         }
+
+        // Under the finger during a context menu's drag-to-select.
+        &[data-highlighted] {
+            background-color: var(--highlight-default);
+        }
     }
 
     .itemIcon {

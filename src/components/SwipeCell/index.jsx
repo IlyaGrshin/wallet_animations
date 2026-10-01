@@ -6,6 +6,7 @@ import cx from "clsx"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
 import SwipeAction, { actionShape } from "./SwipeAction"
 import { useSwipeCell } from "./useSwipeCell"
+import { rawPull } from "./geometry"
 
 import * as styles from "./SwipeCell.module.scss"
 
@@ -42,16 +43,25 @@ const SwipeRow = ({ actions, children, className }) => {
         setWidth(inlineSize)
     })
 
-    const { x, arm, revealed, isOpen, commit, open, close, contentHandlers } =
-        useSwipeCell({
-            rootRef,
-            sizeRef,
-            count,
-            onCommit: async () => {
-                const result = await primary.onClick?.()
-                return Boolean(primary.destructive) && result !== false
-            },
-        })
+    const {
+        x,
+        pull,
+        arm,
+        revealed,
+        isOpen,
+        commit,
+        open,
+        close,
+        contentHandlers,
+    } = useSwipeCell({
+        rootRef,
+        sizeRef,
+        count,
+        onCommit: async () => {
+            const result = await primary.onClick?.()
+            return Boolean(primary.destructive) && result !== false
+        },
+    })
 
     const handlePress = (action) => {
         if (action === primary) {
@@ -92,9 +102,14 @@ const SwipeRow = ({ actions, children, className }) => {
             <m.div
                 className={styles.content}
                 style={{ x }}
+                // Drag moves the raw pull; the content shows it rubber-banded.
+                _dragX={pull}
                 drag="x"
                 dragDirectionLock
-                dragConstraints={{ left: -width, right: 0 }}
+                dragConstraints={{
+                    left: -rawPull(width, actions.length, width),
+                    right: 0,
+                }}
                 dragElastic={{ left: 0, right: 0.08 }}
                 dragMomentum={false}
                 {...contentHandlers}

@@ -83,3 +83,33 @@ export const layoutAction = (revealed, arm, slot, count, width) => {
         iconCenter: mix((left + right) / 2, left - SIZE / 2, arm),
     }
 }
+
+// Rubber-banding between the finger (raw pull) and the content (shown pull):
+// 1:1 up to the resting strip, firmer up to the arm threshold, and stiff once
+// armed so the confirm state feels locked.
+const STRETCH = 0.75
+const LOCKED = 0.3
+
+const bands = (count, width) => {
+    const rest = openOffset(count, width)
+    const armAt = armThreshold(count, width)
+    return { rest, armAt, rawArm: rest + (armAt - rest) / STRETCH }
+}
+
+/** Shown pull (px, >= 0) for a raw finger pull. */
+export const rubberBand = (raw, count, width) => {
+    if (width <= 0) return raw
+    const { rest, armAt, rawArm } = bands(count, width)
+    if (raw <= rest) return raw
+    if (raw <= rawArm) return rest + (raw - rest) * STRETCH
+    return armAt + (raw - rawArm) * LOCKED
+}
+
+/** Raw finger pull that shows `shown` px: inverse of rubberBand. */
+export const rawPull = (shown, count, width) => {
+    if (width <= 0) return shown
+    const { rest, armAt, rawArm } = bands(count, width)
+    if (shown <= rest) return shown
+    if (shown <= armAt) return rest + (shown - rest) / STRETCH
+    return rawArm + (shown - armAt) / LOCKED
+}

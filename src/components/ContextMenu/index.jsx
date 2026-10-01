@@ -79,8 +79,11 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
         acceptingRef.current = false
         setPhase("idle")
     }
-    const open = (point) => {
+    // Opened by a held finger: it can slide onto an item and release to pick.
+    const [dragSelect, setDragSelect] = useState(false)
+    const open = (point, source) => {
         acceptingRef.current = true
+        setDragSelect(source === "hold")
         lift(point)
         haptic.impact("medium")
         returnFocusRef.current = document.activeElement
@@ -207,6 +210,7 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
                         <ContextMenuLayer
                             isOpen={isOpen}
                             shape={target}
+                            dragSelect={dragSelect}
                             surface={surface}
                             items={items}
                             onSelect={handleSelect}
