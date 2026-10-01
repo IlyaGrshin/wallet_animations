@@ -34,11 +34,12 @@ export const armThreshold = (count, width) =>
     )
 
 /**
- * iOS layout: every action sits at its resting slot from the start and the
- * content slides off over it. Each circle grows from its own centre as the
- * revealed strip reaches its slot, so they appear one after another from the
- * trailing edge. Past the strip the secondaries ride the content edge and the
- * full-swipe action stretches.
+ * iOS layout: the content slides off over the action slots. Each circle sits
+ * centred in the part of its slot already uncovered and is as large as that
+ * space allows, so it is never cut by the content edge; at full size it rests
+ * in its slot. They appear one after another from the trailing edge. Past the
+ * strip the secondaries ride the content edge and the full-swipe action
+ * stretches.
  * @param {number} revealed px the content is pulled left (>= 0)
  * @param {number} arm 0..1 progress of the full-swipe state
  * @param {number} slot position from the trailing edge, 0 = full-swipe action
@@ -48,10 +49,15 @@ export const armThreshold = (count, width) =>
 export const layoutAction = (revealed, arm, slot, count, width) => {
     const rest = restWidth(count)
     const squeeze = width > 0 ? Math.min(1, openOffset(count, width) / rest) : 1
+    const size = SIZE * squeeze
     const slotStart = (PAD + slot * (SIZE + GAP)) * squeeze
-    const center = slotStart + (SIZE / 2) * squeeze
-    const grow = clamp((revealed - slotStart) / (SIZE + GAP), 0, 1)
-    const half = (SIZE / 2) * squeeze * grow
+    const room = clamp(revealed - slotStart, 0, size)
+    // Element scale (circles are SIZE wide) and a quick fade-in over the
+    // first half of the growth.
+    const grow = room / SIZE
+    const opacity = size > 0 ? clamp((2 * room) / size, 0, 1) : 0
+    const half = room / 2
+    const center = slotStart + half
     const overflow = Math.max(0, revealed - rest * squeeze)
 
     if (slot > 0) {
@@ -59,8 +65,8 @@ export const layoutAction = (revealed, arm, slot, count, width) => {
         // full-swipe action takes over the strip.
         return {
             center: center + overflow,
-            scale: squeeze * grow * (1 - arm * 0.5),
-            opacity: grow * (1 - arm),
+            scale: grow * (1 - arm * 0.5),
+            opacity: opacity * (1 - arm),
         }
     }
 
@@ -72,8 +78,8 @@ export const layoutAction = (revealed, arm, slot, count, width) => {
         right,
         left,
         half,
-        scale: squeeze * grow,
-        opacity: grow,
+        scale: grow,
+        opacity,
         iconCenter: mix((left + right) / 2, left - SIZE / 2, arm),
     }
 }
