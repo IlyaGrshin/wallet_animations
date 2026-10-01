@@ -58,18 +58,29 @@ const SwipeRow = ({ actions, children, className }) => {
         sizeRef,
         count,
         onCommit: async () => {
-            const result = await primary.onClick?.()
+            // Without a callback nothing can remove the row, so it stays.
+            if (!primary.onClick) return false
+            const result = await primary.onClick()
             return Boolean(primary.destructive) && result !== false
         },
     })
 
-    const handlePress = (action) => {
+    const handlePress = (action, event) => {
         if (action === primary) {
             commit()
             return
         }
-        action.onClick?.()
-        close()
+        // A keyboard press (detail 0) keeps the row open so the focused
+        // action stays visible; focus leaving the row closes it. A tap
+        // closes it right away, like iOS.
+        const keyboard = event?.detail === 0
+        try {
+            Promise.resolve(action.onClick?.()).catch(console.error)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            if (!keyboard) close()
+        }
     }
 
     return (
@@ -95,7 +106,7 @@ const SwipeRow = ({ actions, children, className }) => {
                         onFocus={() => {
                             if (!isOpen) open()
                         }}
-                        onPress={() => handlePress(action)}
+                        onPress={(event) => handlePress(action, event)}
                     />
                 ))}
             </div>

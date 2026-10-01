@@ -1,11 +1,4 @@
-import {
-    cloneElement,
-    isValidElement,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import { AnimatePresence } from "motion/react"
@@ -70,7 +63,14 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
         setTarget((prev) => {
             const el = getElement()
             if (prev || !el) return prev
-            return { ...measureShape(el, fallbackRadius), point }
+            // The element itself is the preview's source (snapshotted, not
+            // re-rendered), taken before it is hidden.
+            return {
+                ...measureShape(el, fallbackRadius),
+                point,
+                source: el,
+                savedOpacity: el.style.opacity,
+            }
         })
     // The exiting menu keeps its last (open) props during the exit animation,
     // so whether it still accepts a pick is tracked here, not in state.
@@ -215,13 +215,7 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
                             items={items}
                             onSelect={handleSelect}
                             onClose={close}
-                        >
-                            {/* A visual copy: the caller's ref stays on the
-                                real element. */}
-                            {isValidElement(children)
-                                ? cloneElement(children, { ref: null })
-                                : children}
-                        </ContextMenuLayer>
+                        />
                     )}
                 </AnimatePresence>,
                 document.body

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence, useReducedMotion } from "motion/react"
@@ -6,7 +6,6 @@ import cx from "clsx"
 
 import MenuPanel, { itemShape } from "../DropdownMenu/MenuPanel"
 import { useSkin } from "../../hooks/DeviceProvider"
-import { haptic } from "../../lib/twa"
 import {
     DURATION,
     EASING,
@@ -15,6 +14,7 @@ import {
 } from "../../utils/animations"
 import { DELAY, PRESS_DELAY } from "../../hooks/useLongPress"
 import { placeMenu } from "./placement"
+import { useMenuInteraction } from "./useMenuInteraction"
 
 import * as styles from "./ContextMenu.module.scss"
 
@@ -47,13 +47,13 @@ const ContextMenuLayer = ({
     items,
     onSelect,
     onClose,
-    children,
 }) => {
     const reduceMotion = useReducedMotion()
     const { isApple } = useSkin()
     const menuRef = useRef(null)
+    const cardRef = useRef(null)
     const [place, setPlace] = useState(null)
-    const { rect, point, radiusFrom, radiusTo } = shape
+    const { rect, point, radiusFrom, radiusTo, source, savedOpacity } = shape
     // Grows while held, then settles (a row slightly narrower) once open.
     const heldScale = reduceMotion ? 1 : shape.scale
     const openScale = reduceMotion ? 1 : shape.settledScale
@@ -68,82 +68,40 @@ const ContextMenuLayer = ({
         setPlace(placeMenu(rect, size, point.x, openScale))
     }, [isOpen, rect, point, openScale])
 
-    // Keyboard reach: focus lands on the first item once the menu is placed;
-    // arrows move between items, Enter / Space pick the focused one. Tab
-    // would walk focus out under the overlay, so it dismisses instead.
-    useEffect(() => {
-        const menu = menuRef.current
-        if (!isOpen || !place || !menu) return
-        const getItems = () => [...menu.querySelectorAll('[role="menuitem"]')]
-        getItems()[0]?.focus({ preventScroll: true })
-        const onKeyDown = (event) => {
-            const list = getItems()
-            const index = list.indexOf(document.activeElement)
-            if (event.key === "Tab") {
-                event.preventDefault()
-                onClose()
-            } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-                event.preventDefault()
-                const step = event.key === "ArrowDown" ? 1 : -1
-                const next = (index + step + list.length) % list.length
-                list[next]?.focus()
-            } else if (
-                (event.key === "Enter" || event.key === " ") &&
-                index >= 0
-            ) {
-                event.preventDefault()
-                list[index].click()
-            }
-        }
-        document.addEventListener("keydown", onKeyDown)
-        return () => document.removeEventListener("keydown", onKeyDown)
-    }, [isOpen, place, onClose])
+    useMenuInteraction({
+        menuRef,
+        ready: isOpen && Boolean(place),
+        dragSelect,
+        onClose,
+    })
 
-    // iOS drag-to-select: the finger that opened the menu is still down; the
-    // item under it is highlighted (selection haptic on each change) and
-    // picked on release. Hit-testing, since a touch stays captured to the
-    // element it started on and items never see pointerenter.
-    useEffect(() => {
-        const menu = menuRef.current
-        if (!isOpen || !place || !dragSelect || !menu) return
-        let current = null
-        const highlight = (el) => {
-            if (el === current) return
-            current?.removeAttribute("data-highlighted")
-            current = el
-            if (!el) return
-            el.setAttribute("data-highlighted", "")
-            haptic.selection()
+    // The preview is a DOM snapshot of the element, not a second render of
+    // it: no duplicate mount effects, and it shows the element's live state.
+    useLayoutEffect(() => {
+        const card = cardRef.current
+        if (!card || !source) return
+        const copy = source.cloneNode(true)
+        copy.style.opacity = savedOpacity ?? ""
+        // The press feedback caught mid-hold (Tappable tint / ripple, a
+        // button's whileTap scale) must not freeze into the preview.
+        copy.style.transform = ""
+        for (const el of copy.querySelectorAll("[data-tap-feedback]"))
+            el.remove()
+        for (const el of [copy, ...copy.querySelectorAll("[id], [tabindex]")]) {
+            el.removeAttribute("id")
+            el.removeAttribute("tabindex")
         }
-        const onMove = (event) => {
-            const hit = document
-                .elementFromPoint(event.clientX, event.clientY)
-                ?.closest('[role="menuitem"]')
-            highlight(hit && menu.contains(hit) ? hit : null)
-        }
-        const stop = () => {
-            document.removeEventListener("pointermove", onMove)
-            document.removeEventListener("pointerup", onUp)
-            document.removeEventListener("pointercancel", onCancel)
-        }
-        const end = (pick) => {
-            const el = current
-            highlight(null)
-            stop()
-            if (pick && el) el.click()
-        }
-        const onUp = () => end(true)
-        const onCancel = () => end(false)
-        document.addEventListener("pointermove", onMove)
-        document.addEventListener("pointerup", onUp)
-        document.addEventListener("pointercancel", onCancel)
-        return stop
-    }, [isOpen, place, dragSelect])
+        card.appendChild(copy)
+        return () => copy.remove()
+    }, [source, savedOpacity])
 
     // HIG: read from the edge nearest the finger, so a menu above the row
     // lists its items bottom-up.
     const above = place?.originY === "100%"
     const orderedItems = above ? [...items].reverse() : items
+    // Map the shown position back to the caller's index (duplicate labels
+    // included), rather than looking the item up by value.
+    const toIndex = (shown) => (above ? items.length - 1 - shown : shown)
 
     const grow = reduceMotion ? INSTANT : GROW
     const platformSpring = isApple ? SPRING.APPLE : SPRING.MATERIAL
@@ -189,13 +147,12 @@ const ContextMenuLayer = ({
                 exit={{ y: 0, scale: 1, filter: shadow(0), transition: settle }}
             >
                 <m.div
+                    ref={cardRef}
                     className={cx(styles.card, surface && styles.surface)}
                     initial={{ clipPath: inset(radiusFrom) }}
                     animate={{ clipPath: inset(radiusTo), transition: grow }}
                     exit={{ clipPath: inset(radiusFrom), transition: settle }}
-                >
-                    {children}
-                </m.div>
+                />
             </m.div>
             <AnimatePresence propagate>
                 {isOpen && (
@@ -203,7 +160,9 @@ const ContextMenuLayer = ({
                         key="menu"
                         ref={menuRef}
                         items={orderedItems}
-                        onSelect={(item) => onSelect(item, items.indexOf(item))}
+                        onSelect={(item, shown) =>
+                            onSelect(item, toIndex(shown))
+                        }
                         opaque
                         className={cx(styles.menu, !place && styles.measuring)}
                         initial="hidden"
@@ -245,13 +204,14 @@ ContextMenuLayer.propTypes = {
         settledScale: PropTypes.number.isRequired,
         point: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number })
             .isRequired,
+        source: PropTypes.object,
+        savedOpacity: PropTypes.string,
     }).isRequired,
     surface: PropTypes.bool,
     dragSelect: PropTypes.bool,
     items: PropTypes.arrayOf(itemShape).isRequired,
     onSelect: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
-    children: PropTypes.node,
 }
 
 export default ContextMenuLayer
