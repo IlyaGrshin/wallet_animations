@@ -1,10 +1,9 @@
 import PropTypes from "prop-types"
-import { useContext, useState } from "react"
+import { useState } from "react"
 import cx from "clsx"
 
 import { useSkin } from "../../hooks/DeviceProvider"
 
-import { TapCancelContext } from "./context"
 import { useTapHighlight } from "./useTapHighlight"
 
 import * as styles from "./Tappable.module.scss"
@@ -41,12 +40,10 @@ const Tappable = ({
 }) => {
     const { isApple, isMaterial } = useSkin()
     const [ripples, setRipples] = useState({})
-    const cancelled = useContext(TapCancelContext)
 
     const [tapped, tapHandlers, tappedClassNames] = useTapHighlight({
         mode,
         disabled,
-        cancelled,
         onTap: ({ target, clientX, clientY }) => {
             if (!isMaterial || !target) return
             const { x, y, width, height } = target.getBoundingClientRect()
@@ -120,7 +117,5 @@ Tappable.propTypes = {
     mode: PropTypes.oneOf(["overlay", "opacity"]),
     disabled: PropTypes.bool,
 }
-
-export { TapCancelContext }
 
 export default Tappable
