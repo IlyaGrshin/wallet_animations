@@ -1,12 +1,13 @@
 const EDGE = 64
-const MAX_SPEED = 14
+const MAX_SPEED = 0.84
+const MAX_FRAME_MS = 50
 
 const isScrollable = (element) =>
     /(auto|scroll)/.test(getComputedStyle(element).overflowY) &&
     element.scrollHeight > element.clientHeight
 
 const scrollerOf = (element) => {
-    for (let node = element?.parentElement; node; node = node.parentElement) {
+    for (let node = element; node; node = node.parentElement) {
         if (node === document.body) break
         if (isScrollable(node)) return node
     }
@@ -24,13 +25,17 @@ export const startAutoScroll = (element, initialY) => {
     const isRoot = scroller === document.scrollingElement
     let pointerY = initialY
     let frame = 0
+    let lastTime = null
+    let carry = 0
 
     const onMove = (event) => {
         pointerY = event.clientY
     }
 
-    const tick = () => {
+    const tick = (time) => {
         frame = requestAnimationFrame(tick)
+        const elapsed = Math.min(MAX_FRAME_MS, time - (lastTime ?? time))
+        lastTime = time
         if (pointerY == null || !scroller) return
         const rect = isRoot ? null : scroller.getBoundingClientRect()
         const top = rect ? Math.max(0, rect.top) : 0
@@ -38,7 +43,11 @@ export const startAutoScroll = (element, initialY) => {
             ? Math.min(window.innerHeight, rect.bottom)
             : window.innerHeight
         const delta = edgeSpeed(bottom - pointerY) - edgeSpeed(pointerY - top)
-        if (delta) scroller.scrollTop += delta
+        carry += delta * elapsed
+        const whole = Math.trunc(carry)
+        if (!whole) return
+        scroller.scrollTop += whole
+        carry -= whole
     }
 
     window.addEventListener("pointermove", onMove)

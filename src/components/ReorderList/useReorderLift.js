@@ -60,6 +60,10 @@ export const useReorderLift = ({ controls, groupRef, longPress }) => {
                   downRef.current = event.nativeEvent
                   press.onPointerDown(event)
               },
+              onContextMenu: (event) => {
+                  if (downRef.current?.pointerType === "mouse") return
+                  press.onContextMenu(event)
+              },
           }
         : {}
 
