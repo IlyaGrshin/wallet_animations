@@ -6,6 +6,7 @@ import { AnimatePresence } from "motion/react"
 
 import { POPOVER_VARIANTS } from "../../utils/animations"
 import { usePaneBounds } from "../SplitView/context"
+import { VIEWPORT_PADDING } from "./tooltipPosition"
 import TooltipBody from "./TooltipBody"
 import { useClickOutside, useTooltipPosition } from "./tooltipUtils"
 import { useHoverToggle } from "./useHoverToggle"
@@ -40,6 +41,7 @@ const Tooltip = ({
     children,
 }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [maxWidth, setMaxWidth] = useState(null)
     const triggerRef = useRef(null)
     const tooltipRef = useRef(null)
     const animatedTooltipRef = useRef(null)
@@ -59,7 +61,13 @@ const Tooltip = ({
         getBounds
     )
 
+    const fitToBounds = () => {
+        const { left, right } = getBounds()
+        setMaxWidth(right - left - VIEWPORT_PADDING * 2)
+    }
+
     const openTooltip = () => {
+        fitToBounds()
         setIsOpen(true)
         resetPosition()
     }
@@ -75,6 +83,7 @@ const Tooltip = ({
     const toggleTooltip = () => {
         clearOpenTimer()
         clearCloseTimer()
+        if (!isOpen) fitToBounds()
         setIsOpen((prev) => !prev)
         resetPosition()
     }
@@ -113,8 +122,13 @@ const Tooltip = ({
         ? TAIL_WIDTH_HORIZONTAL
         : TAIL_WIDTH_VERTICAL
 
+    const widthLimit = maxWidth
+        ? { "--tooltip-max-width": `${maxWidth}px` }
+        : {}
+
     const shellStyle = isPositioned
         ? {
+              ...widthLimit,
               position: "fixed",
               top: position.top,
               left: position.left,
@@ -164,6 +178,7 @@ const Tooltip = ({
                             ref={tooltipRef}
                             className={styles.shell}
                             style={{
+                                ...widthLimit,
                                 position: "fixed",
                                 top: 0,
                                 left: 0,

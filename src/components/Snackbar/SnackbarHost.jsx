@@ -12,8 +12,6 @@ const positionClass = {
 
 const positions = Object.keys(positionClass)
 
-const isMounted = (pane) => Boolean(pane?.isConnected)
-
 const HostLayer = ({ snackbars, onDismiss, inPane }) =>
     positions.map((position) => {
         const items = snackbars.filter(
@@ -42,10 +40,7 @@ const HostLayer = ({ snackbars, onDismiss, inPane }) =>
     })
 
 const SnackbarHost = ({ snackbars, panes, onDismiss }) => {
-    const mountedPanes = panes.filter(isMounted)
-    const rootSnackbars = snackbars.filter(
-        (s) => !mountedPanes.includes(s.pane)
-    )
+    const rootSnackbars = snackbars.filter((s) => !panes.includes(s.pane))
 
     return (
         <>
@@ -53,18 +48,16 @@ const SnackbarHost = ({ snackbars, panes, onDismiss }) => {
                 <HostLayer snackbars={rootSnackbars} onDismiss={onDismiss} />,
                 document.body
             )}
-            {panes.map(
-                (pane, index) =>
-                    isMounted(pane) &&
-                    createPortal(
-                        <HostLayer
-                            snackbars={snackbars.filter((s) => s.pane === pane)}
-                            onDismiss={onDismiss}
-                            inPane
-                        />,
-                        pane,
-                        index
-                    )
+            {panes.map((pane, index) =>
+                createPortal(
+                    <HostLayer
+                        snackbars={snackbars.filter((s) => s.pane === pane)}
+                        onDismiss={onDismiss}
+                        inPane
+                    />,
+                    pane,
+                    index
+                )
             )}
         </>
     )
