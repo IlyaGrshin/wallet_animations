@@ -1,5 +1,6 @@
-import { createContext, useContext, useRef, useState } from "react"
+import { createContext, useContext, useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
+import { useSplitViewContext } from "../SplitView/context"
 import SnackbarHost from "./SnackbarHost"
 
 const SnackbarContext = createContext(null)
@@ -22,15 +23,30 @@ const SnackbarContext = createContext(null)
  */
 export const useSnackbar = () => {
     const value = useContext(SnackbarContext)
+    const { paneRef } = useSplitViewContext()
     if (!value) {
         throw new Error("useSnackbar must be used inside <SnackbarProvider>")
     }
-    return value
+    return {
+        show: (options) => value.show({ ...options, pane: paneRef?.current }),
+        dismiss: value.dismiss,
+    }
 }
 
 export const SnackbarProvider = ({ children }) => {
     const [snackbars, setSnackbars] = useState([])
+    const [panes, setPanes] = useState([])
     const idRef = useRef(0)
+
+    useEffect(() => {
+        if (panes.length === 0) return
+        const observer = new MutationObserver(() => {
+            if (panes.every((pane) => pane.isConnected)) return
+            setPanes((curr) => curr.filter((pane) => pane.isConnected))
+        })
+        observer.observe(document.body, { childList: true, subtree: true })
+        return () => observer.disconnect()
+    }, [panes])
 
     const dismiss = (id) => {
         setSnackbars((curr) => curr.filter((s) => s.id !== id))
@@ -39,6 +55,10 @@ export const SnackbarProvider = ({ children }) => {
     const show = (options) => {
         idRef.current += 1
         const id = idRef.current
+        const { pane } = options
+        if (pane) {
+            setPanes((curr) => (curr.includes(pane) ? curr : [...curr, pane]))
+        }
         setSnackbars((curr) => [...curr, { id, ...options }])
         return id
     }
@@ -46,7 +66,11 @@ export const SnackbarProvider = ({ children }) => {
     return (
         <SnackbarContext.Provider value={{ show, dismiss }}>
             {children}
-            <SnackbarHost snackbars={snackbars} onDismiss={dismiss} />
+            <SnackbarHost
+                snackbars={snackbars}
+                panes={panes}
+                onDismiss={dismiss}
+            />
         </SnackbarContext.Provider>
     )
 }

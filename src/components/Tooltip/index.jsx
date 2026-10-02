@@ -5,8 +5,13 @@ import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 
 import { POPOVER_VARIANTS } from "../../utils/animations"
+import { usePaneBounds } from "../SplitView/context"
 import TooltipBody from "./TooltipBody"
-import { useClickOutside, useTooltipPosition } from "./tooltipUtils"
+import {
+    useClickOutside,
+    usePaneMaxWidth,
+    useTooltipPosition,
+} from "./tooltipUtils"
 import { useHoverToggle } from "./useHoverToggle"
 import {
     TAIL_WIDTH_VERTICAL,
@@ -43,6 +48,8 @@ const Tooltip = ({
     const tooltipRef = useRef(null)
     const animatedTooltipRef = useRef(null)
 
+    const getBounds = usePaneBounds()
+    const [maxWidth, fitToBounds] = usePaneMaxWidth(isOpen, getBounds)
     const compact = type === "compact"
     const tailHeight = compact ? TAIL_HEIGHT_COMPACT : TAIL_HEIGHT_REGULAR
 
@@ -53,10 +60,13 @@ const Tooltip = ({
         TAIL_WIDTH_VERTICAL,
         TAIL_WIDTH_HORIZONTAL,
         tailHeight,
-        placement
+        placement,
+        getBounds,
+        maxWidth
     )
 
     const openTooltip = () => {
+        fitToBounds()
         setIsOpen(true)
         resetPosition()
     }
@@ -72,6 +82,7 @@ const Tooltip = ({
     const toggleTooltip = () => {
         clearOpenTimer()
         clearCloseTimer()
+        if (!isOpen) fitToBounds()
         setIsOpen((prev) => !prev)
         resetPosition()
     }
@@ -110,8 +121,13 @@ const Tooltip = ({
         ? TAIL_WIDTH_HORIZONTAL
         : TAIL_WIDTH_VERTICAL
 
+    const widthLimit = maxWidth
+        ? { "--tooltip-max-width": `${maxWidth}px` }
+        : {}
+
     const shellStyle = isPositioned
         ? {
+              ...widthLimit,
               position: "fixed",
               top: position.top,
               left: position.left,
@@ -156,11 +172,12 @@ const Tooltip = ({
             </span>
             {createPortal(
                 <>
-                    {isOpen && !isPositioned && (
+                    {isOpen && (
                         <div
                             ref={tooltipRef}
                             className={styles.shell}
                             style={{
+                                ...widthLimit,
                                 position: "fixed",
                                 top: 0,
                                 left: 0,
