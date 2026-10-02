@@ -12,6 +12,23 @@
     background: none;
 }
 
+// Scroll box for the large-title handover: the bar pins to its top while the
+// expanded title scrolls past it. Sized to the bar plus the expanded title and
+// a strip of content, so the sample sits at the scale of its neighbours.
+.scroller {
+    --appbar-inset-top: 0px;
+    --page-background: var(--tg-theme-section-bg-color);
+
+    height: 200px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.filler {
+    height: 400px;
+    padding: 0 16px;
+}
+
 // Colored backdrop so the overlay variant's translucent glass and white
 // glyphs read the way they would over real content.
 .over {
