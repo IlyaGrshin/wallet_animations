@@ -1,5 +1,3 @@
-import { useCallback } from "react"
-
 import { calculatePosition, samePosition } from "./tooltipPosition"
 import { useAnchoredPosition } from "../../hooks/useAnchoredPosition"
 
@@ -26,20 +24,19 @@ export const useTooltipPosition = (
     tailVBreadth,
     tailHBreadth,
     tailProtrusion,
-    preferredPlacement
+    preferredPlacement,
+    getBounds
 ) => {
-    const calculate = useCallback(
-        (triggerRect, contentSize) =>
-            calculatePosition(
-                triggerRect,
-                contentSize,
-                tailVBreadth,
-                tailHBreadth,
-                tailProtrusion,
-                preferredPlacement
-            ),
-        [tailVBreadth, tailHBreadth, tailProtrusion, preferredPlacement]
-    )
+    const calculate = (triggerRect, contentSize) =>
+        calculatePosition(
+            triggerRect,
+            contentSize,
+            tailVBreadth,
+            tailHBreadth,
+            tailProtrusion,
+            preferredPlacement,
+            getBounds()
+        )
 
     return useAnchoredPosition({
         isOpen,

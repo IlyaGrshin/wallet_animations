@@ -5,6 +5,7 @@ import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 
 import { POPOVER_VARIANTS } from "../../utils/animations"
+import { usePaneBounds } from "../SplitView/context"
 import TooltipBody from "./TooltipBody"
 import { useClickOutside, useTooltipPosition } from "./tooltipUtils"
 import { useHoverToggle } from "./useHoverToggle"
@@ -43,6 +44,7 @@ const Tooltip = ({
     const tooltipRef = useRef(null)
     const animatedTooltipRef = useRef(null)
 
+    const getBounds = usePaneBounds()
     const compact = type === "compact"
     const tailHeight = compact ? TAIL_HEIGHT_COMPACT : TAIL_HEIGHT_REGULAR
 
@@ -53,7 +55,8 @@ const Tooltip = ({
         TAIL_WIDTH_VERTICAL,
         TAIL_WIDTH_HORIZONTAL,
         tailHeight,
-        placement
+        placement,
+        getBounds
     )
 
     const openTooltip = () => {
