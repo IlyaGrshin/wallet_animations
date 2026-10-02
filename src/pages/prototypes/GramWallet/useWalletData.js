@@ -11,31 +11,24 @@ import useWalletBalance from "./useWalletBalance"
 const PAGE_SIZE = 100
 
 export default function useWalletData(address) {
-    const {
-        tonAmount,
-        balance,
-        error: balanceError,
-    } = useWalletBalance(address)
+    const { tonAmount, balance } = useWalletBalance(address)
     const [transactions, setTransactions] = useState(null)
     const [hasMoreTransactions, setHasMoreTransactions] = useState(false)
-    const [isLoadingMoreTransactions, setIsLoadingMoreTransactions] =
-        useState(false)
     const [collectibles, setCollectibles] = useState(null)
-    const [isLoadingCollectibles, setIsLoadingCollectibles] = useState(false)
-    const [error, setError] = useState(null)
-    const pageRef = useRef({ rawAddress: null, endLt: null })
-    const collectiblesLoadedRef = useRef(false)
+    const [transactionsError, setTransactionsError] = useState(null)
+    const [collectiblesError, setCollectiblesError] = useState(null)
+    const pageRef = useRef({ rawAddress: null, endLt: null, loading: false })
+    const collectiblesStatusRef = useRef("idle")
 
     useEffect(() => {
         let cancelled = false
         setTransactions(null)
         setHasMoreTransactions(false)
         setCollectibles(null)
-        setError(null)
-        pageRef.current = { rawAddress: null, endLt: null }
-        collectiblesLoadedRef.current = false
-
-        const fail = (err) => !cancelled && setError(err.message || String(err))
+        setTransactionsError(null)
+        setCollectiblesError(null)
+        pageRef.current = { rawAddress: null, endLt: null, loading: false }
+        collectiblesStatusRef.current = "idle"
 
         Promise.all([
             getAccountState(address),
@@ -44,13 +37,19 @@ export default function useWalletData(address) {
             .then(([state, page]) => {
                 if (cancelled) return
                 const rawAddress = state.accounts[0].address
-                pageRef.current = { rawAddress, endLt: lastActionLt(page) }
+                pageRef.current = {
+                    rawAddress,
+                    endLt: lastActionLt(page),
+                    loading: false,
+                }
                 setTransactions(mapActions(page, rawAddress))
                 setHasMoreTransactions(
                     (page.actions || []).length === PAGE_SIZE
                 )
             })
-            .catch(fail)
+            .catch((err) => {
+                if (!cancelled) setTransactionsError(err.message || String(err))
+            })
 
         return () => {
             cancelled = true
@@ -59,8 +58,8 @@ export default function useWalletData(address) {
 
     async function loadMoreTransactions() {
         const page = pageRef.current
-        if (!page.endLt || !page.rawAddress || isLoadingMoreTransactions) return
-        setIsLoadingMoreTransactions(true)
+        if (!page.endLt || !page.rawAddress || page.loading) return
+        pageRef.current = { ...page, loading: true }
         try {
             const next = await getActions(
                 address,
@@ -72,15 +71,16 @@ export default function useWalletData(address) {
             setTransactions((prev) => [...(prev || []), ...rows])
             pageRef.current = { ...page, endLt: lastActionLt(next) }
             setHasMoreTransactions((next.actions || []).length === PAGE_SIZE)
-        } finally {
-            setIsLoadingMoreTransactions(false)
+        } catch {
+            pageRef.current = { ...page, loading: false }
+            setHasMoreTransactions(false)
         }
     }
 
     async function loadCollectibles() {
-        if (collectiblesLoadedRef.current || isLoadingCollectibles) return
-        collectiblesLoadedRef.current = true
-        setIsLoadingCollectibles(true)
+        if (collectiblesStatusRef.current !== "idle") return
+        collectiblesStatusRef.current = "loading"
+        setCollectiblesError(null)
         try {
             const data = await getOwnedNfts(address)
             setCollectibles(
@@ -88,10 +88,10 @@ export default function useWalletData(address) {
                     .filter(isFragmentItem)
                     .map((item) => mapNft(item, data))
             )
+            collectiblesStatusRef.current = "done"
         } catch (err) {
-            setError(err.message || String(err))
-        } finally {
-            setIsLoadingCollectibles(false)
+            collectiblesStatusRef.current = "idle"
+            setCollectiblesError(err.message || String(err))
         }
     }
 
@@ -103,6 +103,7 @@ export default function useWalletData(address) {
         loadMoreTransactions,
         collectibles,
         loadCollectibles,
-        error: error ?? balanceError,
+        transactionsError,
+        collectiblesError,
     }
 }

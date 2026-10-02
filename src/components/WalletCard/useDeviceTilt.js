@@ -13,6 +13,7 @@ const IDLE_EPSILON = 5e-4
 const VEL_EPSILON = 5e-3
 const MAX_DEG = 45
 const MAX_RAD = (MAX_DEG * Math.PI) / 180
+const NEUTRAL_FOLLOW = 0.01
 
 // A -1..1 tilt target. `live` marks the Telegram path, where gamma/beta have to
 // be polled every frame; the web path pushes updates and calls `onChange` so a
@@ -24,12 +25,17 @@ function startTiltSource(onChange) {
         isTelegram() && !!orientation && typeof orientation.start === "function"
 
     if (live) {
+        let neutralBeta = null
         return {
             target,
             live,
             poll: () => {
+                const beta = orientation.beta
                 target.x = clamp((orientation.gamma || 0) / MAX_RAD, -1, 1)
-                target.y = clamp((orientation.beta || 0) / MAX_RAD, -1, 1)
+                if (typeof beta !== "number") return
+                if (neutralBeta === null) neutralBeta = beta
+                neutralBeta += (beta - neutralBeta) * NEUTRAL_FOLLOW
+                target.y = clamp((beta - neutralBeta) / MAX_RAD, -1, 1)
             },
             stop: () => {},
         }

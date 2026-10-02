@@ -41,7 +41,8 @@ const Wallet = () => {
         hasMoreTransactions,
         loadMoreTransactions,
         loadCollectibles,
-        error,
+        transactionsError,
+        collectiblesError,
     } = useWalletData(MY_ADDRESS)
     const [cardEl, setCardEl] = useState(null)
     const [amountEl, setAmountEl] = useState(null)
@@ -85,8 +86,9 @@ const Wallet = () => {
     }, [])
 
     function renderTabContent() {
-        if (error) return <Feedback>{error}</Feedback>
         if (tabIndex === 0) {
+            if (transactionsError)
+                return <Feedback>{transactionsError}</Feedback>
             return (
                 <Transactions
                     items={transactions}
@@ -95,6 +97,7 @@ const Wallet = () => {
                 />
             )
         }
+        if (collectiblesError) return <Feedback>{collectiblesError}</Feedback>
         return <Collectibles items={collectibles} />
     }
 

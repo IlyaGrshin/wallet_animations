@@ -35,13 +35,11 @@ const Send = () => {
     const swap = () => {
         setFlying(true)
         setCurrency(other(currency))
-        setAmount((prev) =>
-            prev === ""
-                ? ""
-                : toEntry(
-                      isGram ? Number(prev) * rate : Number(prev) / (rate || 1)
-                  )
-        )
+        setAmount((prev) => {
+            const value = Number(prev)
+            if (prev === "" || !Number.isFinite(value)) return ""
+            return sanitize(toEntry(isGram ? value * rate : value / (rate || 1)))
+        })
     }
 
     return (
