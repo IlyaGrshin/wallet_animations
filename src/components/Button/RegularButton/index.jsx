@@ -20,6 +20,7 @@ import { useSkin } from "../../../hooks/DeviceProvider"
  * @param {string} props.label
  * @param {boolean} [props.isShine] Sweep highlight; only affects `filled`.
  * @param {boolean} [props.isFill] Stretch to fill the container width.
+ * @param {boolean} [props.disabled] Drop press feedback and mark aria-disabled.
  * @example
  * <RegularButton variant="filled" label="Pay" onClick={onPay} isFill />
  */
@@ -28,6 +29,7 @@ export const RegularButton = ({
     label,
     isShine = false,
     isFill = false,
+    disabled = false,
     ...props
 }) => {
     const { isApple } = useSkin()
@@ -38,6 +40,7 @@ export const RegularButton = ({
 
     const dynamicProps = {
         ...(isFill && { "data-fill": true }),
+        ...(disabled && { "aria-disabled": true }),
         ...(variant === "filled" &&
             isShine &&
             !skeleton && { "data-shine": true }),
@@ -53,7 +56,7 @@ export const RegularButton = ({
     )
 
     // Press feedback matches the platform: an iOS scale, a Material ripple.
-    const pressable = !skeleton
+    const pressable = !skeleton && !disabled
     const Root = isApple || !pressable ? m.div : Tappable
     const tapProps = isApple && pressable ? { whileTap: { scale: 1.02 } } : {}
 
@@ -87,4 +90,5 @@ RegularButton.propTypes = {
     label: PropTypes.string,
     isShine: PropTypes.bool,
     isFill: PropTypes.bool,
+    disabled: PropTypes.bool,
 }
