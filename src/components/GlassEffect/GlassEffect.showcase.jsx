@@ -16,7 +16,13 @@ const wide = (slot) => `${PICSUM}/1200/400?random=${slot}`
 const tall = (slot) => `${PICSUM}/800/1600?random=${slot}`
 
 const Backdrop = ({ src }) => (
-    <Image src={src} alt="" className={styles.backdrop} />
+    <Image
+        src={src}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className={styles.backdrop}
+    />
 )
 
 Backdrop.propTypes = {

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 
-import { GlassBorder } from "../GlassEffect"
+import GlassContainer from "../GlassEffect"
 import Tappable from "../Tappable"
 import Text from "../Text"
 import { useSkin } from "../../hooks/DeviceProvider"
@@ -16,9 +16,7 @@ export const HEADER_BUTTON_VARIANTS = [
 ]
 
 // A glass action in the panel header: a text label (auto-sized pill) or an
-// icon (44x44 square). Glass lives on the element itself so the tap scale
-// can't make Safari drop the backdrop-filter mid-animation; the rim lives
-// inside it, so it must stay blend-free (GlassBorder's muted variant).
+// icon (44x44 square).
 const HeaderButton = ({
     children,
     onClick,
@@ -47,7 +45,7 @@ const HeaderButton = ({
 
     const content = (
         <>
-            {hasRim && <GlassBorder muted />}
+            {hasRim && <GlassContainer />}
             <span className={styles.content}>
                 {swap ? (
                     <span className={styles.swap}>
@@ -80,6 +78,7 @@ const HeaderButton = ({
             type="button"
             className={className}
             onClick={onClick}
+            {...(variant === "overlay" && { "data-color-scheme": "dark" })}
             {...rootProps}
         >
             {content}
