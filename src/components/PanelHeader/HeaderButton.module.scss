@@ -123,6 +123,7 @@ $swap-duration: 0.2s;
         display: block;
         width: 28px;
         height: 28px;
+        opacity: 0.8;
     }
 
     :global(body.material) & svg {
