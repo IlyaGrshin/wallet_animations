@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import Page from "../../../components/Page"
 import Text from "../../../components/Text"
 import { RegularButton } from "../../../components/Button"
-import WebApp, { BackButton } from "../../../lib/twa"
+import WebApp, { BackButton, lockVerticalSwipes } from "../../../lib/twa"
 
 import PhraseField from "./components/PhraseField"
 import { PHRASE_LENGTH } from "./bip39"
@@ -15,6 +15,7 @@ const WalletImport = () => {
     const {
         words,
         isComplete,
+        hasBadChecksum,
         registerRef,
         setWord,
         commitWord,
@@ -26,11 +27,8 @@ const WalletImport = () => {
         WebApp.HapticFeedback?.notificationOccurred("success")
     }
 
-    useEffect(() => {
-        // A long form drags a lot; vertical swipes would close the Mini App.
-        WebApp.disableVerticalSwipes()
-        return () => WebApp.enableVerticalSwipes()
-    }, [])
+    // A long form drags a lot; vertical swipes would close the Mini App.
+    useEffect(() => lockVerticalSwipes(), [])
 
     return (
         <Page mode="primary">
@@ -69,11 +67,26 @@ const WalletImport = () => {
                 </div>
 
                 <div className={styles.footer}>
+                    {hasBadChecksum && (
+                        <div className={styles.checksumError} role="alert">
+                            <Text
+                                apple={{
+                                    variant: "footnote",
+                                    weight: "regular",
+                                }}
+                                material={{ variant: "subheadline2" }}
+                            >
+                                These words don’t form a valid recovery phrase.
+                                Check their order.
+                            </Text>
+                        </div>
+                    )}
                     <RegularButton
                         variant={isComplete ? "filled" : "disabled"}
                         label="Continue"
                         isFill
                         isShine={isComplete}
+                        disabled={!isComplete}
                         onClick={isComplete ? handleContinue : undefined}
                     />
                 </div>

@@ -19,8 +19,11 @@
     }
 
     position: absolute;
-    left: 0;
-    right: 0;
+
+    // Spills into the list's side padding so three long words still fit a
+    // 320px screen, keeping a 16px gutter.
+    left: -32px;
+    right: -32px;
     z-index: 20;
     display: flex;
     justify-content: center;
@@ -70,6 +73,11 @@
     &.active {
         background: var(--suggestion-active);
     }
+}
+
+// Tappable tunes its ripple for a light section; the strip is dark.
+.anchor .chip {
+    --highlight-default: var(--suggestion-active);
 }
 
 // The completion stays quiet so the eye lands on what was just typed.

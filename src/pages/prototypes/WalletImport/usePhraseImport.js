@@ -1,7 +1,7 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { clamp } from "../../../utils/number"
-import { PHRASE_LENGTH, isWord } from "./bip39"
+import { PHRASE_LENGTH, hasValidChecksum, isWord } from "./bip39"
 
 const emptyPhrase = () => Array.from({ length: PHRASE_LENGTH }, () => "")
 
@@ -17,6 +17,23 @@ export function usePhraseImport() {
     // through a ref: closing over the state would give each of them a new
     // identity per keystroke and re-render every slot.
     const phraseRef = useRef(words)
+    const [verified, setVerified] = useState({ phrase: "", valid: false })
+
+    const allWords = words.every(isWord)
+    const phrase = words.join(" ")
+
+    useEffect(() => {
+        if (!allWords) return
+        let current = true
+        hasValidChecksum(phrase.split(" ")).then((valid) => {
+            if (current) setVerified({ phrase, valid })
+        })
+        return () => {
+            current = false
+        }
+    }, [allWords, phrase])
+
+    const checked = allWords && verified.phrase === phrase
 
     const write = (next) => {
         phraseRef.current = next
@@ -77,7 +94,8 @@ export function usePhraseImport() {
 
     return {
         words,
-        isComplete: words.every(isWord),
+        isComplete: checked && verified.valid,
+        hasBadChecksum: checked && !verified.valid,
         registerRef,
         setWord,
         commitWord,

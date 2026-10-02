@@ -1,5 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 import { AnimatePresence } from "motion/react"
 
 import Text from "../../../../../components/Text"
@@ -7,12 +8,13 @@ import TextField from "../../../../../components/TextField"
 import WebApp from "../../../../../lib/twa"
 import { PHRASE_LENGTH, isWord, sanitize, splitPhrase } from "../../bip39"
 import PasteButton from "../PasteButton"
-import SuggestionTooltip, { suggestionId, suggestionsId } from "../SuggestionTooltip"
+import SuggestionTooltip, {
+    suggestionId,
+    suggestionsId,
+} from "../SuggestionTooltip"
 import { useWordSuggestions } from "./useWordSuggestions"
 
 import * as styles from "./PhraseField.module.scss"
-
-const cx = (...classes) => classes.filter(Boolean).join(" ")
 
 /**
  * One numbered slot of the recovery phrase. Owns its suggestion strip, the
@@ -170,7 +172,9 @@ const PhraseField = ({
                     aria-autocomplete="list"
                     aria-controls={suggestionsId(fieldId)}
                     aria-activedescendant={
-                        open ? suggestionId(fieldId, activeIndex) : undefined
+                        open && suggestions.length > 0
+                            ? suggestionId(fieldId, activeIndex)
+                            : undefined
                     }
                     onPaste={handlePaste}
                     onKeyDown={handleKeyDown}

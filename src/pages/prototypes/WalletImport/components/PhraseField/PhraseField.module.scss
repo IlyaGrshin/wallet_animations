@@ -6,28 +6,38 @@
 // widens to clear.
 .field {
     --field-radius: 100px;
-    --field-surface: rgb(from var(--tg-theme-secondary-bg-color) r g b / 72%);
-    --field-surface-focused: var(--tg-theme-secondary-bg-color);
 
     position: relative;
     display: block;
     cursor: text;
+
+    // The fill lives on its own layer so focus fades it by opacity alone; at
+    // 0.72 it matches the old 72%-alpha resting surface.
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: var(--field-radius);
+        background: var(--tg-theme-secondary-bg-color);
+        opacity: 0.72;
+        transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        pointer-events: none;
+    }
 
     // The [type] qualifier is what outweighs AppleTextField's own `.text .input`
     // padding and fill without reaching for its hashed class names.
     input[type="text"] {
         padding-block: 15px;
         padding-inline-start: 52px;
-        background: var(--field-surface);
-        transition: background-color 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        background: transparent;
     }
 
     &.withPaste input[type="text"] {
         padding-inline-end: 86px;
     }
 
-    &.focused input[type="text"] {
-        background: var(--field-surface-focused);
+    &.focused::before {
+        opacity: 1;
     }
 
     &.invalid input[type="text"] {

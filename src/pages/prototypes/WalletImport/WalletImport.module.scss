@@ -27,5 +27,13 @@
 }
 
 .footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     padding: 28px 48px 0;
+}
+
+.checksumError {
+    color: var(--tg-theme-destructive-text-color);
+    text-align: center;
 }

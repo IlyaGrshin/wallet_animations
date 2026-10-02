@@ -38,6 +38,33 @@ export const suggest = (prefix, limit = MAX_SUGGESTIONS) => {
 
 export const isWord = (value) => WORDSET.has(value)
 
+const INDEX_BITS = 11
+
+/**
+ * Resolves true when the phrase's trailing checksum bits match the SHA-256 of
+ * its entropy, i.e. the words could have come out of a real wallet. Every
+ * entry must already pass `isWord`.
+ */
+export const hasValidChecksum = async (words) => {
+    const bits = words
+        .map((word) =>
+            WORDLIST.indexOf(word).toString(2).padStart(INDEX_BITS, "0")
+        )
+        .join("")
+    const checksumLength = bits.length / 33
+    const entropyBits = bits.slice(0, bits.length - checksumLength)
+    const entropy = new Uint8Array(entropyBits.length / 8)
+    entropy.forEach((_, i) => {
+        entropy[i] = parseInt(entropyBits.slice(i * 8, i * 8 + 8), 2)
+    })
+    const hash = new Uint8Array(await crypto.subtle.digest("SHA-256", entropy))
+    const expected = hash[0]
+        .toString(2)
+        .padStart(8, "0")
+        .slice(0, checksumLength)
+    return bits.slice(-checksumLength) === expected
+}
+
 // Only whitespace goes: everything else the user types stays in the field and
 // reads as a word the list does not know.
 export const sanitize = (value) => value.toLowerCase().replace(/\s/g, "")

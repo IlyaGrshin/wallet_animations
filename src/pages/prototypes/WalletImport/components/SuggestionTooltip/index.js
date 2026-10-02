@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 import * as m from "motion/react-m"
 import {
     AnimatePresence,
@@ -7,6 +8,7 @@ import {
     useReducedMotion,
 } from "motion/react"
 
+import Tappable from "../../../../../components/Tappable"
 import Text from "../../../../../components/Text"
 import {
     TAIL_HEIGHT_REGULAR,
@@ -14,8 +16,20 @@ import {
     buildTailClipPath,
 } from "../../../../../components/Tooltip/tooltipPath"
 import { GAP } from "../../../../../components/Tooltip/tooltipPosition"
-import { EASING, SPRING } from "../../../../../utils/animations"
+import { useSkin } from "../../../../../hooks/DeviceProvider"
 
+import {
+    APPLE_VARIANTS,
+    ERROR_PULSE,
+    ERROR_PULSE_TRANSITION,
+    INSTANT,
+    ITEM_HIDDEN,
+    ITEM_TRANSITION,
+    ITEM_VISIBLE,
+    MATERIAL_VARIANTS,
+    REDUCED_VARIANTS,
+    RESIZE_SPRING,
+} from "./motion"
 import * as styles from "./SuggestionTooltip.module.scss"
 
 const ANCHOR_STYLE = { top: `calc(100% + ${GAP + TAIL_HEIGHT_REGULAR}px)` }
@@ -29,26 +43,6 @@ const TAIL_STYLE = {
     }),
 }
 
-const STRIP_VARIANTS = {
-    hidden: { opacity: 0, scale: 0.92, filter: "blur(5px)" },
-    visible: {
-        opacity: 1,
-        scale: 1,
-        filter: "blur(0px)",
-        transition: {
-            ...SPRING.APPLE,
-            opacity: { duration: 0.12, ease: EASING.QUINT_OUT },
-            filter: { duration: 0.16, ease: EASING.QUINT_OUT },
-        },
-    },
-    exit: {
-        opacity: 0,
-        scale: 0.96,
-        filter: "blur(4px)",
-        transition: { duration: 0.14, ease: EASING.QUINT_OUT },
-    },
-}
-
 // Both live here rather than in the stylesheet: motion only undoes the scale
 // distortion of a layout animation for values it owns.
 const BUBBLE_STYLE = {
@@ -56,29 +50,8 @@ const BUBBLE_STYLE = {
     boxShadow: "0 6px 20px rgba(0, 0, 0, 0.18)",
 }
 
-const INSTANT = { duration: 0 }
-
-const REDUCED_VARIANTS = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: INSTANT },
-    exit: { opacity: 0, transition: INSTANT },
-}
-
-const RESIZE_SPRING = { type: "spring", stiffness: 700, damping: 55 }
-
-const ITEM_HIDDEN = { opacity: 0, scale: 0.96 }
-const ITEM_VISIBLE = { opacity: 1, scale: 1 }
-const ITEM_TRANSITION = {
-    ...RESIZE_SPRING,
-    opacity: { duration: 0.12, ease: EASING.QUINT_OUT },
-}
-
-const ERROR_PULSE = { scale: [1, 1.05, 1] }
-const ERROR_PULSE_TRANSITION = { duration: 0.4, ease: EASING.EASE_IN_OUT }
-
 export const suggestionsId = (fieldId) => `${fieldId}-suggestions`
-export const suggestionId = (fieldId, index) =>
-    `${fieldId}-suggestion-${index}`
+export const suggestionId = (fieldId, index) => `${fieldId}-suggestion-${index}`
 
 /**
  * Word strip anchored under a phrase field. Resizes itself as the match count
@@ -98,6 +71,7 @@ const SuggestionTooltip = ({
     onPick,
 }) => {
     const reduced = useReducedMotion()
+    const { isApple } = useSkin()
     const errorControls = useAnimationControls()
     const pulsedPrefix = useRef(null)
 
@@ -108,6 +82,12 @@ const SuggestionTooltip = ({
     // With nothing to choose between, the highlight has no work to do — the lone
     // word is what Enter takes either way.
     const highlighted = suggestions.length > 1 ? activeIndex : -1
+
+    // Press feedback matches the platform: an iOS scale, a Material ripple.
+    const Chip = isApple ? m.button : Tappable
+    const chipProps = isApple
+        ? { whileTap: reduced ? undefined : { scale: 0.94 } }
+        : { as: m.button }
 
     useEffect(() => {
         if (!invalid) {
@@ -132,7 +112,13 @@ const SuggestionTooltip = ({
             initial="hidden"
             animate="visible"
             exit="exit"
-            variants={reduced ? REDUCED_VARIANTS : STRIP_VARIANTS}
+            variants={
+                reduced
+                    ? REDUCED_VARIANTS
+                    : isApple
+                      ? APPLE_VARIANTS
+                      : MATERIAL_VARIANTS
+            }
         >
             <span className={styles.tail} style={TAIL_STYLE} />
             <m.div
@@ -178,20 +164,19 @@ const SuggestionTooltip = ({
                         </m.span>
                     ) : (
                         suggestions.map((word, index) => (
-                            <m.button
+                            <Chip
                                 key={word}
+                                {...chipProps}
                                 type="button"
                                 layout="position"
                                 transition={itemTransition}
                                 initial={ITEM_HIDDEN}
                                 animate={ITEM_VISIBLE}
                                 exit={ITEM_HIDDEN}
-                                whileTap={reduced ? undefined : { scale: 0.94 }}
-                                className={
-                                    index === highlighted
-                                        ? `${styles.chip} ${styles.active}`
-                                        : styles.chip
-                                }
+                                className={cx(
+                                    styles.chip,
+                                    index === highlighted && styles.active
+                                )}
                                 id={suggestionId(fieldId, index)}
                                 role="option"
                                 aria-selected={index === activeIndex}
@@ -210,14 +195,12 @@ const SuggestionTooltip = ({
                                         weight: "medium",
                                     }}
                                 >
-                                    <span>
-                                        {word.slice(0, prefix.length)}
-                                    </span>
+                                    <span>{word.slice(0, prefix.length)}</span>
                                     <span className={styles.rest}>
                                         {word.slice(prefix.length)}
                                     </span>
                                 </Text>
-                            </m.button>
+                            </Chip>
                         ))
                     )}
                 </AnimatePresence>
