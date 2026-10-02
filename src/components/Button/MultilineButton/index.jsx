@@ -1,6 +1,7 @@
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
+import FilledGlass from "../FilledGlass"
 import Tappable from "../../Tappable"
 import Text from "../../Text"
 import Skeleton, {
@@ -54,6 +55,7 @@ export function MultilineButton({ variant, icon, label, style, ...props }) {
             style={style}
             {...props}
         >
+            {variant === "filled" && !skeleton && <FilledGlass />}
             {icon}
             {skeleton ? <Skeleton active={false}>{label_}</Skeleton> : label_}
         </Root>

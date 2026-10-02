@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
 
-import { GlassBorder } from "../../GlassEffect"
+import FilledGlass from "../FilledGlass"
 import Tappable from "../../Tappable"
 import Text from "../../Text"
 import Skeleton, {
@@ -70,7 +70,7 @@ export const RegularButton = ({
             {...dynamicProps}
             {...props}
         >
-            {variant === "filled" && !skeleton && <GlassBorder />}
+            {variant === "filled" && !skeleton && <FilledGlass />}
             {skeleton ? (
                 // Turn redaction off for the hidden label so it doesn't draw its
                 // own bar inside the pill; it stays for width only.
