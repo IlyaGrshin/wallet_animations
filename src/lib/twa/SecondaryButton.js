@@ -6,7 +6,7 @@ const SecondaryButton = (props) => {
     return null
 }
 
-SecondaryButton.propTypes = {
+SecondaryButton.propTypes /* remove-proptypes */ = {
     text: PropTypes.string.isRequired,
     onClick: PropTypes.func,
     disabled: PropTypes.bool,

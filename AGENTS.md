@@ -8,7 +8,7 @@
 
 - **Vite 7** SPA · **React 19** + **React Compiler** (auto-memoization)
 - **wouter** with `useHashLocation` (`src/router/`)
-- **SCSS Modules** (`<Name>.module.scss`)
+- **SCSS Modules** (`<Name>.module.scss`) · **clsx** for conditional classNames
 - **motion v12** (framer-motion-compatible) · **lottie-react** · **calligraph** · **spoiled**
 - **Telegram Web App** via internal `@lib/twa` wrapper (`src/lib/twa.js`)
 - Type checking: **PropTypes** · Package manager: **yarn**
@@ -40,11 +40,12 @@ yarn lint:scss    # Stylelint only
 4. Honor `prefers-reduced-motion` — provide reduced variant or disable
 5. **No manual `memo` / `useMemo` / `useCallback`** unless profiling shows need — React Compiler handles it
 6. **Reuse project primitives** — `Button`, `Text`, `GlassContainer`, `Page`, `PageTransition` instead of raw `<button>` / `<div onClick>` / inline styles
-7. **SCSS Modules only** — no global CSS, no Tailwind. Documented exceptions: `src/utils/viewTransition.scss` (needs `::view-transition-*` pseudos at root), `src/components/Text/{AppleText,MaterialText}/*.scss` (needs `body.apple [variant=…]` selectors), `src/index.css` (root resets / theme vars). Do not add new globals.
-8. Animate `transform` / `opacity` / `filter` / `clip-path` only — never `width` / `height` / `top` / `left`
-9. Never `transition: all` — list properties explicitly
-10. NEVER create markdown files unless explicitly asked
-11. NEVER use emojis in code, comments, commits, or agent replies
+7. **`clsx` for class composition** — `import cx from "clsx"`; never hand-roll a `filter(Boolean).join(" ")` helper or template-literal concat
+8. **SCSS Modules only** — no global CSS, no Tailwind. Documented exceptions: `src/utils/viewTransition.scss` (needs `::view-transition-*` pseudos at root), `src/components/Text/{AppleText,MaterialText}/*.scss` (needs `body.apple [variant=…]` selectors), `src/index.css` (root resets / theme vars). Do not add new globals.
+9. Animate `transform` / `opacity` / `filter` / `clip-path` only — never `width` / `height` / `top` / `left`
+10. Never `transition: all` — list properties explicitly
+11. NEVER create markdown files unless explicitly asked
+12. NEVER use emojis in code, comments, commits, or agent replies
 
 ## Components
 
@@ -66,6 +67,8 @@ yarn lint:scss    # Stylelint only
 The root `<body>` carries `.apple` (iOS / macOS) or `.material` (Android / Desktop). Components must adapt:
 
 ```jsx
+import cx from "clsx"
+
 <div className={cx(styles.root, isApple ? styles.apple : styles.material)}>
 ```
 
