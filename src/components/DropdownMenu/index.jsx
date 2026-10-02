@@ -183,7 +183,10 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                                 items={items}
                                 selectedItem={selectedItem}
                                 onSelect={handleSelectItem}
-                                onItemHover={setActiveIndex}
+                                onItemHover={(index) => {
+                                    setActiveIndex(index)
+                                    itemRefs.current[index]?.focus()
+                                }}
                                 itemRefs={itemRefs}
                                 initial="hidden"
                                 animate="visible"

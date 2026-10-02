@@ -24,6 +24,17 @@
         cursor: pointer;
         color: var(--tg-theme-text-color);
         position: relative;
+        outline: none;
+
+        &:focus-visible {
+            background-color: var(--highlight-default);
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            &:hover {
+                background-color: var(--highlight-default);
+            }
+        }
 
         &.withIcon {
             display: flex;
@@ -68,8 +79,13 @@
     }
 
     :global(body.apple) & {
-        border-radius: 36px;
-        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        width: 236px;
+        box-sizing: border-box;
+        border-radius: 26px;
+        padding: 10px;
         background: var(--glass-tint-background);
         backdrop-filter: blur(8px);
         box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
@@ -92,8 +108,12 @@
         }
 
         .item {
-            padding: 11px 8px;
-            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            min-height: 40px;
+            box-sizing: border-box;
+            padding: 8px 13px;
+            border-radius: 20px;
 
             &:last-child {
                 border-bottom: 0;
