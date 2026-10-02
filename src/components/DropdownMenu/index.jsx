@@ -1,14 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
-import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
-import cx from "clsx"
 import { POPOVER_VARIANTS } from "../../utils/animations"
-import Tappable from "../Tappable"
-import Text from "../Text"
-import { GlassBorder } from "../GlassEffect"
-import { useSkin } from "../../hooks/DeviceProvider"
+import MenuPanel, { MenuItem } from "./MenuPanel"
 import { useSplitViewContext } from "../SplitView/context"
 import {
     useClickOutside,
@@ -17,30 +12,6 @@ import {
 } from "./dropdownUtils"
 
 import * as styles from "./DropdownMenu.module.scss"
-
-const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
-    <Tappable
-        ref={itemRef}
-        role="menuitem"
-        tabIndex={-1}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        className={cx(styles.item, isSelected && styles.selected)}
-    >
-        <Text variant="body">{item}</Text>
-    </Tappable>
-)
-
-MenuItem.propTypes = {
-    item: PropTypes.string,
-    isSelected: PropTypes.bool,
-    onClick: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    itemRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.any }),
-    ]),
-}
 
 /**
  * Portal-rendered menu with keyboard nav (arrows / Enter / Esc) and edge-aware
@@ -52,7 +23,6 @@ MenuItem.propTypes = {
  * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
  */
 const DropdownMenu = ({ items, trigger, onChange }) => {
-    const { isApple } = useSkin()
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
     const [activeIndex, setActiveIndex] = useState(-1)
@@ -208,10 +178,16 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                     )}
                     <AnimatePresence>
                         {isOpen && isPositioned && (
-                            <m.div
+                            <MenuPanel
                                 ref={animatedDropdownRef}
-                                role="menu"
-                                className={styles.root}
+                                items={items}
+                                selectedItem={selectedItem}
+                                onSelect={handleSelectItem}
+                                onItemHover={(index) => {
+                                    setActiveIndex(index)
+                                    itemRefs.current[index]?.focus()
+                                }}
+                                itemRefs={itemRefs}
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
@@ -223,24 +199,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                                     transformOrigin: `${position.originX} ${position.originY}`,
                                     zIndex: 1000,
                                 }}
-                            >
-                                {isApple && <GlassBorder muted />}
-                                {items.map((item, index) => (
-                                    <MenuItem
-                                        key={index}
-                                        item={item}
-                                        isSelected={item === selectedItem}
-                                        onClick={() => handleSelectItem(item)}
-                                        onMouseEnter={() => {
-                                            setActiveIndex(index)
-                                            itemRefs.current[index]?.focus()
-                                        }}
-                                        itemRef={(el) => {
-                                            itemRefs.current[index] = el
-                                        }}
-                                    />
-                                ))}
-                            </m.div>
+                            />
                         )}
                     </AnimatePresence>
                 </>,
