@@ -84,7 +84,7 @@ const PageTransition = ({
 
     return (
         <div className={rootClassName}>
-            <AnimatePresence mode="popLayout">
+            <AnimatePresence mode="popLayout" initial={false}>
                 <PageScroll
                     key={location}
                     location={location}

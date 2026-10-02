@@ -125,11 +125,12 @@ export default defineConfig(({ command, mode }) => ({
         // Only pin the always-loaded libs to stable chunks for long-term
         // caching; everything else splits per usage point, so page-only deps
         // (lottie-web, markdown-to-jsx, colorthief, calligraph) stay out of
-        // the startup path.
+        // the startup path. motion is deliberately NOT pinned: its feature
+        // bundle is loaded lazily by MotionProvider, and a manual chunk would
+        // pull it back into the startup path.
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
           if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'react';
-          if (/\/node_modules\/(motion|framer-motion|motion-dom|motion-utils)\//.test(id)) return 'motion';
         }
       }
     }
