@@ -36,10 +36,10 @@ export const armThreshold = (count, width) =>
 /**
  * iOS layout: the content slides off over the action slots. Each circle is
  * pinned to its slot centre and scales in place: it starts once the content
- * edge passes that centre and its radius never exceeds the distance to the
- * edge, so it is never cut and never moves. They appear one after another from the trailing edge. Past the
- * strip the secondaries ride the content edge and the full-swipe action
- * stretches.
+ * edge is PAD past that centre and its edge always keeps PAD from the content,
+ * so it is never cut and never moves. They appear one after another
+ * from the trailing edge. Past the strip the secondaries ride the content
+ * edge and the full-swipe action stretches.
  * @param {number} revealed px the content is pulled left (>= 0)
  * @param {number} arm 0..1 progress of the full-swipe state
  * @param {number} slot position from the trailing edge, 0 = full-swipe action
@@ -50,39 +50,43 @@ export const layoutAction = (revealed, arm, slot, count, width) => {
     const rest = restWidth(count)
     const squeeze = width > 0 ? Math.min(1, openOffset(count, width) / rest) : 1
     const size = SIZE * squeeze
-    const slotStart = (PAD + slot * (SIZE + GAP)) * squeeze
-    const room = clamp(revealed - slotStart, 0, size)
+    const slotCenter = (PAD + slot * (SIZE + GAP)) * squeeze + size / 2
+    const half = clamp(revealed - slotCenter - PAD * squeeze, 0, size / 2)
     // Element scale (circles are SIZE wide) and a quick fade-in over the
     // first half of the growth.
-    const grow = room / SIZE
-    const opacity = size > 0 ? clamp((2 * room) / size, 0, 1) : 0
-    const half = room / 2
-    const center = slotStart + half
+    const grow = (2 * half) / SIZE
+    const opacity = size > 0 ? clamp((4 * half) / size, 0, 1) : 0
     const overflow = Math.max(0, revealed - rest * squeeze)
 
     if (slot > 0) {
         // Secondary actions ride the content edge and fold away once the
         // full-swipe action takes over the strip.
         return {
-            center: center + overflow,
+            center: slotCenter + overflow,
             scale: grow * (1 - arm * 0.5),
             opacity: opacity * (1 - arm),
         }
     }
 
     // The full-swipe action stretches with the extra pull, then snaps to fill
-    // the whole strip when armed. Its icon travels to the leading edge.
-    const right = center - half
-    const left = mix(center + half + overflow, revealed - PAD, arm)
+    // the whole strip when armed. Its icon stays centred in the pill while it
+    // grows and stretches, then travels to the leading edge when armed.
+    const right = slotCenter - half
+    const left = mix(slotCenter + half + overflow, revealed - PAD, arm)
     return {
         right,
         left,
         half,
         scale: grow,
         opacity,
-        iconCenter: mix((left + right) / 2, left - SIZE / 2, arm),
+        iconCenter: mix(slotCenter + overflow / 2, left - SIZE / 2, arm),
     }
 }
+
+const ROUND_DISTANCE = 24
+
+export const contentRadius = (revealed, radius) =>
+    radius * clamp(revealed / ROUND_DISTANCE, 0, 1)
 
 // Rubber-banding between the finger (raw pull) and the content (shown pull):
 // 1:1 up to the resting strip, firmer up to the arm threshold, and stiff once

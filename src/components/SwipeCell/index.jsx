@@ -1,14 +1,19 @@
 import { useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
+import { useTransform } from "motion/react"
 import cx from "clsx"
 
 import { useResizeObserver } from "../../hooks/useResizeObserver"
+import { useSkin } from "../../hooks/DeviceProvider"
 import SwipeAction, { actionShape } from "./SwipeAction"
 import { useSwipeCell } from "./useSwipeCell"
-import { rawPull } from "./geometry"
+import { contentRadius, rawPull } from "./geometry"
 
 import * as styles from "./SwipeCell.module.scss"
+
+const APPLE_RADIUS = 24
+const MATERIAL_RADIUS = 16
 
 /**
  * Row with trailing swipe actions. Swiping left reveals the actions; pulling
@@ -49,6 +54,7 @@ const SwipeRow = ({ actions, children, className }) => {
         arm,
         revealed,
         isOpen,
+        isDragging,
         commit,
         open,
         close,
@@ -65,6 +71,14 @@ const SwipeRow = ({ actions, children, className }) => {
             return Boolean(primary.destructive) && result !== false
         },
     })
+
+    const { isApple } = useSkin()
+    const cornerRadius = isApple ? APPLE_RADIUS : MATERIAL_RADIUS
+    const clipPath = useTransform(revealed, (value) =>
+        value > 0
+            ? `inset(0px round ${contentRadius(value, cornerRadius)}px)`
+            : "none"
+    )
 
     const handlePress = (action, event) => {
         // A keyboard press (detail 0) keeps the row open so the focused
@@ -113,7 +127,7 @@ const SwipeRow = ({ actions, children, className }) => {
             </div>
             <m.div
                 className={styles.content}
-                style={{ x }}
+                style={{ x, clipPath }}
                 // Drag moves the raw pull; the content shows it rubber-banded.
                 _dragX={pull}
                 drag="x"
@@ -127,6 +141,13 @@ const SwipeRow = ({ actions, children, className }) => {
                 {...contentHandlers}
             >
                 {children}
+                <div
+                    aria-hidden
+                    className={cx(
+                        styles.highlight,
+                        isDragging && styles.dragging
+                    )}
+                />
             </m.div>
         </div>
     )

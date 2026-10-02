@@ -35,6 +35,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
     const arm = useMotionValue(0)
     const revealed = useTransform(x, (v) => Math.max(0, -v))
     const [isOpen, setIsOpen] = useState(false)
+    const [isDragging, setIsDragging] = useState(false)
     const armedRef = useRef(false)
     const draggedRef = useRef(false)
     const committingRef = useRef(false)
@@ -99,6 +100,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
 
     const onDragStart = () => {
         draggedRef.current = true
+        setIsDragging(true)
         thresholdRef.current = armThreshold(count, sizeRef.current.width)
     }
 
@@ -111,6 +113,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
     }
 
     const onDragEnd = (_, { velocity }) => {
+        setIsDragging(false)
         if (armedRef.current) {
             commit()
             return
@@ -172,6 +175,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
         arm,
         revealed,
         isOpen,
+        isDragging,
         commit,
         close: () => settle(false),
         open: () => settle(true),
