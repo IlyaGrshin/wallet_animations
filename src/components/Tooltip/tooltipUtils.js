@@ -1,4 +1,10 @@
-import { calculatePosition, samePosition } from "./tooltipPosition"
+import { useEffect, useState } from "react"
+
+import {
+    VIEWPORT_PADDING,
+    calculatePosition,
+    samePosition,
+} from "./tooltipPosition"
 import { useAnchoredPosition } from "../../hooks/useAnchoredPosition"
 
 export { useClickOutside } from "../../hooks/useClickOutside"
@@ -25,7 +31,8 @@ export const useTooltipPosition = (
     tailHBreadth,
     tailProtrusion,
     preferredPlacement,
-    getBounds
+    getBounds,
+    maxWidth
 ) => {
     const calculate = (triggerRect, contentSize) =>
         calculatePosition(
@@ -45,5 +52,23 @@ export const useTooltipPosition = (
         initialPosition: INITIAL_POSITION,
         calculate,
         equals: samePosition,
+        measureKey: maxWidth,
     })
+}
+
+export const usePaneMaxWidth = (isOpen, getBounds) => {
+    const [maxWidth, setMaxWidth] = useState(null)
+
+    const fitToBounds = () => {
+        const { left, right } = getBounds()
+        setMaxWidth(right - left - VIEWPORT_PADDING * 2)
+    }
+
+    useEffect(() => {
+        if (!isOpen) return
+        window.addEventListener("resize", fitToBounds)
+        return () => window.removeEventListener("resize", fitToBounds)
+    }, [isOpen, fitToBounds])
+
+    return [maxWidth, fitToBounds]
 }
