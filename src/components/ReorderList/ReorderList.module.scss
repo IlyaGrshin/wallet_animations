@@ -7,18 +7,18 @@
 
 .item {
     --reorder-separator: var(--cell-separator-height);
+    --last-cell-separator-height: var(--cell-separator-height);
 
     position: relative;
     -webkit-touch-callout: none;
 
     &:last-child {
-        --reorder-separator: var(--last-cell-separator-height, 0px);
+        --tg-theme-section-separator-color: transparent;
     }
 }
 
 .lifted {
-    --cell-separator-height: 0px;
-    --last-cell-separator-height: 0px;
+    --tg-theme-section-separator-color: transparent;
 }
 
 .shadow {
