@@ -9,7 +9,7 @@ import {
 } from "motion/react"
 import cx from "clsx"
 
-import Tappable from "../Tappable"
+import Tappable, { TapCancelContext } from "../Tappable"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { EASING, SPRING } from "../../utils/animations"
 import { ReorderContext } from "./context"
@@ -111,7 +111,9 @@ const ReorderItem = ({ value, label, children, className }) => {
                         </Tappable>
                     )}
                 </AnimatePresence>
-                {children}
+                <TapCancelContext.Provider value={lifted}>
+                    {children}
+                </TapCancelContext.Provider>
             </div>
         </m.div>
     )

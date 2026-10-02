@@ -18,6 +18,7 @@ export function useTapHighlight({
     onTapOut,
     mode = "overlay",
     disabled,
+    cancelled = false,
 } = {}) {
     const commonStyle = styles[mode]
     const [tapped, setTapped] = useState(false)
@@ -41,6 +42,10 @@ export function useTapHighlight({
     }
 
     useEffect(() => () => clearTimeout(timeoutRef.current), [])
+
+    useEffect(() => {
+        if (cancelled && tapped) fadeOut()
+    }, [cancelled])
 
     const handlers = supportsTouch
         ? {
