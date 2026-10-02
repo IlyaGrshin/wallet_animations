@@ -8,7 +8,7 @@ const ModalPage = ({ children }) => children
 
 ModalPage.isModalPage = true
 
-ModalPage.propTypes = {
+ModalPage.propTypes /* remove-proptypes */ = {
     id: PropTypes.string.isRequired,
     children: PropTypes.node,
 }

@@ -6,7 +6,7 @@ const MainButton = (props) => {
     return null
 }
 
-MainButton.propTypes = {
+MainButton.propTypes /* remove-proptypes */ = {
     text: PropTypes.string.isRequired,
     onClick: PropTypes.func,
     disabled: PropTypes.bool,

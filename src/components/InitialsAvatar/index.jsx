@@ -1,0 +1,66 @@
+import { useSkin } from "../../hooks/DeviceProvider"
+import PropTypes from "prop-types"
+import cx from "clsx"
+
+import { useSkeletonContext, useRedactionClassName, waveRef } from "../Skeleton"
+import { isUnicode } from "../../utils/common"
+
+import * as styles from "./InitialsAvatar.module.scss"
+
+const bgColors = [
+    ["#e17076", "#ff885e", "#ff516a"], // red
+    ["#faa774", "#ffcd6a", "#ffa85c"], // orange
+    ["#a695e7", "#82b1ff", "#665fff"], // purple
+    ["#7bc862", "#a0de7e", "#54cb68"], // green
+    ["#6ec9cb", "#53edd6", "#28c9b7"], // cyan
+    ["#65aadd", "#72d5fd", "#2a9ef1"], // blue
+    ["#ee7aae", "#e0a2f3", "#d669ed"], // pink
+]
+
+const InitialsAvatar = ({ size = 40, userId, name }) => {
+    const { isApple, isMaterial } = useSkin()
+    const redacted = Boolean(useSkeletonContext())
+    const redactionClassName = useRedactionClassName(redacted)
+    const bgIndex = userId % 7
+
+    const [color, topColor, bottomColor] = bgColors[bgIndex]
+    const [firstName = "", lastName = ""] = name.split(" ")
+
+    if (isMaterial) size = 42
+
+    const background = isApple
+        ? `linear-gradient(180deg, ${topColor} 0%, ${bottomColor} 100%)`
+        : color
+
+    return (
+        <div
+            ref={redacted ? waveRef : undefined}
+            className={cx(styles.root, redactionClassName)}
+            style={{
+                width: size,
+                height: size,
+                background: redacted ? undefined : background,
+                "--font_size": `${Math.round(size / 2.2)}px`,
+            }}
+        >
+            <div
+                className={cx(
+                    styles.initials,
+                    redacted && styles.hiddenInitials
+                )}
+            >
+                {isUnicode(firstName.charAt(0)) &&
+                    firstName.charAt(0).toLocaleUpperCase()}
+                {isUnicode(lastName.charAt(0)) &&
+                    lastName.charAt(0).toLocaleUpperCase()}
+            </div>
+        </div>
+    )
+}
+
+InitialsAvatar.propTypes = {
+    size: PropTypes.number,
+    userId: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+}
+export default InitialsAvatar
