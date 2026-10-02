@@ -37,6 +37,7 @@ import TextFieldSkeleton from "../components/TextField/TextField.skeleton"
 import NavigationSkeleton from "./prototypes/NewNavigation/NewNavigation.skeleton"
 import ColorAssetPageSkeleton from "./prototypes/ColorAssetPage/ColorAssetPage.skeleton"
 import OnboardingSkeleton from "./prototypes/Onboarding/Onboarding.skeleton"
+import GramWalletSkeleton from "./prototypes/GramWallet/GramWallet.skeleton"
 import BackgroundTestsSkeleton from "./prototypes/ColorChanging/ColorChanging.skeleton"
 
 const pageSkeletons = {
@@ -75,6 +76,7 @@ const pageSkeletons = {
     "Color Asset Page": ColorAssetPageSkeleton,
     Onboarding: OnboardingSkeleton,
     "Background Tests": BackgroundTestsSkeleton,
+    "Gram Wallet": GramWalletSkeleton,
 }
 
 export default pageSkeletons

@@ -63,7 +63,7 @@ const CellComponent = ({
     )
 }
 
-const CellStart = ({ type, src = null, iconType = null }) => {
+const CellStart = ({ type, src = null, iconType = null, variant = null }) => {
     let content
 
     switch (type) {
@@ -71,7 +71,13 @@ const CellStart = ({ type, src = null, iconType = null }) => {
             content = <img src={src} alt="" className={styles.image} />
             break
         case "Icon":
-            content = <div className={styles.icon}>{iconType}</div>
+            content = (
+                <div
+                    className={`${styles.icon} ${variant ? styles[`icon_${variant}`] : ""}`.trim()}
+                >
+                    {iconType}
+                </div>
+            )
             break
         default:
             content = null
@@ -111,10 +117,11 @@ CellStart.propTypes = {
     type: PropTypes.string,
     src: PropTypes.string,
     iconType: PropTypes.node,
+    variant: PropTypes.oneOf(["success", "destructive"]),
 }
 
 CellEnd.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.node,
     caption: PropTypes.string,
 }
 
