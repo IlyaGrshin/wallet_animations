@@ -231,9 +231,10 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                                         item={item}
                                         isSelected={item === selectedItem}
                                         onClick={() => handleSelectItem(item)}
-                                        onMouseEnter={() =>
+                                        onMouseEnter={() => {
                                             setActiveIndex(index)
-                                        }
+                                            itemRefs.current[index]?.focus()
+                                        }}
                                         itemRef={(el) => {
                                             itemRefs.current[index] = el
                                         }}
