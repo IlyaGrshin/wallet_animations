@@ -27,6 +27,15 @@ const CollectibleModal = ({
 
     const notify = (title) => snackbar.show({ position: "bottom", title })
 
+    const copy = async (text, success) => {
+        try {
+            await navigator.clipboard.writeText(text)
+            notify(success)
+        } catch {
+            notify("Couldn't copy to clipboard")
+        }
+    }
+
     const send = () => notify("Transfers are not available in this prototype")
 
     const share = () => {
@@ -35,8 +44,7 @@ const CollectibleModal = ({
             WebApp.openTelegramLink(`https://t.me/share/url?url=${url}`)
             return
         }
-        navigator.clipboard?.writeText(collectible.link)
-        notify("Link copied")
+        copy(collectible.link, "Link copied")
     }
 
     const toggleWear = () => {
@@ -48,10 +56,7 @@ const CollectibleModal = ({
         )
     }
 
-    const copyAddress = () => {
-        navigator.clipboard?.writeText(collectible.address)
-        notify("Address copied")
-    }
+    const copyAddress = () => copy(collectible.address, "Address copied")
 
     const historyRow = (label, value) => {
         if (history.isLoading) {

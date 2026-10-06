@@ -27,6 +27,7 @@ const Collectibles = ({ items }) => {
                 {items.map((item) => (
                     <Cell
                         key={item.id}
+                        as="button"
                         start={<ImageAvatar src={item.image} shape="rounded" />}
                         end={
                             wornId === item.id ? (

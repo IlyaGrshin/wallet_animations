@@ -37,7 +37,6 @@
     display: grid;
     transform-origin: left center;
     white-space: nowrap;
-    will-change: transform;
     font-family: var(--rounded-stack);
 }
 
@@ -53,6 +52,10 @@
 // card scene and the parked balance lines read one shared, flight-damped tilt.
 .tiltScope {
     display: contents;
+
+    &[data-flying] :is(.gramLine, .fiatLine, .cardShell) {
+        will-change: transform;
+    }
 }
 
 // Mirrors WalletCard's .body rotation (0.24rad per axis, same order and
@@ -90,7 +93,6 @@
 
 .cardLook {
     color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
-    will-change: clip-path;
 }
 
 .fiatLine .cardLook {
@@ -124,7 +126,6 @@
 .cardShell {
     align-self: stretch;
     transform-origin: top center;
-    will-change: transform;
 }
 
 .wrapper {

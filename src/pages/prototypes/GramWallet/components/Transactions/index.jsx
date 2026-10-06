@@ -70,6 +70,7 @@ const Transactions = ({ items, hasMore, loadMore }) => {
                 {items.map((tx) => (
                     <Cell
                         key={tx.id}
+                        as="button"
                         start={renderAvatar(tx)}
                         end={
                             tx.amount && (

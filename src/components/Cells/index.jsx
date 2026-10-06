@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import Text from "../Text"
 import Tappable from "../Tappable"
 
@@ -73,7 +74,10 @@ const CellStart = ({ type, src = null, iconType = null, variant = null }) => {
         case "Icon":
             content = (
                 <div
-                    className={`${styles.icon} ${variant ? styles[`icon_${variant}`] : ""}`.trim()}
+                    className={cx(
+                        styles.icon,
+                        variant && styles[`icon_${variant}`]
+                    )}
                 >
                     {iconType}
                 </div>

@@ -14,6 +14,15 @@
     --cell-separator-height: var(--last-cell-separator-height, 0px);
 }
 
+button.root {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: start;
+}
+
 .root {
     display: flex;
     flex-direction: row;

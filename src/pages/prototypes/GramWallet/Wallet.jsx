@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import * as m from "motion/react-m"
-import { useTransform } from "motion/react"
+import { useMotionValueEvent, useTransform } from "motion/react"
 import { useLocation } from "wouter"
 import WalletCard from "../../../components/WalletCard"
 import useDeviceTilt from "../../../components/WalletCard/useDeviceTilt"
@@ -60,6 +60,9 @@ const Wallet = () => {
     const tiltScopeRef = useRef(null)
     const tiltDamp = useTransform(flight.progress, (p) => 1 - p)
     useDeviceTilt(tiltScopeRef, tiltDamp)
+    useMotionValueEvent(flight.progress, "change", (p) => {
+        tiltScopeRef.current?.toggleAttribute("data-flying", p > 0 && p < 1)
+    })
 
     useEffect(() => {
         if (tabIndex === 1) loadCollectibles()

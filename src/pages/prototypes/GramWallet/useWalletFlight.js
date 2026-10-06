@@ -42,7 +42,11 @@ export default function useWalletFlight({
         // bottom edge marks where the buttons should dock when collapsed.
         const barBottom = () => {
             let bar = gramEl
-            while (bar.parentElement && bar.parentElement !== scroller) {
+            while (
+                bar.parentElement &&
+                bar.parentElement !== scroller &&
+                getComputedStyle(bar.parentElement).display !== "contents"
+            ) {
                 bar = bar.parentElement
             }
             return bar.getBoundingClientRect().bottom
