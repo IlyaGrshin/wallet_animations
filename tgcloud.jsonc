@@ -1,0 +1,7 @@
+{
+  "$schema": "./node_modules/@tgcloud/cli/schema/tgcloud.json",
+  "static": {
+    "source": "build",
+    "immutable": ["/assets/*"]
+  }
+}
