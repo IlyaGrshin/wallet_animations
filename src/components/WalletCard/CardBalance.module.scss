@@ -1,0 +1,91 @@
+@use "card" as *;
+
+.money {
+    position: absolute;
+    top: cq(78);
+    left: cq(20);
+    display: flex;
+    flex-direction: column;
+}
+
+.amount {
+    display: flex;
+    align-items: center;
+    gap: cq(5);
+    padding-right: cq(2.571);
+
+    // Own font-size, not just the children's: the page measures this row to
+    // scale the balance it flies up into the header.
+    font-size: cq(22);
+
+    :global(body.apple) & {
+        gap: cq(2);
+    }
+}
+
+.coinIcon {
+    flex-shrink: 0;
+    width: cq(28);
+    height: cq(28);
+    transform: translateY(cq(-1));
+}
+
+.amountValue {
+    font-family: var(--rounded-stack);
+    font-weight: 500;
+    font-size: cq(22);
+    line-height: cq(28);
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
+    white-space: nowrap;
+
+    :global(body.apple) & {
+        font-weight: 600;
+    }
+}
+
+.amountFraction {
+    font-size: cq(14);
+    font-weight: 500;
+
+    :global(body.apple) & {
+        font-size: cq(18);
+        font-weight: 600;
+    }
+}
+
+.amountUnit {
+    margin-left: cq(4);
+    font-family: var(--rounded-stack);
+    font-weight: 500;
+    font-size: cq(22);
+    line-height: cq(28);
+    color: var(--card-amount-tint);
+    white-space: nowrap;
+
+    :global(body.apple) & {
+        font-weight: 600;
+    }
+}
+
+.fiat {
+    position: absolute;
+    top: cq(112);
+    left: cq(24);
+    margin: 0;
+    font-family: var(--rounded-stack);
+    font-weight: 500;
+    font-size: cq(14);
+    line-height: cq(16);
+    color: var(--card-amount-tint);
+    white-space: nowrap;
+
+    :global(body.apple) & {
+        font-weight: 600;
+    }
+}
+
+// Keeps its box (the page measures it to fly its own copy from here, and the
+// star field keeps the safe zone) while the visible amount lives in the header.
+.hiddenValue {
+    visibility: hidden;
+}

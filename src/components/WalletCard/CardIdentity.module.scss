@@ -1,0 +1,110 @@
+@use "card" as *;
+
+// Embossed like a cardholder name: raised glyphs drop a shadow along the
+// shared shadow azimuth and catch a faint rim on the lit side. On top of
+// the light response, tilting reveals the extrusion itself: sharp wall
+// copies offset against the tilt (the .edge slab's direction), so glyph
+// sides peek out toward the viewer on the near side, and are flush at rest.
+.name {
+    --emboss: #{cq(0.8)};
+
+    position: absolute;
+    bottom: cq(20);
+    left: cq(24);
+    margin: 0;
+    opacity: var(--wallet-card-fade, 1);
+    font-family: $mono-stack;
+    font-weight: 500;
+    font-size: cq(11);
+    line-height: 1.2;
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
+    text-transform: uppercase;
+    text-shadow:
+        calc(var(--tilt-x) * #{cq(-0.4)})
+        calc(var(--tilt-y) * #{cq(-0.4)})
+        0
+        rgb(0 0 0 / 24%),
+        calc(var(--tilt-x) * #{cq(-0.8)})
+        calc(var(--tilt-y) * #{cq(-0.8)})
+        0
+        rgb(0 0 0 / 24%),
+        calc(-1 * sin(var(--shadow-angle)) * var(--emboss))
+        calc(cos(var(--shadow-angle)) * var(--emboss))
+        cq(0.75)
+        rgb(0 0 0 / 30%),
+        calc(sin(var(--shadow-angle)) * var(--emboss))
+        calc(-1 * cos(var(--shadow-angle)) * var(--emboss))
+        cq(0.75)
+        rgb(255 255 255 / 18%);
+    white-space: nowrap;
+
+    :global(body.apple) & {
+        font-size: cq(12);
+    }
+}
+
+.addressOuter {
+    position: absolute;
+    top: cq(16.5);
+    right: cq(16);
+    bottom: cq(16.5);
+    width: cq(20);
+    opacity: var(--wallet-card-fade, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    mix-blend-mode: plus-darker;
+}
+
+.addressRotator {
+    flex: none;
+    width: cq($card-h - 33);
+    height: cq(20);
+    transform: rotate(90deg);
+    transform-origin: center;
+}
+
+.addressInner {
+    flex-direction: column;
+    align-items: center;
+    white-space: normal;
+}
+
+// Engraved: the recess keeps its lit lip toward the light (straight below
+// at rest, as before) and gains a faint far wall opposite, both riding the
+// shared shadow azimuth. Tilting adds the recess parallax — a sharp wall
+// copy offset with the tilt, mirroring the raised name (+tilt: sunken
+// geometry shows its wall on the receding side, not the near one).
+.addressLine {
+    --deboss: #{cq(1)};
+
+    display: block;
+    margin: 0;
+    font-family: $mono-stack;
+    font-weight: 400;
+    font-size: cq(9);
+    line-height: 1.2;
+    color: oklch(from var(--tg-theme-accent-text-color) 0% 0 h / 14%);
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow:
+        calc(var(--tilt-x) * #{cq(0.5)})
+        calc(var(--tilt-y) * #{cq(0.5)})
+        0
+        rgb(0 0 0 / 10%),
+        calc(sin(var(--shadow-angle)) * var(--deboss))
+        calc(-1 * cos(var(--shadow-angle)) * var(--deboss))
+        0
+        rgb(255 255 255 / 10%),
+        calc(-0.5 * sin(var(--shadow-angle)) * var(--deboss))
+        calc(0.5 * cos(var(--shadow-angle)) * var(--deboss))
+        0
+        rgb(0 0 0 / 8%);
+    white-space: nowrap;
+
+    :global(body.apple) & {
+        font-size: cq(8.2);
+        font-variation-settings: "wdth" 112.5;
+    }
+}

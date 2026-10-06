@@ -1,29 +1,19 @@
-import { useCallback, useLayoutEffect, useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { useSmoothCorners } from "@lisse/react"
 import { CORNER_RADIUS, CORNER_SMOOTHING } from "./corners"
-import { Calligraph } from "calligraph"
-import cx from "clsx"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
-import { formatAddress } from "../../utils/address"
 import * as styles from "./WalletCard.module.scss"
-import FitText from "../FitText"
 import StarField from "./StarField"
+import CardBalance from "./CardBalance"
+import CardIdentity from "./CardIdentity"
+import QrChip from "./QrChip"
 import useDeviceTilt from "./useDeviceTilt"
-import QrIcon from "./assets/qr.svg?react"
-import GramIcon from "../../icons/28/Gram.svg?react"
 
 const DEFAULT_ADDRESS = "UQAl1dViv82p5sllNyPXJenPJqRfaHrVGkhmhFcrIjYinqYK"
 const VIEWBOX_W = 361
 const VIEWBOX_H = 220
 const ZONE_PADDING = 8
-
-function splitAmount(raw) {
-    const str = String(raw)
-    const idx = str.lastIndexOf(".")
-    if (idx === -1) return [str, ""]
-    return [str.slice(0, idx), str.slice(idx)]
-}
 
 function rectToZone(r, root, sx, sy) {
     return [
@@ -46,8 +36,6 @@ function WalletCard({
     onQrClick,
     debugSafeZones = false,
 }) {
-    const [line1, line2] = formatAddress(address)
-    const [gramWhole, gramFraction] = splitAmount(gramAmount)
     const sceneRef = useRef(null)
     const rootRef = useRef(null)
     const moneyRef = useRef(null)
@@ -59,7 +47,7 @@ function WalletCard({
 
     useDeviceTilt(tilt ? sceneRef : null)
 
-    const measure = useCallback(() => {
+    const measure = () => {
         const root = rootRef.current
         if (!root) return
         const rb = root.getBoundingClientRect()
@@ -70,11 +58,12 @@ function WalletCard({
         const zones = []
         for (const ref of [moneyRef, fiatRef, nameRef, addressRef, qrRef]) {
             const el = ref.current
-            if (el) zones.push(rectToZone(el.getBoundingClientRect(), rb, sx, sy))
+            if (el)
+                zones.push(rectToZone(el.getBoundingClientRect(), rb, sx, sy))
         }
 
         setSafeZones(zones)
-    }, [])
+    }
 
     useLayoutEffect(() => {
         measure()
@@ -97,90 +86,28 @@ function WalletCard({
 
                     <div className={styles.blur} aria-hidden="true" />
 
-                    <div className={styles.stars} aria-hidden="true">
-                        <StarField safeZones={safeZones} />
-                    </div>
+                    <StarField safeZones={safeZones} />
 
                     <div className={styles.fresnel} aria-hidden="true" />
 
-                    <div ref={moneyRef} className={styles.money}>
-                        <div
-                            ref={amountRef}
-                            className={cx(
-                                styles.amount,
-                                valuesHidden && styles.hiddenValue
-                            )}
-                        >
-                            <GramIcon className={styles.coinIcon} />
-                            <span className={styles.amountValue}>
-                                <Calligraph
-                                    variant="number"
-                                    animation="smooth"
-                                >
-                                    {gramWhole}
-                                </Calligraph>
-                                {gramFraction && (
-                                    <span className={styles.amountFraction}>
-                                        <Calligraph
-                                            variant="number"
-                                            animation="smooth"
-                                        >
-                                            {gramFraction}
-                                        </Calligraph>
-                                    </span>
-                                )}
-                            </span>
-                            <span className={styles.amountUnit}>GRAM</span>
-                        </div>
-                    </div>
+                    <CardBalance
+                        gramAmount={gramAmount}
+                        balance={balance}
+                        valuesHidden={valuesHidden}
+                        moneyRef={moneyRef}
+                        fiatRef={fiatRef}
+                        amountRef={amountRef}
+                        balanceRef={balanceRef}
+                    />
 
-                    <p
-                        ref={(node) => {
-                            fiatRef.current = node
-                            balanceRef?.(node)
-                        }}
-                        className={cx(
-                            styles.fiat,
-                            valuesHidden && styles.hiddenValue
-                        )}
-                    >
-                        <Calligraph variant="number" animation="smooth">
-                            {balance}
-                        </Calligraph>
-                    </p>
+                    <CardIdentity
+                        name={name}
+                        address={address}
+                        nameRef={nameRef}
+                        addressRef={addressRef}
+                    />
 
-                    <p ref={nameRef} className={styles.name}>{name}</p>
-
-                    <div
-                        ref={addressRef}
-                        className={styles.addressOuter}
-                        aria-hidden="true"
-                    >
-                        <div className={styles.addressRotator}>
-                            <FitText
-                                innerClassName={styles.addressInner}
-                                minScale={0.5}
-                                maxScale={1.5}
-                            >
-                                <span className={styles.addressLine}>
-                                    {line1}
-                                </span>
-                                <span className={styles.addressLine}>
-                                    {line2}
-                                </span>
-                            </FitText>
-                        </div>
-                    </div>
-
-                    <button
-                        ref={qrRef}
-                        type="button"
-                        className={styles.qrButton}
-                        onClick={onQrClick}
-                        aria-label="Show QR code"
-                    >
-                        <QrIcon className={styles.qrIcon} />
-                    </button>
+                    <QrChip ref={qrRef} onClick={onQrClick} />
 
                     <div className={styles.innerShadow} aria-hidden="true" />
 

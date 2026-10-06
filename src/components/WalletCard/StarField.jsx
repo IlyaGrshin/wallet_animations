@@ -1,6 +1,5 @@
-import { useMemo } from "react"
 import PropTypes from "prop-types"
-import * as styles from "./WalletCard.module.scss"
+import * as styles from "./StarField.module.scss"
 
 // [x, y] — coordinates in 361×220 viewBox units (size derived per-star)
 const RAW_STARS = [
@@ -35,7 +34,7 @@ const TWINKLE_VARIANCE = 2.6
 
 function inAnyZone(x, y, zones) {
     return zones.some(
-        ([x1, y1, x2, y2]) => x >= x1 && x <= x2 && y >= y1 && y <= y2,
+        ([x1, y1, x2, y2]) => x >= x1 && x <= x2 && y >= y1 && y <= y2
     )
 }
 
@@ -55,42 +54,39 @@ function sparklePath(x, y, s) {
 }
 
 export default function StarField({ safeZones }) {
-    const stars = useMemo(
-        () =>
-            RAW_STARS.filter(([x, y]) => !inAnyZone(x, y, safeZones)).map(
-                ([x, y]) => [x, y, starSize(x, y)],
-            ),
-        [safeZones],
+    const stars = RAW_STARS.filter(([x, y]) => !inAnyZone(x, y, safeZones)).map(
+        ([x, y]) => [x, y, starSize(x, y)]
     )
     return (
-        <svg
-            className={styles.starsSvg}
-            viewBox="0 0 361 220"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-        >
-            {stars.map(([x, y, s], i) => {
-                const dur =
-                    TWINKLE_BASE + ((i * 0.41) % 1) * TWINKLE_VARIANCE
-                const delay = (i * 0.73) % dur
-                return (
-                    <path
-                        key={`${x}-${y}`}
-                        d={sparklePath(x, y, s)}
-                        className={styles.starPath}
-                        style={{
-                            animationDuration: `${dur.toFixed(2)}s`,
-                            animationDelay: `-${delay.toFixed(2)}s`,
-                        }}
-                    />
-                )
-            })}
-        </svg>
+        <div className={styles.stars} aria-hidden="true">
+            <svg
+                className={styles.starsSvg}
+                viewBox="0 0 361 220"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+            >
+                {stars.map(([x, y, s], i) => {
+                    const dur =
+                        TWINKLE_BASE + ((i * 0.41) % 1) * TWINKLE_VARIANCE
+                    const delay = (i * 0.73) % dur
+                    return (
+                        <path
+                            key={`${x}-${y}`}
+                            d={sparklePath(x, y, s)}
+                            className={styles.starPath}
+                            style={{
+                                animationDuration: `${dur.toFixed(2)}s`,
+                                animationDelay: `-${delay.toFixed(2)}s`,
+                            }}
+                        />
+                    )
+                })}
+            </svg>
+        </div>
     )
 }
 
 StarField.propTypes = {
-    safeZones: PropTypes.arrayOf(
-        PropTypes.arrayOf(PropTypes.number).isRequired,
-    ).isRequired,
+    safeZones: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number).isRequired)
+        .isRequired,
 }

@@ -2,6 +2,7 @@ import { useEffect } from "react"
 
 import { clamp } from "../../utils/number"
 import WebApp, { isTelegram } from "../../lib/twa"
+import { acquireDeviceOrientation } from "./deviceOrientation"
 
 // A slightly underdamped spring (omega 16rad/s, zeta ~0.72) instead of a
 // plain lerp: a fast pointer sweep or the return-to-rest overshoots by ~4%,
@@ -25,6 +26,7 @@ function startTiltSource(onChange) {
         isTelegram() && !!orientation && typeof orientation.start === "function"
 
     if (live) {
+        const releaseOrientation = acquireDeviceOrientation(orientation)
         let neutralBeta = null
         return {
             target,
@@ -37,7 +39,7 @@ function startTiltSource(onChange) {
                 neutralBeta += (beta - neutralBeta) * NEUTRAL_FOLLOW
                 target.y = clamp((beta - neutralBeta) / MAX_RAD, -1, 1)
             },
-            stop: () => {},
+            stop: releaseOrientation,
         }
     }
 
