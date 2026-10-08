@@ -121,7 +121,11 @@ const Tabs = ({
 
     if (isGlass) {
         return (
-            <div className={cx(styles.glassRoot, className)} {...props}>
+            <div
+                className={cx(styles.glassRoot, className)}
+                data-glass-isolated=""
+                {...props}
+            >
                 <GlassContainer />
                 <div
                     ref={rootRef}
