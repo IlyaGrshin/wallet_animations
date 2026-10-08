@@ -1,6 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
-import { Calligraph } from "calligraph"
+import Calligraph from "."
 
 import Page from "../Page"
 import SectionList from "../SectionList"
@@ -38,6 +38,42 @@ const Stage = ({ children }) => (
 
 Stage.propTypes = {
     children: PropTypes.node,
+}
+
+const Compare = ({ value }) => (
+    <div
+        style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            padding: "24px var(--side-padding)",
+            textAlign: "center",
+        }}
+    >
+        <div>
+            <Text variant="title1" apple={{ weight: "bold" }}>
+                <Calligraph
+                    variant="number"
+                    animation="smooth"
+                    autoSize={false}
+                >
+                    {value}
+                </Calligraph>
+            </Text>
+            <Text variant="caption1">Calligraph</Text>
+        </div>
+        <div>
+            <Text variant="title1" apple={{ weight: "bold" }}>
+                <Calligraph variant="number" simple>
+                    {value}
+                </Calligraph>
+            </Text>
+            <Text variant="caption1">simple</Text>
+        </div>
+    </div>
+)
+
+Compare.propTypes = {
+    value: PropTypes.string.isRequired,
 }
 
 const CalligraphShowcase = () => {
@@ -83,6 +119,24 @@ const CalligraphShowcase = () => {
                                 {balance}
                             </Calligraph>
                         </Stage>
+                        <Cell onClick={() => step(10)}>
+                            <Cell.Text type="Accent" title="Increase" />
+                        </Cell>
+                        <Cell onClick={() => step(-10)}>
+                            <Cell.Text type="Accent" title="Decrease" />
+                        </Cell>
+                        <Cell
+                            onClick={() => setBalance(generateRandomBalance())}
+                        >
+                            <Cell.Text type="Accent" title="Randomize" />
+                        </Cell>
+                    </SectionList.Item>
+
+                    <SectionList.Item header="Calligraph vs simple — same value">
+                        <Compare value={balance} />
+                        <Cell onClick={() => step((Math.random() - 0.5) * 0.5)}>
+                            <Cell.Text type="Accent" title="Tick" />
+                        </Cell>
                         <Cell onClick={() => step(10)}>
                             <Cell.Text type="Accent" title="Increase" />
                         </Cell>

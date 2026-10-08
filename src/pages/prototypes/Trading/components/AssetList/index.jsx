@@ -1,7 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { Calligraph } from "calligraph"
 import cx from "clsx"
 
 import { formatPercentage, formatPrice } from "../../../../../utils/number"
@@ -9,6 +8,7 @@ import { formatPercentage, formatPrice } from "../../../../../utils/number"
 import SectionList from "../../../../../components/SectionList"
 import Cell from "../../../../../components/Cells"
 import ImageAvatar from "../../../../../components/ImageAvatar"
+import Calligraph from "../../../../../components/Calligraph"
 import Skeleton from "../../../../../components/Skeleton"
 
 import useAssets from "../../../../../hooks/useAssets"
@@ -46,7 +46,7 @@ const Delta = ({ value }) => {
     return (
         <span className={cx(styles.delta, up ? styles.up : styles.down)}>
             {up ? "↑" : "↓"}
-            <Calligraph variant="number" animation="smooth" autoSize={false}>
+            <Calligraph variant="number" simple>
                 {formatPercentage(Math.abs(value))}
             </Calligraph>
         </span>
@@ -60,8 +60,7 @@ Delta.propTypes = {
 // Odometers are keyed by symbol: rows themselves are keyed by index (the
 // skeleton reveals in place when data lands), so on a rank reorder the same
 // row hosts another coin — remount the digits instead of morphing one
-// coin's price into another's. autoSize is off: it animates the wrapper
-// width (layout) on every tick that changes digit count.
+// coin's price into another's.
 const AssetRow = ({ asset }) => (
     <Cell
         start={<ImageAvatar src={assetIcon(asset)} />}
@@ -70,12 +69,7 @@ const AssetRow = ({ asset }) => (
                 title={
                     <>
                         $
-                        <Calligraph
-                            key={asset.symbol}
-                            variant="number"
-                            animation="smooth"
-                            autoSize={false}
-                        >
+                        <Calligraph key={asset.symbol} variant="number" simple>
                             {formatPrice(asset.current_price)}
                         </Calligraph>
                     </>
