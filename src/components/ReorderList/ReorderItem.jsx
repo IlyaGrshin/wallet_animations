@@ -36,6 +36,8 @@ const ReorderItem = ({ value, label, children, className }) => {
     const { isApple } = useSkin()
     const controls = useDragControls()
     const handleRef = useRef(null)
+    const elementRef = useRef(null)
+    const startTopRef = useRef(0)
     const y = useMotionValue(0)
     const settlingZ = useTransform(y, (offset) => (offset ? 1 : "auto"))
 
@@ -43,6 +45,9 @@ const ReorderItem = ({ value, label, children, className }) => {
         controls,
         groupRef,
         longPress: !editing,
+        onLift: () => {
+            startTopRef.current = elementRef.current.offsetTop + y.get()
+        },
     })
 
     const spring = isApple ? SPRING.APPLE : SPRING.MATERIAL
@@ -57,7 +62,10 @@ const ReorderItem = ({ value, label, children, className }) => {
 
     return (
         <m.div
-            ref={(element) => register(value, element)}
+            ref={(element) => {
+                elementRef.current = element
+                return register(value, element)
+            }}
             layout="position"
             transition={{ layout: isApple ? SPRING.APPLE : MATERIAL_LAYOUT }}
             drag="y"
@@ -71,7 +79,9 @@ const ReorderItem = ({ value, label, children, className }) => {
                 bounceDamping: spring.damping,
             }}
             onDragStart={onDragStart}
-            onDrag={() => track(value, y.get())}
+            onDrag={(_, info) =>
+                track(value, startTopRef.current + info.offset.y)
+            }
             style={{ y, zIndex: lifted ? 1 : settlingZ }}
             className={cx(
                 styles.item,
@@ -83,7 +93,7 @@ const ReorderItem = ({ value, label, children, className }) => {
         >
             <div aria-hidden className={styles.shadow} />
             <div className={styles.surface}>
-                {children}
+                <div className={styles.content}>{children}</div>
                 <AnimatePresence initial={false}>
                     {editing && (
                         <Tappable

@@ -65,13 +65,12 @@ const ReorderList = ({
                     itemsRef.current.delete(value)
             }
         },
-        track: (value, offset) => {
+        track: (value, top) => {
             if (pendingRef.current === values) return
             const items = itemsRef.current
             const index = values.indexOf(value)
             const element = items.get(value)
             if (!element) return
-            const top = element.offsetTop + offset
             const bottom = top + element.offsetHeight
             const crossed = (at) => {
                 const other = items.get(values[at])

@@ -8,7 +8,7 @@ const blockScroll = (event) => {
     if (event.cancelable) event.preventDefault()
 }
 
-export const useReorderLift = ({ controls, groupRef, longPress }) => {
+export const useReorderLift = ({ controls, groupRef, longPress, onLift }) => {
     const [lifted, setLifted] = useState(false)
     const downRef = useRef(null)
     const releaseRef = useRef(null)
@@ -54,6 +54,7 @@ export const useReorderLift = ({ controls, groupRef, longPress }) => {
         }
 
         controls.start(event)
+        onLift()
     }
 
     useEffect(() => () => releaseRef.current?.(), [])
