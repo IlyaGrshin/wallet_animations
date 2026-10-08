@@ -118,14 +118,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             layout
             layoutDependency={layoutDependency}
         >
-            <div
-                style={{
-                    display: "flex",
-                    width: "100%",
-                    position: "relative",
-                    zIndex: 1,
-                }}
-            >
+            <div className={styles.content}>
                 {tabs.map((tab, index) => (
                     <Tab
                         key={index}

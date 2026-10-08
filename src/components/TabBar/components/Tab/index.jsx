@@ -49,7 +49,7 @@ const Tab = ({
         <m.span
             layout
             layoutDependency={layoutDependency}
-            style={{ display: "inline-block" }}
+            className={styles.label}
         >
             {label}
         </m.span>
