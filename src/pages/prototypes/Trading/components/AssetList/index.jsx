@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useRef } from "react"
 import PropTypes from "prop-types"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { Calligraph } from "calligraph"
@@ -12,6 +12,7 @@ import ImageAvatar from "../../../../../components/ImageAvatar"
 import Skeleton from "../../../../../components/Skeleton"
 
 import useAssets from "../../../../../hooks/useAssets"
+import useScrollMargin from "../../../../../hooks/useScrollMargin"
 
 import * as styles from "./AssetList.module.scss"
 
@@ -108,41 +109,13 @@ AssetRow.propTypes = {
     }).isRequired,
 }
 
-// The page scroller lives in PageTransition, a few ancestors up.
-const findScrollParent = (node) => {
-    for (let el = node.parentElement; el; el = el.parentElement) {
-        if (/auto|scroll/.test(getComputedStyle(el).overflowY)) return el
-    }
-    return null
-}
-
 const AssetList = () => {
     const { assets, error } = useAssets()
     const loading = !assets && !error
     const rows = assets ?? PLACEHOLDER_ASSETS
 
     const listRef = useRef(null)
-    const [scrollEl, setScrollEl] = useState(null)
-    const [listOffset, setListOffset] = useState(0)
-
-    useLayoutEffect(() => {
-        const list = listRef.current
-        const scroller = findScrollParent(list)
-        setScrollEl(scroller)
-        if (!scroller) return undefined
-        // Rect-based: the offsetParent chain dead-ends at whichever
-        // ancestor happens to carry a transform. Re-measured on resize —
-        // the aspect-ratio heatmap above moves the list start.
-        const measure = () =>
-            setListOffset(
-                list.getBoundingClientRect().top -
-                    scroller.getBoundingClientRect().top +
-                    scroller.scrollTop
-            )
-        measure()
-        window.addEventListener("resize", measure)
-        return () => window.removeEventListener("resize", measure)
-    }, [])
+    const { scrollEl, listOffset } = useScrollMargin(listRef)
 
     // The compiler skips this component either way; scroll re-renders are the point.
     // eslint-disable-next-line react-hooks/incompatible-library
