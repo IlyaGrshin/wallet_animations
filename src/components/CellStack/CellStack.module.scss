@@ -21,7 +21,7 @@
 }
 
 // Each card carries section chrome: section radii as the fallback for the
-// squircle clip applied from JS (useSmoothCorners). Overflow keeps the fill
+// squircle clip applied from JS (useSquircleClip). Overflow keeps the fill
 // clipped while collapsed.
 .card {
     position: relative;
@@ -30,10 +30,22 @@
 
     :global(body.apple) & {
         border-radius: 26px;
+
+        @supports (corner-shape: superellipse(1.5)) {
+            border-radius: 34px;
+        }
     }
 
     :global(body.material) & {
         border-radius: 16px;
+
+        @supports (corner-shape: superellipse(1.5)) {
+            border-radius: 21px;
+        }
+    }
+
+    @supports (corner-shape: superellipse(1.5)) {
+        corner-shape: superellipse(1.5);
     }
 }
 
