@@ -113,7 +113,7 @@ const PhraseField = ({
             return
         }
         if (event.key === "Enter" || event.key === "Tab" || event.key === " ") {
-            if (event.key === "Tab" && !value) return
+            if (event.key === "Tab" && (!value || event.shiftKey)) return
             if (event.key === " ") event.preventDefault()
             const word = listOpen ? suggestions[activeIndex] : value
             if (isWord(word)) {

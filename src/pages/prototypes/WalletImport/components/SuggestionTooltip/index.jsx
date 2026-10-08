@@ -17,6 +17,7 @@ import {
 } from "../../../../../components/Tooltip/tooltipPath"
 import { GAP } from "../../../../../components/Tooltip/tooltipPosition"
 import { useSkin } from "../../../../../hooks/DeviceProvider"
+import { useColorScheme } from "../../../../../hooks/useColorScheme"
 
 import {
     APPLE_VARIANTS,
@@ -72,6 +73,7 @@ const SuggestionTooltip = ({
 }) => {
     const reduced = useReducedMotion()
     const { isApple } = useSkin()
+    const colorScheme = useColorScheme()
     const errorControls = useAnimationControls()
     const pulsedPrefix = useRef(null)
 
@@ -108,6 +110,7 @@ const SuggestionTooltip = ({
     return (
         <m.div
             className={styles.anchor}
+            data-color-scheme={colorScheme}
             style={ANCHOR_STYLE}
             initial="hidden"
             animate="visible"

@@ -10,7 +10,7 @@
         --suggestion-surface: #303338;
     }
 
-    @media (prefers-color-scheme: dark) {
+    &[data-color-scheme="dark"] {
         --suggestion-surface: #3a3a3c;
 
         :global(body.material) & {

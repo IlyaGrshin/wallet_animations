@@ -16,16 +16,24 @@ const TRANSITION = { duration: 0.16, ease: EASING.QUINT_OUT }
 
 // Telegram hands the clipboard back through a callback; the browser resolves a
 // promise and may refuse outright when the page has no permission.
-const readClipboard = () => {
-    if (isTelegram()) {
-        return new Promise((resolve) =>
+const CLIPBOARD_VERSION = "6.4"
+
+const readTelegramClipboard = () =>
+    new Promise((resolve) => {
+        try {
             WebApp.readTextFromClipboard((text) => resolve(text ?? ""))
-        )
-    }
-    return (
-        navigator.clipboard?.readText?.().catch(() => "") ?? Promise.resolve("")
-    )
-}
+        } catch {
+            resolve("")
+        }
+    })
+
+const readBrowserClipboard = () =>
+    navigator.clipboard?.readText?.().catch(() => "") ?? Promise.resolve("")
+
+const readClipboard = () =>
+    isTelegram() && WebApp.isVersionAtLeast(CLIPBOARD_VERSION)
+        ? readTelegramClipboard()
+        : readBrowserClipboard()
 
 /**
  * Fills the phrase from the clipboard. Sits inside a field, so the mousedown is
