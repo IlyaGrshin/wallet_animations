@@ -48,7 +48,6 @@ const Collapsible = ({ open, children, duration = 200, easing = "ease" }) => {
         height: height === "auto" ? "auto" : `${height}px`,
         transition:
             height === "auto" ? undefined : `height ${duration}ms ${easing}`,
-        willChange: "height",
     }
 
     return (
