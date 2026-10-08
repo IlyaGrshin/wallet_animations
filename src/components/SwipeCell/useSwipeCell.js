@@ -39,6 +39,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
     const armedRef = useRef(false)
     const draggedRef = useRef(false)
     const committingRef = useRef(false)
+    const [isCommitting, setIsCommitting] = useState(false)
     const thresholdRef = useRef(0)
 
     const platformSpring = isApple ? SPRING.APPLE : SPRING.MATERIAL
@@ -69,6 +70,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
     const commit = async ({ keepOpen = false } = {}) => {
         if (committingRef.current) return
         committingRef.current = true
+        setIsCommitting(true)
         // Out of the open state, so an outside touch can't drag it back in.
         setIsOpen(false)
         const transition = reduceMotion ? INSTANT : COMMIT_TRANSITION
@@ -83,6 +85,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
             console.error(error)
         } finally {
             committingRef.current = false
+            setIsCommitting(false)
             // Reset silently: this is not a disarm the user dragged back from.
             armedRef.current = false
             if (!removed) {
@@ -176,6 +179,7 @@ export const useSwipeCell = ({ rootRef, sizeRef, width, count, onCommit }) => {
         revealed,
         isOpen,
         isDragging,
+        isCommitting,
         commit,
         close: () => settle(false),
         open: () => settle(true),

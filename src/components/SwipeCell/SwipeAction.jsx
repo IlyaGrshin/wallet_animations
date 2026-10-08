@@ -15,6 +15,7 @@ const SwipeAction = ({
     revealed,
     arm,
     sizeRef,
+    disabled,
     onFocus,
     onPress,
 }) => {
@@ -53,6 +54,7 @@ const SwipeAction = ({
             as={m.button}
             type="button"
             aria-label={action.label}
+            aria-disabled={disabled || undefined}
             // Keyboard path: focusing an action reveals the row, so focus never
             // lands on a control hidden behind the content.
             onFocus={onFocus}
@@ -64,7 +66,7 @@ const SwipeAction = ({
                 backgroundColor: action.color,
                 ...(isPrimary ? { clipPath } : moving),
             }}
-            onClick={onPress}
+            onClick={disabled ? undefined : onPress}
         >
             <m.span
                 className={styles.icon}
@@ -92,6 +94,7 @@ SwipeAction.propTypes = {
     revealed: PropTypes.object.isRequired,
     arm: PropTypes.object.isRequired,
     sizeRef: PropTypes.shape({ current: PropTypes.object }).isRequired,
+    disabled: PropTypes.bool,
     onFocus: PropTypes.func,
     onPress: PropTypes.func,
 }

@@ -55,6 +55,7 @@ const SwipeRow = ({ actions, children, className }) => {
         revealed,
         isOpen,
         isDragging,
+        isCommitting,
         commit,
         open,
         close,
@@ -84,6 +85,7 @@ const SwipeRow = ({ actions, children, className }) => {
         // A keyboard press (detail 0) keeps the row open so the focused
         // action stays visible; focus leaving the row closes it. A tap
         // closes it right away, like iOS.
+        if (isCommitting) return
         const keyboard = event?.detail === 0
         if (action === primary) {
             commit({ keepOpen: keyboard })
@@ -118,8 +120,9 @@ const SwipeRow = ({ actions, children, className }) => {
                         revealed={revealed}
                         arm={arm}
                         sizeRef={sizeRef}
+                        disabled={isCommitting}
                         onFocus={() => {
-                            if (!isOpen) open()
+                            if (!isOpen && !isCommitting) open()
                         }}
                         onPress={(event) => handlePress(action, event)}
                     />
