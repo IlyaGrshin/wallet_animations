@@ -38,12 +38,16 @@ const Wallet = () => {
         collectibles,
         tonAmount,
         balance,
+        balanceError,
         hasMoreTransactions,
         loadMoreTransactions,
         loadCollectibles,
         transactionsError,
         collectiblesError,
     } = useWalletData(MY_ADDRESS)
+    const unavailable = balanceError ? "—" : null
+    const gramText = tonAmount ?? unavailable ?? "0.00"
+    const fiatText = balance ?? unavailable ?? "$0.00"
     const [cardEl, setCardEl] = useState(null)
     const [amountEl, setAmountEl] = useState(null)
     const [balanceEl, setBalanceEl] = useState(null)
@@ -110,8 +114,8 @@ const Wallet = () => {
             <Page>
                 <div ref={tiltScopeRef} className={styles.tiltScope}>
                     <Header
-                        gramAmount={tonAmount || "0.00"}
-                        balance={balance || "$0.00"}
+                        gramAmount={gramText}
+                        balance={fiatText}
                         flight={flight}
                         gramRef={setGramLineEl}
                         fiatRef={setFiatLineEl}
@@ -128,8 +132,8 @@ const Wallet = () => {
                             <WalletCard
                                 name={tgName || undefined}
                                 address={MY_ADDRESS}
-                                gramAmount={tonAmount || "0.00"}
-                                balance={balance || "$0.00"}
+                                gramAmount={gramText}
+                                balance={fiatText}
                                 amountRef={setAmountEl}
                                 balanceRef={setBalanceEl}
                                 valuesHidden

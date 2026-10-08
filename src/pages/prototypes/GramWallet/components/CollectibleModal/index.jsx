@@ -91,7 +91,12 @@ const CollectibleModal = ({
 
     const actions = (
         <div className={styles.actions}>
-            <Tappable className={styles.tile} onClick={send}>
+            <Tappable
+                as="button"
+                type="button"
+                className={styles.tile}
+                onClick={send}
+            >
                 <MultilineButton
                     variant="tinted"
                     icon={<ArrowUpCircleFill />}
@@ -99,7 +104,12 @@ const CollectibleModal = ({
                 />
             </Tappable>
             {collectible.isWearable && (
-                <Tappable className={styles.tile} onClick={toggleWear}>
+                <Tappable
+                    as="button"
+                    type="button"
+                    className={styles.tile}
+                    onClick={toggleWear}
+                >
                     <MultilineButton
                         variant={isWorn ? "filled" : "tinted"}
                         icon={<SparkleCircleFill />}
@@ -108,7 +118,12 @@ const CollectibleModal = ({
                 </Tappable>
             )}
             {collectible.link && (
-                <Tappable className={styles.tile} onClick={share}>
+                <Tappable
+                    as="button"
+                    type="button"
+                    className={styles.tile}
+                    onClick={share}
+                >
                     <MultilineButton
                         variant="tinted"
                         icon={<ShareCircleFill />}

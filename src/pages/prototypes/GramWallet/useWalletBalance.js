@@ -5,6 +5,10 @@ import { EMPTY_WALLET, computeBalance } from "./helpers"
 
 const IDLE = { ...EMPTY_WALLET, error: null }
 
+function errorText(err) {
+    return err?.message || String(err)
+}
+
 export default function useWalletBalance(address) {
     const [balance, setBalance] = useState(IDLE)
 
@@ -12,21 +16,26 @@ export default function useWalletBalance(address) {
         let cancelled = false
         setBalance(IDLE)
 
-        Promise.all([getAccountState(address), getRates(["ton"], ["usd"])])
-            .then(([state, rates]) => {
-                if (cancelled) return
-                setBalance({
-                    ...computeBalance(state.accounts[0], rates),
-                    error: null,
-                })
-            })
-            .catch((err) => {
-                if (cancelled) return
+        Promise.allSettled([
+            getAccountState(address),
+            getRates(["ton"], ["usd"]),
+        ]).then(([state, rates]) => {
+            if (cancelled) return
+            if (state.status === "rejected") {
+                setBalance({ ...EMPTY_WALLET, error: errorText(state.reason) })
+                return
+            }
+            const account = state.value.accounts[0]
+            if (rates.status === "rejected") {
                 setBalance({
                     ...EMPTY_WALLET,
-                    error: err.message || String(err),
+                    tonAmount: computeBalance(account, {}).tonAmount,
+                    error: errorText(rates.reason),
                 })
-            })
+                return
+            }
+            setBalance({ ...computeBalance(account, rates.value), error: null })
+        })
 
         return () => {
             cancelled = true

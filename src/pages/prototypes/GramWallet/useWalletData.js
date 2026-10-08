@@ -4,20 +4,29 @@ import {
     getActions,
     getOwnedNfts,
 } from "../../../lib/toncenter"
-import { ACTION_TYPES, lastActionLt, mapActions } from "./actions"
+import { ACTION_TYPES, mapActions } from "./actions"
 import { isFragmentItem, mapNft } from "./nft"
 import useWalletBalance from "./useWalletBalance"
 
 const PAGE_SIZE = 100
 
+function appendUnique(prev, rows) {
+    const seen = new Set((prev || []).map((row) => row.id))
+    return [...(prev || []), ...rows.filter((row) => !seen.has(row.id))]
+}
+
 export default function useWalletData(address) {
-    const { tonAmount, balance } = useWalletBalance(address)
+    const {
+        tonAmount,
+        balance,
+        error: balanceError,
+    } = useWalletBalance(address)
     const [transactions, setTransactions] = useState(null)
     const [hasMoreTransactions, setHasMoreTransactions] = useState(false)
     const [collectibles, setCollectibles] = useState(null)
     const [transactionsError, setTransactionsError] = useState(null)
     const [collectiblesError, setCollectiblesError] = useState(null)
-    const pageRef = useRef({ rawAddress: null, endLt: null, loading: false })
+    const pageRef = useRef({ rawAddress: null, offset: 0, loading: false })
     const collectiblesStatusRef = useRef("idle")
 
     useEffect(() => {
@@ -27,7 +36,7 @@ export default function useWalletData(address) {
         setCollectibles(null)
         setTransactionsError(null)
         setCollectiblesError(null)
-        pageRef.current = { rawAddress: null, endLt: null, loading: false }
+        pageRef.current = { rawAddress: null, offset: 0, loading: false }
         collectiblesStatusRef.current = "idle"
 
         Promise.all([
@@ -39,7 +48,7 @@ export default function useWalletData(address) {
                 const rawAddress = state.accounts[0].address
                 pageRef.current = {
                     rawAddress,
-                    endLt: lastActionLt(page),
+                    offset: (page.actions || []).length,
                     loading: false,
                 }
                 setTransactions(mapActions(page, rawAddress))
@@ -58,18 +67,21 @@ export default function useWalletData(address) {
 
     async function loadMoreTransactions() {
         const page = pageRef.current
-        if (!page.endLt || !page.rawAddress || page.loading) return
+        if (!page.offset || !page.rawAddress || page.loading) return
         pageRef.current = { ...page, loading: true }
         try {
             const next = await getActions(
                 address,
                 ACTION_TYPES,
                 PAGE_SIZE,
-                page.endLt
+                page.offset
             )
             const rows = mapActions(next, page.rawAddress)
-            setTransactions((prev) => [...(prev || []), ...rows])
-            pageRef.current = { ...page, endLt: lastActionLt(next) }
+            setTransactions((prev) => appendUnique(prev, rows))
+            pageRef.current = {
+                ...page,
+                offset: page.offset + (next.actions || []).length,
+            }
             setHasMoreTransactions((next.actions || []).length === PAGE_SIZE)
         } catch {
             pageRef.current = { ...page, loading: false }
@@ -98,6 +110,7 @@ export default function useWalletData(address) {
     return {
         tonAmount,
         balance,
+        balanceError,
         transactions,
         hasMoreTransactions,
         loadMoreTransactions,

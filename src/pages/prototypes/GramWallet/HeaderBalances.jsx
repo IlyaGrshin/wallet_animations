@@ -86,6 +86,7 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                             </Calligraph>
                         </span>
                         <m.span
+                            aria-hidden="true"
                             className={cx(styles.lineLayer, styles.cardLook)}
                             style={{ clipPath: flight.gram.wipe }}
                         >
@@ -131,6 +132,7 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                             </Calligraph>
                         </span>
                         <m.span
+                            aria-hidden="true"
                             className={cx(styles.lineLayer, styles.cardLook)}
                             style={{ clipPath: flight.fiat.wipe }}
                         >

@@ -97,8 +97,3 @@ export function mapActions(response, myRawAddress) {
         .map((a) => mapAction(a, myRawAddress, metadata, addressBook))
         .filter(Boolean)
 }
-
-export function lastActionLt(response) {
-    const actions = response.actions || []
-    return actions.length ? actions[actions.length - 1].start_lt : null
-}

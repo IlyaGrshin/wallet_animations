@@ -7,7 +7,13 @@
 .tile {
     display: flex;
     flex: 1 0 0;
+    padding: 0;
+    border: none;
     border-radius: 16px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: inherit;
 }
 
 .copy {

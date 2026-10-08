@@ -26,9 +26,8 @@ function startTiltSource(onChange) {
         isTelegram() && !!orientation && typeof orientation.start === "function"
 
     if (live) {
-        const releaseOrientation = acquireDeviceOrientation(orientation)
         let neutralBeta = null
-        return {
+        const source = {
             target,
             live,
             poll: () => {
@@ -39,8 +38,14 @@ function startTiltSource(onChange) {
                 neutralBeta += (beta - neutralBeta) * NEUTRAL_FOLLOW
                 target.y = clamp((beta - neutralBeta) / MAX_RAD, -1, 1)
             },
-            stop: releaseOrientation,
         }
+        source.stop = acquireDeviceOrientation(orientation, () => {
+            source.live = false
+            target.x = 0
+            target.y = 0
+            onChange?.()
+        })
+        return source
     }
 
     const onPointerMove = (event) => {
@@ -98,7 +103,7 @@ export default function useDeviceTilt(targetRef, damp) {
         function tick(now) {
             const dt = Math.min((now - (lastTime || now)) / 1000, MAX_DT)
             lastTime = now
-            source.poll()
+            if (source.live) source.poll()
             const dx = source.target.x - current.x
             const dy = source.target.y - current.y
             velocity.x += (STIFFNESS * dx - DAMPING * velocity.x) * dt

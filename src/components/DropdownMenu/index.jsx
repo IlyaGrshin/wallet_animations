@@ -8,6 +8,7 @@ import { GlassBorder } from "../GlassEffect"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { useSplitViewContext } from "../SplitView/context"
 import {
+    focusTrigger,
     useClickOutside,
     useDropdownPosition,
     getViewportBounds,
@@ -80,7 +81,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
         setIsOpen(false)
         resetPosition()
         setActiveIndex(-1)
-        buttonRef.current?.focus()
+        focusTrigger(buttonRef.current)
     }
 
     useClickOutside(
@@ -104,7 +105,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
             if (e.key === "Escape") {
                 e.preventDefault()
                 closeDropdown()
-                buttonRef.current?.focus()
+                focusTrigger(buttonRef.current)
                 return
             }
             if (e.key === "ArrowDown") {

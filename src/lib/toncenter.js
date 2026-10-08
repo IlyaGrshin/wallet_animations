@@ -17,12 +17,11 @@ export function getAccountState(address) {
     return get(`/accountStates?address=${encodeURIComponent(address)}`)
 }
 
-export function getActions(address, types, limit = 20, endLt = null) {
+export function getActions(address, types, limit = 20, offset = 0) {
     const account = encodeURIComponent(address)
     const filter = types.map((type) => `&action_type=${type}`).join("")
-    const before = endLt ? `&end_lt=${endLt}` : ""
     return get(
-        `/actions?account=${account}${filter}&limit=${limit}&sort=desc${before}`
+        `/actions?account=${account}${filter}&limit=${limit}&offset=${offset}&sort=desc`
     )
 }
 

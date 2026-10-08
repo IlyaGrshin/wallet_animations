@@ -71,3 +71,14 @@ export const useDropdownPosition = (
         initialPosition: INITIAL_POSITION,
         calculate: (rect, size) => calculatePosition(rect, size, getBounds()),
     })
+
+const FOCUSABLE =
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+
+export const focusTrigger = (wrapper) => {
+    if (!wrapper) return
+    const target = wrapper.matches(FOCUSABLE)
+        ? wrapper
+        : wrapper.querySelector(FOCUSABLE)
+    target?.focus()
+}
