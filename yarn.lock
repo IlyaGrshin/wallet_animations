@@ -4190,19 +4190,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lottie-react@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "lottie-react@npm:3.1.2"
-  dependencies:
-    lottie-web: "npm:^5.13.0"
-  peerDependencies:
-    react: ^18.2.0 || ^19.0.0
-    react-dom: ^18.2.0 || ^19.0.0
-  checksum: 10c0/6e89e7ec6a2c93f12d0f3049ebb78178ceab9ac00dce2509ca331caeabeb72af5d976488d1b43d7b1b6e99e19a6c60b57d2d4ebf3f840db0b3f0d0e1bc84a3b5
-  languageName: node
-  linkType: hard
-
-"lottie-web@npm:5.13.0, lottie-web@npm:^5.13.0":
+"lottie-web@npm:5.13.0":
   version: 5.13.0
   resolution: "lottie-web@npm:5.13.0"
   checksum: 10c0/b463ad462169df3f7e04b7f3716274e269842554f1d72b8303ca7245628f2512982a59ae31698b3d57fbcda886228ae160fcb2aa518c6cecd8a95974db2458ee
@@ -6257,7 +6245,6 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^7.1.1"
     globals: "npm:^17.13.0"
     jsdom: "npm:^30.1.2"
-    lottie-react: "npm:^3.1.2"
     lottie-web: "npm:5.13.0"
     markdown-to-jsx: "npm:9"
     motion: "npm:^13.5.1"

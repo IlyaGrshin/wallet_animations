@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
 
-import LottieIcon from "../LottieIcon"
+import AnimatedIcon from "../AnimatedIcon"
 import * as styles from "./Tab.module.scss"
 
 const Tab = ({
@@ -28,7 +28,7 @@ const Tab = ({
         <m.div layout className={styles.icon}>
             {lottieIcon ? (
                 <Suspense fallback={icon || null}>
-                    <LottieIcon
+                    <AnimatedIcon
                         name={lottieIcon}
                         isActive={isActive}
                         playKey={playKey}
