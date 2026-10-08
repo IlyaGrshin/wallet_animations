@@ -6,21 +6,21 @@ import WebApp from "../../../../../lib/twa"
 import * as styles from "./Assets.module.scss"
 import SectionList from "../../../../../components/SectionList"
 import Cell from "../../../../../components/Cells"
-import ImageAvatar from "../../../../../components/ImageAvatar"
-import { getAssetIcon } from "../../../../../utils/AssetsMap"
-import { formatToTwoDecimals } from "../../../../../utils/number"
 import AnimatedCellMoreButton from "../AnimatedCellMoreButton"
+import AssetCell from "../AssetCell"
 import assets from "../../data/assets.json"
+
+const PRIORITY_TICKERS = ["USDT", "TON"]
 
 export default function Assets() {
     const AssetsRef = useRef(null)
     const [showSmallAssets, setShowSmallAssets] = useState(false)
 
-    const priorityAssets = assets.filter(
-        (asset) => asset.id === 0 || asset.id === 1
+    const priorityAssets = assets.filter((asset) =>
+        PRIORITY_TICKERS.includes(asset.ticker)
     )
     const otherAssets = assets.filter(
-        (asset) => asset.id !== 0 && asset.id !== 1
+        (asset) => !PRIORITY_TICKERS.includes(asset.ticker)
     )
 
     const largeAssets = [
@@ -40,23 +40,17 @@ export default function Assets() {
 
     return (
         <SectionList.Item ref={AssetsRef}>
-            {largeAssets.map((asset, index) => (
-                <Cell
-                    start={<ImageAvatar src={getAssetIcon(asset.ticker)} />}
-                    end={
-                        <Cell.Text
-                            title={`$${formatToTwoDecimals(asset.rate * asset.value)}`}
-                            description={`${asset.value} ${asset.ticker}`}
-                        />
-                    }
-                    key={`asset-${index}`}
-                >
+            {largeAssets.length === 0 && (
+                <Cell>
                     <Cell.Text
-                        title={asset.name}
-                        description={`$${asset.rate}`}
+                        title="No assets yet"
+                        description="Deposit crypto to get started"
                         bold
                     />
                 </Cell>
+            )}
+            {largeAssets.map((asset) => (
+                <AssetCell asset={asset} key={asset.ticker} />
             ))}
 
             {smallAssets.length > 0 && (
@@ -77,28 +71,11 @@ export default function Assets() {
                                 }}
                                 className={styles.smallAssets}
                             >
-                                {smallAssets.map((asset, index) => (
-                                    <Cell
-                                        start={
-                                            <Cell.Start
-                                                type="Image"
-                                                src={getAssetIcon(asset.ticker)}
-                                            />
-                                        }
-                                        end={
-                                            <Cell.Text
-                                                title={`$${formatToTwoDecimals(asset.rate * asset.value)}`}
-                                                description={`${asset.value} ${asset.ticker}`}
-                                            />
-                                        }
-                                        key={`asset-${index}`}
-                                    >
-                                        <Cell.Text
-                                            title={asset.name}
-                                            description={`$${asset.rate}`}
-                                            bold
-                                        />
-                                    </Cell>
+                                {smallAssets.map((asset) => (
+                                    <AssetCell
+                                        asset={asset}
+                                        key={asset.ticker}
+                                    />
                                 ))}
                             </m.div>
                         )}

@@ -1,4 +1,4 @@
-import { forwardRef } from "react"
+import { forwardRef, useState } from "react"
 import PropTypes from "prop-types"
 import cx from "clsx"
 
@@ -8,11 +8,14 @@ import { Image } from "../Image"
 import * as styles from "./ImageAvatar.module.scss"
 
 const ImageAvatar = forwardRef(
-    ({ size, className, style, src, shape = "circle" }, ref) => {
+    ({ size, className, style, src, shape = "circle", fallback }, ref) => {
         const { isMaterial } = useSkin()
         const redacted = Boolean(useSkeletonContext())
         const redactionClassName = useRedactionClassName(redacted)
         const resolvedSize = size ?? (isMaterial ? 42 : 40)
+        const [failedSrc, setFailedSrc] = useState(null)
+
+        if (fallback && (!src || failedSrc === src)) return fallback
 
         return (
             <div
@@ -38,6 +41,7 @@ const ImageAvatar = forwardRef(
             >
                 <Image
                     src={src}
+                    onError={() => setFailedSrc(src)}
                     className={cx(styles.img, redacted && styles.imgRedacted)}
                 />
             </div>
@@ -51,5 +55,6 @@ ImageAvatar.propTypes = {
     style: PropTypes.object,
     src: PropTypes.string,
     shape: PropTypes.oneOf(["circle", "rounded"]),
+    fallback: PropTypes.node,
 }
 export default ImageAvatar

@@ -78,3 +78,8 @@ export function blendColors(color1, color2, alpha) {
         .slice(1)
         .toUpperCase()
 }
+
+export function truncateMiddle(value, head = 4, tail = 4) {
+    if (value.length <= head + tail + 1) return value
+    return `${value.slice(0, head)}…${value.slice(-tail)}`
+}
