@@ -77,12 +77,17 @@ const ReorderList = ({
             if (!element) return
             const top = element.offsetTop + offset
             const bottom = top + element.offsetHeight
-            const below = items.get(values[index + 1])
-            const above = items.get(values[index - 1])
-            if (below && bottom >= centerOf(below) + DEADBAND)
-                moveTo(value, index + 1)
-            else if (above && top <= centerOf(above) - DEADBAND)
-                moveTo(value, index - 1)
+            const crossed = (at) => {
+                const other = items.get(values[at])
+                if (!other) return false
+                return at > index
+                    ? bottom >= centerOf(other) + DEADBAND
+                    : top <= centerOf(other) - DEADBAND
+            }
+            let to = index
+            while (crossed(to + 1)) to += 1
+            if (to === index) while (crossed(to - 1)) to -= 1
+            moveTo(value, to)
         },
         step: (value, by) => moveTo(value, values.indexOf(value) + by),
     }

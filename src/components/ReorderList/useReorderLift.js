@@ -12,32 +12,44 @@ export const useReorderLift = ({ controls, groupRef, longPress }) => {
     const [lifted, setLifted] = useState(false)
     const downRef = useRef(null)
     const releaseRef = useRef(null)
+    const dragStartRef = useRef(null)
 
     const lift = (event) => {
         if (releaseRef.current) return
         haptic.impact("medium")
         setLifted(true)
 
+        const { pointerId } = event
         const swipesWereEnabled = WebApp.isVerticalSwipesEnabled
         if (swipesWereEnabled) WebApp.disableVerticalSwipes?.()
-        const stopAutoScroll = startAutoScroll(groupRef.current, event.clientY)
+        let stopAutoScroll = null
 
-        const drop = () => {
+        dragStartRef.current = (dragEvent) => {
+            stopAutoScroll ??= startAutoScroll(
+                groupRef.current,
+                dragEvent.clientY,
+                pointerId
+            )
+        }
+
+        const drop = (endEvent) => {
+            if (endEvent.pointerId !== pointerId) return
             releaseRef.current?.()
             haptic.impact("light")
         }
 
         document.addEventListener("touchmove", blockScroll, { passive: false })
-        window.addEventListener("pointerup", drop)
-        window.addEventListener("pointercancel", drop)
+        window.addEventListener("pointerup", drop, true)
+        window.addEventListener("pointercancel", drop, true)
 
         releaseRef.current = () => {
             releaseRef.current = null
+            dragStartRef.current = null
             setLifted(false)
-            stopAutoScroll()
+            stopAutoScroll?.()
             document.removeEventListener("touchmove", blockScroll)
-            window.removeEventListener("pointerup", drop)
-            window.removeEventListener("pointercancel", drop)
+            window.removeEventListener("pointerup", drop, true)
+            window.removeEventListener("pointercancel", drop, true)
             if (swipesWereEnabled) WebApp.enableVerticalSwipes?.()
         }
 
@@ -60,12 +72,23 @@ export const useReorderLift = ({ controls, groupRef, longPress }) => {
                   downRef.current = event.nativeEvent
                   press.onPointerDown(event)
               },
+              onPointerUp: (event) => {
+                  downRef.current = null
+                  press.onPointerUp(event)
+              },
+              onPointerCancel: (event) => {
+                  downRef.current = null
+                  press.onPointerCancel(event)
+              },
               onContextMenu: (event) => {
-                  if (downRef.current?.pointerType === "mouse") return
+                  const pointerType = downRef.current?.pointerType
+                  if (!pointerType || pointerType === "mouse") return
                   press.onContextMenu(event)
               },
           }
         : {}
 
-    return { lifted, lift, rowHandlers }
+    const onDragStart = (event) => dragStartRef.current?.(event)
+
+    return { lifted, lift, onDragStart, rowHandlers }
 }

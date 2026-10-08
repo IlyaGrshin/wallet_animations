@@ -20,7 +20,7 @@ const edgeSpeed = (distance) => {
     return MAX_SPEED * depth * depth
 }
 
-export const startAutoScroll = (element, initialY) => {
+export const startAutoScroll = (element, initialY, pointerId) => {
     const scroller = scrollerOf(element)
     const isRoot = scroller === document.scrollingElement
     let pointerY = initialY
@@ -29,7 +29,7 @@ export const startAutoScroll = (element, initialY) => {
     let carry = 0
 
     const onMove = (event) => {
-        pointerY = event.clientY
+        if (event.pointerId === pointerId) pointerY = event.clientY
     }
 
     const tick = (time) => {

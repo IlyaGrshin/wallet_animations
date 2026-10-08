@@ -39,7 +39,7 @@ const ReorderItem = ({ value, label, children, className }) => {
     const y = useMotionValue(0)
     const settlingZ = useTransform(y, (offset) => (offset ? 1 : "auto"))
 
-    const { lifted, lift, rowHandlers } = useReorderLift({
+    const { lifted, lift, onDragStart, rowHandlers } = useReorderLift({
         controls,
         groupRef,
         longPress: !editing,
@@ -70,6 +70,7 @@ const ReorderItem = ({ value, label, children, className }) => {
                 bounceStiffness: spring.stiffness,
                 bounceDamping: spring.damping,
             }}
+            onDragStart={onDragStart}
             onDrag={() => track(value, y.get())}
             style={{ y, zIndex: lifted ? 1 : settlingZ }}
             className={cx(
