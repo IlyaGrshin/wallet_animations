@@ -16,10 +16,9 @@ const TabBarOverlay = ({
     onSnapToSame,
     playKey,
 }) => {
-    const { overlayRef, animate, transition, handlers } = useIndicatorDrag({
+    const { overlayRef, handlers } = useIndicatorDrag({
         tabsLength: tabs.length,
         activeIndex,
-        spring: { type: "spring", stiffness: 800, damping: 50 },
         onSnapToSame,
         onSnapToNew: onChange,
     })
@@ -30,11 +29,8 @@ const TabBarOverlay = ({
             ref={overlayRef}
             {...handlers}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1, ...animate }}
-            transition={{
-                default: { duration: 0.2 },
-                clipPath: transition.clipPath,
-            }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
         >
             {tabs.map((tab, index) => (
                 <Tab
