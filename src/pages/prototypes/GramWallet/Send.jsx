@@ -23,7 +23,9 @@ const Send = () => {
     const [currency, setCurrency] = useState(GRAM)
     const [flying, setFlying] = useState(false)
     const viewportHeight = useViewportHeight()
-    const { tonAmount, rate } = useWalletBalance(MY_ADDRESS)
+    const { tonAmount, rate, error } = useWalletBalance(MY_ADDRESS)
+    const settled = tonAmount !== null || Boolean(error)
+    const unavailable = error ? "—" : null
 
     const goBack = () => navigate(WALLET_PATH)
 
@@ -47,6 +49,7 @@ const Send = () => {
             <BackButton onClick={goBack} />
             <div className={styles.root} style={{ maxHeight: viewportHeight }}>
                 <PanelHeader
+                    pin="sticky"
                     left={<PanelHeader.BackIcon />}
                     onLeft={goBack}
                     right={<PanelHeader.MoreIcon />}
@@ -57,11 +60,16 @@ const Send = () => {
 
                 <AmountField
                     amount={amount}
-                    onAmountChange={(value) => setAmount(sanitize(value))}
+                    onAmountChange={(value, pasted) =>
+                        setAmount(sanitize(value, pasted))
+                    }
                     currency={currency}
-                    counterAmount={format(counter)}
+                    counterAmount={
+                        rate ? format(counter) : (unavailable ?? format(0))
+                    }
                     onSwap={swap}
                     canSwap={Boolean(rate)}
+                    pending={!rate && !error}
                     flying={flying}
                     onLand={() => setFlying(false)}
                 />
@@ -71,9 +79,9 @@ const Send = () => {
                         <Text
                             apple={{ variant: "footnote" }}
                             material={{ variant: "caption2" }}
-                            skeleton={tonAmount === null}
+                            skeleton={!settled}
                         >
-                            Balance: {tonAmount ?? "0.00"} Grams
+                            Balance: {tonAmount ?? unavailable ?? "0.00"} Grams
                         </Text>
                     </div>
                     <RegularButton

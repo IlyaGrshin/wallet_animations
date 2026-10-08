@@ -9,7 +9,7 @@ import Tappable from "../../../../../components/Tappable"
 import GramIcon from "../../../../../icons/28/Gram.svg?react"
 import SwapIcon from "../../../../../icons/18/Arrow Up Arrow Down.svg?react"
 
-import { GRAM, USD, other, splitAmount } from "../../currency"
+import { GRAM, USD, amountEm, other, splitAmount } from "../../currency"
 import * as styles from "./AmountField.module.scss"
 
 const SWAP = { type: "spring", duration: 0.45, bounce: 0 }
@@ -75,7 +75,10 @@ Digits.propTypes = {
 const Typed = ({ value }) => {
     const { whole, fraction } = splitAmount(value)
     return (
-        <span className={styles.number}>
+        <span
+            className={styles.number}
+            style={{ "--amount-em": amountEm(value) }}
+        >
             <Glyphs settings={TYPING}>{whole}</Glyphs>
             <span className={styles.fraction}>
                 <Glyphs settings={TYPING}>{fraction}</Glyphs>
@@ -116,6 +119,7 @@ const AmountField = ({
     counterAmount,
     onSwap,
     canSwap,
+    pending = false,
     flying,
     onLand,
 }) => {
@@ -152,7 +156,7 @@ const AmountField = ({
                         className={styles.pillText}
                         apple={{ variant: "footnote", weight: "semibold" }}
                         material={{ variant: "caption2", weight: "medium" }}
-                        skeleton={!canSwap}
+                        skeleton={pending}
                     >
                         <Money key={next} currency={next} onLand={onLand} />
                     </Text>
@@ -170,7 +174,12 @@ const AmountField = ({
                     className={styles.input}
                     name="amount"
                     value={amount}
-                    onChange={(event) => onAmountChange(event.target.value)}
+                    onChange={(event) =>
+                        onAmountChange(
+                            event.target.value,
+                            event.nativeEvent.inputType === "insertFromPaste"
+                        )
+                    }
                     inputMode="decimal"
                     autoComplete="off"
                     enterKeyHint="done"
@@ -191,6 +200,7 @@ AmountField.propTypes = {
     counterAmount: PropTypes.string.isRequired,
     onSwap: PropTypes.func.isRequired,
     canSwap: PropTypes.bool,
+    pending: PropTypes.bool,
     flying: PropTypes.bool,
     onLand: PropTypes.func.isRequired,
 }

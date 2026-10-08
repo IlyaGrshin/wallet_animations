@@ -1,5 +1,6 @@
 .root {
     position: relative;
+    container-type: inline-size;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -69,12 +70,12 @@
 }
 
 .number {
-    font-size: 48px;
+    font-size: min(48px, calc((100cqi - 180px) / var(--amount-em, 1)));
     line-height: 56px;
 }
 
 .fraction {
-    font-size: 32px;
+    font-size: 0.6667em;
     line-height: 56px;
 }
 
