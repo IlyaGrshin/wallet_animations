@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
-import { GlassBorder } from "../GlassEffect"
+import GlassContainer from "../GlassEffect"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
 import { useIndicatorDrag } from "./useIndicatorDrag"
@@ -137,7 +137,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             />
 
             <Activity mode={isApple ? "visible" : "hidden"}>
-                <GlassBorder />
+                <GlassContainer />
                 <GradientMask
                     width={rootWidth}
                     height={64}
