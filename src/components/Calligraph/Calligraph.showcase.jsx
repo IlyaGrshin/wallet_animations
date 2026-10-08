@@ -11,6 +11,8 @@ import Text from "../Text"
 import { generateRandomBalance } from "../../utils/number"
 import { BackButton } from "../../lib/twa"
 
+import * as styles from "./Calligraph.showcase.module.scss"
+
 const ANIMATIONS = ["smooth", "snappy", "bouncy"]
 
 const PHRASES = [
@@ -23,13 +25,7 @@ const PHRASES = [
 ]
 
 const Stage = ({ children }) => (
-    <div
-        style={{
-            display: "flex",
-            justifyContent: "center",
-            padding: "24px var(--side-padding)",
-        }}
-    >
+    <div className={styles.stage}>
         <Text variant="title1" apple={{ weight: "bold" }}>
             {children}
         </Text>
@@ -41,14 +37,7 @@ Stage.propTypes = {
 }
 
 const Compare = ({ value }) => (
-    <div
-        style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            padding: "24px var(--side-padding)",
-            textAlign: "center",
-        }}
-    >
+    <div className={styles.compare}>
         <div>
             <Text variant="title1" apple={{ weight: "bold" }}>
                 <Calligraph
@@ -159,7 +148,7 @@ const CalligraphShowcase = () => {
                     </SectionList.Item>
 
                     <SectionList.Item header="Animation preset">
-                        <div style={{ padding: "12px var(--side-padding)" }}>
+                        <div className={styles.controls}>
                             <SegmentedControl
                                 segments={ANIMATIONS}
                                 defaultIndex={animIdx}

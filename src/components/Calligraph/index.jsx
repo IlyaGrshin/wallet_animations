@@ -48,5 +48,11 @@ Calligraph.propTypes = {
     simple: PropTypes.bool,
     animation: PropTypes.oneOf(["default", "smooth", "snappy", "bouncy"]),
     autoSize: PropTypes.bool,
+    as: PropTypes.elementType,
+    drift: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
+    trend: PropTypes.oneOf([1, -1, 0]),
+    stagger: PropTypes.number,
+    initial: PropTypes.bool,
+    onComplete: PropTypes.func,
     className: PropTypes.string,
 }

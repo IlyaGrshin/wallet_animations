@@ -10,22 +10,31 @@ const STAGGER = 0.02
 const isDigit = (char) => char >= "0" && char <= "9"
 const toNumber = (text) => parseFloat(text.replace(/[^0-9.-]/g, "")) || 0
 
+const slots = (text) => {
+    const chars = Array.from(text)
+    const split = Math.max(chars.findIndex(isDigit), 0)
+    return chars.map((char, index) => ({
+        char,
+        key: index < split ? `p${index}` : `${chars.length - 1 - index}`,
+    }))
+}
+
 const reconcile = (state, text) => {
     const direction = Math.sign(toNumber(text) - toNumber(state.text)) || 1
-    const oldChars = Array.from(state.text)
-    const newChars = Array.from(text)
+    const previous = Object.fromEntries(
+        slots(state.text).map(({ key, char }) => [key, char])
+    )
     const changes = {}
     let gen = state.gen
 
-    for (let col = 0; col < newChars.length; col++) {
-        const prevChar = oldChars[oldChars.length - 1 - col]
-        const char = newChars[newChars.length - 1 - col]
+    for (const { key, char } of slots(text)) {
+        const prevChar = previous[key]
         if (prevChar === char) {
-            if (state.changes[col]) changes[col] = state.changes[col]
+            if (state.changes[key]) changes[key] = state.changes[key]
             continue
         }
         gen += 1
-        changes[col] = { gen, prevChar, direction }
+        changes[key] = { gen, prevChar, direction }
     }
 
     return { text, gen, changes }
@@ -41,22 +50,19 @@ export default function SimpleNumber({
     const current = value === state.text ? state : reconcile(state, value)
     if (current !== state) setState(current)
 
-    const chars = Array.from(value)
-
     return (
         <Component
             aria-label={value}
             {...rest}
             className={cx(styles.root, className)}
         >
-            {chars.map((char, index) => {
-                const col = chars.length - 1 - index
-                const change = current.changes[col]
+            {slots(value).map(({ char, key }, index) => {
+                const change = current.changes[key]
 
                 if (!change) {
                     return (
                         <span
-                            key={`col-${col}`}
+                            key={`col-${key}`}
                             className={styles.column}
                             aria-hidden="true"
                         >
@@ -70,7 +76,7 @@ export default function SimpleNumber({
 
                 return (
                     <span
-                        key={`col-${col}`}
+                        key={`col-${key}`}
                         className={styles.column}
                         aria-hidden="true"
                     >
