@@ -1,0 +1,5 @@
+// Bar heights, shared by the bar itself and by the spacer that stands in for
+// it under a fixed pin. One source, so the two cannot drift apart.
+$bar-height: 44px;
+$bar-height-apple: 64px;
+$bar-height-material: 56px;

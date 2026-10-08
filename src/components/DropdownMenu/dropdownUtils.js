@@ -3,7 +3,6 @@ import { useAnchoredPosition } from "../../hooks/useAnchoredPosition"
 
 export { useClickOutside } from "../../hooks/useClickOutside"
 
-export const DROPDOWN_WIDTH = 250
 export const GAP = 1
 export const VIEWPORT_PADDING = 8
 
@@ -14,15 +13,6 @@ const INITIAL_POSITION = {
     originX: "100%",
     originY: "0%",
 }
-
-// Bounds to clamp the menu within: the SplitView pane's rect when open inside
-// one, the full viewport otherwise.
-export const getViewportBounds = () => ({
-    left: 0,
-    top: 0,
-    right: window.innerWidth,
-    bottom: window.innerHeight,
-})
 
 const calculatePosition = (buttonRect, dropdownSize, bounds) => {
     const spaceBelow = bounds.bottom - buttonRect.bottom
@@ -62,7 +52,7 @@ export const useDropdownPosition = (
     isOpen,
     buttonRef,
     dropdownRef,
-    getBounds = getViewportBounds
+    getBounds
 ) =>
     useAnchoredPosition({
         isOpen,

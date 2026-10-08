@@ -1,6 +1,7 @@
 .root {
     display: flex;
     align-items: center;
+    min-height: 44px;
     width: 100%;
     box-sizing: border-box;
     padding: 9px 16px;
@@ -104,6 +105,10 @@
     gap: 8px;
     padding: 0 16px;
     pointer-events: none;
+}
+
+.host_pane {
+    position: absolute;
 }
 
 .host_top {
