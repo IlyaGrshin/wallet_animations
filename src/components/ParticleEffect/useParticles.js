@@ -2,6 +2,22 @@ import { useEffect, useRef, useState } from "react"
 
 import { createEngine } from "./glEngine"
 
+const pendingStarts = []
+let draining = false
+
+const drainStarts = () => {
+    pendingStarts.shift()?.()
+    if (pendingStarts.length) setTimeout(drainStarts, 0)
+    else draining = false
+}
+
+const queueStart = (start) => {
+    pendingStarts.push(start)
+    if (draining) return
+    draining = true
+    setTimeout(drainStarts, 0)
+}
+
 /**
  * Wires the WebGL2 particle engine to React lifecycle and the `hidden` prop.
  *
@@ -78,8 +94,21 @@ export function useParticles({
     // Spawn the cloud on cover, burst it away on reveal. reveal() before any
     // cover() is a no-op, so the initial mount stays dormant.
     useEffect(() => {
-        if (hidden) startRef.current?.()?.cover()
-        else engineRef.current?.reveal(revealOriginRef.current)
+        if (!hidden) {
+            engineRef.current?.reveal(revealOriginRef.current)
+            return undefined
+        }
+        if (engineRef.current) {
+            engineRef.current.cover()
+            return undefined
+        }
+        let cancelled = false
+        queueStart(() => {
+            if (!cancelled) startRef.current?.()?.cover()
+        })
+        return () => {
+            cancelled = true
+        }
     }, [hidden])
 
     return { supported, revealOriginRef }
