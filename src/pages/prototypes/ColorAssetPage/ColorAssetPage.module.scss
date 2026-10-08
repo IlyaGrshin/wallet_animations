@@ -64,3 +64,14 @@
     flex-direction: column;
     gap: 8px;
 }
+
+.virtualList {
+    position: relative;
+}
+
+.virtualItem {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
