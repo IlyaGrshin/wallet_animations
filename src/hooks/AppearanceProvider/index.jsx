@@ -54,9 +54,7 @@ const AppearanceProvider = ({ children }) => {
             updateThemeFromSystem()
         }
 
-        WebApp.onEvent("themeChanged", () => {
-            updateThemeFromTelegram()
-        })
+        WebApp.onEvent("themeChanged", updateThemeFromTelegram)
 
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
         mediaQuery.addEventListener("change", handleSystemThemeChange)

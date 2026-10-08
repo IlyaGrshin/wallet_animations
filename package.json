@@ -10,7 +10,6 @@
   "homepage": ".",
   "dependencies": {
     "@lisse/core": "0.7.2",
-    "@lisse/react": "^0.7.2",
     "@tanstack/react-virtual": "^3.14.13",
     "calligraph": "^1.4.1",
     "clsx": "^2.1.1",

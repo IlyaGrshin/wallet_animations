@@ -1,9 +1,9 @@
 import { useRef, useState, Children } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
-import { useSmoothCorners } from "@lisse/react"
 
 import { useSkin } from "../../hooks/DeviceProvider"
+import useSquircleClip from "../../hooks/useSquircleClip"
 import { SPRING } from "../../utils/animations"
 
 import CellStackContext from "./context"
@@ -38,14 +38,10 @@ const getStackVariant = ({ depth, expanded }) => {
 
 const StackCard = ({ children, depth, expanded, spring, isApple, total }) => {
     const ref = useRef(null)
-    useSmoothCorners(
-        ref,
-        {
-            radius: isApple ? APPLE_RADIUS : MATERIAL_RADIUS,
-            smoothing: SMOOTHING,
-        },
-        { autoEffects: false }
-    )
+    useSquircleClip(ref, {
+        radius: isApple ? APPLE_RADIUS : MATERIAL_RADIUS,
+        smoothing: SMOOTHING,
+    })
 
     const behind = depth >= 1
 
