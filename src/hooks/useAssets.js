@@ -119,9 +119,7 @@ const refresh = async () => {
             body: JSON.stringify(REQUEST),
         })
         const { data } = await response.json()
-        // The last subscriber may have unmounted during the await — bail
-        // before reopening a stream nobody owns.
-        if (!subscribers.size) return
+        if (!scannerTimer) return
         base = mapRows(data)
         baseAt = Date.now()
         ensureStream()

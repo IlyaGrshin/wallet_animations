@@ -1,4 +1,4 @@
-import { Activity, useLayoutEffect, useRef } from "react"
+import { Activity, useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
@@ -16,6 +16,10 @@ export default function TabLayer({
 }) {
     const ref = useRef(null)
     const scrollTopRef = useRef(0)
+    const target = status === "active" ? "animate" : "exit"
+    const [settled, setSettled] = useState({ target, custom })
+
+    if (settled.target !== target) setSettled({ target, custom })
 
     useLayoutEffect(() => {
         if (status === "active" && scrollTopRef.current > 0) {
@@ -27,9 +31,9 @@ export default function TabLayer({
         <m.div
             ref={ref}
             variants={pageVariants}
-            custom={custom}
+            custom={settled.custom}
             initial={animateMount ? "initial" : false}
-            animate={status === "active" ? "animate" : "exit"}
+            animate={target}
             onScroll={(event) => {
                 if (status === "active") {
                     scrollTopRef.current = event.currentTarget.scrollTop
