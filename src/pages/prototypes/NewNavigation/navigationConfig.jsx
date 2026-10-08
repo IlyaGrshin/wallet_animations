@@ -11,7 +11,7 @@ import HistoryIcon from "../../../icons/tabbar/Clock.svg?react"
 export const getTabsConfig = (onOpenTonWallet) => ({
     wallet: [
         {
-            label: "Wallet",
+            label: "Walt",
             icon: <WalletIcon />,
             view: <Wallet onOpenTonWallet={onOpenTonWallet} />,
             lottieIcon: "wallet",
@@ -31,11 +31,10 @@ export const getTabsConfig = (onOpenTonWallet) => ({
             activeSegment: [0, 45],
         },
         {
-            label: "History",
-            icon: <HistoryIcon />,
+            label: "Rewards",
             view: <History />,
-            lottieIcon: "clock",
-            activeSegment: [0, 80],
+            lottieIcon: "reward",
+            activeSegment: [0, 24],
         },
     ],
     ton: [
