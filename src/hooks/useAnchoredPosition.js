@@ -15,6 +15,8 @@ const shallowEqual = (a, b) => {
     return true
 }
 
+const borderBoxSize = (el) => el.getBoundingClientRect()
+
 export function useAnchoredPosition({
     isOpen,
     triggerRef,
@@ -23,6 +25,8 @@ export function useAnchoredPosition({
     calculate,
     deps = [],
     equals = shallowEqual,
+    measureKey,
+    getSize = borderBoxSize,
 }) {
     const [position, setPosition] = useState(initialPosition)
     const [isPositioned, setIsPositioned] = useState(false)
@@ -33,15 +37,26 @@ export function useAnchoredPosition({
         contentSizeRef.current = null
     }, [])
 
+    const measure = () => {
+        const triggerRect = triggerRef.current.getBoundingClientRect()
+        const { width, height } = getSize(contentRef.current)
+        contentSizeRef.current = { width, height }
+        return calculate(triggerRect, contentSizeRef.current)
+    }
+
     useLayoutEffect(() => {
         if (!isOpen || isPositioned) return
         if (!triggerRef.current || !contentRef.current) return
-        const triggerRect = triggerRef.current.getBoundingClientRect()
-        const { width, height } = contentRef.current.getBoundingClientRect()
-        contentSizeRef.current = { width, height }
-        setPosition(calculate(triggerRect, { width, height }))
+        setPosition(measure())
         setIsPositioned(true)
-    }, [isOpen, isPositioned, triggerRef, contentRef, calculate, ...deps])
+    }, [isOpen, isPositioned, triggerRef, contentRef, measure, ...deps])
+
+    useLayoutEffect(() => {
+        if (measureKey === undefined || !isOpen || !isPositioned) return
+        if (!triggerRef.current || !contentRef.current) return
+        const next = measure()
+        setPosition((prev) => (equals(prev, next) ? prev : next))
+    }, [measureKey, isOpen, isPositioned, triggerRef, contentRef, measure, equals])
 
     useEffect(() => {
         if (!isOpen || !isPositioned) return

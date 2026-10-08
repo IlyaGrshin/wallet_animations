@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import * as m from "motion/react-m"
 
 import { GlassBorder } from "../GlassEffect"
@@ -30,9 +31,12 @@ const HeaderButton = ({
     const { isApple } = useSkin()
     const isText = typeof children === "string"
     const hasRim = isApple && (variant === "regular" || variant === "overlay")
-    const className = `${styles.button} ${styles[variant]} ${
-        surface ? styles.surface : ""
-    } ${isText ? styles.label : styles.icon}`
+    const className = cx(
+        styles.button,
+        styles[variant],
+        surface && styles.surface,
+        isText && styles.label
+    )
 
     const glyph = isText ? (
         <Text

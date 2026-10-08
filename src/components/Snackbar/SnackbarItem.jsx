@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { useReducedMotion } from "motion/react"
-import { haptic } from "../../lib/twa"
 import { SPRING } from "../../utils/animations"
 import Snackbar, { triggerShape } from "./Snackbar"
 import * as styles from "./Snackbar.module.scss"
@@ -23,23 +22,21 @@ const SnackbarItem = ({ item, onDismiss }) => {
         position = "bottom",
         duration = DEFAULT_DURATION,
         type,
+        createdAt,
     } = item
 
     const reduceMotion = useReducedMotion()
     const [isDragging, setIsDragging] = useState(false)
     const [exitDirection, setExitDirection] = useState(0)
+    const [deadline, setDeadline] = useState(() => createdAt + duration)
 
     const dismiss = () => onDismiss(id)
 
     useEffect(() => {
-        if (type) haptic.notify(type)
-    }, [type])
-
-    useEffect(() => {
         if (!duration || isDragging) return undefined
-        const timer = setTimeout(dismiss, duration)
+        const timer = setTimeout(dismiss, Math.max(0, deadline - Date.now()))
         return () => clearTimeout(timer)
-    }, [duration, isDragging, dismiss])
+    }, [duration, isDragging, deadline, dismiss])
 
     const slideOffset = position === "top" ? -32 : 32
     const isError = type === "error"
@@ -82,7 +79,9 @@ const SnackbarItem = ({ item, onDismiss }) => {
         if (shouldDismiss) {
             setExitDirection(offset >= 0 ? 1 : -1)
             dismiss()
+            return
         }
+        setDeadline(Date.now() + duration)
     }
 
     const wrapTrigger = (trigger) => {
@@ -132,6 +131,7 @@ SnackbarItem.propTypes = {
         position: PropTypes.oneOf(["top", "bottom"]),
         duration: PropTypes.number,
         type: PropTypes.oneOf(TYPES),
+        createdAt: PropTypes.number.isRequired,
     }).isRequired,
     onDismiss: PropTypes.func.isRequired,
 }
