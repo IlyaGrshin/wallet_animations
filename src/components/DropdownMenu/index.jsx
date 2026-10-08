@@ -9,12 +9,8 @@ import Tappable from "../Tappable"
 import Text from "../Text"
 import { GlassBorder } from "../GlassEffect"
 import { useSkin } from "../../hooks/DeviceProvider"
-import { useSplitViewContext } from "../SplitView/context"
-import {
-    useClickOutside,
-    useDropdownPosition,
-    getViewportBounds,
-} from "./dropdownUtils"
+import { usePaneBounds } from "../SplitView/context"
+import { useClickOutside, useDropdownPosition } from "./dropdownUtils"
 
 import * as styles from "./DropdownMenu.module.scss"
 
@@ -62,13 +58,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
     const itemRefs = useRef([])
     const activeIndexRef = useRef(activeIndex)
 
-    const { paneRef } = useSplitViewContext()
-    const getBounds = () => {
-        const el = paneRef?.current
-        if (!el) return getViewportBounds()
-        const { left, top, right, bottom } = el.getBoundingClientRect()
-        return { left, top, right, bottom }
-    }
+    const getBounds = usePaneBounds()
 
     const { position, isPositioned, resetPosition } = useDropdownPosition(
         isOpen,
@@ -231,9 +221,10 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                                         item={item}
                                         isSelected={item === selectedItem}
                                         onClick={() => handleSelectItem(item)}
-                                        onMouseEnter={() =>
+                                        onMouseEnter={() => {
                                             setActiveIndex(index)
-                                        }
+                                            itemRefs.current[index]?.focus()
+                                        }}
                                         itemRef={(el) => {
                                             itemRefs.current[index] = el
                                         }}

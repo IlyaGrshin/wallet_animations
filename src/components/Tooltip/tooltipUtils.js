@@ -1,6 +1,10 @@
-import { useCallback } from "react"
+import { useEffect, useState } from "react"
 
-import { calculatePosition, samePosition } from "./tooltipPosition"
+import {
+    VIEWPORT_PADDING,
+    calculatePosition,
+    samePosition,
+} from "./tooltipPosition"
 import { useAnchoredPosition } from "../../hooks/useAnchoredPosition"
 
 export { useClickOutside } from "../../hooks/useClickOutside"
@@ -19,6 +23,17 @@ const INITIAL_POSITION = {
     originY: "0%",
 }
 
+const untransformedContentSize = (el) => {
+    const style = getComputedStyle(el)
+    const px = (value) => parseFloat(value) || 0
+    return {
+        width:
+            px(style.width) - px(style.paddingLeft) - px(style.paddingRight),
+        height:
+            px(style.height) - px(style.paddingTop) - px(style.paddingBottom),
+    }
+}
+
 export const useTooltipPosition = (
     isOpen,
     triggerRef,
@@ -26,20 +41,20 @@ export const useTooltipPosition = (
     tailVBreadth,
     tailHBreadth,
     tailProtrusion,
-    preferredPlacement
+    preferredPlacement,
+    getBounds,
+    maxWidth
 ) => {
-    const calculate = useCallback(
-        (triggerRect, contentSize) =>
-            calculatePosition(
-                triggerRect,
-                contentSize,
-                tailVBreadth,
-                tailHBreadth,
-                tailProtrusion,
-                preferredPlacement
-            ),
-        [tailVBreadth, tailHBreadth, tailProtrusion, preferredPlacement]
-    )
+    const calculate = (triggerRect, contentSize) =>
+        calculatePosition(
+            triggerRect,
+            contentSize,
+            tailVBreadth,
+            tailHBreadth,
+            tailProtrusion,
+            preferredPlacement,
+            getBounds()
+        )
 
     return useAnchoredPosition({
         isOpen,
@@ -48,5 +63,24 @@ export const useTooltipPosition = (
         initialPosition: INITIAL_POSITION,
         calculate,
         equals: samePosition,
+        measureKey: maxWidth,
+        getSize: untransformedContentSize,
     })
+}
+
+export const usePaneMaxWidth = (isOpen, getBounds) => {
+    const [maxWidth, setMaxWidth] = useState(null)
+
+    const fitToBounds = () => {
+        const { left, right } = getBounds()
+        setMaxWidth(right - left - VIEWPORT_PADDING * 2)
+    }
+
+    useEffect(() => {
+        if (!isOpen) return
+        window.addEventListener("resize", fitToBounds)
+        return () => window.removeEventListener("resize", fitToBounds)
+    }, [isOpen, fitToBounds])
+
+    return [maxWidth, fitToBounds]
 }
