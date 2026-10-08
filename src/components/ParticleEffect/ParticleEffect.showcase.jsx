@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import PropTypes from "prop-types"
-import { Calligraph } from "calligraph"
+import Calligraph from "../Calligraph"
 
 import Page from "../Page"
 import SectionList from "../SectionList"

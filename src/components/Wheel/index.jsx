@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
-import { Calligraph } from "calligraph"
+import Calligraph from "../Calligraph"
 import cx from "clsx"
 import * as styles from "./Wheel.module.scss"
 

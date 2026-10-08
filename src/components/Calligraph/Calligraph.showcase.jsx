@@ -1,6 +1,6 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
-import { Calligraph } from "calligraph"
+import Calligraph from "."
 
 import Page from "../Page"
 import SectionList from "../SectionList"
@@ -10,6 +10,8 @@ import Text from "../Text"
 
 import { generateRandomBalance } from "../../utils/number"
 import { BackButton } from "../../lib/twa"
+
+import * as styles from "./Calligraph.showcase.module.scss"
 
 const ANIMATIONS = ["smooth", "snappy", "bouncy"]
 
@@ -23,13 +25,7 @@ const PHRASES = [
 ]
 
 const Stage = ({ children }) => (
-    <div
-        style={{
-            display: "flex",
-            justifyContent: "center",
-            padding: "24px var(--side-padding)",
-        }}
-    >
+    <div className={styles.stage}>
         <Text variant="title1" apple={{ weight: "bold" }}>
             {children}
         </Text>
@@ -38,6 +34,35 @@ const Stage = ({ children }) => (
 
 Stage.propTypes = {
     children: PropTypes.node,
+}
+
+const Compare = ({ value }) => (
+    <div className={styles.compare}>
+        <div>
+            <Text variant="title1" apple={{ weight: "bold" }}>
+                <Calligraph
+                    variant="number"
+                    animation="smooth"
+                    autoSize={false}
+                >
+                    {value}
+                </Calligraph>
+            </Text>
+            <Text variant="caption1">Calligraph</Text>
+        </div>
+        <div>
+            <Text variant="title1" apple={{ weight: "bold" }}>
+                <Calligraph variant="number" simple>
+                    {value}
+                </Calligraph>
+            </Text>
+            <Text variant="caption1">simple</Text>
+        </div>
+    </div>
+)
+
+Compare.propTypes = {
+    value: PropTypes.string.isRequired,
 }
 
 const CalligraphShowcase = () => {
@@ -96,6 +121,24 @@ const CalligraphShowcase = () => {
                         </Cell>
                     </SectionList.Item>
 
+                    <SectionList.Item header="Calligraph vs simple — same value">
+                        <Compare value={balance} />
+                        <Cell onClick={() => step((Math.random() - 0.5) * 0.5)}>
+                            <Cell.Text type="Accent" title="Tick" />
+                        </Cell>
+                        <Cell onClick={() => step(10)}>
+                            <Cell.Text type="Accent" title="Increase" />
+                        </Cell>
+                        <Cell onClick={() => step(-10)}>
+                            <Cell.Text type="Accent" title="Decrease" />
+                        </Cell>
+                        <Cell
+                            onClick={() => setBalance(generateRandomBalance())}
+                        >
+                            <Cell.Text type="Accent" title="Randomize" />
+                        </Cell>
+                    </SectionList.Item>
+
                     <SectionList.Item header="Slots — slot-machine digit spin">
                         <Stage>
                             <Calligraph variant="slots" animation={animation}>
@@ -105,7 +148,7 @@ const CalligraphShowcase = () => {
                     </SectionList.Item>
 
                     <SectionList.Item header="Animation preset">
-                        <div style={{ padding: "12px var(--side-padding)" }}>
+                        <div className={styles.controls}>
                             <SegmentedControl
                                 segments={ANIMATIONS}
                                 defaultIndex={animIdx}
