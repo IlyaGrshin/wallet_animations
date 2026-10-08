@@ -44,10 +44,12 @@ const SOLO_AREA_K = 0.34
 // renders narrower.
 const measureCtx = document.createElement("canvas").getContext("2d")
 const emWidths = new Map()
+const EM_WIDTHS_LIMIT = 500
 const labelEm = (text, weight) => {
     const key = `${weight} ${text}`
     let em = emWidths.get(key)
     if (em === undefined) {
+        if (emWidths.size >= EM_WIDTHS_LIMIT) emWidths.clear()
         measureCtx.font = `${weight} 100px system-ui, -apple-system, sans-serif`
         em = measureCtx.measureText(text).width / 100
         emWidths.set(key, em)
@@ -101,11 +103,12 @@ const SKELETON_ROWS = Array.from({ length: TOP_COUNT }, (_, i) => ({
     volume: 0.8 ** i,
 }))
 
-const formatUpdatedAt = (date) =>
-    `Today at ${date.toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-    })}`
+const UPDATED_AT_FORMAT = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+})
+
+const formatUpdatedAt = (date) => `Today at ${UPDATED_AT_FORMAT.format(date)}`
 
 const toneClass = (change) => {
     const strength = Math.abs(change) >= 3 ? 3 : Math.abs(change) >= 1 ? 2 : 1
