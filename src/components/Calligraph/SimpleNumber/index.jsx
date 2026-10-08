@@ -31,7 +31,12 @@ const reconcile = (state, text) => {
     return { text, gen, changes }
 }
 
-export default function SimpleNumber({ value, className }) {
+export default function SimpleNumber({
+    value,
+    className,
+    as: Component = "span",
+    ...rest
+}) {
     const [state, setState] = useState({ text: value, gen: 0, changes: {} })
     const current = value === state.text ? state : reconcile(state, value)
     if (current !== state) setState(current)
@@ -39,7 +44,11 @@ export default function SimpleNumber({ value, className }) {
     const chars = Array.from(value)
 
     return (
-        <span className={cx(styles.root, className)} aria-label={value}>
+        <Component
+            aria-label={value}
+            {...rest}
+            className={cx(styles.root, className)}
+        >
             {chars.map((char, index) => {
                 const col = chars.length - 1 - index
                 const change = current.changes[col]
@@ -90,11 +99,12 @@ export default function SimpleNumber({ value, className }) {
                     </span>
                 )
             })}
-        </span>
+        </Component>
     )
 }
 
 SimpleNumber.propTypes = {
     value: PropTypes.string.isRequired,
     className: PropTypes.string,
+    as: PropTypes.elementType,
 }
