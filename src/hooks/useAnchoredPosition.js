@@ -15,6 +15,8 @@ const shallowEqual = (a, b) => {
     return true
 }
 
+const borderBoxSize = (el) => el.getBoundingClientRect()
+
 export function useAnchoredPosition({
     isOpen,
     triggerRef,
@@ -24,6 +26,7 @@ export function useAnchoredPosition({
     deps = [],
     equals = shallowEqual,
     measureKey,
+    getSize = borderBoxSize,
 }) {
     const [position, setPosition] = useState(initialPosition)
     const [isPositioned, setIsPositioned] = useState(false)
@@ -36,7 +39,7 @@ export function useAnchoredPosition({
 
     const measure = () => {
         const triggerRect = triggerRef.current.getBoundingClientRect()
-        const { width, height } = contentRef.current.getBoundingClientRect()
+        const { width, height } = getSize(contentRef.current)
         contentSizeRef.current = { width, height }
         return calculate(triggerRect, contentSizeRef.current)
     }

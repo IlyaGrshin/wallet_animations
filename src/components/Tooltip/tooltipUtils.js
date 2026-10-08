@@ -23,6 +23,17 @@ const INITIAL_POSITION = {
     originY: "0%",
 }
 
+const untransformedContentSize = (el) => {
+    const style = getComputedStyle(el)
+    const px = (value) => parseFloat(value) || 0
+    return {
+        width:
+            px(style.width) - px(style.paddingLeft) - px(style.paddingRight),
+        height:
+            px(style.height) - px(style.paddingTop) - px(style.paddingBottom),
+    }
+}
+
 export const useTooltipPosition = (
     isOpen,
     triggerRef,
@@ -53,6 +64,7 @@ export const useTooltipPosition = (
         calculate,
         equals: samePosition,
         measureKey: maxWidth,
+        getSize: untransformedContentSize,
     })
 }
 

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { useSplitViewContext } from "../SplitView/context"
 import SnackbarHost from "./SnackbarHost"
+import { triggerHaptic } from "./SnackbarItem"
 
 const SnackbarContext = createContext(null)
 
@@ -40,11 +41,13 @@ export const SnackbarProvider = ({ children }) => {
 
     useEffect(() => {
         if (panes.length === 0) return
-        const observer = new MutationObserver(() => {
+        const prune = () => {
             if (panes.every((pane) => pane.isConnected)) return
             setPanes((curr) => curr.filter((pane) => pane.isConnected))
-        })
+        }
+        const observer = new MutationObserver(prune)
         observer.observe(document.body, { childList: true, subtree: true })
+        prune()
         return () => observer.disconnect()
     }, [panes])
 
@@ -55,11 +58,15 @@ export const SnackbarProvider = ({ children }) => {
     const show = (options) => {
         idRef.current += 1
         const id = idRef.current
-        const { pane } = options
+        const { pane, type } = options
+        triggerHaptic(type)
         if (pane) {
             setPanes((curr) => (curr.includes(pane) ? curr : [...curr, pane]))
         }
-        setSnackbars((curr) => [...curr, { id, ...options }])
+        setSnackbars((curr) => [
+            ...curr,
+            { id, ...options, createdAt: Date.now() },
+        ])
         return id
     }
 
