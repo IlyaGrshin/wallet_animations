@@ -15,6 +15,7 @@ const TabBarOverlay = ({
     onChange,
     onSnapToSame,
     playKey,
+    layoutDependency,
 }) => {
     const { overlayRef, handlers } = useIndicatorDrag({
         tabsLength: tabs.length,
@@ -38,6 +39,7 @@ const TabBarOverlay = ({
                     isActive={index === activeIndex}
                     onClick={() => onChange(index)}
                     playKey={playKey}
+                    layoutDependency={layoutDependency}
                     data-overlay
                     {...tab}
                 />
@@ -88,6 +90,10 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
           }
         : {}
 
+    // Geometry only changes with the tab count or skin; motion skips layout
+    // measurement on every other re-render (e.g. each tab switch).
+    const layoutDependency = `${tabs.length}:${isApple}`
+
     const maskInsets = {
         top: 21,
         bottom: 21,
@@ -105,6 +111,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             }}
             style={rootStyle}
             layout
+            layoutDependency={layoutDependency}
         >
             <div
                 style={{
@@ -120,6 +127,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                         isActive={index === activeIndex}
                         onClick={() => handleSegmentClick(index)}
                         playKey={playKey}
+                        layoutDependency={layoutDependency}
                         {...tab}
                     />
                 ))}
@@ -130,6 +138,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                 onChange={handleSegmentClick}
                 onSnapToSame={() => setReplayNonce((n) => n + 1)}
                 playKey={playKey}
+                layoutDependency={layoutDependency}
             />
 
             <Activity mode={isApple ? "visible" : "hidden"}>
@@ -156,6 +165,7 @@ TabBarOverlay.propTypes = {
     onChange: PropTypes.func,
     onSnapToSame: PropTypes.func,
     playKey: PropTypes.string,
+    layoutDependency: PropTypes.string,
 }
 
 export default TabBar

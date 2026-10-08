@@ -16,16 +16,22 @@ const Tab = ({
     className = "",
     activeSegmentTime,
     activeSegment,
+    layoutDependency,
     ...rest
 }) => (
     <m.div
         layout
+        layoutDependency={layoutDependency}
         transition={{ type: "spring", stiffness: 800, damping: 50 }}
         {...rest}
         className={cx(styles.tab, isActive && styles.active, className)}
         onClick={onClick}
     >
-        <m.div layout className={styles.icon}>
+        <m.div
+            layout
+            layoutDependency={layoutDependency}
+            className={styles.icon}
+        >
             {lottieIcon ? (
                 <Suspense fallback={icon || null}>
                     <AnimatedIcon
@@ -40,7 +46,11 @@ const Tab = ({
                 icon
             )}
         </m.div>
-        <m.span layout style={{ display: "inline-block" }}>
+        <m.span
+            layout
+            layoutDependency={layoutDependency}
+            style={{ display: "inline-block" }}
+        >
             {label}
         </m.span>
     </m.div>
@@ -56,6 +66,7 @@ Tab.propTypes = {
     className: PropTypes.string,
     activeSegmentTime: PropTypes.number,
     activeSegment: PropTypes.arrayOf(PropTypes.number),
+    layoutDependency: PropTypes.string,
 }
 
 export default Tab
