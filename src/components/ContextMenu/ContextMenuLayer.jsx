@@ -173,6 +173,7 @@ const ContextMenuLayer = ({
                         key="menu"
                         ref={menuRef}
                         items={orderedItems}
+                        onClick={(event) => event.stopPropagation()}
                         onSelect={(item, shown) =>
                             onSelect(item, toIndex(shown))
                         }

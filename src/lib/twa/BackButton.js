@@ -30,7 +30,7 @@ const BackButton = ({ onClick }) => {
         WebApp.BackButton.show()
         return () => {
             stack.splice(stack.lastIndexOf(entry), 1)
-            WebApp.BackButton.hide()
+            if (stack.length === 0) WebApp.BackButton.hide()
         }
     }, [])
 
