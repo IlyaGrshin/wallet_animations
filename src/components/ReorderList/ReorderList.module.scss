@@ -1,0 +1,126 @@
+.group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-anchor: none;
+}
+
+.item {
+    --reorder-separator: var(--cell-separator-height);
+    --last-cell-separator-height: var(--cell-separator-height);
+
+    position: relative;
+    -webkit-touch-callout: none;
+
+    &:last-child {
+        --tg-theme-section-separator-color: transparent;
+    }
+}
+
+.lifted {
+    --tg-theme-section-separator-color: transparent;
+}
+
+.shadow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms cubic-bezier(0.23, 1, 0.32, 1);
+
+    .apple & {
+        border-radius: 24px;
+        box-shadow:
+            0 10px 30px rgb(0 0 0 / 16%),
+            0 2px 8px rgb(0 0 0 / 8%);
+    }
+
+    .material & {
+        box-shadow:
+            0 5px 5px -3px rgb(0 0 0 / 20%),
+            0 8px 10px 1px rgb(0 0 0 / 14%),
+            0 3px 14px 2px rgb(0 0 0 / 12%);
+    }
+
+    .lifted & {
+        opacity: 1;
+    }
+}
+
+.surface {
+    position: relative;
+    display: flex;
+    background-color: var(--tg-theme-section-bg-color);
+
+    .apple & {
+        clip-path: inset(0 round 0);
+        transition: clip-path 250ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .apple.lifted & {
+        clip-path: inset(0 round 24px);
+    }
+
+    .material &::after {
+        position: absolute;
+        inset: 0;
+        background-color: var(--tg-theme-text-color);
+        opacity: 0;
+        pointer-events: none;
+        content: "";
+        transition: opacity 250ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .material.lifted &::after {
+        opacity: 0.08;
+    }
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+.handle {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-bottom: var(--reorder-separator) solid
+        var(--tg-theme-section-separator-color);
+    background: none;
+    color: var(--tg-theme-hint-color);
+    cursor: grab;
+    touch-action: none;
+
+    .apple & {
+        width: calc(44px + var(--side-padding) - 10px);
+        padding-right: calc(var(--side-padding) - 10px);
+    }
+
+    .material & {
+        width: calc(48px + var(--side-padding) - 12px);
+        padding-right: calc(var(--side-padding) - 12px);
+    }
+
+    .lifted & {
+        cursor: grabbing;
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    path[fill] {
+        fill: currentcolor;
+    }
+}
+
+.icon {
+    display: flex;
+}
