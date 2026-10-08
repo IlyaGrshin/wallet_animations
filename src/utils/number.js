@@ -1,5 +1,24 @@
-export function formatToTwoDecimals(number) {
-    return Number(number.toFixed(2))
+const usdFormat = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+})
+
+const amountFormat = new Intl.NumberFormat("en-US", {
+    maximumSignificantDigits: 6,
+})
+
+export function formatUsd(value) {
+    const number = Number(value)
+    if (number > 0 && number < 0.01) return "< $0.01"
+    return `$${usdFormat.format(number)}`
+}
+
+export function formatAmount(value) {
+    return amountFormat.format(Number(value))
+}
+
+export function formatBalance(value) {
+    return usdFormat.format(Number(value))
 }
 
 export function generateRandomBalance(max = 2000) {

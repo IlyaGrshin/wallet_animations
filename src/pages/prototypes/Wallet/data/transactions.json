@@ -22,5 +22,11 @@
         "date": "July 3 at 11:24",
         "value": "5 TON",
         "status": "Sent"
+    },
+    {
+        "address": "UQBx7k9FjR2pLm4nT8vQ3sW6yZ1aC5dE0gH2iJ4kL6mN8o",
+        "date": "July 2 at 18:05",
+        "value": "12 TON",
+        "status": "Failed"
     }
 ]

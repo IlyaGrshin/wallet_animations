@@ -5,8 +5,10 @@
     flex: 1 0 0;
     justify-content: center;
     align-items: center;
-    padding: 7px 0 8px;
+    padding: 7px 4px 8px;
     border-radius: 12px;
+    text-align: center;
+    text-wrap: balance;
 
     &.filled {
         background-color: var(--tg-theme-button-color);
@@ -88,7 +90,7 @@
 
     :global(body.apple) & {
         gap: 0;
-        padding: 8px 0;
+        padding: 8px 4px;
         border-radius: 16px;
 
         svg,
