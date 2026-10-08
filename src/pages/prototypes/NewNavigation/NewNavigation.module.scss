@@ -1,20 +1,8 @@
 .container {
+    position: relative;
     display: block;
     height: calc(-49.5px - env(safe-area-inset-bottom) + 100vh);
     overflow-x: hidden;
-
-    .view {
-        overflow-y: scroll;
-        height: 100%;
-
-        :global(body.apple) & {
-            padding-bottom: 80px;
-        }
-
-        :global(body.material) & {
-            padding-bottom: 88px;
-        }
-    }
 
     :global(body.apple) &,
     :global(body.material) & {
@@ -29,52 +17,6 @@
     right: 0;
     z-index: 10;
     pointer-events: none;
-}
-
-.viewBody {
-    position: relative;
-    min-height: 100%;
-}
-
-.searchHeader {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-
-    &::before {
-        content: "";
-        position: absolute;
-        inset: 0 0 -16px;
-        z-index: -1;
-
-        --fade-color: var(
-            --page-background,
-            var(--tg-theme-secondary-bg-color)
-        );
-
-        background: linear-gradient(
-            to bottom,
-            var(--fade-color),
-            rgb(from var(--fade-color) r g b / 0%)
-        );
-        opacity: 0;
-        transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-        pointer-events: none;
-    }
-
-    :global(body.material) &::before {
-        inset: 0;
-        background: rgb(from var(--fade-color) r g b / 80%);
-        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
-    }
-
-    &.scrolled::before {
-        opacity: 1;
-    }
-
-    :global(body.material) &.scrolled::before {
-        backdrop-filter: blur(10px);
-    }
 }
 
 .tabBarHit {

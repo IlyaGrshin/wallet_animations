@@ -9,6 +9,7 @@ import { openQuoteStream } from "../utils/tradingViewQuotes"
 const ENDPOINT = "https://scanner.tradingview.com/coin/scan"
 const SCANNER_INTERVAL = 60_000
 const FLUSH_INTERVAL = 1_000
+const IDLE_TEARDOWN = 30_000
 
 const REQUEST = {
     columns: [
@@ -53,6 +54,7 @@ const ticks = new Map() // quoteSymbol -> latest streamed fields + `at`
 const subscribers = new Set()
 let scannerTimer = null
 let flushTimer = null
+let teardownTimer = null
 let stream = null
 let streamKey = ""
 let dirty = false
@@ -134,9 +136,23 @@ const refresh = async () => {
     }
 }
 
+const teardown = () => {
+    teardownTimer = null
+    clearInterval(scannerTimer)
+    clearInterval(flushTimer)
+    scannerTimer = null
+    flushTimer = null
+    stream?.close()
+    stream = null
+    streamKey = ""
+    ticks.clear() // drop the stale price cache; next mount refetches
+}
+
 const subscribe = (listener) => {
     subscribers.add(listener)
-    if (subscribers.size === 1) {
+    clearTimeout(teardownTimer)
+    teardownTimer = null
+    if (!scannerTimer) {
         refresh()
         scannerTimer = setInterval(refresh, SCANNER_INTERVAL)
         flushTimer = setInterval(flush, FLUSH_INTERVAL)
@@ -144,12 +160,7 @@ const subscribe = (listener) => {
     return () => {
         subscribers.delete(listener)
         if (subscribers.size) return
-        clearInterval(scannerTimer)
-        clearInterval(flushTimer)
-        stream?.close()
-        stream = null
-        streamKey = ""
-        ticks.clear() // drop the stale price cache; next mount refetches
+        teardownTimer = setTimeout(teardown, IDLE_TEARDOWN)
     }
 }
 

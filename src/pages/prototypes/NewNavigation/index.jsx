@@ -1,24 +1,21 @@
 import { useState, useEffect } from "react"
-import * as m from "motion/react-m"
-import { AnimatePresence } from "motion/react"
-import cx from "clsx"
 import WebApp, { BackButton } from "../../../lib/twa"
 import Page from "../../../components/Page"
 
 import { useSegmentNavigation } from "./hooks/useSegmentNavigation"
+import { useKeepAliveTabs } from "./hooks/useKeepAliveTabs"
 import SearchHeader from "./components/SearchHeader"
-import { useScrolled } from "../../../hooks/useScrolled"
+import TabLayer from "./components/TabLayer"
 
 import TabBar from "../../../components/TabBar"
 import { useSkin } from "../../../hooks/DeviceProvider"
-import { getTabsConfig, pageVariants } from "./navigationConfig"
+import { getTabsConfig } from "./navigationConfig"
 
 import * as styles from "./NewNavigation.module.scss"
 
 function NewNavigation() {
     const { isApple } = useSkin()
     const { activeSegment, handleSegmentChange } = useSegmentNavigation()
-    const [headerRef, headerScrolled] = useScrolled(activeSegment === 0)
     const currentPrefix = activeSegment === 0 ? "wallet" : "ton"
     const [prevPrefix, setPrevPrefix] = useState(currentPrefix)
 
@@ -58,8 +55,8 @@ function NewNavigation() {
     const previousIndex =
         activeSegment === 0 ? prevIndices.wallet : prevIndices.ton
 
-    const currentView = activeTabs[activeIndex]?.view || null
     const currentKey = `${currentPrefix}-${activeIndex}`
+    const { visited, statusOf, markExited } = useKeepAliveTabs(currentKey)
     const isSegmentSwitch = prevPrefix !== currentPrefix
     const direction = previousIndex < activeIndex ? 1 : -1
 
@@ -94,37 +91,21 @@ function NewNavigation() {
             />
 
             <div className={styles.container}>
-                <AnimatePresence
-                    mode="popLayout"
-                    initial={false}
-                    custom={animationCustom}
-                    inherit={false}
-                >
-                    <m.div
-                        variants={pageVariants}
-                        initial="initial"
-                        animate="animate"
-                        exit="exit"
-                        custom={animationCustom}
-                        key={currentKey}
-                        className={styles.view}
-                    >
-                        <div className={styles.viewBody}>
-                            {activeSegment === 0 && (
-                                <div
-                                    ref={headerRef}
-                                    className={cx(
-                                        styles.searchHeader,
-                                        headerScrolled && styles.scrolled
-                                    )}
-                                >
-                                    <SearchHeader />
-                                </div>
-                            )}
-                            {currentView}
-                        </div>
-                    </m.div>
-                </AnimatePresence>
+                {visited.map((key) => {
+                    const [prefix, index] = key.split("-")
+                    return (
+                        <TabLayer
+                            key={key}
+                            status={statusOf(key)}
+                            custom={animationCustom}
+                            animateMount={key !== visited[0]}
+                            onExited={() => markExited(key)}
+                        >
+                            {prefix === "wallet" && <SearchHeader />}
+                            {tabsConfig[prefix][index]?.view}
+                        </TabLayer>
+                    )
+                })}
             </div>
 
             <div className={styles.tabBarWrapper}>

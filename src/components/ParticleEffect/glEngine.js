@@ -84,6 +84,8 @@ export function createEngine({
         count: 0,
         w: 0,
         h: 0,
+        contentW: 0,
+        contentH: 0,
         dpr: 1,
         radius: 0,
         color: [1, 1, 1],
@@ -146,7 +148,17 @@ export function createEngine({
     const resize = () => {
         const rect = content.getBoundingClientRect()
         if (rect.width <= 0 || rect.height <= 0) return
-        e.dpr = Math.min(window.devicePixelRatio || 1, DPR_MAX)
+        const dpr = Math.min(window.devicePixelRatio || 1, DPR_MAX)
+        if (
+            rect.width === e.contentW &&
+            rect.height === e.contentH &&
+            dpr === e.dpr
+        ) {
+            return
+        }
+        e.contentW = rect.width
+        e.contentH = rect.height
+        e.dpr = dpr
         // Headroom around the content so particles have room to billow (shader
         // motion scales with the canvas's short side). The demo runs a ~500css
         // square over ~48css text rows, so default to ~1x the content height
