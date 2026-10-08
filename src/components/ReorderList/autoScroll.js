@@ -46,7 +46,10 @@ export const startAutoScroll = (element, initialY, pointerId) => {
         carry += delta * elapsed
         const whole = Math.trunc(carry)
         if (!whole) return
-        scroller.scrollTop += whole
+        scroller.scrollTo({
+            top: scroller.scrollTop + whole,
+            behavior: "instant",
+        })
         carry -= whole
     }
 

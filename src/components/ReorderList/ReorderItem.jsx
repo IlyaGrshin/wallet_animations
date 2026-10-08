@@ -83,6 +83,7 @@ const ReorderItem = ({ value, label, children, className }) => {
         >
             <div aria-hidden className={styles.shadow} />
             <div className={styles.surface}>
+                {children}
                 <AnimatePresence initial={false}>
                     {editing && (
                         <Tappable
@@ -112,7 +113,6 @@ const ReorderItem = ({ value, label, children, className }) => {
                         </Tappable>
                     )}
                 </AnimatePresence>
-                {children}
             </div>
         </m.div>
     )
