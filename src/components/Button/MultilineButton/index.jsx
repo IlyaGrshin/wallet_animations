@@ -55,7 +55,7 @@ export function MultilineButton({ variant, icon, label, style, ...props }) {
             style={style}
             {...props}
         >
-            {variant === "filled" && !skeleton && <FilledGlass />}
+            {isApple && variant === "filled" && !skeleton && <FilledGlass />}
             {icon}
             {skeleton ? <Skeleton active={false}>{label_}</Skeleton> : label_}
         </Root>

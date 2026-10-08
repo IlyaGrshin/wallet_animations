@@ -70,7 +70,7 @@ export const RegularButton = ({
             {...dynamicProps}
             {...props}
         >
-            {variant === "filled" && !skeleton && <FilledGlass />}
+            {isApple && variant === "filled" && !skeleton && <FilledGlass />}
             {skeleton ? (
                 // Turn redaction off for the hidden label so it doesn't draw its
                 // own bar inside the pill; it stays for width only.

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import * as styles from "./GlassGlare.module.scss"
 
 /**
@@ -13,8 +14,8 @@ import * as styles from "./GlassGlare.module.scss"
  * @example
  * <GlassGlare />
  */
-const GlassGlare = ({ className = "" }) => (
-    <div className={`${styles.glassGlare} ${className}`} aria-hidden="true" />
+const GlassGlare = ({ className }) => (
+    <div className={cx(styles.glassGlare, className)} aria-hidden="true" />
 )
 
 GlassGlare.propTypes = {
