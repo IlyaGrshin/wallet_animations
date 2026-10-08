@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { useSplitViewContext } from "../SplitView/context"
 import SnackbarHost from "./SnackbarHost"
-import { triggerHaptic } from "./SnackbarItem"
+import { haptic } from "../../lib/twa"
 
 const SnackbarContext = createContext(null)
 
@@ -59,7 +59,7 @@ export const SnackbarProvider = ({ children }) => {
         idRef.current += 1
         const id = idRef.current
         const { pane, type } = options
-        triggerHaptic(type)
+        if (type) haptic.notify(type)
         if (pane) {
             setPanes((curr) => (curr.includes(pane) ? curr : [...curr, pane]))
         }

@@ -1,0 +1,11 @@
+.buttons {
+    display: flex;
+    gap: 12px;
+    padding: 12px var(--side-padding);
+}
+
+.avatars {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px var(--side-padding);
+}

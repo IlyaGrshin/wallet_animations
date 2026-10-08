@@ -114,6 +114,19 @@ const config = [
                 ),
             },
             {
+                title: "Swipe Actions",
+                component: lazyWithPreload(
+                    () => import("../components/SwipeCell/SwipeCell.showcase")
+                ),
+            },
+            {
+                title: "Context Menu",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/ContextMenu/ContextMenu.showcase")
+                ),
+            },
+            {
                 title: "Tooltip",
                 component: lazyWithPreload(
                     () => import("../components/Tooltip/Tooltip.showcase")
