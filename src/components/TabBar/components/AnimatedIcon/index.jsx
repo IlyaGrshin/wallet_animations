@@ -34,9 +34,12 @@ const AnimatedIcon = ({
 
     const fps = readMeta(markup, "fps")
     const lastFrame = readMeta(markup, "frames")
-    const activeFrame = activeSegment
-        ? activeSegment[1]
-        : Math.round((activeSegmentTime || 0.5) * fps)
+    const activeFrame = Math.min(
+        lastFrame - 1,
+        activeSegment
+            ? activeSegment[1]
+            : Math.round((activeSegmentTime || 0.5) * fps),
+    )
 
     useLayoutEffect(() => {
         const svg = rootRef.current?.firstElementChild
