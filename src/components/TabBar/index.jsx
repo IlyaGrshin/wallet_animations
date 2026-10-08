@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, Activity } from "react"
+import { useRef, useState, Activity } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { useSkin } from "../../hooks/DeviceProvider"
@@ -53,13 +53,18 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
     const [replayNonce, setReplayNonce] = useState(0)
 
-    useEffect(() => {
+    // Sync with props during render instead of in effects: no extra commit
+    // with a stale index.
+    const [prevDefaultIndex, setPrevDefaultIndex] = useState(defaultIndex)
+    if (defaultIndex !== prevDefaultIndex) {
+        setPrevDefaultIndex(defaultIndex)
         setActiveIndex(defaultIndex)
-    }, [defaultIndex])
-
-    useEffect(() => {
+    }
+    const [prevTabsLength, setPrevTabsLength] = useState(tabs.length)
+    if (tabs.length !== prevTabsLength) {
+        setPrevTabsLength(tabs.length)
         setActiveIndex((prev) => Math.min(prev, tabs.length - 1))
-    }, [tabs.length])
+    }
 
     const handleSegmentClick = (index) => {
         if (index === activeIndex) {
