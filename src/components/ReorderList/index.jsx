@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import PropTypes from "prop-types"
 import cx from "clsx"
 
@@ -40,11 +40,7 @@ const ReorderList = ({
 }) => {
     const groupRef = useRef(null)
     const itemsRef = useRef(new Map())
-    const pendingRef = useRef(false)
-
-    useEffect(() => {
-        pendingRef.current = false
-    })
+    const pendingRef = useRef(null)
 
     const moveTo = (value, to) => {
         const from = values.indexOf(value)
@@ -53,7 +49,7 @@ const ReorderList = ({
         const next = [...values]
         next.splice(from, 1)
         next.splice(to, 0, value)
-        pendingRef.current = true
+        pendingRef.current = values
         haptic.selection()
         onReorder(next)
         return true
@@ -70,7 +66,7 @@ const ReorderList = ({
             }
         },
         track: (value, offset) => {
-            if (pendingRef.current) return
+            if (pendingRef.current === values) return
             const items = itemsRef.current
             const index = values.indexOf(value)
             const element = items.get(value)

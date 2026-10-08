@@ -50,11 +50,11 @@ export const startAutoScroll = (element, initialY, pointerId) => {
         carry -= whole
     }
 
-    window.addEventListener("pointermove", onMove)
+    window.addEventListener("pointermove", onMove, true)
     frame = requestAnimationFrame(tick)
 
     return () => {
         cancelAnimationFrame(frame)
-        window.removeEventListener("pointermove", onMove)
+        window.removeEventListener("pointermove", onMove, true)
     }
 }
