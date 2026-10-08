@@ -121,7 +121,8 @@
             fill: var(--active-color) !important;
         }
 
-        :global(.wallet-lottie_stroke-color) path {
+        :global(.wallet-lottie_stroke-color) path,
+        path[stroke] {
             stroke: var(--active-color) !important;
         }
 

@@ -15,7 +15,8 @@
         fill: var(--tg-theme-text-color);
     }
 
-    :global(.wallet-lottie_stroke-color) path {
+    :global(.wallet-lottie_stroke-color) path,
+    path[stroke] {
         stroke: var(--tg-theme-text-color);
     }
 
