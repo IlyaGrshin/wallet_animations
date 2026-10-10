@@ -1,5 +1,10 @@
 .button {
     position: relative;
+    display: block;
+    margin: 0;
+    border: none;
+    font: inherit;
+    appearance: none;
     width: fit-content;
     text-align: center;
     overflow: hidden;

@@ -1,0 +1,179 @@
+// The wallet's two amounts live here for real: they start over the card wearing
+// its rounded, tinted look and scroll carries them into the bar's title slot,
+// where they settle into the navigation typography.
+.headerBalances {
+    display: grid;
+    place-items: center;
+
+    --wallet-amount-tint: oklch(
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.22) calc(c * 0.75) h
+    );
+
+    :global(body.apple) & {
+        --wallet-amount-tint: oklch(
+            from var(--tg-theme-accent-text-color)
+            calc(l + 0.2) calc(c * 0.95) h
+        );
+    }
+}
+
+.walletTitle {
+    grid-area: 1 / 1;
+}
+
+.balancesStack {
+    grid-area: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// TabBar's trick: each line renders twice, bar look under card look, stacked
+// in one grid cell. The card look is cut by a clip-path whose edge follows the
+// card's bottom, so every part of a line recolours in one geometric sweep.
+.gramLine,
+.fiatLine {
+    display: grid;
+    transform-origin: left center;
+    white-space: nowrap;
+    font-family: var(--rounded-stack);
+}
+
+.gramLine {
+    font-weight: 500;
+
+    :global(body.apple) & {
+        font-weight: 600;
+    }
+}
+
+// The page owns the tilt: useDeviceTilt writes --tilt-x/--tilt-y here so the
+// card scene and the parked balance lines read one shared, flight-damped tilt.
+.tiltScope {
+    display: contents;
+
+    &[data-flying] :is(.gramLine, .fiatLine, .cardShell) {
+        will-change: transform;
+    }
+}
+
+// Mirrors WalletCard's .body rotation (0.24rad per axis, same order and
+// signs) about the card's centre, so the parked lines ride the card's plane.
+// The pivot and perspective come from the flight's measurements.
+.lineTilt {
+    display: grid;
+    transform-origin: var(--line-tilt-origin, center);
+    will-change: transform;
+    transform:
+        perspective(var(--line-tilt-perspective, 10000px))
+        rotateX(calc(var(--tilt-y) * -0.24rad))
+        rotateY(calc(var(--tilt-x) * 0.24rad));
+}
+
+.lineLayer {
+    grid-area: 1 / 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.36em;
+}
+
+.barLook {
+    color: var(--tg-theme-text-color);
+
+    .gem {
+        color: var(--tg-theme-accent-text-color);
+    }
+}
+
+.fiatLine .barLook {
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+.cardLook {
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
+}
+
+.fiatLine .cardLook {
+    color: var(--wallet-amount-tint);
+}
+
+.gem {
+    display: flex;
+    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+    transform-origin: left center;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    svg path {
+        fill: currentcolor;
+    }
+}
+
+.gramUnit {
+    position: absolute;
+    left: 100%;
+    margin-left: 0.27em;
+    color: var(--wallet-amount-tint);
+}
+
+.cardShell {
+    align-self: stretch;
+    transform-origin: top center;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+
+    :global(body.material) & {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+}
+
+.action {
+    flex: 1 1 0;
+}
+
+.glassHeader {
+    padding: 0;
+
+    :global(body.material) & {
+        padding-top: 4px;
+    }
+}
+
+.sectionContainer {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    overflow: hidden;
+    background-color: var(--tg-theme-section-bg-color);
+
+    :global(body.apple) & {
+        border-radius: 26px;
+    }
+
+    :global(body.material) & {
+        border-radius: 16px;
+        box-shadow: 0 0.33px 1px 0 rgb(0 0 0 / 6%);
+    }
+}
+

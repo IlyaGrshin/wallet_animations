@@ -1,0 +1,235 @@
+@use "card" as *;
+
+@property --tilt-x {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+}
+
+@property --tilt-y {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+}
+
+@property --shine-mag {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 0;
+}
+
+@property --light-swing {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0deg;
+}
+
+// Axis order and signs carried over from the WebGL card (the pointed-at edge
+// recedes), toned down: 0.24rad per axis against its 0.32, and a farther
+// camera so the near edge barely magnifies and the card holds its apparent
+// size at any angle. GramWallet.module.scss .lineTilt mirrors these numbers
+// for the balance lines that fly in from the header.
+// Tilt input arrives as inherited --tilt-x/--tilt-y: written by useDeviceTilt
+// onto this element when the card manages tilt itself, or onto a page-level
+// ancestor when the page shares the tilt with elements riding the card.
+.scene {
+    --card-bg: oklch(
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.035) calc(c * 0.8) h
+    );
+    --shine-base: oklch(
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.105) calc(c * 0.73) h
+    );
+    --card-amount-tint: oklch(
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.22) calc(c * 0.75) h
+    );
+    --shine-mag: calc(
+        var(--tilt-x) * var(--tilt-x) + var(--tilt-y) * var(--tilt-y)
+    );
+
+    // One light, fixed in front of and below the viewer axis. Every lit
+    // surface derives from the same two channels with shared signs:
+    // --tilt-x sweeps the light's azimuth across the card (--light-swing,
+    // read by the shine, the star mask and the shadow azimuth), --tilt-y
+    // tips the surface into (+) or away from (-) the light, brightening the
+    // shine, the fresnel rim, the edge and sliding highlights. Shadows fall
+    // along --shadow-angle, directly opposite the light: the inner shadow
+    // and the embossed/engraved type all read it. Per-surface coefficients
+    // are material response, not separate lights.
+    --light-swing: calc(var(--tilt-x) * 60deg);
+    --shadow-angle: calc(212deg + var(--light-swing));
+
+    position: relative;
+    width: 100%;
+    aspect-ratio: #{$card-w} / #{$card-h};
+    container-type: inline-size;
+    perspective: cq(1000);
+
+    :global(body.apple) & {
+        --card-bg: var(--tg-theme-accent-text-color);
+        --shine-base: oklch(
+            from var(--tg-theme-accent-text-color)
+            calc(l + 0.066) calc(c * 0.8) h
+        );
+        --card-amount-tint: oklch(
+            from var(--tg-theme-accent-text-color)
+            calc(l + 0.2) calc(c * 0.95) h
+        );
+    }
+}
+
+.body {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+    transform:
+        rotateX(calc(var(--tilt-y) * -0.24rad))
+        rotateY(calc(var(--tilt-x) * 0.24rad));
+}
+
+// The card's thickness: a darker slab in the same plane, slid toward the edge
+// the tilt raises. At rest it sits exactly under the face; the offset is the
+// back-face parallax of a plastic-card slab (about 6px of body at this size,
+// times sin of the max tilt). Both the body and the hairline on its outer
+// lip take the shared tilt-y light response, so the sliver reads as a lit
+// plastic face, not a flat backing.
+.edge {
+    position: absolute;
+    inset: 0;
+    border-radius: cq(20);
+    background: oklch(
+        from var(--card-bg)
+        calc(l - 0.1 + var(--tilt-y) * 0.05) calc(c * 0.9) h
+    );
+    box-shadow:
+        inset 0 0 0 cq(0.6)
+        oklch(
+            from var(--card-bg)
+            calc(l + 0.06 + var(--tilt-y) * 0.08) calc(c * 0.85) h
+        );
+    transform: translate(
+        calc(var(--tilt-x) * cq(-1.5)),
+        calc(var(--tilt-y) * cq(-1.5))
+    );
+    pointer-events: none;
+}
+
+.root {
+    position: absolute;
+    inset: 0;
+    container-type: inline-size;
+    background: var(--card-bg);
+    border-radius: cq(20);
+    overflow: clip;
+    isolation: isolate;
+    color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
+    -webkit-font-smoothing: antialiased;
+}
+
+// Iridescent foil: the hue leans with the viewing angle (unitless hue math —
+// mixing deg into the channel number breaks the calc), shared with the
+// fresnel rim so the whole coating shifts as one.
+.shine {
+    --shine-l-shift: calc(var(--tilt-y) * 0.1);
+    --shine-hue-shift: calc(var(--tilt-x) * 12);
+    --shine-color: oklch(
+        from var(--shine-base)
+        calc(l + var(--shine-l-shift)) c calc(h + var(--shine-hue-shift))
+    );
+    --shine-spread: calc(11% + var(--shine-mag) * 6%);
+
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    overflow: clip;
+    pointer-events: none;
+    mix-blend-mode: plus-lighter;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: cq(349.5);
+        height: cq(349.5);
+        will-change: transform;
+        transform:
+            translate(-50%, calc(-50% + var(--tilt-y) * -6%))
+            rotate(calc(-58deg + var(--light-swing)))
+            scale(1, 1.65);
+        background: conic-gradient(
+            from 90deg in oklch,
+            oklch(0% 0 0deg / 0%) 0%,
+            oklch(0% 0 0deg / 0%) calc(25% - var(--shine-spread)),
+            var(--shine-color) 25%,
+            oklch(0% 0 0deg / 0%) calc(25% + var(--shine-spread)),
+            oklch(0% 0 0deg / 0%) calc(75% - var(--shine-spread)),
+            var(--shine-color) 75%,
+            oklch(0% 0 0deg / 0%) calc(75% + var(--shine-spread)),
+            oklch(0% 0 0deg / 0%) 100%
+        );
+        opacity: 0.14;
+    }
+}
+
+.blur {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgb(255 255 255 / 1%);
+    backdrop-filter: blur(cq(10));
+    pointer-events: none;
+}
+
+
+// Grazing light: the receding edge catches a soft rim of the shared light,
+// growing with how far the card tips (fresnel-wise) and gone at rest. The
+// inset shadow offsets away from the pointer, so the band hugs whichever
+// edge is turning away from the viewer.
+.fresnel {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    mix-blend-mode: plus-lighter;
+    opacity: calc(var(--shine-mag) * 0.3);
+    box-shadow:
+        inset
+        calc(var(--tilt-x) * #{cq(-10)})
+        calc(var(--tilt-y) * #{cq(-10)})
+        cq(18)
+        cq(-8)
+        oklch(
+            from var(--shine-base)
+            calc(l + 0.2) c calc(h + var(--tilt-x) * 12) / 55%
+        );
+}
+
+// Rides the shared --shadow-angle; tipping into the light (+tilt-y) pulls
+// the shadow in short while tipping away lengthens it.
+.innerShadow {
+    --shadow-distance: calc(#{cq(1)} * (1 - var(--tilt-y) * 0.35));
+
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+        inset
+        calc(-1 * sin(var(--shadow-angle)) * var(--shadow-distance))
+        calc(cos(var(--shadow-angle)) * var(--shadow-distance))
+        cq(1)
+        0
+        rgb(0 0 0 / 16%);
+    pointer-events: none;
+}
+
+.zonesDebug {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}

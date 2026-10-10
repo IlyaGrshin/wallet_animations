@@ -36,14 +36,12 @@ const patchBackButton = () => {
 }
 
 patchBackButton()
+WebApp.ready()
 
 function App() {
     useEffect(() => {
         initializeViewTransitions()
-
-        return () => {
-            cleanupViewTransitions()
-        }
+        return cleanupViewTransitions
     }, [])
 
     return (

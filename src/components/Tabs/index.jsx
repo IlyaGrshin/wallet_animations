@@ -14,6 +14,7 @@ const Tabs = ({
     activeTabIndex = 0,
     onChange,
     scrollable = false,
+    hug = false,
     variant,
     className,
     ...props
@@ -68,14 +69,13 @@ const Tabs = ({
         tabRefs.current[nextIndex]?.focus()
     }
 
-    const listClass = [
+    const listClass = cx(
         styles.list,
-        scrollable ? styles.scrollable : "",
-        isCompact ? styles.compact : "",
-        isGlass ? styles.glassList : "",
-    ]
-        .filter(Boolean)
-        .join(" ")
+        scrollable && styles.scrollable,
+        hug && styles.hug,
+        isCompact && styles.compact,
+        isGlass && styles.glassList
+    )
 
     const transition = reduceMotion ? { duration: 0 } : SPRING.GENTLE
 
@@ -121,7 +121,10 @@ const Tabs = ({
 
     if (isGlass) {
         return (
-            <div className={cx(styles.glassRoot, className)} {...props}>
+            <div
+                className={cx(styles.glassRoot, hug && styles.hug, className)}
+                {...props}
+            >
                 <GlassContainer />
                 <div
                     ref={rootRef}
@@ -153,6 +156,7 @@ Tabs.propTypes = {
     activeTabIndex: PropTypes.number,
     onChange: PropTypes.func,
     scrollable: PropTypes.bool,
+    hug: PropTypes.bool,
     variant: PropTypes.oneOf(["compact", "glass"]),
     className: PropTypes.string,
 }

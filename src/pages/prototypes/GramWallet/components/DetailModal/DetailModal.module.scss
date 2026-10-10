@@ -1,0 +1,30 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+}
+
+.image {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 20px;
+
+    :global(body.material) & {
+        border-radius: 12px;
+    }
+}
+
+.description {
+    margin-top: -8px;
+    color: var(--tg-theme-subtitle-text-color);
+    text-align: center;
+    text-wrap: pretty;
+}
+
+.empty {
+    padding: 12px 0;
+    color: var(--tg-theme-subtitle-text-color);
+}
