@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import Cell from "../../../../../components/Cells"
 import ImageAvatar from "../../../../../components/ImageAvatar"
@@ -71,14 +72,19 @@ const Transactions = ({ items, hasMore, loadMore }) => {
                     <Cell
                         key={tx.id}
                         as="button"
+                        align="top"
                         start={renderAvatar(tx)}
                         end={
-                            tx.amount && (
+                            tx.listAmount && (
                                 <Cell.End
                                     label={
                                         <Amount
-                                            value={tx.amount}
+                                            value={tx.listAmount}
                                             unit={tx.unit}
+                                            className={cx(
+                                                styles.amount,
+                                                tx.incoming && styles.incoming
+                                            )}
                                         />
                                     }
                                 />
@@ -121,7 +127,8 @@ Transactions.propTypes = {
             name: PropTypes.string.isRequired,
             description: PropTypes.string,
             caption: PropTypes.string,
-            amount: PropTypes.string,
+            listAmount: PropTypes.string,
+            incoming: PropTypes.bool,
             unit: PropTypes.string,
             icon: PropTypes.string,
             nft: PropTypes.shape({

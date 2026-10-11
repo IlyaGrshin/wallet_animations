@@ -9,9 +9,10 @@ import { RegularButton } from "../../../components/Button"
 import Tabs from "../../../components/Tabs"
 import TabContent from "../../../components/Tabs/TabContent"
 import SectionList from "../../../components/SectionList"
+import SectionHeader from "../../../components/SectionHeader"
 import { BackButton, getUser } from "../../../lib/twa"
 
-import { MY_ADDRESS, SEND_PATH } from "./constants"
+import { MIN_VISIBLE_GRAM, MY_ADDRESS, SEND_PATH } from "./constants"
 import Collectibles from "./components/Collectibles"
 import Feedback from "./components/Feedback"
 import Transactions from "./components/Transactions"
@@ -174,6 +175,12 @@ const Wallet = () => {
                                     {renderTabContent()}
                                 </TabContent>
                             </div>
+                            {tabIndex === 0 && (
+                                <SectionHeader
+                                    type="Footer"
+                                    title={`Transactions under ${MIN_VISIBLE_GRAM} Grams are hidden.`}
+                                />
+                            )}
                         </section>
                     </SectionList>
                 </div>

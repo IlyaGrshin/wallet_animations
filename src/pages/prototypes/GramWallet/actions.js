@@ -1,10 +1,16 @@
 import { formatTimestamp } from "./helpers"
 import { shortenAddress, shortenFriendly } from "../../../utils/address"
 import { isFragmentUri, rawKey } from "./nft"
-import { TON_DECIMALS } from "./constants"
+import { MIN_VISIBLE_GRAM, TON_DECIMALS } from "./constants"
 
 const amountFmt = new Intl.NumberFormat("en-US", {
     maximumFractionDigits: TON_DECIMALS,
+})
+
+const listAmountFmt = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 2,
+    maximumSignificantDigits: 2,
+    roundingPriority: "morePrecision",
 })
 
 const PARTIES = {
@@ -19,9 +25,9 @@ function tokenInfo(metadata, address) {
     return entry?.token_info?.[0] || {}
 }
 
-function formatAmount(raw, decimals) {
+function formatAmount(raw, decimals, fmt = amountFmt) {
     if (raw == null) return null
-    return amountFmt.format(Number(raw) / 10 ** decimals)
+    return fmt.format(Number(raw) / 10 ** decimals)
 }
 
 function partyName(addressBook, address) {
@@ -34,8 +40,11 @@ function partyName(addressBook, address) {
 }
 
 function tonRow(details) {
+    if (Number(details.value) / 10 ** TON_DECIMALS < MIN_VISIBLE_GRAM)
+        return null
     return {
         amount: formatAmount(details.value, TON_DECIMALS),
+        listAmount: formatAmount(details.value, TON_DECIMALS, listAmountFmt),
         unit: "Gram",
     }
 }
@@ -47,6 +56,7 @@ function nftRow(details, metadata) {
     const extra = item.extra || {}
     return {
         amount: "1",
+        listAmount: "1",
         unit: "Gift",
         nftAddress: details.nft_item,
         nft: {
@@ -85,6 +95,8 @@ function mapAction(action, myRawAddress, metadata, addressBook) {
                 : incoming ? "Deposit" : "Withdrawal",
         caption: formatTimestamp(action.start_utime),
         amount: row.amount ? `${sign}${row.amount}` : null,
+        listAmount: row.listAmount ? `${sign}${row.listAmount}` : null,
+        incoming,
         unit: row.unit,
         nftAddress: row.nftAddress,
         nft: row.nft,
