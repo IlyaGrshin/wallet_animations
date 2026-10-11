@@ -146,6 +146,10 @@ button.root {
         .end {
             gap: 1px;
         }
+
+        &.alignTop .end {
+            padding-top: 9px;
+        }
     }
 
     :global(body.material) & {
@@ -194,5 +198,19 @@ button.root {
         .end {
             gap: 2px;
         }
+
+        &.alignTop .end {
+            padding-top: 9px;
+        }
+    }
+}
+
+.alignTop {
+    .start {
+        align-items: flex-start;
+    }
+
+    .end {
+        justify-content: flex-start;
     }
 }
