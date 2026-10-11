@@ -1,6 +1,9 @@
+import { useRef } from "react"
 import PropTypes from "prop-types"
 import { Calligraph } from "calligraph"
 import cx from "clsx"
+import CardDiamond from "./CardDiamond"
+import paintTextLens from "../GramDiamond/paintTextLens"
 import GramIcon from "../../icons/28/Gram.svg?react"
 import * as styles from "./CardBalance.module.scss"
 
@@ -21,6 +24,15 @@ export default function CardBalance({
     balanceRef,
 }) {
     const [gramWhole, gramFraction] = splitAmount(gramAmount)
+    const wholeRef = useRef(null)
+    const fractionRef = useRef(null)
+
+    const paintLens = (canvas) =>
+        paintTextLens(canvas, [
+            [wholeRef.current, gramWhole],
+            [fractionRef.current, gramFraction],
+            [fiatRef.current, balance],
+        ])
 
     return (
         <>
@@ -32,13 +44,24 @@ export default function CardBalance({
                         valuesHidden && styles.hiddenValue
                     )}
                 >
-                    <GramIcon className={styles.coinIcon} />
-                    <span className={styles.amountValue}>
+                    {valuesHidden ? (
+                        <GramIcon className={styles.coinIcon} />
+                    ) : (
+                        <CardDiamond
+                            className={styles.coinIcon}
+                            lens={paintLens}
+                            lensKey={`${gramAmount} ${balance}`}
+                        />
+                    )}
+                    <span ref={wholeRef} className={styles.amountValue}>
                         <Calligraph variant="number" animation="smooth">
                             {gramWhole}
                         </Calligraph>
                         {gramFraction && (
-                            <span className={styles.amountFraction}>
+                            <span
+                                ref={fractionRef}
+                                className={styles.amountFraction}
+                            >
                                 <Calligraph variant="number" animation="smooth">
                                     {gramFraction}
                                 </Calligraph>
