@@ -1,0 +1,27 @@
+.root {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+.interactive {
+    border-radius: 50%;
+    cursor: grab;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+        cursor: grabbing;
+    }
+}
+
+.canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100% * var(--diamond-overflow, 3));
+    height: calc(100% * var(--diamond-overflow, 3));
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}

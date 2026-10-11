@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import WebApp from "../../lib/twa"
+import WebApp from "../lib/twa"
 
 export function useViewportHeight() {
     const [height, setHeight] = useState(

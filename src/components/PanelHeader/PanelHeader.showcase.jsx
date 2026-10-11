@@ -50,6 +50,21 @@ Sample.propTypes = {
     children: PropTypes.node,
 }
 
+const EdgeFiller = () => (
+    <div className={styles.edgeFiller}>
+        {Array.from({ length: 12 }, (_, index) => (
+            <div key={index} className={styles.edgeRow}>
+                <Text
+                    apple={{ variant: "body" }}
+                    material={{ variant: "body" }}
+                >
+                    Row {index + 1}
+                </Text>
+            </div>
+        ))}
+    </div>
+)
+
 const PanelHeaderShowcase = () => {
     const { isApple } = useSkin()
     const avatarUrl = useAvatarUrl()
@@ -154,6 +169,34 @@ const PanelHeaderShowcase = () => {
                             Scroll to hand the title over to the bar.
                         </Text>
                     </div>
+                </Sample>
+
+                <Sample label="Scroll edge: soft" scroll>
+                    <PanelHeader
+                        pin="sticky"
+                        edge="soft"
+                        left={<PanelHeader.BackIcon />}
+                        onLeft={noop}
+                        right={<PanelHeader.MoreIcon />}
+                        onRight={noop}
+                    >
+                        Title
+                    </PanelHeader>
+                    <EdgeFiller />
+                </Sample>
+
+                <Sample label="Scroll edge: hard" scroll>
+                    <PanelHeader
+                        pin="sticky"
+                        edge="hard"
+                        left={<PanelHeader.BackIcon />}
+                        onLeft={noop}
+                        right={<PanelHeader.MoreIcon />}
+                        onRight={noop}
+                    >
+                        Title
+                    </PanelHeader>
+                    <EdgeFiller />
                 </Sample>
 
                 <Sample label="Overlay" over>

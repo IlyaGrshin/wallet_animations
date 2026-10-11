@@ -3,46 +3,27 @@ import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
-import cx from "clsx"
 import { POPOVER_VARIANTS } from "../../utils/animations"
-import Tappable from "../Tappable"
-import Text from "../Text"
 import { GlassBorder } from "../GlassEffect"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { usePaneBounds } from "../SplitView/context"
-import { useClickOutside, useDropdownPosition } from "./dropdownUtils"
+import {
+    focusTrigger,
+    useClickOutside,
+    useDropdownPosition,
+} from "./dropdownUtils"
 
+import MenuItem from "./MenuItem"
 import * as styles from "./DropdownMenu.module.scss"
-
-const MenuItem = ({ item, isSelected, onClick, onMouseEnter, itemRef }) => (
-    <Tappable
-        ref={itemRef}
-        role="menuitem"
-        tabIndex={-1}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        className={cx(styles.item, isSelected && styles.selected)}
-    >
-        <Text variant="body">{item}</Text>
-    </Tappable>
-)
-
-MenuItem.propTypes = {
-    item: PropTypes.string,
-    isSelected: PropTypes.bool,
-    onClick: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    itemRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.any }),
-    ]),
-}
 
 /**
  * Portal-rendered menu with keyboard nav (arrows / Enter / Esc) and edge-aware
  * placement. Without `trigger` it renders the selected item as the button.
  * @param {string[]} props.items Menu options (required, non-empty).
- * @param {import("react").ReactNode} [props.trigger] Custom trigger; defaults to selected item.
+ * @param {import("react").ReactNode | ((ariaProps: object) => import("react").ReactNode)} [props.trigger]
+ * Custom trigger; defaults to the selected item. Pass a function when the
+ * trigger is itself a button — it gets the aria props and keeps the button
+ * semantics instead of the built-in `role="button"` wrapper.
  * @param {(item: string) => void} [props.onChange] Fires with the picked item.
  * @example
  * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
@@ -93,7 +74,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
         setIsOpen(false)
         resetPosition()
         setActiveIndex(-1)
-        buttonRef.current?.focus()
+        focusTrigger(buttonRef.current)
     }
 
     useClickOutside(
@@ -117,7 +98,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
             if (e.key === "Escape") {
                 e.preventDefault()
                 closeDropdown()
-                buttonRef.current?.focus()
+                focusTrigger(buttonRef.current)
                 return
             }
             if (e.key === "ArrowDown") {
@@ -158,19 +139,24 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
         }
     }
 
+    const isCustomTrigger = typeof trigger === "function"
+    const triggerProps = {
+        "aria-haspopup": "menu",
+        "aria-expanded": isOpen,
+    }
+
     return (
         <div className={styles.container}>
             <div
+                ref={buttonRef}
                 className={trigger ? styles.trigger : styles.selected}
                 onClick={toggleDropdown}
                 onKeyDown={handleButtonKeyDown}
-                ref={buttonRef}
-                role="button"
-                tabIndex={0}
-                aria-haspopup="menu"
-                aria-expanded={isOpen}
+                {...(isCustomTrigger
+                    ? {}
+                    : { role: "button", tabIndex: 0, ...triggerProps })}
             >
-                {trigger ?? selectedItem}
+                {isCustomTrigger ? trigger(triggerProps) : trigger ?? selectedItem}
             </div>
             {createPortal(
                 <>
@@ -242,7 +228,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
 
 DropdownMenu.propTypes = {
     items: PropTypes.arrayOf(PropTypes.string).isRequired,
-    trigger: PropTypes.node,
+    trigger: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     onChange: PropTypes.func,
 }
 export default DropdownMenu

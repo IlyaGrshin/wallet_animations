@@ -1,0 +1,57 @@
+@use "card" as *;
+
+.root {
+    position: absolute;
+    top: calc(50% - #{cq(10)});
+    right: cq(48);
+    width: cq(48);
+    height: cq(36);
+    transform: translateY(-50%);
+    opacity: var(--wallet-card-fade, 1);
+}
+
+.button {
+    --chip-peak: calc(50% + var(--tilt-x) * 28% + var(--tilt-y) * 16%);
+
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    box-shadow: 0 0 0 cq(1) rgb(0 0 0 / 16%);
+    border-radius: cq(8);
+    background:
+        linear-gradient(
+            115deg,
+            rgb(0 0 0 / 8%) 0%,
+            rgb(255 255 255 / 16%) calc(var(--chip-peak) - 30%),
+            rgb(255 255 255 / 48%) var(--chip-peak),
+            rgb(255 255 255 / 16%) calc(var(--chip-peak) + 30%),
+            rgb(0 0 0 / 8%) 100%
+        ),
+        linear-gradient(
+            127.28deg,
+            rgb(232 233 234 / 88%) 7.99%,
+            rgb(187 189 192 / 88%) 92.2%
+        );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: clip;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 200ms ease;
+
+    &:active {
+        transform: scale(0.96);
+    }
+}
+
+.icon {
+    width: cq(24);
+    height: cq(24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .button {
+        transition: none;
+    }
+}

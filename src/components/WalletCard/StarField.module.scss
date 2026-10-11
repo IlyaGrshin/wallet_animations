@@ -1,0 +1,56 @@
+@use "card" as *;
+
+.stars {
+    --stars-from: calc(32deg + var(--light-swing));
+    --stars-spread: calc(16% + var(--shine-mag) * 6%);
+
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    overflow: clip;
+    opacity: var(--wallet-card-fade, 1);
+    mix-blend-mode: soft-light;
+    mask-image: conic-gradient(
+        from var(--stars-from),
+        transparent 0%,
+        transparent calc(25% - var(--stars-spread)),
+        white 25%,
+        transparent calc(25% + var(--stars-spread)),
+        transparent calc(75% - var(--stars-spread)),
+        white 75%,
+        transparent calc(75% + var(--stars-spread)),
+        transparent 100%
+    );
+}
+
+.starsSvg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: rgb(255 255 255 / 50%);
+}
+
+.starPath {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%,
+    100% {
+        transform: scale(0.92);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .starPath {
+        animation: none;
+    }
+}
