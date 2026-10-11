@@ -1,40 +1,140 @@
 @use "./metrics" as *;
 
 $fade-easing: cubic-bezier(0.23, 1, 0.32, 1);
+$edge-soft-overhang: 40px;
 
 .sticky,
 .fixed {
+    --edge-tint: 50%;
+    --fade-color: var(--page-background, var(--tg-theme-secondary-bg-color));
+
     top: 0;
     z-index: 10;
     padding-top: var(--appbar-inset-top, var(--content-inset-top));
 
-    // Page-bg -> transparent fade (TabBar-style), 16px past the bar, fading in
-    // on scroll instead of a hard material edge.
     &::before {
         content: "";
         position: absolute;
-        inset: 0 0 -16px;
+        inset: 0;
         z-index: -1;
-
-        --fade-color: var(
-            --page-background,
-            var(--tg-theme-secondary-bg-color)
-        );
-
-        background: linear-gradient(
-            to bottom,
-            var(--fade-color),
-            rgb(from var(--fade-color) r g b / 0%)
-        );
         opacity: 0;
-        transition: opacity 0.2s $fade-easing;
+        transition:
+            opacity 0.2s $fade-easing,
+            border-color 0.2s $fade-easing;
         pointer-events: none;
     }
 
     :global(body.material) &::before {
-        inset: 0;
         background: rgb(from var(--fade-color) r g b / 80%);
         box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
+    }
+}
+
+.edge {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    > span {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.2s $fade-easing;
+        backdrop-filter: blur(var(--blur));
+        mask-image: linear-gradient(
+            to bottom,
+            #000 var(--from),
+            transparent var(--to)
+        );
+    }
+
+    :global(body.material) & {
+        display: none;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .sticky,
+    .fixed {
+        --edge-tint: 60%;
+    }
+}
+
+:global([data-color-scheme="light"]) :is(.sticky, .fixed) {
+    --edge-tint: 50%;
+}
+
+:global([data-color-scheme="dark"]) :is(.sticky, .fixed) {
+    --edge-tint: 60%;
+}
+
+:global(body.apple) .soft {
+    &::before,
+    .edge {
+        bottom: -$edge-soft-overhang;
+    }
+
+    &::before {
+        background: linear-gradient(
+            to bottom,
+            rgb(from var(--fade-color) r g b / var(--edge-tint)) 34%,
+            rgb(from var(--fade-color) r g b / 0%)
+        );
+    }
+
+    .edge > span:nth-child(1) {
+        --blur: 1px;
+        --from: 73%;
+        --to: 98%;
+    }
+
+    .edge > span:nth-child(2) {
+        --blur: 2px;
+        --from: 58%;
+        --to: 80%;
+    }
+
+    .edge > span:nth-child(3) {
+        --blur: 2px;
+        --from: 33%;
+        --to: 62%;
+    }
+}
+
+:global(body.apple) .hard {
+    &::before {
+        opacity: 1;
+        background: rgb(from var(--fade-color) r g b / var(--edge-tint));
+        border-bottom: 0.33px solid transparent;
+    }
+
+    &.scrolled::before {
+        border-bottom-color: rgb(from var(--tg-theme-text-color) r g b / 10%);
+    }
+
+    .edge > span {
+        opacity: 1;
+    }
+
+    .edge > span:nth-child(1) {
+        --blur: 1px;
+        --from: 100%;
+        --to: 100%;
+
+        backdrop-filter: blur(var(--blur)) saturate(1.2) brightness(1.03);
+    }
+
+    .edge > span:nth-child(2) {
+        --blur: 2px;
+        --from: 64%;
+        --to: 100%;
+    }
+
+    .edge > span:nth-child(3) {
+        --blur: 3px;
+        --from: 52%;
+        --to: 85%;
     }
 }
 
@@ -68,7 +168,8 @@ $fade-easing: cubic-bezier(0.23, 1, 0.32, 1);
     }
 }
 
-.scrolled::before {
+.scrolled::before,
+.scrolled .edge > span {
     opacity: 1;
 }
 
