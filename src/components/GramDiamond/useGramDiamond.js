@@ -49,6 +49,17 @@ export default function useGramDiamond(slotRef, canvasRef, options) {
         const canvas = canvasRef.current
         if (!slot || !canvas) return undefined
 
+        let swipesWereEnabled = null
+        const holdSwipes = (pressed) => {
+            if (pressed && swipesWereEnabled === null) {
+                swipesWereEnabled = WebApp.isVerticalSwipesEnabled !== false
+                WebApp.disableVerticalSwipes?.()
+            } else if (!pressed && swipesWereEnabled !== null) {
+                if (swipesWereEnabled) WebApp.enableVerticalSwipes?.()
+                swipesWereEnabled = null
+            }
+        }
+
         let engine
         try {
             const style = options.style(slot.clientWidth * STONE_SCALE)
@@ -58,8 +69,10 @@ export default function useGramDiamond(slotRef, canvasRef, options) {
                 {
                     onBurst: () =>
                         WebApp.HapticFeedback?.impactOccurred?.("soft"),
-                    onPressChanged: (pressed) =>
-                        latest.current.onPressChanged?.(pressed),
+                    onPressChanged: (pressed) => {
+                        holdSwipes(pressed)
+                        latest.current.onPressChanged?.(pressed)
+                    },
                     onRaisedChanged: (raised) => {
                         if (raised) applyLens(engine, canvas, latest.current)
                     },
@@ -90,6 +103,7 @@ export default function useGramDiamond(slotRef, canvasRef, options) {
         visibility.observe(canvas)
 
         return () => {
+            holdSwipes(false)
             visibility.disconnect()
             engine.destroy()
             engineRef.current = null
