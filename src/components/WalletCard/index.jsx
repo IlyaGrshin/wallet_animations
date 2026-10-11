@@ -24,6 +24,13 @@ function rectToZone(r, root, sx, sy) {
     ]
 }
 
+function sameZones(a, b) {
+    return (
+        a.length === b.length &&
+        a.every((zone, i) => zone.every((v, j) => v === b[i][j]))
+    )
+}
+
 function WalletCard({
     name = "Alicia Torreaux",
     address = DEFAULT_ADDRESS,
@@ -62,7 +69,7 @@ function WalletCard({
                 zones.push(rectToZone(el.getBoundingClientRect(), rb, sx, sy))
         }
 
-        setSafeZones(zones)
+        setSafeZones((prev) => (sameZones(prev, zones) ? prev : zones))
     }
 
     useLayoutEffect(() => {
