@@ -116,6 +116,60 @@
     }
 }
 
+.gemLayer {
+    position: relative;
+    grid-area: 1 / 1;
+    pointer-events: none;
+}
+
+.gemSlot {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: flex;
+    width: 1em;
+    height: 1em;
+    margin-top: -0.5em;
+    transform-origin: left center;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.barGem {
+    color: var(--tg-theme-accent-text-color);
+
+    svg path {
+        fill: currentcolor;
+    }
+}
+
+.lineDiamond {
+    --diamond-overflow: 10;
+
+    width: 100%;
+    height: 100%;
+    color: oklch(
+        from var(--tg-theme-accent-text-color)
+        calc(l + 0.035) calc(c * 0.8) h
+    );
+
+    :global(body.apple) & {
+        color: var(--tg-theme-accent-text-color);
+    }
+}
+
+.lineDiamondFallback {
+    width: 100%;
+    height: 100%;
+
+    path {
+        fill: currentcolor;
+    }
+}
+
 .gramUnit {
     position: absolute;
     left: 100%;

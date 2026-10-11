@@ -1,13 +1,15 @@
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
+import { useRef } from "react"
 import { useTransform } from "motion/react"
 import { Calligraph } from "calligraph"
 import cx from "clsx"
 
 import Text from "../../../components/Text"
 import { useSkin } from "../../../hooks/DeviceProvider"
-import GramIcon from "../../../icons/28/Gram.svg?react"
+import paintTextLens from "../../../components/GramDiamond/paintTextLens"
 
+import LineGems from "./LineGems"
 import * as styles from "./GramWallet.module.scss"
 
 // On the card the gem is 28px against 22px digits; in the bar both are one em,
@@ -28,6 +30,14 @@ const tiltStyle = (tilt, origin) =>
 const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
     const { isApple } = useSkin()
     const { progress, gather, ready } = flight
+    const gramDigitsRef = useRef(null)
+    const fiatDigitsRef = useRef(null)
+
+    const paintLens = (canvas) =>
+        paintTextLens(canvas, [
+            [gramDigitsRef.current, gramAmount],
+            [fiatDigitsRef.current, balance],
+        ])
 
     // The resting bar shows a plain Wallet title; it slips away as soon as the
     // card starts moving, well before the balances arrive.
@@ -75,12 +85,7 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                         style={tiltStyle(flight.tilt, flight.tilt?.gram)}
                     >
                         <span className={cx(styles.lineLayer, styles.barLook)}>
-                            <m.span
-                                className={styles.gem}
-                                style={{ scale: gemScale }}
-                            >
-                                <GramIcon />
-                            </m.span>
+                            <span className={styles.gem} />
                             <Calligraph variant="number" animation="smooth">
                                 {gramAmount}
                             </Calligraph>
@@ -90,15 +95,12 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                             className={cx(styles.lineLayer, styles.cardLook)}
                             style={{ clipPath: flight.gram.wipe }}
                         >
-                            <m.span
-                                className={styles.gem}
-                                style={{ scale: gemScale }}
-                            >
-                                <GramIcon />
-                            </m.span>
-                            <Calligraph variant="number" animation="smooth">
-                                {gramAmount}
-                            </Calligraph>
+                            <span className={styles.gem} />
+                            <span ref={gramDigitsRef}>
+                                <Calligraph variant="number" animation="smooth">
+                                    {gramAmount}
+                                </Calligraph>
+                            </span>
                             <m.span
                                 className={styles.gramUnit}
                                 style={{ opacity: unitOpacity }}
@@ -106,6 +108,12 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                                 GRAM
                             </m.span>
                         </m.span>
+                        <LineGems
+                            scale={gemScale}
+                            wipe={flight.gram.wipe}
+                            lens={paintLens}
+                            lensKey={`${gramAmount} ${balance}`}
+                        />
                     </span>
                 </Text>
                 <Text
@@ -136,9 +144,11 @@ const HeaderBalances = ({ gramAmount, balance, flight, gramRef, fiatRef }) => {
                             className={cx(styles.lineLayer, styles.cardLook)}
                             style={{ clipPath: flight.fiat.wipe }}
                         >
-                            <Calligraph variant="number" animation="smooth">
-                                {balance}
-                            </Calligraph>
+                            <span ref={fiatDigitsRef}>
+                                <Calligraph variant="number" animation="smooth">
+                                    {balance}
+                                </Calligraph>
+                            </span>
                         </m.span>
                     </span>
                 </Text>

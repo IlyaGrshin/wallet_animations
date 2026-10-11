@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext, useContext, useRef } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { Calligraph } from "calligraph"
@@ -7,6 +7,7 @@ import cx from "clsx"
 import Text from "../../../../../components/Text"
 import Tappable from "../../../../../components/Tappable"
 import GramIcon from "../../../../../icons/28/Gram.svg?react"
+import AmountDiamond from "./AmountDiamond"
 import SwapIcon from "../../../../../icons/18/Arrow Up Arrow Down.svg?react"
 
 import { GRAM, USD, amountEm, other, splitAmount } from "../../currency"
@@ -91,20 +92,32 @@ Typed.propTypes = {
     value: PropTypes.string.isRequired,
 }
 
-const Money = ({ currency, active = false, onLand }) => (
-    <m.span
-        layoutId={`money-${currency}`}
-        layout
-        transition={SWAP}
-        onLayoutAnimationComplete={onLand}
-        className={cx(styles.money, active ? styles.primary : styles.secondary)}
-    >
-        {currency === GRAM && (
-            <GramIcon className={styles.diamond} aria-hidden="true" />
-        )}
-        <Digits currency={currency} active={active} />
-    </m.span>
-)
+const Money = ({ currency, active = false, onLand }) => {
+    const { amount } = useContext(AmountContext)
+    const moneyRef = useRef(null)
+
+    return (
+        <m.span
+            ref={moneyRef}
+            layoutId={`money-${currency}`}
+            layout
+            transition={SWAP}
+            onLayoutAnimationComplete={onLand}
+            className={cx(
+                styles.money,
+                active ? styles.primary : styles.secondary
+            )}
+        >
+            {currency === GRAM &&
+                (active ? (
+                    <AmountDiamond amount={amount} moneyRef={moneyRef} />
+                ) : (
+                    <GramIcon className={styles.diamond} aria-hidden="true" />
+                ))}
+            <Digits currency={currency} active={active} />
+        </m.span>
+    )
+}
 
 Money.propTypes = {
     currency: PropTypes.oneOf([GRAM, USD]).isRequired,

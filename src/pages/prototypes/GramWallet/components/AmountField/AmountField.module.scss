@@ -50,8 +50,16 @@
 }
 
 .primary .diamond {
+    --diamond-overflow: 6;
+
+    z-index: 1;
     width: 44px;
     height: 44px;
+}
+
+.diamondFallback {
+    width: 100%;
+    height: 100%;
 }
 
 .secondary .diamond {
