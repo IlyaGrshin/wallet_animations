@@ -4,3 +4,19 @@
         border-bottom: 0;
     }
 }
+
+.amount {
+    display: flex;
+    flex-direction: column;
+    gap: inherit;
+}
+
+.received {
+    --tg-theme-text-color: var(--text-confirm-color);
+    --tg-theme-subtitle-text-color: var(--text-confirm-color);
+}
+
+.failed {
+    --tg-theme-text-color: var(--tg-theme-destructive-text-color);
+    --tg-theme-subtitle-text-color: var(--tg-theme-destructive-text-color);
+}
