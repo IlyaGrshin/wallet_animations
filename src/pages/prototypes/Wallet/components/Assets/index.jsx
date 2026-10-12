@@ -40,7 +40,7 @@ export default function Assets() {
 
     return (
         <SectionList.Item ref={AssetsRef}>
-            {largeAssets.length === 0 && (
+            {assets.length === 0 && (
                 <Cell>
                     <Cell.Text
                         title="No assets yet"
