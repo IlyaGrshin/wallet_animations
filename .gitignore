@@ -45,3 +45,6 @@ tmp-*.png
 # environment
 .env.production
 shareApi/.env
+
+# tgcloud (credentials and local snapshot)
+.tgcloud/

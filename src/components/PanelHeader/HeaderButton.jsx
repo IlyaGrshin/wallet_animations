@@ -25,6 +25,7 @@ const HeaderButton = ({
     surface = false,
     swap,
     swapped = false,
+    ...props
 }) => {
     const { isApple } = useSkin()
     const isText = typeof children === "string"
@@ -84,6 +85,7 @@ const HeaderButton = ({
             onClick={onClick}
             {...(variant === "overlay" && { "data-color-scheme": "dark" })}
             {...rootProps}
+            {...props}
         >
             {content}
         </Root>

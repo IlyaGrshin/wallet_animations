@@ -7,6 +7,7 @@ import GlassContainer from "../GlassEffect"
 import * as styles from "./TabBar.module.scss"
 import Tab from "./components/Tab"
 import { useIndicatorDrag } from "./useIndicatorDrag"
+import { EDGE_INSET, barWidth } from "./metrics"
 import GradientMask from "./components/GradientMask"
 
 const TabBarOverlay = ({
@@ -75,26 +76,38 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const playKey = `${activeIndex}:${replayNonce}`
 
     const rootRef = useRef(null)
+    const containerRef = useRef(null)
 
     const [rootWidth, setRootWidth] = useState(0)
+    const [marginX, setMarginX] = useState(EDGE_INSET)
+
+    const measureMargin = () => {
+        if (rootRef.current) setMarginX(rootRef.current.offsetLeft)
+    }
+
+    useEffect(() => {
+        containerRef.current = rootRef.current?.offsetParent ?? null
+    }, [])
 
     useResizeObserver(rootRef, (entry) => {
         setRootWidth(entry.contentRect.width)
+        measureMargin()
     })
 
-    const isThreeTabs = tabs.length === 3
-    const marginX = isThreeTabs ? 54 : 21
+    useResizeObserver(containerRef, measureMargin)
+
     const rootStyle = isApple
         ? {
-              left: marginX,
-              right: marginX,
-              width: `calc(100% - ${marginX * 2}px)`,
+              left: 0,
+              right: 0,
+              marginInline: "auto",
+              width: barWidth(tabs),
           }
         : {}
 
     const maskInsets = {
-        top: 21,
-        bottom: 21,
+        top: EDGE_INSET,
+        bottom: EDGE_INSET,
         left: marginX,
         right: marginX,
     }
