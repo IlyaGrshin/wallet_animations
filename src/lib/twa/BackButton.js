@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
+import { useIsPresent } from "motion/react"
 import { useHashLocation } from "wouter/use-hash-location"
 import WebApp from "./webApp"
 
@@ -13,6 +14,7 @@ const dispatch = () => stack[stack.length - 1]?.current()
 
 const BackButton = ({ onClick }) => {
     const [, navigate] = useHashLocation()
+    const isPresent = useIsPresent()
     // A stable stack entry: a new onClick updates it in place, so re-renders
     // never reorder the stack.
     const handler = onClick ?? (() => navigate("/"))
@@ -21,7 +23,10 @@ const BackButton = ({ onClick }) => {
         entry.current = handler
     })
 
+    // A screen playing its exit animation leaves the stack at once, so the
+    // one under it takes the back button while it slides away.
     useEffect(() => {
+        if (!isPresent) return
         if (!subscribed) {
             WebApp.BackButton.onClick(dispatch)
             subscribed = true
@@ -32,7 +37,7 @@ const BackButton = ({ onClick }) => {
             stack.splice(stack.lastIndexOf(entry), 1)
             if (stack.length === 0) WebApp.BackButton.hide()
         }
-    }, [])
+    }, [isPresent])
 
     return null
 }

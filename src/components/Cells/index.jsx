@@ -1,4 +1,5 @@
 import PropTypes from "prop-types"
+import cx from "clsx"
 import Text from "../Text"
 import Tappable from "../Tappable"
 
@@ -16,6 +17,8 @@ import * as styles from "./Cell.module.scss"
  * @param {import("react").ElementType} [props.as="div"] Root element (a, button...).
  * @param {import("react").ReactNode} [props.start] Leading slot (icon/avatar).
  * @param {import("react").ReactNode} [props.end]   Trailing slot (label/chevron).
+ * @param {"center"|"top"} [props.align="center"] Vertical alignment of the
+ * start and end slots against a multi-line body.
  * @example
  * <Cell as="button" onClick={open} end={<Chevron />}>
  *   <Cell.Text title="Wallet" />
@@ -26,6 +29,7 @@ const CellComponent = ({
     start,
     children,
     end,
+    align = "center",
     onClick,
     tappable,
     ...props
@@ -34,6 +38,8 @@ const CellComponent = ({
     // onClick or renders as an interactive element (a link/button via `as`).
     // `tappable` forces it on or off explicitly.
     const interactive = tappable ?? (onClick != null || Component !== "div")
+
+    const className = cx(styles.root, align === "top" && styles.alignTop)
 
     const content = (
         <>
@@ -45,7 +51,7 @@ const CellComponent = ({
 
     if (!interactive) {
         return (
-            <Component className={styles.root} onClick={onClick} {...props}>
+            <Component className={className} onClick={onClick} {...props}>
                 {content}
             </Component>
         )
@@ -54,7 +60,7 @@ const CellComponent = ({
     return (
         <Tappable
             as={Component}
-            className={styles.root}
+            className={className}
             onClick={onClick}
             {...props}
         >
@@ -63,7 +69,7 @@ const CellComponent = ({
     )
 }
 
-const CellStart = ({ type, src = null, iconType = null }) => {
+const CellStart = ({ type, src = null, iconType = null, variant = null }) => {
     let content
 
     switch (type) {
@@ -71,7 +77,16 @@ const CellStart = ({ type, src = null, iconType = null }) => {
             content = <img src={src} alt="" className={styles.image} />
             break
         case "Icon":
-            content = <div className={styles.icon}>{iconType}</div>
+            content = (
+                <div
+                    className={cx(
+                        styles.icon,
+                        variant && styles[`icon_${variant}`]
+                    )}
+                >
+                    {iconType}
+                </div>
+            )
             break
         default:
             content = null
@@ -103,6 +118,7 @@ CellComponent.propTypes = {
     start: PropTypes.node,
     children: PropTypes.node,
     end: PropTypes.node,
+    align: PropTypes.oneOf(["center", "top"]),
     onClick: PropTypes.func,
     tappable: PropTypes.bool,
 }
@@ -111,10 +127,11 @@ CellStart.propTypes = {
     type: PropTypes.string,
     src: PropTypes.string,
     iconType: PropTypes.node,
+    variant: PropTypes.oneOf(["success", "destructive"]),
 }
 
 CellEnd.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.node,
     caption: PropTypes.string,
 }
 

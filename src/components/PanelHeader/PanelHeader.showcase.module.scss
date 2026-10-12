@@ -19,6 +19,7 @@
     --appbar-inset-top: 0px;
     --page-background: var(--tg-theme-section-bg-color);
 
+    isolation: isolate;
     height: 200px;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -33,4 +34,25 @@
 // glyphs read the way they would over real content.
 .over {
     background: linear-gradient(120deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.edgeFiller {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 16px 16px;
+}
+
+.edgeRow {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 12px;
+    color: var(--tg-theme-button-text-color);
+    background: var(--tg-theme-button-color);
+
+    &:nth-child(even) {
+        background: #ff3b30;
+    }
 }
