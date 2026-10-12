@@ -29,6 +29,7 @@ export const useLongPress = ({
     const startRef = useRef(null)
     const pressedRef = useRef(false)
     const firedRef = useRef(false)
+    const stopExpiryRef = useRef(null)
 
     const clearTimers = () => {
         clearTimeout(pressTimerRef.current)
@@ -43,6 +44,32 @@ export const useLongPress = ({
         onCancel?.()
     }
 
+    // The release after a hold yields one click, and it may land elsewhere
+    // (an overlay that consumes it) and never reach onClickCapture below.
+    // Drop the marker once that click has been dispatched, wherever it went,
+    // or right away if the touch is cancelled and no click comes.
+    const expireAfterRelease = () => {
+        stopExpiryRef.current?.()
+        const onClick = () => {
+            stop()
+            setTimeout(() => {
+                firedRef.current = false
+            })
+        }
+        const onCancel = () => {
+            stop()
+            firedRef.current = false
+        }
+        const stop = () => {
+            window.removeEventListener("click", onClick, true)
+            window.removeEventListener("pointercancel", onCancel, true)
+            stopExpiryRef.current = null
+        }
+        window.addEventListener("click", onClick, true)
+        window.addEventListener("pointercancel", onCancel, true)
+        stopExpiryRef.current = stop
+    }
+
     // `source` tells a held finger ("hold", still down) from a one-shot
     // right-click or Menu key ("contextmenu").
     const fire = (point, source) => {
@@ -51,10 +78,17 @@ export const useLongPress = ({
         // Only a held press is followed by a click to swallow; a right-click
         // emits none, and a stale marker would eat the next keyboard click.
         firedRef.current = source === "hold"
+        if (firedRef.current) expireAfterRelease()
         onLongPress(point, source)
     }
 
-    useEffect(() => clearTimers, [])
+    useEffect(
+        () => () => {
+            clearTimers()
+            stopExpiryRef.current?.()
+        },
+        []
+    )
 
     // Turning disabled mid-hold cancels the gesture: the pending timers hold
     // the old callbacks and would still fire.
