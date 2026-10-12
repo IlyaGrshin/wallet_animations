@@ -17,9 +17,16 @@ export default function TabLayer({
     const ref = useRef(null)
     const scrollTopRef = useRef(0)
     const target = status === "active" ? "animate" : "exit"
-    const [settled, setSettled] = useState({ target, custom })
+    const [settled, setSettled] = useState({ target, status, custom })
 
-    if (settled.target !== target) setSettled({ target, custom })
+    if (settled.target !== target) {
+        // Brought back before its exit finished: enter from where the exit
+        // left it rather than snapping to the entrance pose first.
+        const resume = target === "animate" && settled.status === "exiting"
+        setSettled({ target, status, custom: { ...custom, resume } })
+    } else if (settled.status !== status) {
+        setSettled({ ...settled, status })
+    }
 
     useLayoutEffect(() => {
         if (status === "active" && scrollTopRef.current > 0) {

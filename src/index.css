@@ -17,6 +17,7 @@
 
     --shell-height: 100dvh;
     --content-inset-top: calc(env(safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px));
+    --rounded-stack: "Google Sans", "SF Pro Rounded", ui-rounded, -apple-system, system-ui, sans-serif;
 
     --material-surface-background: rgb(from var(--tg-theme-section-bg-color) r g b / 84%);
     --material-surface-filter: blur(30px) saturate(10);
@@ -171,6 +172,7 @@ body {
 
     &.apple {
         font-family: -apple-system, system-ui, sans-serif;
+        --rounded-stack: ui-rounded, "SF Pro Rounded", -apple-system, system-ui, sans-serif;
     }
 
     &.material {

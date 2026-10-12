@@ -33,6 +33,7 @@ const PanelHeader = ({
     titleGlass = false,
     search,
     pin,
+    edge = "soft",
     largeTitle = false,
     children,
 }) => {
@@ -186,8 +187,19 @@ const PanelHeader = ({
     const pinnedBar = (
         <div
             ref={stickyRef}
-            className={cx(pinStyles[pin], scrolled && pinStyles.scrolled)}
+            className={cx(
+                pinStyles[pin],
+                pinStyles[edge],
+                scrolled && pinStyles.scrolled
+            )}
         >
+            {isApple && (
+                <div className={pinStyles.edge} aria-hidden="true">
+                    <span />
+                    <span />
+                    <span />
+                </div>
+            )}
             {bar}
         </div>
     )
@@ -227,6 +239,7 @@ PanelHeader.propTypes = {
     titleGlass: PropTypes.bool,
     search: PropTypes.node,
     pin: PropTypes.oneOf(["sticky", "fixed"]),
+    edge: PropTypes.oneOf(["soft", "hard"]),
     largeTitle: PropTypes.bool,
     children: PropTypes.node,
 }

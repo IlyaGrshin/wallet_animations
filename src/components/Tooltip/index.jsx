@@ -5,8 +5,13 @@ import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 
 import { POPOVER_VARIANTS } from "../../utils/animations"
+import { usePaneBounds } from "../SplitView/context"
 import TooltipBody from "./TooltipBody"
-import { useClickOutside, useTooltipPosition } from "./tooltipUtils"
+import {
+    useClickOutside,
+    usePaneMaxWidth,
+    useTooltipPosition,
+} from "./tooltipUtils"
 import { useHoverToggle } from "./useHoverToggle"
 import {
     TAIL_WIDTH_VERTICAL,
@@ -41,8 +46,9 @@ const Tooltip = ({
     const [isOpen, setIsOpen] = useState(false)
     const triggerRef = useRef(null)
     const tooltipRef = useRef(null)
-    const animatedTooltipRef = useRef(null)
 
+    const getBounds = usePaneBounds()
+    const [maxWidth, fitToBounds] = usePaneMaxWidth(isOpen, getBounds)
     const compact = type === "compact"
     const tailHeight = compact ? TAIL_HEIGHT_COMPACT : TAIL_HEIGHT_REGULAR
 
@@ -53,10 +59,13 @@ const Tooltip = ({
         TAIL_WIDTH_VERTICAL,
         TAIL_WIDTH_HORIZONTAL,
         tailHeight,
-        placement
+        placement,
+        getBounds,
+        maxWidth
     )
 
     const openTooltip = () => {
+        fitToBounds()
         setIsOpen(true)
         resetPosition()
     }
@@ -72,17 +81,12 @@ const Tooltip = ({
     const toggleTooltip = () => {
         clearOpenTimer()
         clearCloseTimer()
+        if (!isOpen) fitToBounds()
         setIsOpen((prev) => !prev)
         resetPosition()
     }
 
-    useClickOutside(
-        isOpen,
-        closeTooltip,
-        triggerRef,
-        tooltipRef,
-        animatedTooltipRef
-    )
+    useClickOutside(isOpen, closeTooltip, triggerRef, tooltipRef)
 
     useEffect(() => {
         if (!isOpen) return
@@ -110,8 +114,13 @@ const Tooltip = ({
         ? TAIL_WIDTH_HORIZONTAL
         : TAIL_WIDTH_VERTICAL
 
+    const widthLimit = maxWidth
+        ? { "--tooltip-max-width": `${maxWidth}px` }
+        : {}
+
     const shellStyle = isPositioned
         ? {
+              ...widthLimit,
               position: "fixed",
               top: position.top,
               left: position.left,
@@ -136,7 +145,14 @@ const Tooltip = ({
                   shape: position.shape,
               }),
           }
-        : null
+        : {
+              ...widthLimit,
+              position: "fixed",
+              top: 0,
+              left: 0,
+              visibility: "hidden",
+              zIndex: 1000,
+          }
 
     return (
         <span className={styles.container}>
@@ -155,49 +171,28 @@ const Tooltip = ({
                 {children}
             </span>
             {createPortal(
-                <>
-                    {isOpen && !isPositioned && (
-                        <div
+                <AnimatePresence>
+                    {isOpen && (
+                        <m.div
                             ref={tooltipRef}
+                            role="tooltip"
                             className={styles.shell}
-                            style={{
-                                position: "fixed",
-                                top: 0,
-                                left: 0,
-                                visibility: "hidden",
-                                zIndex: 1000,
-                            }}
+                            initial="hidden"
+                            animate={isPositioned ? "visible" : "hidden"}
+                            exit="exit"
+                            variants={POPOVER_VARIANTS}
+                            onPointerEnter={onPointerEnter}
+                            onPointerLeave={onPointerLeave}
+                            style={shellStyle}
                         >
                             <TooltipBody
                                 content={content}
                                 badge={badge}
                                 compact={compact}
                             />
-                        </div>
+                        </m.div>
                     )}
-                    <AnimatePresence>
-                        {isOpen && isPositioned && (
-                            <m.div
-                                ref={animatedTooltipRef}
-                                role="tooltip"
-                                className={styles.shell}
-                                initial="hidden"
-                                animate="visible"
-                                exit="exit"
-                                variants={POPOVER_VARIANTS}
-                                onPointerEnter={onPointerEnter}
-                                onPointerLeave={onPointerLeave}
-                                style={shellStyle}
-                            >
-                                <TooltipBody
-                                    content={content}
-                                    badge={badge}
-                                    compact={compact}
-                                />
-                            </m.div>
-                        )}
-                    </AnimatePresence>
-                </>,
+                </AnimatePresence>,
                 document.body
             )}
         </span>

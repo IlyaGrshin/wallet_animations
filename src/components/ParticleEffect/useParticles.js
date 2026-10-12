@@ -92,7 +92,9 @@ export function useParticles({
     }, [canvasRef, contentRef, color, radius, padding, maskDilation])
 
     // Spawn the cloud on cover, burst it away on reveal. reveal() before any
-    // cover() is a no-op, so the initial mount stays dormant.
+    // cover() is a no-op, so the initial mount stays dormant. The options are
+    // deps too: changing them destroys the engine above, and a still covered
+    // content needs a new one covering it.
     useEffect(() => {
         if (!hidden) {
             engineRef.current?.reveal(revealOriginRef.current)
@@ -109,7 +111,7 @@ export function useParticles({
         return () => {
             cancelled = true
         }
-    }, [hidden])
+    }, [hidden, color, radius, padding, maskDilation])
 
     return { supported, revealOriginRef }
 }
