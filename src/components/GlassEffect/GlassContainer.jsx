@@ -13,9 +13,10 @@ import GlassGlare from "./GlassGlare"
  *
  * Retune with tokens, never by restyling the layers: `--glass-tint-background`,
  * `--glass-surface-filter`, `--glass-surface-shadow`, `--glass-surface-contour`,
- * `--glass-glare-*`. An ancestor that isolates blending (filter, clip-path,
- * opacity) marks itself `data-glass-isolated`, and the blended layers step down
- * to their blend-free forms.
+ * `--glass-glare-*`. A host that isolates blending (filter, clip-path,
+ * opacity, transform, paint containment, a fixed position) marks itself
+ * `data-glass-isolated` (passed through to the root when it is this
+ * component's own), and the blended layers step down to their blend-free forms.
  * @example
  * <GlassContainer className={styles.bar}>{children}</GlassContainer>
  */
