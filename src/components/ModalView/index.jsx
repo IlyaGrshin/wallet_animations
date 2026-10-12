@@ -5,7 +5,7 @@ import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import * as styles from "./ModalView.module.scss"
 
-import WebApp, { BackButton } from "../../lib/twa"
+import WebApp, { BackButton, lockVerticalSwipes } from "../../lib/twa"
 
 import ModalPage, { parsePages } from "./ModalPage"
 import TrayPages from "./TrayPages"
@@ -103,11 +103,11 @@ const ModalView = ({
         if (!isOpen) return
         const headerColor = getHeaderColor()
         document.body.style.overflow = "hidden"
-        WebApp.disableVerticalSwipes?.()
+        const releaseSwipes = lockVerticalSwipes()
         WebApp.setHeaderColor(`#${blendColors(headerColor, "#000000", 0.5)}`)
         return () => {
             document.body.style.overflow = "auto"
-            WebApp.enableVerticalSwipes?.()
+            releaseSwipes()
             WebApp.setHeaderColor(getHeaderColor())
         }
     }, [isOpen])
