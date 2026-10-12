@@ -1,8 +1,8 @@
 import { useRef } from "react"
 import cx from "clsx"
-import { useSmoothCorners } from "@lisse/react"
 
 import Page from "../../../components/Page"
+import useSquircleClip from "../../../hooks/useSquircleClip"
 import PanelHeader from "../../../components/PanelHeader"
 import { RegularButton } from "../../../components/Button"
 import SectionList from "../../../components/SectionList"
@@ -25,11 +25,7 @@ const TABS = ["Transactions", "Collectibles"]
 
 const CardBlock = () => {
     const ref = useRef(null)
-    useSmoothCorners(
-        ref,
-        { radius: CORNER_RADIUS, smoothing: CORNER_SMOOTHING },
-        { autoEffects: false }
-    )
+    useSquircleClip(ref, { radius: CORNER_RADIUS, smoothing: CORNER_SMOOTHING })
     const redaction = useRedactionClassName(true)
     return (
         <div

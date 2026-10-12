@@ -126,6 +126,13 @@
     isolation: isolate;
     color: oklch(from var(--tg-theme-accent-text-color) 100% 0 h);
     -webkit-font-smoothing: antialiased;
+
+    // Where corner-shape draws the squircle natively useSquircleClip skips its
+    // clip-path; superellipse(1.5) needs the radius ×1.3 (as in SectionList).
+    @supports (corner-shape: superellipse(1.5)) {
+        border-radius: cq(26);
+        corner-shape: superellipse(1.5);
+    }
 }
 
 // Iridescent foil: the hue leans with the viewing angle (unitless hue math —

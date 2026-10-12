@@ -59,8 +59,15 @@ export const getTabsConfig = (onOpenTonWallet) => ({
     ],
 })
 
-const appleRestScale = () =>
+const measureAppleRestScale = () =>
     (window.innerHeight - 3.0 * window.devicePixelRatio) / window.innerHeight
+
+let cachedAppleRestScale = measureAppleRestScale()
+window.addEventListener("resize", () => {
+    cachedAppleRestScale = measureAppleRestScale()
+})
+
+const appleRestScale = () => cachedAppleRestScale
 
 const enterFrom = ({ isSegmentSwitch, direction, isApple }) => {
     if (isSegmentSwitch) return { opacity: 0, scale: 1.006, x: 0 }

@@ -11,13 +11,17 @@ export function formatPercentage(percentage) {
 }
 
 // Cents from $1, four significant digits below (micro-cap prices).
+const CENTS_FORMAT = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+})
+const SIGNIFICANT_FORMAT = new Intl.NumberFormat("en-US", {
+    maximumSignificantDigits: 4,
+})
+
 export function formatPrice(price) {
     if (typeof price !== "number") return price
-    const options =
-        price >= 1
-            ? { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-            : { maximumSignificantDigits: 4 }
-    return price.toLocaleString("en-US", options)
+    return (price >= 1 ? CENTS_FORMAT : SIGNIFICANT_FORMAT).format(price)
 }
 
 export const clamp = (value, min, max) => Math.min(Math.max(value, min), max)
