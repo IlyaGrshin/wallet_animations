@@ -125,6 +125,13 @@ const config = [
                 ),
             },
             {
+                title: "Reorder List",
+                component: lazyWithPreload(
+                    () =>
+                        import("../components/ReorderList/ReorderList.showcase")
+                ),
+            },
+            {
                 title: "Context Menu",
                 component: lazyWithPreload(
                     () =>
