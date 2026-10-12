@@ -29,8 +29,10 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    box-sizing: border-box;
+    width: max-content;
+    max-width: var(--tooltip-max-width, none);
     padding: 10px 14px;
-    white-space: nowrap;
 
     &.compact {
         padding: 6px 8px;

@@ -1,0 +1,13 @@
+.diamond {
+    --diamond-overflow: 7;
+
+    z-index: 1;
+    color: var(--card-bg);
+    visibility: visible;
+    opacity: var(--wallet-card-fade, 1);
+}
+
+.fallback {
+    width: 100%;
+    height: 100%;
+}

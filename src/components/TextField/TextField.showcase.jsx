@@ -9,7 +9,7 @@ import { useSplitViewContext } from "../SplitView/context"
 
 import patternSvg from "../../images/pattern.svg"
 import { useColorScheme } from "../../hooks/useColorScheme"
-import { useViewportHeight } from "./useViewportHeight"
+import { useViewportHeight } from "../../hooks/useViewportHeight"
 import { usePreventScroll } from "./usePreventScroll"
 import * as styles from "./TextField.showcase.module.scss"
 

@@ -57,15 +57,17 @@ export const calculatePosition = (
     tailVBreadth,
     tailHBreadth,
     tailProtrusion,
-    preferredPlacement
+    preferredPlacement,
+    bounds
 ) => {
-    const { innerHeight, innerWidth } = window
     const spaces = {
-        top: triggerRect.top,
-        bottom: innerHeight - triggerRect.bottom,
-        left: triggerRect.left,
-        right: innerWidth - triggerRect.right,
+        top: triggerRect.top - bounds.top,
+        bottom: bounds.bottom - triggerRect.bottom,
+        left: triggerRect.left - bounds.left,
+        right: bounds.right - triggerRect.right,
     }
+    const minTop = bounds.top + VIEWPORT_PADDING
+    const minLeft = bounds.left + VIEWPORT_PADDING
     const neededV = bodySize.height + tailProtrusion + GAP + VIEWPORT_PADDING
     const neededH = bodySize.width + tailProtrusion + GAP + VIEWPORT_PADDING
     const fits = {
@@ -84,24 +86,20 @@ export const calculatePosition = (
         const shellHeight = bodySize.height
         const triggerCenterY = triggerRect.top + triggerRect.height / 2
         const topMax = Math.max(
-            VIEWPORT_PADDING,
-            innerHeight - shellHeight - VIEWPORT_PADDING
+            minTop,
+            bounds.bottom - shellHeight - VIEWPORT_PADDING
         )
 
-        let top = clamp(
-            triggerCenterY - shellHeight / 2,
-            VIEWPORT_PADDING,
-            topMax
-        )
+        let top = clamp(triggerCenterY - shellHeight / 2, minTop, topMax)
         let apexY = triggerCenterY - top
         let shape = "full"
         if (apexY < tailBreadth / 2) {
             shape = "half-start"
-            top = clamp(triggerCenterY, VIEWPORT_PADDING, topMax)
+            top = clamp(triggerCenterY, minTop, topMax)
             apexY = 0
         } else if (apexY > shellHeight - tailBreadth / 2) {
             shape = "half-end"
-            top = clamp(triggerCenterY - shellHeight, VIEWPORT_PADDING, topMax)
+            top = clamp(triggerCenterY - shellHeight, minTop, topMax)
             apexY = shellHeight
         }
         const effectiveTp =
@@ -131,20 +129,20 @@ export const calculatePosition = (
     const shellWidth = bodySize.width
     const triggerCenterX = triggerRect.left + triggerRect.width / 2
     const leftMax = Math.max(
-        VIEWPORT_PADDING,
-        innerWidth - shellWidth - VIEWPORT_PADDING
+        minLeft,
+        bounds.right - shellWidth - VIEWPORT_PADDING
     )
 
-    let left = clamp(triggerCenterX - shellWidth / 2, VIEWPORT_PADDING, leftMax)
+    let left = clamp(triggerCenterX - shellWidth / 2, minLeft, leftMax)
     let apexX = triggerCenterX - left
     let shape = "full"
     if (apexX < tailBreadth / 2) {
         shape = "half-start"
-        left = clamp(triggerCenterX, VIEWPORT_PADDING, leftMax)
+        left = clamp(triggerCenterX, minLeft, leftMax)
         apexX = 0
     } else if (apexX > shellWidth - tailBreadth / 2) {
         shape = "half-end"
-        left = clamp(triggerCenterX - shellWidth, VIEWPORT_PADDING, leftMax)
+        left = clamp(triggerCenterX - shellWidth, minLeft, leftMax)
         apexX = shellWidth
     }
     const effectiveTp = shape === "full" ? tailProtrusion : halfTailProtrusion
