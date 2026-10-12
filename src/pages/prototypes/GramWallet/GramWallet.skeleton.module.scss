@@ -1,0 +1,9 @@
+$card-w: 361;
+$card-h: 220;
+
+.card {
+    width: 100%;
+    aspect-ratio: #{$card-w} / #{$card-h};
+    container-type: inline-size;
+    border-radius: calc(20 / #{$card-w} * 100cqi);
+}

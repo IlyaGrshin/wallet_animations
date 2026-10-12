@@ -1,4 +1,9 @@
 import lazyWithPreload from "../utils/lazyWithPreload"
+import { getUser } from "../lib/twa"
+
+const WALLET_CARD_OWNER_IDS = [504719, 38304776, 572439, 329465181]
+const showWalletCard =
+    import.meta.env.DEV || WALLET_CARD_OWNER_IDS.includes(getUser()?.id)
 
 const config = [
     {
@@ -284,6 +289,18 @@ const config = [
                     () => import("./prototypes/WalletImport")
                 ),
             },
+            ...(showWalletCard
+                ? [
+                      {
+                          title: "Gram Wallet",
+                          slug: "gramWallet",
+                          component: lazyWithPreload(
+                              () => import("./prototypes/GramWallet")
+                          ),
+                          routeSuffix: "/:rest*?",
+                      },
+                  ]
+                : []),
         ],
     },
 ]

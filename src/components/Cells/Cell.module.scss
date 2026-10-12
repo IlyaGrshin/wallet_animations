@@ -14,6 +14,15 @@
     --cell-separator-height: var(--last-cell-separator-height, 0px);
 }
 
+button.root {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: start;
+}
+
 .root {
     display: flex;
     flex-direction: row;
@@ -100,6 +109,14 @@
                     #00e7ff 14.96%,
                     #007aff 85.04%
                 );
+
+                &.icon_success {
+                    background: linear-gradient(180deg, #a0de7e 0%, #54cb68 100%);
+                }
+
+                &.icon_destructive {
+                    background: linear-gradient(180deg, #ff885e 0%, #ff516a 100%);
+                }
             }
 
             .icon,
@@ -129,6 +146,10 @@
         .end {
             gap: 1px;
         }
+
+        &.alignTop .end {
+            padding-top: 9px;
+        }
     }
 
     :global(body.material) & {
@@ -140,6 +161,14 @@
 
             .icon {
                 background: var(--tg-theme-button-color);
+
+                &.icon_success {
+                    background: #7bc862;
+                }
+
+                &.icon_destructive {
+                    background: #e17076;
+                }
             }
 
             .icon,
@@ -169,5 +198,19 @@
         .end {
             gap: 2px;
         }
+
+        &.alignTop .end {
+            padding-top: 9px;
+        }
+    }
+}
+
+.alignTop {
+    .start {
+        align-items: flex-start;
+    }
+
+    .end {
+        justify-content: flex-start;
     }
 }

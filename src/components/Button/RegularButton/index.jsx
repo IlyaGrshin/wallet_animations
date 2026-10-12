@@ -56,9 +56,17 @@ export const RegularButton = ({
     )
 
     // Press feedback matches the platform: an iOS scale, a Material ripple.
+    // A disabled button keeps its <button> semantics (aria-disabled) but
+    // loses the press feedback.
     const pressable = !skeleton && !disabled
-    const Root = isApple || !pressable ? m.div : Tappable
+    const actionable = !skeleton && typeof props.onClick === "function"
+    const isMotion = isApple || !pressable
+    const MotionRoot = actionable ? m.button : m.div
+    const Root = isMotion ? MotionRoot : Tappable
     const tapProps = isApple && pressable ? { whileTap: { scale: 1.02 } } : {}
+    const semanticProps = actionable
+        ? { type: "button", ...(!isMotion && { as: "button" }) }
+        : {}
 
     return (
         <Root
@@ -69,6 +77,7 @@ export const RegularButton = ({
                 skeleton && styles.skeleton,
                 redactionClassName
             )}
+            {...semanticProps}
             {...tapProps}
             {...dynamicProps}
             {...props}
@@ -91,4 +100,5 @@ RegularButton.propTypes = {
     isShine: PropTypes.bool,
     isFill: PropTypes.bool,
     disabled: PropTypes.bool,
+    onClick: PropTypes.func,
 }

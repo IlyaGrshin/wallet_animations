@@ -107,6 +107,10 @@
     pointer-events: none;
 }
 
+.host_pane {
+    position: absolute;
+}
+
 .host_top {
     top: calc(env(safe-area-inset-top) + 12px);
 }
