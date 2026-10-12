@@ -32,10 +32,13 @@ const BackButton = ({ onClick }) => {
             subscribed = true
         }
         stack.push(entry)
+        // show/hide are ref-counted (patchBackButton in App.jsx), so every
+        // entry pairs its own show with a hide; the stack only picks the
+        // handler.
         WebApp.BackButton.show()
         return () => {
             stack.splice(stack.lastIndexOf(entry), 1)
-            if (stack.length === 0) WebApp.BackButton.hide()
+            WebApp.BackButton.hide()
         }
     }, [isPresent])
 

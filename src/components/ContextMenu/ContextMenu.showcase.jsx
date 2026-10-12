@@ -136,6 +136,8 @@ const ContextMenuShowcase = () => {
                                     }
                                 >
                                     <ImageAvatar
+                                        role="button"
+                                        aria-label={name}
                                         size={56}
                                         src={getAssetIcon(ticker)}
                                     />

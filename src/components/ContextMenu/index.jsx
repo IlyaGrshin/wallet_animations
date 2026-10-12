@@ -81,10 +81,12 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
         setPhase("idle")
     }
     // Opened by a held finger: it can slide onto an item and release to pick.
-    const [dragSelect, setDragSelect] = useState(false)
+    // Only that finger: its pointerId, so a second touch can't pick for it.
+    const pressPointerRef = useRef(null)
+    const [dragPointerId, setDragPointerId] = useState(null)
     const open = (point, source) => {
         acceptingRef.current = true
-        setDragSelect(source === "hold")
+        setDragPointerId(source === "hold" ? pressPointerRef.current : null)
         lift(point)
         haptic.impact("medium")
         returnFocusRef.current = document.activeElement
@@ -109,6 +111,7 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
         ...longPress,
         onPointerDown: (event) => {
             restingTransformRef.current = getElement()?.style.transform ?? null
+            pressPointerRef.current = event.pointerId
             longPress.onPointerDown(event)
         },
     }
@@ -198,7 +201,7 @@ const ContextMenu = ({ items, onSelect, surface = false, children }) => {
                         <ContextMenuLayer
                             isOpen={isOpen}
                             shape={target}
-                            dragSelect={dragSelect}
+                            dragPointerId={dragPointerId}
                             surface={surface}
                             items={items}
                             onSelect={handleSelect}

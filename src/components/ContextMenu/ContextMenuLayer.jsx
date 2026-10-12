@@ -44,7 +44,7 @@ const ContextMenuLayer = ({
     isOpen,
     shape,
     surface,
-    dragSelect,
+    dragPointerId,
     items,
     onSelect,
     onClose,
@@ -83,7 +83,7 @@ const ContextMenuLayer = ({
     useMenuInteraction({
         menuRef,
         ready: isOpen && Boolean(place),
-        dragSelect,
+        dragPointerId,
         onClose,
     })
 
@@ -135,6 +135,10 @@ const ContextMenuLayer = ({
                         // finger that opened the menu fires a click on
                         // whatever is under it, which is now this overlay.
                         onPointerDown={onClose}
+                        // The overlay outlives the close (exit fade), so that
+                        // tap's click lands here and would bubble through the
+                        // portal to a clickable owner (a row) — consume it.
+                        onClick={(event) => event.stopPropagation()}
                     />
                 )}
             </AnimatePresence>
@@ -223,7 +227,7 @@ ContextMenuLayer.propTypes = {
         savedTransform: PropTypes.string,
     }).isRequired,
     surface: PropTypes.bool,
-    dragSelect: PropTypes.bool,
+    dragPointerId: PropTypes.number,
     items: PropTypes.arrayOf(itemShape).isRequired,
     onSelect: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,

@@ -39,10 +39,10 @@ const useMenuKeyboard = (menuRef, active, onClose) => {
 // under it is highlighted (selection haptic on each change) and picked on
 // release. Hit-testing, since a touch stays captured to the element it
 // started on and items never see pointerenter.
-const useDragToSelect = (menuRef, active) => {
+const useDragToSelect = (menuRef, pointerId) => {
     useEffect(() => {
         const menu = menuRef.current
-        if (!active || !menu) return
+        if (pointerId == null || !menu) return
         let current = null
         const highlight = (el) => {
             if (el === current) return
@@ -52,12 +52,16 @@ const useDragToSelect = (menuRef, active) => {
             el.setAttribute("data-highlighted", "")
             haptic.selection()
         }
-        const onMove = (event) => {
+        // Other fingers neither move the highlight nor release the pick.
+        const own = (handler) => (event) => {
+            if (event.pointerId === pointerId) handler(event)
+        }
+        const onMove = own((event) => {
             const hit = document
                 .elementFromPoint(event.clientX, event.clientY)
                 ?.closest('[role="menuitem"]')
             highlight(hit && menu.contains(hit) ? hit : null)
-        }
+        })
         const stop = () => {
             document.removeEventListener("pointermove", onMove)
             document.removeEventListener("pointerup", onUp)
@@ -69,17 +73,22 @@ const useDragToSelect = (menuRef, active) => {
             stop()
             if (pick && el) el.click()
         }
-        const onUp = () => end(true)
-        const onCancel = () => end(false)
+        const onUp = own(() => end(true))
+        const onCancel = own(() => end(false))
         document.addEventListener("pointermove", onMove)
         document.addEventListener("pointerup", onUp)
         document.addEventListener("pointercancel", onCancel)
         return stop
-    }, [menuRef, active])
+    }, [menuRef, pointerId])
 }
 
 /** Keyboard and drag-to-select for a placed, open context menu. */
-export const useMenuInteraction = ({ menuRef, ready, dragSelect, onClose }) => {
+export const useMenuInteraction = ({
+    menuRef,
+    ready,
+    dragPointerId,
+    onClose,
+}) => {
     useMenuKeyboard(menuRef, ready, onClose)
-    useDragToSelect(menuRef, ready && dragSelect)
+    useDragToSelect(menuRef, ready ? dragPointerId : null)
 }
