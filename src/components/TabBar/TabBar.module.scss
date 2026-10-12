@@ -89,42 +89,19 @@
             calc(var(--overlay-padding-x) * -1);
     }
 
-    .activeIndicator {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 50%;
-        height: 100%;
-        border-radius: 2px 2px 0 0;
-        z-index: 2;
-
-        :global(body.apple) & {
-            background-color: var(--secondary-button-color);
-            border-radius: 100px;
-            height: calc(100% - 8px);
-            top: 4px;
-            z-index: 1;
-            margin-left: 4px;
-            margin-right: 4px;
-        }
-
-        :global(body.material) & {
-            background-color: var(--tg-theme-text-color);
-        }
-    }
-
     .clipPathContainer {
         position: absolute;
         display: flex;
         background-color: var(--tertiary-fill-background);
         width: calc(100% - 8px);
         clip-path: inset(0 calc(75% - 5px) 0 0% round 100px);
-        will-change: clip-path;
         z-index: 10;
         overflow: hidden;
+
+        // Own compositing layer keeps the clipped overlay stable over the
+        // blurred bar in Safari.
         transform: translateZ(0);
         isolation: isolate;
-        backface-visibility: hidden;
 
         :global(body.apple) & {
             --active-color: var(--tg-theme-accent-text-color);
@@ -144,7 +121,8 @@
             fill: var(--active-color) !important;
         }
 
-        :global(.wallet-lottie_stroke-color) path {
+        :global(.wallet-lottie_stroke-color) path,
+        path[stroke] {
             stroke: var(--active-color) !important;
         }
 

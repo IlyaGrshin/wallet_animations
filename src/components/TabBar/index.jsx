@@ -16,11 +16,11 @@ const TabBarOverlay = ({
     onChange,
     onSnapToSame,
     playKey,
+    layoutDependency,
 }) => {
-    const { overlayRef, animate, transition, handlers } = useIndicatorDrag({
+    const { overlayRef, handlers } = useIndicatorDrag({
         tabsLength: tabs.length,
         activeIndex,
-        spring: { type: "spring", stiffness: 800, damping: 50 },
         onSnapToSame,
         onSnapToNew: onChange,
     })
@@ -31,11 +31,8 @@ const TabBarOverlay = ({
             ref={overlayRef}
             {...handlers}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1, ...animate }}
-            transition={{
-                default: { duration: 0.2 },
-                clipPath: transition.clipPath,
-            }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
         >
             {tabs.map((tab, index) => (
                 <Tab
@@ -43,6 +40,7 @@ const TabBarOverlay = ({
                     isActive={index === activeIndex}
                     onClick={() => onChange(index)}
                     playKey={playKey}
+                    layoutDependency={layoutDependency}
                     data-overlay
                     {...tab}
                 />
@@ -56,13 +54,18 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex)
     const [replayNonce, setReplayNonce] = useState(0)
 
-    useEffect(() => {
+    // Sync with props during render instead of in effects: no extra commit
+    // with a stale index.
+    const [prevDefaultIndex, setPrevDefaultIndex] = useState(defaultIndex)
+    if (defaultIndex !== prevDefaultIndex) {
+        setPrevDefaultIndex(defaultIndex)
         setActiveIndex(defaultIndex)
-    }, [defaultIndex])
-
-    useEffect(() => {
+    }
+    const [prevTabsLength, setPrevTabsLength] = useState(tabs.length)
+    if (tabs.length !== prevTabsLength) {
+        setPrevTabsLength(tabs.length)
         setActiveIndex((prev) => Math.min(prev, tabs.length - 1))
-    }, [tabs.length])
+    }
 
     const handleSegmentClick = (index) => {
         if (index === activeIndex) {
@@ -105,6 +108,10 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
           }
         : {}
 
+    // Geometry only changes with the tab count or skin; motion skips layout
+    // measurement on every other re-render (e.g. each tab switch).
+    const layoutDependency = `${tabs.length}:${isApple}`
+
     const maskInsets = {
         top: EDGE_INSET,
         bottom: EDGE_INSET,
@@ -122,21 +129,16 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             }}
             style={rootStyle}
             layout
+            layoutDependency={layoutDependency}
         >
-            <div
-                style={{
-                    display: "flex",
-                    width: "100%",
-                    position: "relative",
-                    zIndex: 1,
-                }}
-            >
+            <div className={styles.content}>
                 {tabs.map((tab, index) => (
                     <Tab
                         key={index}
                         isActive={index === activeIndex}
                         onClick={() => handleSegmentClick(index)}
                         playKey={playKey}
+                        layoutDependency={layoutDependency}
                         {...tab}
                     />
                 ))}
@@ -147,6 +149,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                 onChange={handleSegmentClick}
                 onSnapToSame={() => setReplayNonce((n) => n + 1)}
                 playKey={playKey}
+                layoutDependency={layoutDependency}
             />
 
             <Activity mode={isApple ? "visible" : "hidden"}>
@@ -173,6 +176,7 @@ TabBarOverlay.propTypes = {
     onChange: PropTypes.func,
     onSnapToSame: PropTypes.func,
     playKey: PropTypes.string,
+    layoutDependency: PropTypes.string,
 }
 
 export default TabBar

@@ -98,7 +98,7 @@ export default defineConfig(({ command, mode }) => ({
     entries: 'index.html',
     // Only list deps that Vite can't statically discover (lazy-loaded via
     // dynamic import). Statically imported deps are auto-detected.
-    include: ['lottie-react', 'agentation']
+    include: ['agentation']
   },
   resolve: {
     alias: {
@@ -124,7 +124,7 @@ export default defineConfig(({ command, mode }) => ({
         entryFileNames: 'assets/[name].[hash].js',
         // Only pin the always-loaded libs to stable chunks for long-term
         // caching; everything else splits per usage point, so page-only deps
-        // (lottie-web, markdown-to-jsx, colorthief, calligraph) stay out of
+        // (markdown-to-jsx, colorthief, calligraph) stay out of
         // the startup path. motion is deliberately NOT pinned: its feature
         // bundle is loaded lazily by MotionProvider, and a manual chunk would
         // pull it back into the startup path.
