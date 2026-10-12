@@ -69,16 +69,22 @@ export const useReorderLift = ({ controls, groupRef, longPress, onLift }) => {
     const rowHandlers = longPress
         ? {
               ...press,
+              // Only the pointer useLongPress accepts may start the hold: a
+              // second finger on the row must not take over the lift (and
+              // with it the drop and auto-scroll scoping), nor clear it.
               onPointerDown: (event) => {
-                  downRef.current = event.nativeEvent
+                  if (event.button === 0 && event.isPrimary)
+                      downRef.current = event.nativeEvent
                   press.onPointerDown(event)
               },
               onPointerUp: (event) => {
-                  downRef.current = null
+                  if (event.pointerId === downRef.current?.pointerId)
+                      downRef.current = null
                   press.onPointerUp(event)
               },
               onPointerCancel: (event) => {
-                  downRef.current = null
+                  if (event.pointerId === downRef.current?.pointerId)
+                      downRef.current = null
                   press.onPointerCancel(event)
               },
               onContextMenu: (event) => {

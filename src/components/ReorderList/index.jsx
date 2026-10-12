@@ -16,7 +16,7 @@ const DEADBAND = 1
  * long press), or turn on `editing` to show reorder handles that lift on touch
  * (iOS edit mode, Material drag handle). Neighbours make way as the lifted row
  * passes their centre; `onReorder` fires with the new order on every step.
- * Handles also move their row with the arrow keys.
+ * Handles also move their row with the arrow keys, announcing each result.
  * @param {Array} props.values The order, one entry per `ReorderList.Item value`.
  * @param {(values: Array) => void} props.onReorder Receives the reordered array.
  * @param {boolean} [props.editing=false] Show handles instead of long press.
@@ -41,6 +41,19 @@ const ReorderList = ({
     const groupRef = useRef(null)
     const itemsRef = useRef(new Map())
     const pendingRef = useRef(null)
+    const statusRef = useRef(null)
+
+    // Written straight into the live region, emptied first, so a repeated
+    // message (pressing on at an end) is announced again, and announcing
+    // doesn't re-render the list.
+    const announce = (message) => {
+        const status = statusRef.current
+        if (!status) return
+        status.textContent = ""
+        requestAnimationFrame(() => {
+            status.textContent = message
+        })
+    }
 
     const moveTo = (value, to) => {
         const from = values.indexOf(value)
@@ -84,14 +97,37 @@ const ReorderList = ({
             if (to === index) while (crossed(to - 1)) to -= 1
             moveTo(value, to)
         },
-        step: (value, by) => moveTo(value, values.indexOf(value) + by),
+        // Keyboard moves have no visual cue for a screen reader, so each
+        // result is spoken: the new place, or that the row is already at an end.
+        step: (value, by, label) => {
+            const from = values.indexOf(value)
+            if (from === -1) return false
+            const to = Math.min(values.length - 1, Math.max(0, from + by))
+            const moved = moveTo(value, to)
+            announce(
+                moved
+                    ? `Moved ${label} to position ${to + 1} of ${values.length}`
+                    : `${label} is already ${to ? "last" : "first"}`
+            )
+            return moved
+        },
     }
 
     return (
         <ReorderContext.Provider value={context}>
-            <div ref={groupRef} className={cx(styles.group, className)}>
+            <div
+                ref={groupRef}
+                role="list"
+                className={cx(styles.group, className)}
+            >
                 {children}
             </div>
+            <div
+                ref={statusRef}
+                role="status"
+                aria-live="polite"
+                className={styles.status}
+            />
         </ReorderContext.Provider>
     )
 }

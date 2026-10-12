@@ -56,7 +56,7 @@ const ReorderItem = ({ value, label, children, className }) => {
         const by = KEY_STEPS[event.key]
         if (!by) return
         event.preventDefault()
-        if (step(value, by))
+        if (step(value, by, label))
             requestAnimationFrame(() => handleRef.current?.focus())
     }
 
@@ -66,6 +66,7 @@ const ReorderItem = ({ value, label, children, className }) => {
                 elementRef.current = element
                 return register(value, element)
             }}
+            role="listitem"
             layout="position"
             transition={{ layout: isApple ? SPRING.APPLE : MATERIAL_LAYOUT }}
             drag="y"

@@ -124,3 +124,13 @@
 .icon {
     display: flex;
 }
+
+// Screen-reader-only announcements of keyboard moves.
+.status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
