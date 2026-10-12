@@ -71,7 +71,12 @@ const enterFrom = ({ isSegmentSwitch, direction, isApple }) => {
 export const pageVariants = {
     initial: enterFrom,
     animate: (custom) => {
-        const from = enterFrom(custom)
+        // A resumed layer starts from its current values (null keyframes);
+        // otherwise the authored entrance pose, since a fully exited layer
+        // still holds the opposite side's exit pose.
+        const from = custom.resume
+            ? { opacity: null, scale: null, x: null }
+            : enterFrom(custom)
         const keyframes = {
             opacity: [from.opacity, 1],
             scale: [from.scale, 1],
