@@ -8,7 +8,7 @@ import SectionHeader from "../../../components/SectionHeader"
 import StartView from "../../../components/StartView"
 import { RegularButton } from "../../../components/Button"
 
-import WebApp, { BackButton } from "../../../lib/twa"
+import WebApp, { BackButton, lockVerticalSwipes } from "../../../lib/twa"
 
 import * as styles from "./Onboarding.module.scss"
 
@@ -57,18 +57,15 @@ const Onboarding = () => {
     }
 
     useEffect(() => {
-        WebApp.disableVerticalSwipes()
-        const handleBackButton = () => {
-            WebApp.enableVerticalSwipes()
-        }
+        const releaseSwipes = lockVerticalSwipes()
 
-        WebApp.onEvent("backButtonClicked", handleBackButton)
+        WebApp.onEvent("backButtonClicked", releaseSwipes)
 
         return () => {
-            WebApp.offEvent("backButtonClicked", handleBackButton)
+            WebApp.offEvent("backButtonClicked", releaseSwipes)
             // Restore swipes on unmount too: in split-view the prototype can be
             // left via the sidebar without ever hitting the BackButton.
-            WebApp.enableVerticalSwipes()
+            releaseSwipes()
         }
     }, [])
 
