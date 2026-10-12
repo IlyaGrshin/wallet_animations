@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import cx from "clsx"
 
@@ -41,6 +41,7 @@ const ReorderList = ({
     const groupRef = useRef(null)
     const itemsRef = useRef(new Map())
     const pendingRef = useRef(null)
+    const queuedRef = useRef(null)
     const statusRef = useRef(null)
 
     // Written straight into the live region, emptied first, so a repeated
@@ -68,6 +69,40 @@ const ReorderList = ({
         return true
     }
 
+    // While a reorder is waiting for its `values` to commit, positions can't be
+    // measured against the order on screen, so the latest one is kept and
+    // replayed once the commit lands: a slow parent never drops the row short
+    // of where the pointer went.
+    const track = (value, top) => {
+        if (pendingRef.current === values) {
+            queuedRef.current = { value, top }
+            return
+        }
+        queuedRef.current = null
+        const items = itemsRef.current
+        const index = values.indexOf(value)
+        const element = items.get(value)
+        if (!element) return
+        const bottom = top + element.offsetHeight
+        const crossed = (at) => {
+            const other = items.get(values[at])
+            if (!other) return false
+            return at > index
+                ? bottom >= centerOf(other) + DEADBAND
+                : top <= centerOf(other) - DEADBAND
+        }
+        let to = index
+        while (crossed(to + 1)) to += 1
+        if (to === index) while (crossed(to - 1)) to -= 1
+        moveTo(value, to)
+    }
+
+    useEffect(() => {
+        const queued = queuedRef.current
+        if (queued && pendingRef.current !== values)
+            track(queued.value, queued.top)
+    }, [values])
+
     const context = {
         groupRef,
         editing,
@@ -78,25 +113,7 @@ const ReorderList = ({
                     itemsRef.current.delete(value)
             }
         },
-        track: (value, top) => {
-            if (pendingRef.current === values) return
-            const items = itemsRef.current
-            const index = values.indexOf(value)
-            const element = items.get(value)
-            if (!element) return
-            const bottom = top + element.offsetHeight
-            const crossed = (at) => {
-                const other = items.get(values[at])
-                if (!other) return false
-                return at > index
-                    ? bottom >= centerOf(other) + DEADBAND
-                    : top <= centerOf(other) - DEADBAND
-            }
-            let to = index
-            while (crossed(to + 1)) to += 1
-            if (to === index) while (crossed(to - 1)) to -= 1
-            moveTo(value, to)
-        },
+        track,
         // Keyboard moves have no visual cue for a screen reader, so each
         // result is spoken: the new place, or that the row is already at an end.
         step: (value, by, label) => {
