@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { useSplitViewContext } from "../SplitView/context"
 import SnackbarHost from "./SnackbarHost"
 import { triggerHaptic } from "./SnackbarItem"
+import { usePlatform } from "../../lib/platform"
 
 const SnackbarContext = createContext(null)
 
@@ -35,6 +36,7 @@ export const useSnackbar = () => {
 }
 
 export const SnackbarProvider = ({ children }) => {
+    const { haptics } = usePlatform()
     const [snackbars, setSnackbars] = useState([])
     const [panes, setPanes] = useState([])
     const idRef = useRef(0)
@@ -59,7 +61,7 @@ export const SnackbarProvider = ({ children }) => {
         idRef.current += 1
         const id = idRef.current
         const { pane, type } = options
-        triggerHaptic(type)
+        triggerHaptic(haptics, type)
         if (pane) {
             setPanes((curr) => (curr.includes(pane) ? curr : [...curr, pane]))
         }

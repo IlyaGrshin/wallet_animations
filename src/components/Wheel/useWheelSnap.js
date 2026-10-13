@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import { useMotionValue, animate } from "motion/react"
-import WebApp from "../../lib/twa"
+import { usePlatform } from "../../lib/platform"
 import { SPRING } from "../../utils/animations"
 
 const TICK_WIDTH = 32
@@ -28,6 +28,7 @@ const useWheelSnap = ({
     disabled = false,
     enableHaptic = true,
 }) => {
+    const { haptics } = usePlatform()
     const isControlled = value !== undefined
     const [uncontrolled, setUncontrolled] = useState(defaultValue)
     const currentValue = isControlled ? value : uncontrolled
@@ -54,13 +55,13 @@ const useWheelSnap = ({
         (newValue) => {
             const clamped = clamp(newValue, max)
             if (enableHaptic && clamped !== currentValueRef.current) {
-                WebApp.HapticFeedback.selectionChanged()
+                haptics.selection()
             }
             lastInternalValueRef.current = clamped
             if (!isControlled) setUncontrolled(clamped)
             onChange?.(clamped)
         },
-        [max, enableHaptic, isControlled, onChange]
+        [max, enableHaptic, isControlled, onChange, haptics]
     )
 
     const animateToValue = useCallback(

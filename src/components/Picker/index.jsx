@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import * as styles from "./Picker.module.scss"
 
-import WebApp from "../../lib/twa"
+import { usePlatform } from "../../lib/platform"
 import { drumTransform } from "../../utils/drum"
 
 const Picker = ({ items, onPickerIndex }) => {
+    const { haptics } = usePlatform()
     const pickerRef = useRef(null)
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [scrollPosition, setScrollPosition] = useState(0)
@@ -59,7 +60,7 @@ const Picker = ({ items, onPickerIndex }) => {
 
     useEffect(() => {
         if (selectedIndex >= 0 && selectedIndex < items.length) {
-            WebApp.HapticFeedback.selectionChanged()
+            haptics.selection()
         }
     }, [selectedIndex, items.length])
 

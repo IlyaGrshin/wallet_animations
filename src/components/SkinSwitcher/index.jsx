@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import SegmentedControl from "../SegmentedControl"
 import GlassContainer from "../GlassEffect/GlassContainer"
 import { ensureRobotoFlex, useSkin } from "../../hooks/DeviceProvider"
+import { usePlatform } from "../../lib/platform"
 
 import * as styles from "./SkinSwitcher.module.scss"
 
@@ -12,14 +13,15 @@ const SKINS = [
 
 const SkinSwitcher = () => {
     const { skin, setSkin } = useSkin()
+    const { platform } = usePlatform()
     const defaultIndex = Math.max(
         0,
         SKINS.findIndex((s) => s.value === skin)
     )
 
     useEffect(() => {
-        ensureRobotoFlex()
-    }, [])
+        ensureRobotoFlex(platform)
+    }, [platform])
 
     // Reserve bottom space while the switcher floats over the UI, so
     // bottom-anchored elements (TabBar, Snackbar) lift above it via --bottom-clearance.

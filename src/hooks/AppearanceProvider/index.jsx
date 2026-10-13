@@ -1,17 +1,16 @@
 import PropTypes from "prop-types"
 import { createContext, useEffect, useMemo, useState } from "react"
-import WebApp from "../../lib/twa"
+import { usePlatform } from "../../lib/platform"
 
 export const AppearanceContext = createContext({
     colorScheme: "light",
 })
 
 const AppearanceProvider = ({ children }) => {
+    const platform = usePlatform()
     const [colorScheme, setColorScheme] = useState(() => {
-        const tgColorScheme = getComputedStyle(document.documentElement)
-            .getPropertyValue("--tg-color-scheme")
-            .trim()
-        if (tgColorScheme) return tgColorScheme
+        const hostColorScheme = platform.getColorScheme()
+        if (hostColorScheme) return hostColorScheme
 
         return window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
@@ -19,31 +18,25 @@ const AppearanceProvider = ({ children }) => {
     })
 
     useEffect(() => {
-        const getTelegramColorScheme = () => {
-            return getComputedStyle(document.documentElement)
-                .getPropertyValue("--tg-color-scheme")
-                .trim()
-        }
-
         const applySystemScheme = (scheme) => {
             setColorScheme(scheme)
             document.body.setAttribute("data-color-scheme", scheme)
         }
 
-        const updateThemeFromTelegram = () => {
-            const tgColorScheme = getTelegramColorScheme()
-            if (!tgColorScheme) return
-            setColorScheme(tgColorScheme)
+        const updateThemeFromHost = () => {
+            const hostColorScheme = platform.getColorScheme()
+            if (!hostColorScheme) return
+            setColorScheme(hostColorScheme)
             document.body.removeAttribute("data-color-scheme")
         }
 
         const handleSystemThemeChange = (e) => {
-            if (getTelegramColorScheme()) return
+            if (platform.getColorScheme()) return
             applySystemScheme(e.matches ? "dark" : "light")
         }
 
-        if (getTelegramColorScheme()) {
-            updateThemeFromTelegram()
+        if (platform.getColorScheme()) {
+            updateThemeFromHost()
         } else {
             applySystemScheme(
                 window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -52,15 +45,15 @@ const AppearanceProvider = ({ children }) => {
             )
         }
 
-        WebApp.onEvent("themeChanged", updateThemeFromTelegram)
+        const unsubscribe = platform.onThemeChange(updateThemeFromHost)
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
         mediaQuery.addEventListener("change", handleSystemThemeChange)
 
         return () => {
-            WebApp.offEvent("themeChanged", updateThemeFromTelegram)
+            unsubscribe()
             mediaQuery.removeEventListener("change", handleSystemThemeChange)
         }
-    }, [])
+    }, [platform])
 
     const value = useMemo(() => ({ colorScheme }), [colorScheme])
 

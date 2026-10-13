@@ -1,7 +1,7 @@
 import { useEffect, useId } from "react"
 import PropTypes from "prop-types"
 
-import WebApp from "../../lib/twa"
+import { usePlatform } from "../../lib/platform"
 import { useSplitViewContext } from "../SplitView/context"
 import { radialStops, fadeStops } from "./gradientMath"
 
@@ -52,16 +52,17 @@ const Gradient = ({
     // top colour (the solid inner colour). Mirrors <Page>'s header handling; the
     // split shell owns the chrome in a detail pane, so defer there.
     const { inDetailPane } = useSplitViewContext()
+    const platform = usePlatform()
     useEffect(() => {
         if (!paintHeader || inDetailPane) return
-        if (WebApp.initData) {
-            WebApp.setHeaderColor(innerColor)
+        if (platform.isEmbedded) {
+            platform.setHeaderColor(innerColor)
         } else {
             document
                 .querySelector('meta[name="theme-color"]')
                 ?.setAttribute("content", innerColor)
         }
-    }, [paintHeader, inDetailPane, innerColor])
+    }, [paintHeader, inDetailPane, innerColor, platform])
 
     // r="1" base scaled to the two radii: an axis-aligned ellipse (rx, ry) at
     // the center. Add rotation here later if a rotate handle is wanted.

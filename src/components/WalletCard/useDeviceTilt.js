@@ -1,8 +1,7 @@
 import { useEffect } from "react"
 
 import { clamp } from "../../utils/number"
-import WebApp, { isTelegram } from "../../lib/twa"
-import { acquireDeviceOrientation } from "./deviceOrientation"
+import { usePlatform } from "../../lib/platform"
 
 // A slightly underdamped spring (omega 16rad/s, zeta ~0.72) instead of a
 // plain lerp: a fast pointer sweep or the return-to-rest overshoots by ~4%,
@@ -16,14 +15,12 @@ const MAX_DEG = 45
 const MAX_RAD = (MAX_DEG * Math.PI) / 180
 const NEUTRAL_FOLLOW = 0.01
 
-// A -1..1 tilt target. `live` marks the Telegram path, where gamma/beta have to
-// be polled every frame; the web path pushes updates and calls `onChange` so a
-// parked loop can re-arm.
-function startTiltSource(onChange) {
+// A -1..1 tilt target. `live` marks the host sensor path (Telegram), where
+// gamma/beta have to be polled every frame; the web path pushes updates and
+// calls `onChange` so a parked loop can re-arm.
+function startTiltSource(orientation, onChange) {
     const target = { x: 0, y: 0 }
-    const orientation = WebApp?.DeviceOrientation
-    const live =
-        isTelegram() && !!orientation && typeof orientation.start === "function"
+    const live = !!orientation
 
     if (live) {
         let neutralBeta = null
@@ -39,7 +36,7 @@ function startTiltSource(onChange) {
                 target.y = clamp((beta - neutralBeta) / MAX_RAD, -1, 1)
             },
         }
-        source.stop = acquireDeviceOrientation(orientation, () => {
+        source.stop = orientation.acquire(() => {
             source.live = false
             target.x = 0
             target.y = 0
@@ -81,6 +78,7 @@ function startTiltSource(onChange) {
 // is an optional 0..1 MotionValue multiplied into the written values, so a
 // page can flatten the card as it flies away.
 export default function useDeviceTilt(targetRef, damp) {
+    const platform = usePlatform()
     useEffect(() => {
         if (!targetRef) return undefined
         if (typeof window === "undefined") return undefined
@@ -97,7 +95,10 @@ export default function useDeviceTilt(targetRef, damp) {
         const ensureLoop = () => {
             if (!raf) raf = requestAnimationFrame(tick)
         }
-        const source = startTiltSource(ensureLoop)
+        const source = startTiltSource(
+            platform.getDeviceOrientation(),
+            ensureLoop
+        )
         const unsubscribeDamp = damp?.on("change", ensureLoop)
 
         function tick(now) {
@@ -145,5 +146,5 @@ export default function useDeviceTilt(targetRef, damp) {
             unsubscribeDamp?.()
             source.stop()
         }
-    }, [targetRef, damp])
+    }, [targetRef, damp, platform])
 }

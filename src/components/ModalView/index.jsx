@@ -5,7 +5,7 @@ import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import * as styles from "./ModalView.module.scss"
 
-import WebApp, { BackButton, lockVerticalSwipes } from "../../lib/twa"
+import { BackButton, usePlatform } from "../../lib/platform"
 
 import ModalPage, { parsePages } from "./ModalPage"
 import TrayPages from "./TrayPages"
@@ -18,7 +18,8 @@ import { useSplitView } from "../../hooks/useSplitView"
 import { useSkin } from "../../hooks/DeviceProvider"
 import { SPRING } from "../../utils/animations"
 
-const getHeaderColor = () => WebApp.themeParams.secondary_bg_color || "#EFEFF4"
+const getHeaderColor = (platform) =>
+    platform.getThemeParams().secondary_bg_color || "#EFEFF4"
 
 // Squircle the panel corners (34px Apple, 16px Material). The sheet rounds its
 // top edge only; the centred dialog rounds all four. CSS border-radius is the
@@ -55,6 +56,7 @@ const ModalView = ({
     const modalRef = useRef(null)
     const isWide = useSplitView()
     const { isApple } = useSkin()
+    const platform = usePlatform()
 
     const pages = parsePages(children)
     const isTray = pages !== null
@@ -101,16 +103,16 @@ const ModalView = ({
     // color the host page set itself.
     useEffect(() => {
         if (!isOpen) return
-        const headerColor = getHeaderColor()
+        const headerColor = getHeaderColor(platform)
         document.body.style.overflow = "hidden"
-        const releaseSwipes = lockVerticalSwipes()
-        WebApp.setHeaderColor(`#${blendColors(headerColor, "#000000", 0.5)}`)
+        const releaseSwipes = platform.lockVerticalSwipes()
+        platform.setHeaderColor(`#${blendColors(headerColor, "#000000", 0.5)}`)
         return () => {
             document.body.style.overflow = "auto"
             releaseSwipes()
-            WebApp.setHeaderColor(getHeaderColor())
+            platform.setHeaderColor(getHeaderColor(platform))
         }
-    }, [isOpen])
+    }, [isOpen, platform])
 
     // Escape mirrors the BackButton: pop first, close from the root page.
     useEffect(() => {

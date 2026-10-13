@@ -1,7 +1,7 @@
 import { useState } from "react"
 import PropTypes from "prop-types"
 import cx from "clsx"
-import WebApp from "../../lib/twa"
+import { usePlatform } from "../../lib/platform"
 import * as styles from "./Switch.module.scss"
 
 /**
@@ -21,6 +21,7 @@ function Switch({
     disabled = false,
     className,
 }) {
+    const { haptics } = usePlatform()
     const isControlled = value !== undefined
     const [uncontrolled, setUncontrolled] = useState(defaultValue)
     const checked = isControlled ? value : uncontrolled
@@ -30,7 +31,7 @@ function Switch({
     }
 
     const toggle = () => {
-        WebApp.HapticFeedback.selectionChanged()
+        haptics.selection()
 
         if (isControlled) {
             emitChange(!checked)

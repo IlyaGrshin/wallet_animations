@@ -1,17 +1,15 @@
 import { useEffect } from "react"
 import PropTypes from "prop-types"
-import WebApp from "../../lib/twa"
+import { usePlatform } from "../../lib/platform"
 import { useSplitViewContext } from "../SplitView/context"
 
-const { setHeaderColor, setBackgroundColor } = WebApp
-
 /**
- * Screen wrapper that syncs the TWA header/background colors and the
+ * Screen wrapper that syncs the host header/background colors and the
  * --page-background var (drives AppBar/TabBar fades). Renders children as-is.
  * @param {"primary"|"secondary"} [props.mode] Which --tg-theme bg to use.
  * @param {string} [props.headerColor]     Hex without '#', overrides mode.
  * @param {string} [props.backgroundColor] Hex without '#', overrides mode.
- * @param {boolean} [props.expandOnMount]  Call WebApp.expand() on mount.
+ * @param {boolean} [props.expandOnMount]  Expand the host app on mount.
  * @param {boolean} [props.deferHeader]    Let a child own the header color.
  * @example
  * <Page mode="primary" expandOnMount>{content}</Page>
@@ -25,6 +23,7 @@ const Page = ({
     deferHeader = false,
 }) => {
     const { inDetailPane, setPaneBackground } = useSplitViewContext()
+    const platform = usePlatform()
 
     const tgColorMapping = {
         primary: "bg_color",
@@ -46,21 +45,21 @@ const Page = ({
 
     useEffect(() => {
         if (expandOnMount) {
-            WebApp.expand()
+            platform.expand()
         }
-    }, [expandOnMount])
+    }, [expandOnMount, platform])
 
     useEffect(() => {
-        // In a SplitView detail pane the shell owns the TWA chrome and the pane
+        // In a SplitView detail pane the shell owns the host chrome and the pane
         // background comes from CSS, so don't fight over header/background colors.
         if (inDetailPane) return
-        if (WebApp.initData) {
-            setBackgroundColor(tgBackgroundColor)
+        if (platform.isEmbedded) {
+            platform.setBackgroundColor(tgBackgroundColor)
             // deferHeader: leave the header to whoever bakes it (e.g. a hero
             // Gradient paints it from its top colour). Page still owns the
             // background. Without this, Page's effect runs after the child's and
             // would clobber the baked header with the mode default.
-            if (!deferHeader) setHeaderColor(tgHeaderColor)
+            if (!deferHeader) platform.setHeaderColor(tgHeaderColor)
         } else {
             document.body.style.backgroundColor = CSSBackgroundColor
         }
@@ -73,6 +72,7 @@ const Page = ({
         CSSBackgroundColor,
         inDetailPane,
         deferHeader,
+        platform,
     ])
 
     // In a detail pane, report the page color to the shell so the whole pane

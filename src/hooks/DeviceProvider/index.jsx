@@ -7,7 +7,7 @@ import {
     useState,
 } from "react"
 import PropTypes from "prop-types"
-import WebApp from "../../lib/twa"
+import { usePlatform, webAdapter } from "../../lib/platform"
 
 const PLATFORM_MAP = {
     ios: "apple",
@@ -31,18 +31,17 @@ const readOverride = () => {
     }
 }
 
-const detectSkin = () => {
+const detectSkin = (platform) => {
     const override = readOverride()
     if (override) return override
-    return PLATFORM_MAP[WebApp.platform] || "apple"
+    return PLATFORM_MAP[platform] || "apple"
 }
 
 const ROBOTO_FLEX_MARKER = "data-roboto-flex"
 
-export const ensureRobotoFlex = () => {
+export const ensureRobotoFlex = (platform) => {
     if (typeof document === "undefined") return
-    const isAndroid =
-        WebApp.platform === "android" || WebApp.platform === "android_x"
+    const isAndroid = platform === "android" || platform === "android_x"
     if (isAndroid) return
     if (document.querySelector(`link[${ROBOTO_FLEX_MARKER}]`)) return
 
@@ -64,7 +63,7 @@ export const ensureRobotoFlex = () => {
 const SkinContext = createContext(null)
 
 const FALLBACK_VALUE = (() => {
-    const skin = detectSkin()
+    const skin = detectSkin(webAdapter.platform)
     return {
         skin,
         isApple: skin === "apple",
@@ -79,7 +78,8 @@ export const useSkin = () => {
 }
 
 export default function DeviceProvider({ children }) {
-    const [skin, setSkinState] = useState(detectSkin)
+    const { platform } = usePlatform()
+    const [skin, setSkinState] = useState(() => detectSkin(platform))
 
     useEffect(() => {
         const other = skin === "apple" ? "material" : "apple"
@@ -88,8 +88,8 @@ export default function DeviceProvider({ children }) {
     }, [skin])
 
     useEffect(() => {
-        if (skin === "material") ensureRobotoFlex()
-    }, [skin])
+        if (skin === "material") ensureRobotoFlex(platform)
+    }, [skin, platform])
 
     const setSkin = useCallback((next) => {
         if (next !== "apple" && next !== "material") return

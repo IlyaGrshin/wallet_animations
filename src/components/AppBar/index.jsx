@@ -3,16 +3,17 @@ import { useHashLocation } from "wouter/use-hash-location"
 
 import PanelHeader from "../PanelHeader"
 import { useSplitViewContext } from "../SplitView/context"
-import { isTelegram } from "../../lib/twa"
+import { usePlatform } from "../../lib/platform"
 
-// Browser-only page header (renders null inside Telegram, where native chrome
-// handles it). The back button is dropped in a SplitView detail pane, where the
-// persistent sidebar already navigates.
+// Browser-only page header (renders null inside a host app such as Telegram,
+// where native chrome handles it). The back button is dropped in a SplitView
+// detail pane, where the persistent sidebar already navigates.
 const AppBar = ({ title, header = true, back = true }) => {
     const [, navigate] = useHashLocation()
     const { inDetailPane } = useSplitViewContext()
+    const { isEmbedded } = usePlatform()
 
-    if (header === false || isTelegram()) return null
+    if (header === false || isEmbedded) return null
 
     const showBack = back && !inDetailPane
 

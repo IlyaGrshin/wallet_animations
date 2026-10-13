@@ -1,4 +1,4 @@
-import WebApp from "../../lib/twa"
+import WebApp from "./webApp"
 
 const REFRESH_MS = 20
 const RETRY_MS = 250

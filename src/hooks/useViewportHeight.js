@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react"
-import WebApp from "../lib/twa"
+import { usePlatform } from "../lib/platform"
 
 export function useViewportHeight() {
-    const [height, setHeight] = useState(
-        () => WebApp.viewportHeight || window.innerHeight
-    )
+    const platform = usePlatform()
+    const [height, setHeight] = useState(() => platform.getViewportHeight())
 
     useEffect(() => {
         let rafId = null
@@ -13,7 +12,7 @@ export function useViewportHeight() {
             if (rafId) cancelAnimationFrame(rafId)
 
             rafId = requestAnimationFrame(() => {
-                const newHeight = WebApp.viewportHeight || window.innerHeight
+                const newHeight = platform.getViewportHeight()
                 setHeight(newHeight)
                 window.scrollTo(0, 0)
             })
@@ -21,19 +20,15 @@ export function useViewportHeight() {
 
         updateHeight()
 
-        if (WebApp.onEvent) {
-            WebApp.onEvent("viewportChanged", updateHeight)
-        }
+        const unsubscribe = platform.onViewportChange(updateHeight)
         window.addEventListener("resize", updateHeight, { passive: true })
 
         return () => {
             if (rafId) cancelAnimationFrame(rafId)
-            if (WebApp.offEvent) {
-                WebApp.offEvent("viewportChanged", updateHeight)
-            }
+            unsubscribe()
             window.removeEventListener("resize", updateHeight)
         }
-    }, [])
+    }, [platform])
 
     return height
 }

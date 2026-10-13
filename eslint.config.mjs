@@ -44,5 +44,24 @@ export default [
             'no-console': ['warn', { allow: ['warn', 'error'] }],
         },
     },
+    {
+        // UI layer talks to the host only through the platform adapter, so it
+        // keeps working outside Telegram. Showcases are app code and may use it.
+        files: ['src/components/**/*.{js,jsx}', 'src/hooks/**/*.{js,jsx}'],
+        ignores: ['**/*.showcase.{js,jsx}', 'src/components/ModalView/Modals/**'],
+        rules: {
+            'no-restricted-imports': [
+                'error',
+                {
+                    patterns: [
+                        {
+                            group: ['**/lib/twa', '**/lib/twa/*', '@lib/twa', '@lib/twa/*'],
+                            message: 'Use usePlatform() from lib/platform instead of the Telegram wrapper.',
+                        },
+                    ],
+                },
+            ],
+        },
+    },
     prettierConfig,
 ];

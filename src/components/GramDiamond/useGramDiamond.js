@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import WebApp from "../../lib/twa"
+import { usePlatform } from "../../lib/platform"
 import { Appearance, GramDiamond } from "../../lib/gramDiamond/renderer"
 
 function resolveColor(css) {
@@ -37,6 +37,7 @@ const STONE_SCALE = 0.85
 
 export default function useGramDiamond(slotRef, canvasRef, options) {
     const [failed, setFailed] = useState(false)
+    const platform = usePlatform()
     const engineRef = useRef(null)
     const latest = useRef(options)
 
@@ -49,14 +50,13 @@ export default function useGramDiamond(slotRef, canvasRef, options) {
         const canvas = canvasRef.current
         if (!slot || !canvas) return undefined
 
-        let swipesWereEnabled = null
+        let releaseSwipes = null
         const holdSwipes = (pressed) => {
-            if (pressed && swipesWereEnabled === null) {
-                swipesWereEnabled = WebApp.isVerticalSwipesEnabled !== false
-                WebApp.disableVerticalSwipes?.()
-            } else if (!pressed && swipesWereEnabled !== null) {
-                if (swipesWereEnabled) WebApp.enableVerticalSwipes?.()
-                swipesWereEnabled = null
+            if (pressed && !releaseSwipes) {
+                releaseSwipes = platform.lockVerticalSwipes()
+            } else if (!pressed && releaseSwipes) {
+                releaseSwipes()
+                releaseSwipes = null
             }
         }
 
@@ -67,8 +67,7 @@ export default function useGramDiamond(slotRef, canvasRef, options) {
                 canvas,
                 { appearance: Appearance.cool, ...style },
                 {
-                    onBurst: () =>
-                        WebApp.HapticFeedback?.impactOccurred?.("soft"),
+                    onBurst: () => platform.haptics.impact("soft"),
                     onPressChanged: (pressed) => {
                         holdSwipes(pressed)
                         latest.current.onPressChanged?.(pressed)

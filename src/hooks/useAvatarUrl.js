@@ -1,14 +1,9 @@
-import WebApp from "../lib/twa"
+import { usePlatform } from "../lib/platform"
 import DefaultAvatar from "../icons/avatars/IlyaG.jpg"
 
 export function useAvatarUrl() {
-    try {
-        const user = new URLSearchParams(WebApp.initData).get("user")
-
-        return (user && JSON.parse(user).photo_url) || DefaultAvatar
-    } catch {
-        return DefaultAvatar
-    }
+    const { getUser } = usePlatform()
+    return getUser()?.photo_url || DefaultAvatar
 }
 
 export default useAvatarUrl
