@@ -13,23 +13,15 @@ import GradientMask from "./components/GradientMask"
 const TabBarOverlay = ({
     tabs,
     activeIndex,
-    onChange,
-    onSnapToSame,
     playKey,
+    overlayRef,
+    animate,
+    transition,
 }) => {
-    const { overlayRef, animate, transition, handlers } = useIndicatorDrag({
-        tabsLength: tabs.length,
-        activeIndex,
-        spring: { type: "spring", stiffness: 800, damping: 50 },
-        onSnapToSame,
-        onSnapToNew: onChange,
-    })
-
     return (
         <m.div
             className={styles.clipPathContainer}
             ref={overlayRef}
-            {...handlers}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, ...animate }}
             transition={{
@@ -41,7 +33,6 @@ const TabBarOverlay = ({
                 <Tab
                     key={index}
                     isActive={index === activeIndex}
-                    onClick={() => onChange(index)}
                     playKey={playKey}
                     data-overlay
                     {...tab}
@@ -74,6 +65,14 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     }
 
     const playKey = `${activeIndex}:${replayNonce}`
+
+    const indicator = useIndicatorDrag({
+        tabsLength: tabs.length,
+        activeIndex,
+        spring: { type: "spring", stiffness: 800, damping: 50 },
+        onSnapToSame: () => setReplayNonce((n) => n + 1),
+        onSnapToNew: handleSegmentClick,
+    })
 
     const rootRef = useRef(null)
     const containerRef = useRef(null)
@@ -122,6 +121,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             }}
             style={rootStyle}
             layout
+            {...indicator.handlers}
         >
             <div
                 style={{
@@ -135,7 +135,6 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                     <Tab
                         key={index}
                         isActive={index === activeIndex}
-                        onClick={() => handleSegmentClick(index)}
                         playKey={playKey}
                         {...tab}
                     />
@@ -144,9 +143,10 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             <TabBarOverlay
                 tabs={tabs}
                 activeIndex={activeIndex}
-                onChange={handleSegmentClick}
-                onSnapToSame={() => setReplayNonce((n) => n + 1)}
                 playKey={playKey}
+                overlayRef={indicator.overlayRef}
+                animate={indicator.animate}
+                transition={indicator.transition}
             />
 
             <Activity mode={isApple ? "visible" : "hidden"}>
@@ -170,9 +170,10 @@ TabBar.propTypes = {
 TabBarOverlay.propTypes = {
     tabs: PropTypes.array.isRequired,
     activeIndex: PropTypes.number,
-    onChange: PropTypes.func,
-    onSnapToSame: PropTypes.func,
     playKey: PropTypes.string,
+    overlayRef: PropTypes.object,
+    animate: PropTypes.object,
+    transition: PropTypes.object,
 }
 
 export default TabBar
