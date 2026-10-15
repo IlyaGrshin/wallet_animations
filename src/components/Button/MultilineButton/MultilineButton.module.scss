@@ -11,6 +11,9 @@
     text-wrap: balance;
 
     &.filled {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
         background-color: var(--tg-theme-button-color);
         color: var(--tg-theme-button-text-color);
 

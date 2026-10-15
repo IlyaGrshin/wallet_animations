@@ -7,6 +7,9 @@
     padding-bottom: env(safe-area-inset-bottom);
 
     :global(body.apple) & {
+        --glass-tint-background: var(--glass-tint-raised);
+        --glass-surface-filter: saturate(300%) blur(8px);
+
         position: absolute;
         left: 21px;
         right: 21px;
@@ -14,14 +17,7 @@
         border-radius: 100px;
         padding: 4px;
         margin: 0;
-        background: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
-        backdrop-filter: saturate(300%) blur(8px);
-        box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
-
-        @supports (-apple-visual-effect: -apple-system-glass-material) {
-            -apple-visual-effect: -apple-system-glass-material;
-            backdrop-filter: none;
-        }
+        box-shadow: none;
     }
 
     :global(body.material) & {
@@ -47,8 +43,8 @@
         z-index: 0;
     }
 
-    // Apple already gets GlassBorder; a glass surface carries exactly one
-    // border, so the blended hairlines exist only where GlassBorder doesn't.
+    // Apple already gets a rim from GlassContainer; a glass surface carries
+    // exactly one border, so these hairlines exist only where it doesn't.
     :global(body.material) &::after {
         content: "";
         position: absolute;

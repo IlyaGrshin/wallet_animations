@@ -33,8 +33,10 @@ const SkinSwitcher = () => {
         if (next !== skin) setSkin(next)
     }
 
+    // The root's fixed position and centering transform isolate blending, so
+    // the glass layers have no page backdrop to blend with.
     return (
-        <GlassContainer className={styles.root}>
+        <GlassContainer className={styles.root} data-glass-isolated="">
             <SegmentedControl
                 segments={SKINS.map((s) => s.label)}
                 defaultIndex={defaultIndex}

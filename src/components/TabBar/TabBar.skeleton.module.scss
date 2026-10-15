@@ -6,9 +6,9 @@
     display: flex;
     padding: 4px;
     border-radius: 100px;
-    background: rgb(from var(--tg-theme-section-bg-color) r g b / 70%);
+    background: var(--glass-tint-raised);
     backdrop-filter: saturate(300%) blur(8px);
-    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+    box-shadow: var(--glass-surface-shadow);
 
     // Match the real TabBar .root: sit at the platform baseline, but lift via
     // --bottom-clearance when it is set (e.g. the SkinSwitcher on showcase

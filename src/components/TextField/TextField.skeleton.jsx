@@ -10,7 +10,8 @@ import * as styles from "./TextField.skeleton.module.scss"
 const TextFieldSkeleton = () => (
     <Page>
         <div className={styles.container}>
-            <div className={styles.input}>
+            {/* The centering transform isolates the glass layers' blending. */}
+            <div className={styles.input} data-glass-isolated="">
                 <GlassContainer style={{ borderRadius: "36px" }}>
                     <SkeletonBlock className={styles.field} />
                 </GlassContainer>
