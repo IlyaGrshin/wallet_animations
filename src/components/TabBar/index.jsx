@@ -13,6 +13,7 @@ import GradientMask from "./components/GradientMask"
 const TabBarOverlay = ({
     tabs,
     activeIndex,
+    onTabClick,
     playKey,
     overlayRef,
     animate,
@@ -33,6 +34,7 @@ const TabBarOverlay = ({
                 <Tab
                     key={index}
                     isActive={index === activeIndex}
+                    onClick={(e) => onTabClick(e, index)}
                     playKey={playKey}
                     data-overlay
                     {...tab}
@@ -65,6 +67,10 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
     }
 
     const playKey = `${activeIndex}:${replayNonce}`
+
+    const handleTabClick = (e, index) => {
+        if (e.detail === 0) handleSegmentClick(index)
+    }
 
     const indicator = useIndicatorDrag({
         tabsLength: tabs.length,
@@ -135,6 +141,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
                     <Tab
                         key={index}
                         isActive={index === activeIndex}
+                        onClick={(e) => handleTabClick(e, index)}
                         playKey={playKey}
                         {...tab}
                     />
@@ -143,6 +150,7 @@ const TabBar = ({ tabs, onChange, defaultIndex = 0 }) => {
             <TabBarOverlay
                 tabs={tabs}
                 activeIndex={activeIndex}
+                onTabClick={handleTabClick}
                 playKey={playKey}
                 overlayRef={indicator.overlayRef}
                 animate={indicator.animate}
@@ -170,6 +178,7 @@ TabBar.propTypes = {
 TabBarOverlay.propTypes = {
     tabs: PropTypes.array.isRequired,
     activeIndex: PropTypes.number,
+    onTabClick: PropTypes.func.isRequired,
     playKey: PropTypes.string,
     overlayRef: PropTypes.object,
     animate: PropTypes.object,

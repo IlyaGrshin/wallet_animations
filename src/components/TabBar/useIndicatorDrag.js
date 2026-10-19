@@ -133,14 +133,22 @@ export function useIndicatorDrag({
         }
 
         commitIndex(nextIndex)
+        resetDrag()
+    }
 
+    const resetDrag = () => {
         setIsDragging(false)
         setDragLeftPercent(null)
         setPressedIndex(null)
         activePointerIdRef.current = null
     }
 
+    const isForeignPointer = (e) =>
+        pointerDownIdRef.current != null &&
+        e.pointerId !== pointerDownIdRef.current
+
     const onPointerUp = (e) => {
+        if (isForeignPointer(e)) return
         // Сброс состояния pointerdown
         isPointerDownRef.current = false
         pointerDownIdRef.current = null
@@ -166,32 +174,15 @@ export function useIndicatorDrag({
     }
 
     const onPointerCancel = (e) => {
+        if (isForeignPointer(e)) return
         isPointerDownRef.current = false
         pointerDownIdRef.current = null
-        if (!isDragging) {
-            setPressedIndex(null)
-            return
-        }
-        finishDrag(e?.clientX)
-        e.preventDefault?.()
-    }
-
-    const onPointerLeave = (e) => {
-        if (!isDragging) {
-            isPointerDownRef.current = false
-            pointerDownIdRef.current = null
-            setPressedIndex(null)
-            return
-        }
-        finishDrag(e?.clientX)
+        resetDrag()
     }
 
     useEffect(() => {
         const cancel = () => {
-            setIsDragging(false)
-            setDragLeftPercent(null)
-            setPressedIndex(null)
-            activePointerIdRef.current = null
+            resetDrag()
             isPointerDownRef.current = false
             pointerDownIdRef.current = null
         }
@@ -209,7 +200,7 @@ export function useIndicatorDrag({
             onPointerMove,
             onPointerUp,
             onPointerCancel,
-            onPointerLeave,
+            onPointerLeave: onPointerCancel,
         },
     }
 }
