@@ -1,29 +1,26 @@
 import { useEffect, useRef, useState } from "react"
 
-import { createEngine } from "./glEngine"
+// The WebGL renderer (shaders included) is a separate chunk: nothing loads
+// until an effect is covered or the browser is idle, so it never weighs on
+// initial JS or on the first paint of a page.
+let loading = null
+const loadRenderer = () =>
+    (loading ??= import("./renderer").then((m) => m.getRenderer()))
 
-const pendingStarts = []
-let draining = false
-
-const drainStarts = () => {
-    pendingStarts.shift()?.()
-    if (pendingStarts.length) setTimeout(drainStarts, 0)
-    else draining = false
-}
-
-const queueStart = (start) => {
-    pendingStarts.push(start)
-    if (draining) return
-    draining = true
-    setTimeout(drainStarts, 0)
-}
+const loadWhenIdle = () =>
+    loading ??
+    new Promise((resolve) => {
+        if (window.requestIdleCallback) window.requestIdleCallback(resolve)
+        else setTimeout(resolve, 1000)
+    }).then(loadRenderer)
 
 /**
- * Wires the WebGL2 particle engine to React lifecycle and the `hidden` prop.
+ * Registers the element with the shared particle renderer and maps the
+ * `hidden` prop onto cover / reveal.
  *
  * @returns {{ supported: boolean, revealOriginRef: object }} supported is false
  *   when WebGL2 is unavailable (caller shows a static fallback); revealOriginRef
- *   holds the pointer origin for the reveal burst.
+ *   holds the pointer origin for the next reveal burst (consumed on change).
  */
 export function useParticles({
     canvasRef,
@@ -36,30 +33,36 @@ export function useParticles({
 }) {
     const [supported, setSupported] = useState(true)
     const revealOriginRef = useRef(null)
-    const startRef = useRef(null)
-    const engineRef = useRef(null)
+    const handleRef = useRef(null)
+    const hiddenRef = useRef(hidden)
 
+    // Declared before registration so hiddenRef is current when it runs.
+    // reveal() before any cover() is a no-op, so the initial mount stays dormant.
+    useEffect(() => {
+        hiddenRef.current = hidden
+        const handle = handleRef.current
+        if (!hidden) handle?.reveal(revealOriginRef.current)
+        else if (handle) handle.cover()
+        else loadRenderer() // registration below covers once it resolves
+        revealOriginRef.current = null
+    }, [hidden])
+
+    // Option changes re-register; a still covered element is covered again.
     useEffect(() => {
         const canvas = canvasRef.current
         const content = contentRef.current
-        if (!canvas || !content) return
+        if (!canvas || !content) return undefined
 
-        let ro = null
-        let io = null
-
-        startRef.current = () => {
-            if (engineRef.current) return engineRef.current
-
-            const gl = canvas.getContext("webgl2", {
-                premultipliedAlpha: false,
-            })
-            if (!gl) {
+        let cancelled = false
+        let handle = null
+        const load = hiddenRef.current ? loadRenderer() : loadWhenIdle()
+        load.then((renderer) => {
+            if (cancelled) return
+            if (!renderer) {
                 setSupported(false)
-                return null
+                return
             }
-
-            const engine = createEngine({
-                gl,
+            handle = renderer.register({
                 canvas,
                 content,
                 color,
@@ -67,51 +70,16 @@ export function useParticles({
                 padding,
                 maskDilation,
             })
-            engineRef.current = engine
-            engine.resize()
-
-            ro = new ResizeObserver(() => engine.resize())
-            ro.observe(content)
-
-            // Pause the render loop while scrolled out of the viewport.
-            io = new IntersectionObserver(([entry]) => {
-                engine.setOnscreen(entry.isIntersecting)
-            })
-            io.observe(content)
-
-            return engine
-        }
-
-        return () => {
-            ro?.disconnect()
-            io?.disconnect()
-            engineRef.current?.destroy()
-            engineRef.current = null
-            startRef.current = null
-        }
-    }, [canvasRef, contentRef, color, radius, padding, maskDilation])
-
-    // Spawn the cloud on cover, burst it away on reveal. reveal() before any
-    // cover() is a no-op, so the initial mount stays dormant. The options are
-    // deps too: changing them destroys the engine above, and a still covered
-    // content needs a new one covering it.
-    useEffect(() => {
-        if (!hidden) {
-            engineRef.current?.reveal(revealOriginRef.current)
-            return undefined
-        }
-        if (engineRef.current) {
-            engineRef.current.cover()
-            return undefined
-        }
-        let cancelled = false
-        queueStart(() => {
-            if (!cancelled) startRef.current?.()?.cover()
+            handleRef.current = handle
+            if (hiddenRef.current) handle.cover()
         })
+
         return () => {
             cancelled = true
+            handle?.destroy()
+            handleRef.current = null
         }
-    }, [hidden, color, radius, padding, maskDilation])
+    }, [canvasRef, contentRef, color, radius, padding, maskDilation])
 
     return { supported, revealOriginRef }
 }

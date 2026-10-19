@@ -1,14 +1,18 @@
-// Rasterizes the content into an alpha mask: white glyphs on a transparent
-// background. The particle shader (text = 1) spawns particles only where this
-// mask is opaque, so the cloud takes the shape of the text.
+import { resolveColor, toCss } from "./glUtils"
+
+// Rasterizes the content into a mask: glyphs painted in their own (opaque) text
+// color on a transparent background. The particle shader (text = 1) spawns
+// particles only where this mask is opaque, so the cloud takes the shape of the
+// text, and tints each particle with the glyph color it spawned on.
 //
 // We walk the content's text nodes and paint each at its live layout position
 // (via Range rects + computed font), so it works regardless of how the children
 // render their glyphs (plain text, Calligraph spans, etc.). Content is frozen
 // while hidden, so a single capture at cover time is stable.
 //
-// Returns the number of glyph runs painted; 0 means the caller should fall back
-// to block mode rather than render an empty (invisible) mask. `pad` is the CSS
+// Returns { drawn, color }: the number of glyph runs painted (0 means the caller
+// should fall back to block mode rather than render an empty mask) and the
+// [r,g,b] of the run covering the most area, the fallback particle color. `pad` is the CSS
 // headroom around the content (the canvas is larger than the content box so
 // particles have room to billow like the demo), so glyphs are offset by it.
 // `dilation` fattens the glyphs (stroke width = dilation * font size) so strokes
@@ -25,14 +29,14 @@ export function renderTextMask(content, ctx, dpr, pad = 0, dilation = 0) {
     ctx.beginPath()
     ctx.rect(pad, pad, base.width, base.height)
     ctx.clip()
-    ctx.fillStyle = "#fff"
-    ctx.strokeStyle = "#fff"
     ctx.lineJoin = "round"
     ctx.textBaseline = "top"
 
     const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT)
     const range = document.createRange()
     let drawn = 0
+    let color = null
+    let colorArea = 0
     let node
     while ((node = walker.nextNode())) {
         const text = node.nodeValue
@@ -57,6 +61,12 @@ export function renderTextMask(content, ctx, dpr, pad = 0, dilation = 0) {
         const fontPx = parseFloat(cs.fontSize) || rect.height
         const x = rect.left - base.left + pad
         const y = rect.top - base.top + pad + (rect.height - fontPx) / 2
+        const rgb = resolveColor(cs.color)
+        ctx.fillStyle = ctx.strokeStyle = toCss(rgb)
+        if (rect.width * rect.height > colorArea) {
+            colorArea = rect.width * rect.height
+            color = rgb
+        }
         if (dilation > 0) {
             ctx.lineWidth = fontPx * dilation
             ctx.strokeText(text, x, y)
@@ -66,5 +76,5 @@ export function renderTextMask(content, ctx, dpr, pad = 0, dilation = 0) {
     }
 
     ctx.restore()
-    return drawn
+    return { drawn, color }
 }

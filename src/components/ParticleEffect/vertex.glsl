@@ -7,13 +7,16 @@ layout(location = 1) in vec2 inVelocity;
 layout(location = 2) in float inTime;
 layout(location = 3) in float inDuration;
 layout(location = 4) in float inAlpha;
+layout(location = 5) in vec3 inColor;
 
 out vec2 outPosition;
 out vec2 outVelocity;
 out float outTime;
 out float outDuration;
 out float outAlpha;
+out vec3 outColor;
 out float alpha;
+out vec3 vColor;
 
 uniform float reset;
 uniform float time;
@@ -35,6 +38,11 @@ uniform vec2 fadeOutXY;
 
 uniform float text;
 uniform sampler2D textTexture;
+
+// 1 = each particle takes the color of the glyph it spawned on (the mask is
+// painted in the text's own colors); 0 = everything uses `color`.
+uniform float textColor;
+uniform vec3 color;
 
 float rand(vec2 n) { 
 	return fract(sin(dot(n,vec2(12.9898,4.1414-seed*.42)))*43758.5453);
@@ -98,6 +106,14 @@ float textAlpha(vec2 pos) {
   return texture(textTexture, uv).a;
 }
 
+vec3 spawnColor(vec2 pos) {
+  if (text < .5 || textColor < .5) return color;
+  vec2 uv = pos / size;
+  uv.y = 1. - uv.y;
+  vec4 m = textureLod(textTexture, uv, 0.);
+  return m.a > .05 ? m.rgb : color;
+}
+
 vec2 genpos() {
   float t = fract(time / 50.) * 50.;
   if (text > 0.) {
@@ -123,6 +139,7 @@ void main() {
   float particleDuration = inDuration;
   float particleTime = inTime + deltaTime * particleDuration / longevity;
   float particleAlpha = inAlpha;
+  vec3 particleColor = inColor;
 
   if (reset > 0.) {
     particleTime = rand(vec2(-94.3, 83.9) * vec2(gl_VertexID, gl_VertexID));
@@ -130,6 +147,7 @@ void main() {
     position = genpos();
     velocity = vec2(0.);
     particleAlpha = text > .5 ? particleAlpha = textAlpha(position) : 1.;
+    particleColor = spawnColor(position);
   } else if (particleTime >= 1.) {
     particleTime = 0.0;
     particleDuration = .5 + 2. * rand(vec2(gl_VertexID) + position);
@@ -139,6 +157,7 @@ void main() {
     } else {
       particleAlpha = 1.;
     }
+    particleColor = spawnColor(position);
     velocity = vec2(0.);
   }
 
@@ -187,6 +206,7 @@ void main() {
     particleTime = 0.0;
     position = genpos();
     particleDuration = .5 + 2. * rand(vec2(gl_VertexID) + position);
+    particleColor = spawnColor(position);
     velocity = vec2(0.);
   }
 
@@ -195,6 +215,8 @@ void main() {
   outTime = particleTime;
   outDuration = particleDuration;
   outAlpha = particleAlpha;
+  outColor = particleColor;
+  vColor = particleColor;
 
   gl_PointSize = r;
   gl_Position = vec4((position / size * 2.0 - vec2(1.0)), 0.0, 1.0);

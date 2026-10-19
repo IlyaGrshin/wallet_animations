@@ -1,6 +1,7 @@
 import * as styles from "./TransactionList.module.scss"
 import SectionList from "../../../../../components/SectionList"
 import Cell from "../../../../../components/Cells"
+import HiddenBalance from "../../../../../components/HiddenBalance"
 import txHistory from "../../data/transactions.json"
 
 export default function TransactionList() {
@@ -13,7 +14,12 @@ export default function TransactionList() {
             {txHistory.map((tx, index) => (
                 <Cell
                     start={<Cell.Start type="Icon" />}
-                    end={<Cell.Text title={tx.value} description={tx.status} />}
+                    end={
+                        <Cell.Text
+                            title={<HiddenBalance>{tx.value}</HiddenBalance>}
+                            description={tx.status}
+                        />
+                    }
                     key={`tx-${index}`}
                 >
                     <Cell.Text title={tx.name} description={tx.date} bold />
