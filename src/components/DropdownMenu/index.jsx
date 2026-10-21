@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import { createPortal } from "react-dom"
-import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import { POPOVER_VARIANTS } from "../../utils/animations"
-import { GlassBorder } from "../GlassEffect"
-import { useSkin } from "../../hooks/DeviceProvider"
+import MenuPanel from "./MenuPanel"
 import { usePaneBounds } from "../SplitView/context"
 import {
     focusTrigger,
@@ -29,7 +27,6 @@ import * as styles from "./DropdownMenu.module.scss"
  * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
  */
 const DropdownMenu = ({ items, trigger, onChange }) => {
-    const { isApple } = useSkin()
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState(items[0])
     const [activeIndex, setActiveIndex] = useState(-1)
@@ -156,7 +153,9 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                     ? {}
                     : { role: "button", tabIndex: 0, ...triggerProps })}
             >
-                {isCustomTrigger ? trigger(triggerProps) : trigger ?? selectedItem}
+                {isCustomTrigger
+                    ? trigger(triggerProps)
+                    : (trigger ?? selectedItem)}
             </div>
             {createPortal(
                 <>
@@ -184,10 +183,16 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                     )}
                     <AnimatePresence>
                         {isOpen && isPositioned && (
-                            <m.div
+                            <MenuPanel
                                 ref={animatedDropdownRef}
-                                role="menu"
-                                className={styles.root}
+                                items={items}
+                                selectedItem={selectedItem}
+                                onSelect={handleSelectItem}
+                                onItemHover={(index) => {
+                                    setActiveIndex(index)
+                                    itemRefs.current[index]?.focus()
+                                }}
+                                itemRefs={itemRefs}
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
@@ -199,24 +204,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                                     transformOrigin: `${position.originX} ${position.originY}`,
                                     zIndex: 1000,
                                 }}
-                            >
-                                {isApple && <GlassBorder muted />}
-                                {items.map((item, index) => (
-                                    <MenuItem
-                                        key={index}
-                                        item={item}
-                                        isSelected={item === selectedItem}
-                                        onClick={() => handleSelectItem(item)}
-                                        onMouseEnter={() => {
-                                            setActiveIndex(index)
-                                            itemRefs.current[index]?.focus()
-                                        }}
-                                        itemRef={(el) => {
-                                            itemRefs.current[index] = el
-                                        }}
-                                    />
-                                ))}
-                            </m.div>
+                            />
                         )}
                     </AnimatePresence>
                 </>,
