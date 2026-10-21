@@ -144,16 +144,31 @@ function BalanceCardContent({
                                     variant: "subheadline2",
                                     weight: "medium",
                                 }}
-                                arrow={{
-                                    direction: changeData.arrowDirection,
-                                }}
                                 variant="tinted"
                                 circled
                                 style={{
                                     color: "var(--text-confirm-color)",
                                 }}
                             >
-                                {changeData.percent}
+                                <HiddenBalance>
+                                    <Text
+                                        as="span"
+                                        apple={{
+                                            variant: "subheadline2",
+                                            weight: "semibold",
+                                        }}
+                                        material={{
+                                            variant: "subheadline2",
+                                            weight: "medium",
+                                        }}
+                                        arrow={{
+                                            direction:
+                                                changeData.arrowDirection,
+                                        }}
+                                    >
+                                        {changeData.percent}
+                                    </Text>
+                                </HiddenBalance>
                             </Text.Badge>
                         </m.span>
                     </AnimatePresence>

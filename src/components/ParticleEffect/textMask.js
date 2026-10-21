@@ -75,6 +75,53 @@ export function renderTextMask(content, ctx, dpr, pad = 0, dilation = 0) {
         drawn++
     }
 
+    for (const svg of content.querySelectorAll("svg")) {
+        const icon = paintIcon(svg, base, ctx, pad, dilation)
+        if (!icon) continue
+        drawn++
+        if (icon.area > colorArea) {
+            colorArea = icon.area
+            color = icon.rgb
+        }
+    }
+
     ctx.restore()
     return { drawn, color }
+}
+
+function paintIcon(svg, base, ctx, pad, dilation) {
+    const cs = getComputedStyle(svg)
+    if (
+        cs.visibility === "hidden" ||
+        cs.display === "none" ||
+        cs.opacity === "0"
+    ) {
+        return null
+    }
+    const rect = svg.getBoundingClientRect()
+    if (rect.width === 0 || rect.height === 0) return null
+    const box = svg.viewBox.baseVal
+    const vbW = box?.width || rect.width
+    const vbH = box?.height || rect.height
+    const sx = rect.width / vbW
+    const sy = rect.height / vbH
+
+    let rgb = null
+    ctx.save()
+    ctx.translate(rect.left - base.left + pad, rect.top - base.top + pad)
+    ctx.scale(sx, sy)
+    ctx.translate(-(box?.x ?? 0), -(box?.y ?? 0))
+    ctx.lineWidth = ((parseFloat(cs.fontSize) || rect.height) * dilation) / sx
+    for (const path of svg.querySelectorAll("path")) {
+        const d = path.getAttribute("d")
+        if (!d) continue
+        const fill = getComputedStyle(path).fill
+        rgb = resolveColor(fill && fill !== "none" ? fill : cs.color)
+        ctx.fillStyle = ctx.strokeStyle = toCss(rgb)
+        const shape = new Path2D(d)
+        if (dilation > 0) ctx.stroke(shape)
+        ctx.fill(shape)
+    }
+    ctx.restore()
+    return rgb && { rgb, area: rect.width * rect.height }
 }

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types"
 
+import WebApp from "../../lib/twa"
 import ParticleEffect from "../ParticleEffect"
 import { BalanceVisibilityProvider, useBalanceHidden } from "./context"
 
@@ -16,7 +17,12 @@ import { BalanceVisibilityProvider, useBalanceHidden } from "./context"
  * </HiddenBalance.Provider>
  */
 export default function HiddenBalance({ children, className }) {
-    const { hidden, toggle } = useBalanceHidden()
+    const { hidden, toggle: toggleHidden } = useBalanceHidden()
+
+    const toggle = () => {
+        WebApp.HapticFeedback?.impactOccurred?.("light")
+        toggleHidden()
+    }
 
     // Tapping a balance inside a tappable row must not also activate the row.
     const handleClick = (event) => {
