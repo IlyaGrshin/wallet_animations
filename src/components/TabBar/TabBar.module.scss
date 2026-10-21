@@ -85,6 +85,7 @@
         width: calc(100% + var(--overlay-padding-x) * 2);
         height: calc(64px + var(--overlay-padding-y) * 2);
         z-index: 0;
+        pointer-events: none;
         margin: calc(var(--overlay-padding-y) * -1)
             calc(var(--overlay-padding-x) * -1);
     }
