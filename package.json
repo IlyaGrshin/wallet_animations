@@ -9,17 +9,17 @@
   },
   "homepage": ".",
   "dependencies": {
-    "@lisse/core": "0.7.2",
-    "@lisse/react": "^0.7.2",
-    "@tanstack/react-virtual": "^3.14.15",
+    "@lisse/core": "0.7.3",
+    "@lisse/react": "^0.7.3",
+    "@tanstack/react-virtual": "^3.14.21",
     "calligraph": "^1.4.1",
     "clsx": "^2.1.1",
     "colorthief": "^3.5.0",
     "lottie-react": "^3.1.2",
     "markdown-to-jsx": "9",
     "motion": "^13.5.1",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "wouter": "^3.13.0"
   },
   "scripts": {
