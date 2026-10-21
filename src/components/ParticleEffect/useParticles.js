@@ -2,6 +2,22 @@ import { useEffect, useRef, useState } from "react"
 
 import { createEngine } from "./glEngine"
 
+const pendingStarts = []
+let draining = false
+
+const drainStarts = () => {
+    pendingStarts.shift()?.()
+    if (pendingStarts.length) setTimeout(drainStarts, 0)
+    else draining = false
+}
+
+const queueStart = (start) => {
+    pendingStarts.push(start)
+    if (draining) return
+    draining = true
+    setTimeout(drainStarts, 0)
+}
+
 /**
  * Wires the WebGL2 particle engine to React lifecycle and the `hidden` prop.
  *
@@ -80,8 +96,21 @@ export function useParticles({
     // deps too: changing them destroys the engine above, and a still covered
     // content needs a new one covering it.
     useEffect(() => {
-        if (hidden) startRef.current?.()?.cover()
-        else engineRef.current?.reveal(revealOriginRef.current)
+        if (!hidden) {
+            engineRef.current?.reveal(revealOriginRef.current)
+            return undefined
+        }
+        if (engineRef.current) {
+            engineRef.current.cover()
+            return undefined
+        }
+        let cancelled = false
+        queueStart(() => {
+            if (!cancelled) startRef.current?.()?.cover()
+        })
+        return () => {
+            cancelled = true
+        }
     }, [hidden, color, radius, padding, maskDilation])
 
     return { supported, revealOriginRef }

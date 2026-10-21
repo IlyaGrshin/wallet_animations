@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
 import PropTypes from "prop-types"
-import * as m from "motion/react-m"
 import { useReducedMotion } from "motion/react"
+import cx from "clsx"
 
 import * as styles from "./StreamingText.module.scss"
 
@@ -22,56 +22,49 @@ const GRAPHEME_SEGMENTER = new Intl.Segmenter()
 const splitGraphemes = (text) =>
     Array.from(GRAPHEME_SEGMENTER.segment(text), (s) => s.segment)
 
-const tokenizeWords = (text) =>
-    text.split("\n").map((line) =>
+const tokenizeWords = (text) => {
+    let index = 0
+    return text.split("\n").map((line) =>
         line
             .split(/(\s+)/)
             .filter(Boolean)
-            .map((piece) => ({
-                content: piece,
-                animated: !/^\s+$/.test(piece),
-            }))
+            .map((piece) => {
+                const animated = !/^\s+$/.test(piece)
+                return {
+                    content: piece,
+                    animated,
+                    index: animated ? index++ : -1,
+                }
+            })
     )
-
-const wordVariants = {
-    hidden: { opacity: 0, y: 6 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] },
-    },
-}
-
-const reducedWordVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.15 } },
 }
 
 const WordReveal = ({ children, speed, delay, onComplete }) => {
     const reduceMotion = useReducedMotion()
-    const stagger = SPEED_PRESETS[speed] ?? SPEED_PRESETS.normal
+    const stagger = reduceMotion
+        ? 0
+        : (SPEED_PRESETS[speed] ?? SPEED_PRESETS.normal)
 
     const lines = tokenizeWords(children)
+    const lastIndex = Math.max(
+        -1,
+        ...lines.flatMap((tokens) => tokens.map((token) => token.index))
+    )
 
-    const containerVariants = {
-        hidden: {},
-        visible: {
-            transition: {
-                staggerChildren: reduceMotion ? 0 : stagger,
-                delayChildren: delay / 1000,
-            },
-        },
-    }
-
-    const variants = reduceMotion ? reducedWordVariants : wordVariants
+    useEffect(() => {
+        if (lastIndex < 0) onComplete?.()
+    }, [lastIndex, onComplete])
 
     return (
-        <m.span
-            className={styles.root}
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-            onAnimationComplete={onComplete}
+        <span
+            className={cx(styles.root, reduceMotion && styles.reduced)}
+            style={{
+                "--stagger": `${stagger}s`,
+                "--delay": `${delay}ms`,
+            }}
+            onAnimationEnd={(event) => {
+                if (event.target.dataset.last !== undefined) onComplete?.()
+            }}
         >
             {lines.map((tokens, lineIdx) => (
                 <span key={lineIdx} className={styles.line}>
@@ -80,18 +73,21 @@ const WordReveal = ({ children, speed, delay, onComplete }) => {
                             return <span key={tokenIdx}>{token.content}</span>
                         }
                         return (
-                            <m.span
+                            <span
                                 key={tokenIdx}
                                 className={styles.token}
-                                variants={variants}
+                                style={{ "--index": token.index }}
+                                {...(token.index === lastIndex && {
+                                    "data-last": "",
+                                })}
                             >
                                 {token.content}
-                            </m.span>
+                            </span>
                         )
                     })}
                 </span>
             ))}
-        </m.span>
+        </span>
     )
 }
 
@@ -105,18 +101,33 @@ WordReveal.propTypes = {
 const TypewriterReveal = ({ children, speed, delay, onComplete }) => {
     const reduceMotion = useReducedMotion()
     const perChar = TYPE_PER_CHAR[speed] ?? TYPE_PER_CHAR.normal
-    const graphemes = splitGraphemes(children)
-    const total = graphemes.length
-    const [progress, setProgress] = useState(() =>
-        reduceMotion ? { whole: total, frac: 0 } : { whole: 0, frac: 0 }
-    )
+    const revealedRef = useRef(null)
+    const leadingRef = useRef(null)
 
     useEffect(() => {
+        const graphemes = splitGraphemes(children)
+        const total = graphemes.length
+        const text = document.createTextNode("")
+        const leading = leadingRef.current
+        revealedRef.current.replaceChildren(text)
+        let shown = 0
+
+        const show = (whole, frac) => {
+            if (whole > shown) {
+                text.appendData(graphemes.slice(shown, whole).join(""))
+                shown = whole
+            }
+            leading.textContent = whole < total ? graphemes[whole] : ""
+            leading.style.opacity = frac
+        }
+
         if (reduceMotion) {
-            setProgress({ whole: total, frac: 0 })
+            show(total, 0)
             onComplete?.()
             return undefined
         }
+
+        show(0, 0)
         const start = performance.now() + delay
         const charDurationMs = perChar * 1000
         let raf
@@ -128,8 +139,7 @@ const TypewriterReveal = ({ children, speed, delay, onComplete }) => {
             }
             const reveal = elapsed / charDurationMs
             const whole = Math.min(total, Math.floor(reveal))
-            const frac = whole < total ? Math.min(1, reveal - whole) : 0
-            setProgress({ whole, frac })
+            show(whole, whole < total ? Math.min(1, reveal - whole) : 0)
             if (whole < total) {
                 raf = requestAnimationFrame(tick)
             } else {
@@ -140,19 +150,14 @@ const TypewriterReveal = ({ children, speed, delay, onComplete }) => {
         return () => cancelAnimationFrame(raf)
     }, [children, perChar, delay, reduceMotion])
 
-    const { whole, frac } = progress
-    const leadingChar = whole < total ? graphemes[whole] : null
-
     return (
         <span className={styles.typewriter}>
             <span className={styles.typewriterGhost} aria-hidden="true">
                 {children}
             </span>
             <span>
-                {graphemes.slice(0, whole).join("")}
-                {leadingChar !== null && (
-                    <span style={{ opacity: frac }}>{leadingChar}</span>
-                )}
+                <span ref={revealedRef} />
+                <span ref={leadingRef} />
             </span>
         </span>
     )

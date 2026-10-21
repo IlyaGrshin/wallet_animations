@@ -8,11 +8,14 @@ import { getAssetIcon } from "../../../../../utils/AssetsMap"
 import { TRANSITIONS } from "../../../../../utils/animations"
 import HiddenEye from "../../../../../icons/avatars/HiddenEyeIcon.svg"
 
+const ICON_TRANSITION = "transform 0.3s ease, opacity 0.3s ease"
+
 export default function AnimatedCellMoreButton({ onClick, state }) {
     const { isApple } = useSkin()
     const transition = TRANSITIONS.MATERIAL_STANDARD
 
     const iconSize = isApple ? 40 : 42
+    const hiddenEyeX = isApple ? (state ? 0 : -6) : state ? 6 : 0
     const jettonsSize = isApple
         ? { position: "relative", width: "40px", height: "40px" }
         : {
@@ -25,23 +28,23 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
     // HMSTR иконка — при expanded исчезает
     const hmstrStyles = isApple
         ? {
-              collapsed: { scale: 0.6, top: "-6px", left: "-6px", opacity: 1 },
-              expanded: { scale: 1, top: 0, left: 0, opacity: 0 },
+              collapsed: { scale: 0.6, y: -6, x: -6, opacity: 1 },
+              expanded: { scale: 1, y: 0, x: 0, opacity: 0 },
           }
         : {
-              collapsed: { scale: 0.6, top: "-6px", left: 0, opacity: 1 },
-              expanded: { scale: 1, top: 0, left: "6px", opacity: 0 },
+              collapsed: { scale: 0.6, y: -6, x: 0, opacity: 1 },
+              expanded: { scale: 1, y: 0, x: 6, opacity: 0 },
           }
 
     // NOT иконка — при expanded исчезает
     const notStyles = isApple
         ? {
-              collapsed: { scale: 0.6, top: "6px", left: "6px", opacity: 1 },
-              expanded: { scale: 0, top: 0, left: 0, opacity: 0 },
+              collapsed: { scale: 0.6, y: 6, x: 6, opacity: 1 },
+              expanded: { scale: 0, y: 0, x: 0, opacity: 0 },
           }
         : {
-              collapsed: { scale: 0.6, top: "6px", left: "12px", opacity: 1 },
-              expanded: { scale: 0, top: 0, left: "18px", opacity: 0 },
+              collapsed: { scale: 0.6, y: 6, x: 12, opacity: 1 },
+              expanded: { scale: 0, y: 0, x: 18, opacity: 0 },
           }
 
     const jettons = [
@@ -51,12 +54,12 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
 
     const variants = {
         TextMoreAssets: {
-            collapsed: { opacity: 1, top: "calc(50% - 11px)" },
-            expanded: { opacity: 0, top: "calc(50% - 20px)" },
+            collapsed: { opacity: 1, y: 0 },
+            expanded: { opacity: 0, y: -9 },
         },
         TextHideLowBalances: {
-            collapsed: { opacity: 0, top: "calc(50% - 20px)" },
-            expanded: { opacity: 1, top: "calc(50% - 11px)" },
+            collapsed: { opacity: 0, y: -9 },
+            expanded: { opacity: 1, y: 0 },
         },
     }
 
@@ -73,17 +76,11 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
                             zIndex: 3,
                             width: iconSize,
                             height: iconSize,
-                            top: state ? 0 : "-6px",
-                            left: isApple
-                                ? state
-                                    ? 0
-                                    : "-6px"
-                                : state
-                                  ? "6px"
-                                  : 0,
+                            top: 0,
+                            left: 0,
                             opacity: state ? 1 : 0,
-                            transform: `scale(${state ? 1 : 0.6})`,
-                            transition: "all 0.3s ease",
+                            transform: `translate(${hiddenEyeX}px, ${state ? 0 : -6}px) scale(${state ? 1 : 0.6})`,
+                            transition: ICON_TRANSITION,
                         }}
                     />
                     {jettons.map((jetton, index) => {
@@ -100,11 +97,11 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
                                     zIndex: jetton.zIndex,
                                     width: iconSize,
                                     height: iconSize,
-                                    top: s.top,
-                                    left: s.left,
+                                    top: 0,
+                                    left: 0,
                                     opacity: s.opacity,
-                                    transform: `scale(${s.scale})`,
-                                    transition: "all 0.3s ease",
+                                    transform: `translate(${s.x}px, ${s.y}px) scale(${s.scale})`,
+                                    transition: ICON_TRANSITION,
                                 }}
                                 key={`stack-asset-${index}`}
                             />
@@ -120,6 +117,7 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
                     style={{
                         transformOrigin: "0% 50%",
                         position: "absolute",
+                        top: "calc(50% - 11px)",
                     }}
                 >
                     <Text variant="body" weight="medium">
@@ -134,6 +132,7 @@ export default function AnimatedCellMoreButton({ onClick, state }) {
                     style={{
                         transformOrigin: "0% 50%",
                         position: "absolute",
+                        top: "calc(50% - 11px)",
                     }}
                 >
                     <Text variant="body" weight="medium">

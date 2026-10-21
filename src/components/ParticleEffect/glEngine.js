@@ -90,6 +90,7 @@ export function createEngine({
         fadeOutTime: 0,
         fadeOutXY: [0, 0],
         covered: false,
+        stale: true,
         text: 1, // 1 = particles spawn on the glyph mask, 0 = block fallback
         pad: 0,
         active: false, // covering or mid-reveal (the loop should run)
@@ -127,14 +128,21 @@ export function createEngine({
         gl.generateMipmap(gl.TEXTURE_2D)
     }
 
-    const resize = () => {
+    const applyLayout = () => {
+        e.stale = false
         const layout = layoutCanvas(canvas, content, e, { padding, radius })
-        if (!layout) return
+        if (!layout) return false
         Object.assign(e, layout)
         e.color = resolveColor(color, content)
         genBuffer()
         updateMask()
         e.reset = true
+        return true
+    }
+
+    const resize = () => {
+        if (e.active) applyLayout()
+        else e.stale = true
     }
 
     const frame = () => {
@@ -204,7 +212,7 @@ export function createEngine({
             e.active = true
             e.fadeOut = false
             e.fadeOutTime = 0
-            updateMask()
+            if (!e.stale || !applyLayout()) updateMask()
             e.reset = true
             run()
         },

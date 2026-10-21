@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
-import { useSmoothCorners } from "@lisse/react"
 import { CORNER_RADIUS, CORNER_SMOOTHING } from "./corners"
 import { useResizeObserver } from "../../hooks/useResizeObserver"
+import useSquircleClip from "../../hooks/useSquircleClip"
 import * as styles from "./WalletCard.module.scss"
 import StarField from "./StarField"
 import CardBalance from "./CardBalance"
@@ -78,11 +78,10 @@ function WalletCard({
 
     useResizeObserver(rootRef, measure)
 
-    useSmoothCorners(
-        rootRef,
-        { radius: CORNER_RADIUS, smoothing: CORNER_SMOOTHING },
-        { autoEffects: false }
-    )
+    useSquircleClip(rootRef, {
+        radius: CORNER_RADIUS,
+        smoothing: CORNER_SMOOTHING,
+    })
 
     return (
         <div ref={sceneRef} className={styles.scene}>

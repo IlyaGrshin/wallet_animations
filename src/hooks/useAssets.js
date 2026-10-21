@@ -64,17 +64,47 @@ const notify = () => subscribers.forEach((listener) => listener())
 // Live ticks win over scanner closes only while fresher than the current
 // snapshot: after an outage, or once a symbol goes quiet, the scanner wins
 // again until the symbol ticks anew.
-const applyTicks = (rows) =>
-    rows.map((row) => {
-        const tick = ticks.get(row.quoteSymbol)
-        if (!tick || tick.at < baseAt) return row
-        return {
-            ...row,
-            current_price: tick.lp ?? row.current_price,
-            price_change_percentage_24h:
-                tick.chp ?? row.price_change_percentage_24h,
+const applyTick = (row) => {
+    const tick = ticks.get(row.quoteSymbol)
+    if (!tick || tick.at < baseAt) return row
+    return {
+        ...row,
+        current_price: tick.lp ?? row.current_price,
+        price_change_percentage_24h:
+            tick.chp ?? row.price_change_percentage_24h,
+    }
+}
+
+const sameValue = (a, b) =>
+    Array.isArray(a) && Array.isArray(b)
+        ? a.length === b.length && a.every((item, i) => item === b[i])
+        : Object.is(a, b)
+
+const sameRow = (a, b) => {
+    const keys = Object.keys(a)
+    return (
+        keys.length === Object.keys(b).length &&
+        keys.every((key) => sameValue(a[key], b[key]))
+    )
+}
+
+const applyTicks = (rows, previous) => {
+    const previousBySymbol = new Map(
+        previous?.map((row) => [row.quoteSymbol, row])
+    )
+    let changed = rows.length !== previous?.length
+    const next = rows.map((row, i) => {
+        const fresh = applyTick(row)
+        const prior = previousBySymbol.get(row.quoteSymbol)
+        if (prior && sameRow(prior, fresh)) {
+            if (previous[i] !== prior) changed = true
+            return prior
         }
+        changed = true
+        return fresh
     })
+    return changed ? next : previous
+}
 
 const onTick = (name, values) => {
     ticks.set(name, { ...ticks.get(name), ...values, at: Date.now() })
@@ -95,11 +125,9 @@ const ensureStream = () => {
 }
 
 const publish = () => {
-    snapshot = {
-        assets: applyTicks(base),
-        updatedAt: new Date(),
-        error: null,
-    }
+    const assets = applyTicks(base, snapshot.assets)
+    if (assets === snapshot.assets) return
+    snapshot = { assets, updatedAt: new Date(), error: null }
     notify()
 }
 
