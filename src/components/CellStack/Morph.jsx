@@ -1,7 +1,7 @@
 import { Children } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
-import { Calligraph } from "calligraph"
+import Calligraph from "../Calligraph"
 
 import Cell from "../Cells"
 import { TRANSITIONS } from "../../utils/animations"
