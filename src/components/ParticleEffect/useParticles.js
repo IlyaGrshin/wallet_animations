@@ -2,6 +2,22 @@ import { useEffect, useRef, useState } from "react"
 
 import { createEngine } from "./glEngine"
 
+const pendingStarts = []
+let draining = false
+
+const drainStarts = () => {
+    pendingStarts.shift()?.()
+    if (pendingStarts.length) setTimeout(drainStarts, 0)
+    else draining = false
+}
+
+const queueStart = (start) => {
+    pendingStarts.push(start)
+    if (draining) return
+    draining = true
+    setTimeout(drainStarts, 0)
+}
+
 /**
  * Wires the WebGL2 particle engine to React lifecycle and the `hidden` prop.
  *
@@ -20,6 +36,7 @@ export function useParticles({
 }) {
     const [supported, setSupported] = useState(true)
     const revealOriginRef = useRef(null)
+    const startRef = useRef(null)
     const engineRef = useRef(null)
 
     useEffect(() => {
@@ -27,49 +44,74 @@ export function useParticles({
         const content = contentRef.current
         if (!canvas || !content) return
 
-        const gl = canvas.getContext("webgl2", { premultipliedAlpha: false })
-        if (!gl) {
-            setSupported(false)
-            return
+        let ro = null
+        let io = null
+
+        startRef.current = () => {
+            if (engineRef.current) return engineRef.current
+
+            const gl = canvas.getContext("webgl2", {
+                premultipliedAlpha: false,
+            })
+            if (!gl) {
+                setSupported(false)
+                return null
+            }
+
+            const engine = createEngine({
+                gl,
+                canvas,
+                content,
+                color,
+                radius,
+                padding,
+                maskDilation,
+            })
+            engineRef.current = engine
+            engine.resize()
+
+            ro = new ResizeObserver(() => engine.resize())
+            ro.observe(content)
+
+            // Pause the render loop while scrolled out of the viewport.
+            io = new IntersectionObserver(([entry]) => {
+                engine.setOnscreen(entry.isIntersecting)
+            })
+            io.observe(content)
+
+            return engine
         }
 
-        const engine = createEngine({
-            gl,
-            canvas,
-            content,
-            color,
-            radius,
-            padding,
-            maskDilation,
-        })
-        engineRef.current = engine
-
-        const ro = new ResizeObserver(() => engine.resize())
-        ro.observe(content)
-        engine.resize()
-
-        // Pause the render loop while scrolled out of the viewport.
-        const io = new IntersectionObserver(([entry]) => {
-            engine.setOnscreen(entry.isIntersecting)
-        })
-        io.observe(content)
-
         return () => {
-            ro.disconnect()
-            io.disconnect()
-            engine.destroy()
+            ro?.disconnect()
+            io?.disconnect()
+            engineRef.current?.destroy()
             engineRef.current = null
+            startRef.current = null
         }
     }, [canvasRef, contentRef, color, radius, padding, maskDilation])
 
     // Spawn the cloud on cover, burst it away on reveal. reveal() before any
-    // cover() is a no-op, so the initial mount stays dormant.
+    // cover() is a no-op, so the initial mount stays dormant. The options are
+    // deps too: changing them destroys the engine above, and a still covered
+    // content needs a new one covering it.
     useEffect(() => {
-        const engine = engineRef.current
-        if (!engine) return
-        if (hidden) engine.cover()
-        else engine.reveal(revealOriginRef.current)
-    }, [hidden])
+        if (!hidden) {
+            engineRef.current?.reveal(revealOriginRef.current)
+            return undefined
+        }
+        if (engineRef.current) {
+            engineRef.current.cover()
+            return undefined
+        }
+        let cancelled = false
+        queueStart(() => {
+            if (!cancelled) startRef.current?.()?.cover()
+        })
+        return () => {
+            cancelled = true
+        }
+    }, [hidden, color, radius, padding, maskDilation])
 
     return { supported, revealOriginRef }
 }

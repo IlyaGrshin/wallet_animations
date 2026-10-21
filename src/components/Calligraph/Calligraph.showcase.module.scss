@@ -1,0 +1,16 @@
+.stage {
+    display: flex;
+    justify-content: center;
+    padding: 24px var(--side-padding);
+}
+
+.compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 24px var(--side-padding);
+    text-align: center;
+}
+
+.controls {
+    padding: 12px var(--side-padding);
+}

@@ -59,48 +59,54 @@ export const getTabsConfig = (onOpenTonWallet) => ({
     ],
 })
 
-export const pageVariants = {
-    initial: ({ isSegmentSwitch, direction, isApple }) => {
-        if (isSegmentSwitch) return { opacity: 0, scale: 1.006, x: 0 }
+const measureAppleRestScale = () =>
+    (window.innerHeight - 3.0 * window.devicePixelRatio) / window.innerHeight
 
-        if (isApple) {
-            return {
-                opacity: 0,
-                scale:
-                    (window.innerHeight - 3.0 * window.devicePixelRatio) /
-                    window.innerHeight,
-                x: 0,
-            }
+let cachedAppleRestScale = measureAppleRestScale()
+window.addEventListener("resize", () => {
+    cachedAppleRestScale = measureAppleRestScale()
+})
+
+const appleRestScale = () => cachedAppleRestScale
+
+const enterFrom = ({ isSegmentSwitch, direction, isApple }) => {
+    if (isSegmentSwitch) return { opacity: 0, scale: 1.006, x: 0 }
+    if (isApple) return { opacity: 0, scale: appleRestScale(), x: 0 }
+    return { opacity: 0, x: `${-3 * direction}%`, scale: 1 }
+}
+
+export const pageVariants = {
+    initial: enterFrom,
+    animate: (custom) => {
+        // A resumed layer starts from its current values (null keyframes);
+        // otherwise the authored entrance pose, since a fully exited layer
+        // still holds the opposite side's exit pose.
+        const from = custom.resume
+            ? { opacity: null, scale: null, x: null }
+            : enterFrom(custom)
+        const keyframes = {
+            opacity: [from.opacity, 1],
+            scale: [from.scale, 1],
+            x: [from.x, 0],
         }
-        return { opacity: 0, x: `${-3 * direction}%`, scale: 1 }
-    },
-    animate: ({ isSegmentSwitch, isApple }) => {
-        if (isSegmentSwitch) {
+
+        if (custom.isSegmentSwitch) {
             return {
-                opacity: 1,
-                scale: 1,
-                x: 0,
+                ...keyframes,
                 transition: { duration: 0.2, ease: "easeOut" },
             }
         }
 
-        if (isApple) {
+        if (custom.isApple) {
             return {
-                opacity: 1,
-                scale: 1,
-                x: 0,
+                ...keyframes,
                 transition: {
                     scale: { duration: 0.15, ease: [0.38, 0.7, 0.125, 1.0] },
                     opacity: { duration: 0.1, ease: "easeInOut" },
                 },
             }
         }
-        return {
-            opacity: 1,
-            x: 0,
-            scale: 1,
-            transition: TRANSITIONS.MATERIAL_STANDARD,
-        }
+        return { ...keyframes, transition: TRANSITIONS.MATERIAL_STANDARD }
     },
     exit: ({ isSegmentSwitch, direction, isApple }) => {
         if (isSegmentSwitch) {
@@ -115,9 +121,7 @@ export const pageVariants = {
         if (isApple) {
             return {
                 opacity: 0,
-                scale:
-                    (window.innerHeight - 3.0 * window.devicePixelRatio) /
-                    window.innerHeight,
+                scale: appleRestScale(),
                 x: 0,
                 transition: {
                     scale: { duration: 0.15, ease: [0.38, 0.7, 0.125, 1.0] },

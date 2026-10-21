@@ -1,4 +1,11 @@
-import { linkProgram, resolveColor, setupGl } from "./glUtils"
+import {
+    bindAttribs,
+    createBuffers,
+    linkProgram,
+    resolveColor,
+    setupGl,
+} from "./glUtils"
+import { layoutCanvas } from "./canvasLayout"
 import { renderTextMask } from "./textMask"
 
 // Simulation tuning for the "text" (text = 1) mode of the dkaraush particle
@@ -14,21 +21,7 @@ const SIM = {
     noiseMovement: 4,
     timeScale: 1,
 }
-const DPR_MAX = 2
 const FADE_OUT_MS = 400
-// Particles per CSS px^2 of the WHOLE (padded) canvas, matching the demo's areal
-// density: ~7000 particles over its ~500css square = 7000 / 500^2.
-const PARTICLE_DENSITY = 0.028
-const PARTICLE_MIN = 300
-const PARTICLE_MAX = 8000
-const STRIDE = 28 // 7 floats * 4 bytes
-const ATTRIBS = [
-    [0, 2, 0],
-    [1, 2, 8],
-    [2, 1, 16],
-    [3, 1, 20],
-    [4, 1, 24],
-]
 
 const UNIFORMS = [
     "time",
@@ -84,6 +77,8 @@ export function createEngine({
         count: 0,
         w: 0,
         h: 0,
+        contentW: 0,
+        contentH: 0,
         dpr: 1,
         radius: 0,
         color: [1, 1, 1],
@@ -95,6 +90,7 @@ export function createEngine({
         fadeOutTime: 0,
         fadeOutXY: [0, 0],
         covered: false,
+        stale: true,
         text: 1, // 1 = particles spawn on the glyph mask, 0 = block fallback
         pad: 0,
         active: false, // covering or mid-reveal (the loop should run)
@@ -107,11 +103,7 @@ export function createEngine({
             gl.deleteBuffer(e.buffer[0])
             gl.deleteBuffer(e.buffer[1])
         }
-        e.buffer = [gl.createBuffer(), gl.createBuffer()]
-        for (let i = 0; i < 2; ++i) {
-            gl.bindBuffer(gl.ARRAY_BUFFER, e.buffer[i])
-            gl.bufferData(gl.ARRAY_BUFFER, e.count * STRIDE, gl.DYNAMIC_DRAW)
-        }
+        e.buffer = createBuffers(gl, e.count)
         e.bufferIndex = 0
     }
 
@@ -136,39 +128,21 @@ export function createEngine({
         gl.generateMipmap(gl.TEXTURE_2D)
     }
 
-    const bindAttribs = () => {
-        for (const [index, size, offset] of ATTRIBS) {
-            gl.vertexAttribPointer(index, size, gl.FLOAT, false, STRIDE, offset)
-            gl.enableVertexAttribArray(index)
-        }
-    }
-
-    const resize = () => {
-        const rect = content.getBoundingClientRect()
-        if (rect.width <= 0 || rect.height <= 0) return
-        e.dpr = Math.min(window.devicePixelRatio || 1, DPR_MAX)
-        // Headroom around the content so particles have room to billow (shader
-        // motion scales with the canvas's short side). The demo runs a ~500css
-        // square over ~48css text rows, so default to ~1x the content height
-        // per side; callers can override with the `padding` prop.
-        e.pad = padding != null ? padding : Math.round(rect.height)
-        const cssW = rect.width + 2 * e.pad
-        const cssH = rect.height + 2 * e.pad
-        // Canvas overflows the content box equally on every side.
-        canvas.style.left = canvas.style.top = `${-e.pad}px`
-        canvas.style.width = `${cssW}px`
-        canvas.style.height = `${cssH}px`
-        e.w = canvas.width = Math.floor(cssW * e.dpr)
-        e.h = canvas.height = Math.floor(cssH * e.dpr)
-        e.radius = (radius || 1.6) * e.dpr
-        e.count = Math.max(
-            PARTICLE_MIN,
-            Math.min(PARTICLE_MAX, Math.round(cssW * cssH * PARTICLE_DENSITY))
-        )
+    const applyLayout = () => {
+        e.stale = false
+        const layout = layoutCanvas(canvas, content, e, { padding, radius })
+        if (!layout) return false
+        Object.assign(e, layout)
         e.color = resolveColor(color, content)
         genBuffer()
         updateMask()
         e.reset = true
+        return true
+    }
+
+    const resize = () => {
+        if (e.active) applyLayout()
+        else e.stale = true
     }
 
     const frame = () => {
@@ -208,13 +182,13 @@ export function createEngine({
         gl.bindTexture(gl.TEXTURE_2D, texture)
 
         gl.bindBuffer(gl.ARRAY_BUFFER, e.buffer[e.bufferIndex])
-        bindAttribs()
+        bindAttribs(gl)
         gl.bindBufferBase(
             gl.TRANSFORM_FEEDBACK_BUFFER,
             0,
             e.buffer[1 - e.bufferIndex]
         )
-        bindAttribs()
+        bindAttribs(gl)
         gl.beginTransformFeedback(gl.POINTS)
         gl.drawArrays(gl.POINTS, 0, e.count)
         gl.endTransformFeedback()
@@ -238,7 +212,7 @@ export function createEngine({
             e.active = true
             e.fadeOut = false
             e.fadeOutTime = 0
-            updateMask()
+            if (!e.stale || !applyLayout()) updateMask()
             e.reset = true
             run()
         },

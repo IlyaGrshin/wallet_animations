@@ -9,6 +9,7 @@ import { openQuoteStream } from "../utils/tradingViewQuotes"
 const ENDPOINT = "https://scanner.tradingview.com/coin/scan"
 const SCANNER_INTERVAL = 60_000
 const FLUSH_INTERVAL = 1_000
+const IDLE_TEARDOWN = 30_000
 
 const REQUEST = {
     columns: [
@@ -53,6 +54,7 @@ const ticks = new Map() // quoteSymbol -> latest streamed fields + `at`
 const subscribers = new Set()
 let scannerTimer = null
 let flushTimer = null
+let teardownTimer = null
 let stream = null
 let streamKey = ""
 let dirty = false
@@ -62,17 +64,47 @@ const notify = () => subscribers.forEach((listener) => listener())
 // Live ticks win over scanner closes only while fresher than the current
 // snapshot: after an outage, or once a symbol goes quiet, the scanner wins
 // again until the symbol ticks anew.
-const applyTicks = (rows) =>
-    rows.map((row) => {
-        const tick = ticks.get(row.quoteSymbol)
-        if (!tick || tick.at < baseAt) return row
-        return {
-            ...row,
-            current_price: tick.lp ?? row.current_price,
-            price_change_percentage_24h:
-                tick.chp ?? row.price_change_percentage_24h,
+const applyTick = (row) => {
+    const tick = ticks.get(row.quoteSymbol)
+    if (!tick || tick.at < baseAt) return row
+    return {
+        ...row,
+        current_price: tick.lp ?? row.current_price,
+        price_change_percentage_24h:
+            tick.chp ?? row.price_change_percentage_24h,
+    }
+}
+
+const sameValue = (a, b) =>
+    Array.isArray(a) && Array.isArray(b)
+        ? a.length === b.length && a.every((item, i) => item === b[i])
+        : Object.is(a, b)
+
+const sameRow = (a, b) => {
+    const keys = Object.keys(a)
+    return (
+        keys.length === Object.keys(b).length &&
+        keys.every((key) => sameValue(a[key], b[key]))
+    )
+}
+
+const applyTicks = (rows, previous) => {
+    const previousBySymbol = new Map(
+        previous?.map((row) => [row.quoteSymbol, row])
+    )
+    let changed = rows.length !== previous?.length
+    const next = rows.map((row, i) => {
+        const fresh = applyTick(row)
+        const prior = previousBySymbol.get(row.quoteSymbol)
+        if (prior && sameRow(prior, fresh)) {
+            if (previous[i] !== prior) changed = true
+            return prior
         }
+        changed = true
+        return fresh
     })
+    return changed ? next : previous
+}
 
 const onTick = (name, values) => {
     ticks.set(name, { ...ticks.get(name), ...values, at: Date.now() })
@@ -93,11 +125,9 @@ const ensureStream = () => {
 }
 
 const publish = () => {
-    snapshot = {
-        assets: applyTicks(base),
-        updatedAt: new Date(),
-        error: null,
-    }
+    const assets = applyTicks(base, snapshot.assets)
+    if (assets === snapshot.assets) return
+    snapshot = { assets, updatedAt: new Date(), error: null }
     notify()
 }
 
@@ -117,9 +147,7 @@ const refresh = async () => {
             body: JSON.stringify(REQUEST),
         })
         const { data } = await response.json()
-        // The last subscriber may have unmounted during the await — bail
-        // before reopening a stream nobody owns.
-        if (!subscribers.size) return
+        if (!scannerTimer) return
         base = mapRows(data)
         baseAt = Date.now()
         ensureStream()
@@ -134,9 +162,23 @@ const refresh = async () => {
     }
 }
 
+const teardown = () => {
+    teardownTimer = null
+    clearInterval(scannerTimer)
+    clearInterval(flushTimer)
+    scannerTimer = null
+    flushTimer = null
+    stream?.close()
+    stream = null
+    streamKey = ""
+    ticks.clear() // drop the stale price cache; next mount refetches
+}
+
 const subscribe = (listener) => {
     subscribers.add(listener)
-    if (subscribers.size === 1) {
+    clearTimeout(teardownTimer)
+    teardownTimer = null
+    if (!scannerTimer) {
         refresh()
         scannerTimer = setInterval(refresh, SCANNER_INTERVAL)
         flushTimer = setInterval(flush, FLUSH_INTERVAL)
@@ -144,12 +186,7 @@ const subscribe = (listener) => {
     return () => {
         subscribers.delete(listener)
         if (subscribers.size) return
-        clearInterval(scannerTimer)
-        clearInterval(flushTimer)
-        stream?.close()
-        stream = null
-        streamKey = ""
-        ticks.clear() // drop the stale price cache; next mount refetches
+        teardownTimer = setTimeout(teardown, IDLE_TEARDOWN)
     }
 }
 

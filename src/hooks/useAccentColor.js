@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { normalizeHex } from "../utils/common"
 
-const CACHE_MAX = 100
+const CACHE_MAX = 200
 const colorCache = new Map()
 
 const cacheGet = (key) => {
@@ -216,5 +216,7 @@ export function useAccentColorLazy(src, quality = 10, options = {}) {
         }
     }, [src, quality, isVisible])
 
-    return { hex: src ? hex : null, ref: elementRef }
+    const cached = src ? colorCache.get(`${src}_${quality}`) : undefined
+
+    return { hex: src ? (hex ?? cached ?? null) : null, ref: elementRef }
 }

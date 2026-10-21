@@ -9,6 +9,15 @@ const FEEDBACK_VARYINGS = [
     "outAlpha",
 ]
 
+const STRIDE = 28 // 7 floats * 4 bytes
+const ATTRIBS = [
+    [0, 2, 0],
+    [1, 2, 8],
+    [2, 1, 16],
+    [3, 1, 20],
+    [4, 1, 24],
+]
+
 function compile(gl, type, source) {
     const shader = gl.createShader(type)
     gl.shaderSource(shader, source)
@@ -59,6 +68,22 @@ export function setupGl(gl, program, loc) {
     gl.enable(gl.BLEND)
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
     return texture
+}
+
+export function createBuffers(gl, count) {
+    const buffers = [gl.createBuffer(), gl.createBuffer()]
+    for (const buffer of buffers) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+        gl.bufferData(gl.ARRAY_BUFFER, count * STRIDE, gl.DYNAMIC_DRAW)
+    }
+    return buffers
+}
+
+export function bindAttribs(gl) {
+    for (const [index, size, offset] of ATTRIBS) {
+        gl.vertexAttribPointer(index, size, gl.FLOAT, false, STRIDE, offset)
+        gl.enableVertexAttribArray(index)
+    }
 }
 
 // Resolves any CSS color (or the element's computed text color) to [r,g,b] 0..1.
