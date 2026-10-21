@@ -37,6 +37,7 @@ deploy.sh
 .cursor
 .codex
 .agents
+.tgcloud
 
 # story screenshots (CLI output & orphaned temp files)
 story.png
