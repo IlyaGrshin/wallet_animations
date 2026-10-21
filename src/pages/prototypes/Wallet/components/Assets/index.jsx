@@ -9,6 +9,7 @@ import Cell from "../../../../../components/Cells"
 import ImageAvatar from "../../../../../components/ImageAvatar"
 import { getAssetIcon } from "../../../../../utils/AssetsMap"
 import { formatToTwoDecimals } from "../../../../../utils/number"
+import HiddenBalance from "../../../../../components/HiddenBalance"
 import AnimatedCellMoreButton from "../AnimatedCellMoreButton"
 import assets from "../../data/assets.json"
 
@@ -45,8 +46,19 @@ export default function Assets() {
                     start={<ImageAvatar src={getAssetIcon(asset.ticker)} />}
                     end={
                         <Cell.Text
-                            title={`$${formatToTwoDecimals(asset.rate * asset.value)}`}
-                            description={`${asset.value} ${asset.ticker}`}
+                            title={
+                                <HiddenBalance>
+                                    $
+                                    {formatToTwoDecimals(
+                                        asset.rate * asset.value
+                                    )}
+                                </HiddenBalance>
+                            }
+                            description={
+                                <HiddenBalance>
+                                    {asset.value} {asset.ticker}
+                                </HiddenBalance>
+                            }
                         />
                     }
                     key={`asset-${index}`}
@@ -87,8 +99,21 @@ export default function Assets() {
                                         }
                                         end={
                                             <Cell.Text
-                                                title={`$${formatToTwoDecimals(asset.rate * asset.value)}`}
-                                                description={`${asset.value} ${asset.ticker}`}
+                                                title={
+                                                    <HiddenBalance>
+                                                        $
+                                                        {formatToTwoDecimals(
+                                                            asset.rate *
+                                                                asset.value
+                                                        )}
+                                                    </HiddenBalance>
+                                                }
+                                                description={
+                                                    <HiddenBalance>
+                                                        {asset.value}{" "}
+                                                        {asset.ticker}
+                                                    </HiddenBalance>
+                                                }
                                             />
                                         }
                                         key={`asset-${index}`}

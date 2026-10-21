@@ -7,7 +7,9 @@ import cx from "clsx"
 
 import Train from "../../../../../components/Train"
 import Text from "../../../../../components/Text"
-import ParticleEffect from "../../../../../components/ParticleEffect"
+import HiddenBalance, {
+    useBalanceHidden,
+} from "../../../../../components/HiddenBalance"
 import { generateRandomBalance } from "../../../../../utils/number"
 
 import * as styles from "./BalanceCard.module.scss"
@@ -40,8 +42,19 @@ const crossFadeTransition = {
  * @param {"default" | "overlay"} variant - Визуальный вариант: default (светлый фон) или overlay (для тёмного фона)
  * @param {React.ReactNode} actions - Кнопки действий (опционально)
  * @param {string} className - Дополнительные CSS классы
+ *
+ * Суммы скрываются тапом через HiddenBalance; внутри HiddenBalance.Provider
+ * страницы карточка скрывается вместе со всеми балансами страницы.
  */
-export default function BalanceCard({
+export default function BalanceCard(props) {
+    return (
+        <HiddenBalance.Provider>
+            <BalanceCardContent {...props} />
+        </HiddenBalance.Provider>
+    )
+}
+
+function BalanceCardContent({
     label,
     initialBalance = "0.00",
     variant = "default",
@@ -49,7 +62,7 @@ export default function BalanceCard({
     className,
 }) {
     const [balance, setBalance] = useState(initialBalance)
-    const [hidden, setHidden] = useState(false)
+    const { hidden } = useBalanceHidden()
     const [isToday, setIsToday] = useState(true)
 
     const changeData = isToday ? CHANGE_DATA.today : CHANGE_DATA.allTime
@@ -81,17 +94,12 @@ export default function BalanceCard({
                 >
                     {label}
                 </Text>
-                <ParticleEffect
-                    className={styles.amount}
-                    hidden={hidden}
-                    color={variant === "overlay" ? "#fff" : undefined}
-                    onClick={() => setHidden((s) => !s)}
-                >
+                <HiddenBalance className={styles.amount}>
                     <span className={styles.prefix}>$</span>
                     <Calligraph variant="number" animation="smooth">
                         {balance}
                     </Calligraph>
-                </ParticleEffect>
+                </HiddenBalance>
                 <Train
                     divider="space"
                     onClick={() => setIsToday((prev) => !prev)}
@@ -105,14 +113,19 @@ export default function BalanceCard({
                             exit={{ opacity: 0 }}
                             transition={crossFadeTransition}
                         >
-                            <Text
-                                variant="subheadline2"
-                                apple={{ weight: "semibold" }}
-                                material={{ weight: "medium" }}
-                                style={{ color: "var(--text-confirm-color)" }}
-                            >
-                                {changeData.value}
-                            </Text>
+                            <HiddenBalance>
+                                <Text
+                                    as="span"
+                                    variant="subheadline2"
+                                    apple={{ weight: "semibold" }}
+                                    material={{ weight: "medium" }}
+                                    style={{
+                                        color: "var(--text-confirm-color)",
+                                    }}
+                                >
+                                    {changeData.value}
+                                </Text>
+                            </HiddenBalance>
                         </m.span>
                     </AnimatePresence>
                     <AnimatePresence mode="wait" initial={false}>
@@ -132,16 +145,31 @@ export default function BalanceCard({
                                     variant: "subheadline2",
                                     weight: "medium",
                                 }}
-                                arrow={{
-                                    direction: changeData.arrowDirection,
-                                }}
                                 variant="tinted"
                                 circled
                                 style={{
                                     color: "var(--text-confirm-color)",
                                 }}
                             >
-                                {changeData.percent}
+                                <HiddenBalance>
+                                    <Text
+                                        as="span"
+                                        apple={{
+                                            variant: "subheadline2",
+                                            weight: "semibold",
+                                        }}
+                                        material={{
+                                            variant: "subheadline2",
+                                            weight: "medium",
+                                        }}
+                                        arrow={{
+                                            direction:
+                                                changeData.arrowDirection,
+                                        }}
+                                    >
+                                        {changeData.percent}
+                                    </Text>
+                                </HiddenBalance>
                             </Text.Badge>
                         </m.span>
                     </AnimatePresence>
@@ -172,7 +200,7 @@ export default function BalanceCard({
     )
 }
 
-BalanceCard.propTypes = {
+BalanceCard.propTypes = BalanceCardContent.propTypes = {
     label: PropTypes.string.isRequired,
     initialBalance: PropTypes.string,
     variant: PropTypes.oneOf(["default", "overlay"]),

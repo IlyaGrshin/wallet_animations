@@ -5,17 +5,12 @@ const PARTICLE_DENSITY = 0.028
 const PARTICLE_MIN = 300
 const PARTICLE_MAX = 8000
 
-export function layoutCanvas(canvas, content, prev, { padding, radius }) {
+// Read-only half of the layout: no DOM writes, so a batch of instances can
+// all measure before any of them invalidates layout with applyLayout().
+export function measureCanvas(content, { padding, radius }) {
     const rect = content.getBoundingClientRect()
     if (rect.width <= 0 || rect.height <= 0) return null
     const dpr = Math.min(window.devicePixelRatio || 1, DPR_MAX)
-    if (
-        rect.width === prev.contentW &&
-        rect.height === prev.contentH &&
-        dpr === prev.dpr
-    ) {
-        return null
-    }
     // Headroom around the content so particles have room to billow (shader
     // motion scales with the canvas's short side). The demo runs a ~500css
     // square over ~48css text rows, so default to ~1x the content height
@@ -23,21 +18,29 @@ export function layoutCanvas(canvas, content, prev, { padding, radius }) {
     const pad = padding != null ? padding : Math.round(rect.height)
     const cssW = rect.width + 2 * pad
     const cssH = rect.height + 2 * pad
-    // Canvas overflows the content box equally on every side.
-    canvas.style.left = canvas.style.top = `${-pad}px`
-    canvas.style.width = `${cssW}px`
-    canvas.style.height = `${cssH}px`
     return {
         contentW: rect.width,
         contentH: rect.height,
         dpr,
         pad,
-        w: (canvas.width = Math.floor(cssW * dpr)),
-        h: (canvas.height = Math.floor(cssH * dpr)),
+        cssW,
+        cssH,
+        w: Math.floor(cssW * dpr),
+        h: Math.floor(cssH * dpr),
         radius: (radius || 1.6) * dpr,
         count: Math.max(
             PARTICLE_MIN,
             Math.min(PARTICLE_MAX, Math.round(cssW * cssH * PARTICLE_DENSITY))
         ),
     }
+}
+
+// Write half: the canvas overflows the content box equally on every side.
+export function applyLayout(canvas, layout) {
+    const { pad, cssW, cssH, w, h } = layout
+    canvas.style.left = canvas.style.top = `${-pad}px`
+    canvas.style.width = `${cssW}px`
+    canvas.style.height = `${cssH}px`
+    if (canvas.width !== w) canvas.width = w
+    if (canvas.height !== h) canvas.height = h
 }
