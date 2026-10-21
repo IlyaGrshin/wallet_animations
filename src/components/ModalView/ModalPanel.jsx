@@ -33,7 +33,7 @@ const ModalPanel = ({ panelRef, corners, children, ...rest }) => {
     }, [panelRef, corners])
 
     return (
-        <m.div ref={panelRef} {...rest}>
+        <m.div ref={panelRef} data-glass-isolated="" {...rest}>
             {children}
         </m.div>
     )

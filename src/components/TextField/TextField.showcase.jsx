@@ -56,7 +56,8 @@ function InputPage() {
                 }}
             >
                 <BackButton />
-                <div className={styles.input}>
+                {/* Transform and paint containment isolate the glass blends. */}
+                <div className={styles.input} data-glass-isolated="">
                     <GlassContainer style={{ borderRadius: "36px" }}>
                         <TextField label="Message" />
                     </GlassContainer>
