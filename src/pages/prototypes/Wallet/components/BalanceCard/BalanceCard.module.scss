@@ -6,7 +6,8 @@
 .data {
     position: relative;
     display: flex;
-    padding: 28px 0 44px;
+    padding: 28px 16px 44px;
+    container-type: inline-size;
     flex-direction: column;
     align-items: center;
     gap: 2px;
@@ -16,11 +17,14 @@
 }
 
 :global(body.material) .data {
-    padding: 32px 0 42px;
+    padding: 32px 16px 42px;
 }
 
 .amount span {
-    font-size: 48px;
+    font-size: min(
+        var(--amount-max-size, 48px),
+        calc(140cqi / var(--balance-length, 1))
+    );
     font-weight: 700;
     font-variant-numeric: lining-nums tabular-nums;
 }
@@ -46,7 +50,8 @@
 }
 
 :global(body.material) .amount span {
-    font-size: 44px;
+    --amount-max-size: 44px;
+
     font-weight: 500;
 }
 

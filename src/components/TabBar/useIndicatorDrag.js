@@ -1,41 +1,63 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
+import { animate } from "motion/react"
 
 import { clamp } from "../../utils/number"
 
+const DRAG_THRESHOLD_PX = 6
+const SPRING = { type: "spring", stiffness: 800, damping: 50 }
+
+// Drives the overlay clip-path imperatively on the overlay's own motion
+// state: a drag moves it without re-rendering React, and settling runs as a
+// regular (WAAPI-accelerated) spring.
 export function useIndicatorDrag({
     tabsLength,
     activeIndex,
     onSnapToSame,
     onSnapToNew,
-    spring,
 }) {
     const overlayRef = useRef(null)
-    const [isDragging, setIsDragging] = useState(false)
-    const [dragLeftPercent, setDragLeftPercent] = useState(null)
-    const [pressedIndex, setPressedIndex] = useState(null)
+    const isDraggingRef = useRef(false)
+    const dragLeftPercentRef = useRef(null)
+    const pressedIndexRef = useRef(null)
     const activePointerIdRef = useRef(null)
     const isPointerDownRef = useRef(false)
     const pointerDownIdRef = useRef(null)
     const startXRef = useRef(0)
-    const DRAG_THRESHOLD_PX = 6
 
     const segmentPercent = 100 / tabsLength
 
-    const indicatorWidth = `calc(${segmentPercent}% + 7.33px - 4px)`
-    const indicatorIndex = pressedIndex ?? activeIndex
-    const indicatorLeft = `calc(${segmentPercent * indicatorIndex}% - ${3.67 * indicatorIndex}px)`
+    const clipPathAt = (index) => {
+        const indicatorWidth = `calc(${segmentPercent}% + 7.33px - 4px)`
+        const indicatorLeft = `calc(${segmentPercent * index}% - ${3.67 * index}px)`
+        const clipRight = `calc(100% - (${indicatorLeft} + ${indicatorWidth}) - 2.33px * ${index})`
+        return `inset(0 ${clipRight} 0 ${indicatorLeft} round 100px)`
+    }
 
-    const clipLeft = indicatorLeft
-    const clipRight = `calc(100% - (${indicatorLeft} + ${indicatorWidth}) - 2.33px * ${indicatorIndex})`
+    const settledClipPath = clipPathAt(activeIndex)
 
-    const animateClipPath =
-        isDragging && dragLeftPercent != null
-            ? `inset(0 ${100 - (dragLeftPercent + segmentPercent)}% 0 ${dragLeftPercent}% round 100px)`
-            : `inset(0 ${clipRight} 0 ${clipLeft} round 100px)`
+    const springTo = (clipPath) => {
+        if (!overlayRef.current) return
+        animate(overlayRef.current, { clipPath }, SPRING)
+    }
 
-    const transition = isDragging
-        ? { clipPath: { duration: 0 } }
-        : { clipPath: spring }
+    const settle = () => springTo(settledClipPath)
+
+    const setDragClipPath = (left) => {
+        dragLeftPercentRef.current = left
+        animate(
+            overlayRef.current,
+            {
+                clipPath: `inset(0 ${100 - (left + segmentPercent)}% 0 ${left}% round 100px)`,
+            },
+            { duration: 0 }
+        )
+    }
+
+    // Spring to the active tab whenever it (or the tab count) changes.
+    useLayoutEffect(() => {
+        if (!overlayRef.current) return
+        animate(overlayRef.current, { clipPath: settledClipPath }, SPRING)
+    }, [settledClipPath])
 
     const indexFromClientX = (clientX) => {
         const el = overlayRef.current
@@ -52,6 +74,8 @@ export function useIndicatorDrag({
 
     const commitIndex = (nextIndex) => {
         if (nextIndex === activeIndex) {
+            // The target did not change, so no effect will move the clip back.
+            settle()
             onSnapToSame?.()
         } else {
             onSnapToNew?.(nextIndex)
@@ -66,12 +90,16 @@ export function useIndicatorDrag({
         const width = rect.width
         if (width <= 0) return
         const centerPercent = (xRel / width) * 100
-        const left = clamp(
-            centerPercent - segmentPercent / 2,
-            0,
-            100 - segmentPercent
+        setDragClipPath(
+            clamp(centerPercent - segmentPercent / 2, 0, 100 - segmentPercent)
         )
-        setDragLeftPercent(left)
+    }
+
+    const resetDrag = () => {
+        isDraggingRef.current = false
+        dragLeftPercentRef.current = null
+        pressedIndexRef.current = null
+        activePointerIdRef.current = null
     }
 
     const onPointerDown = (e) => {
@@ -79,7 +107,11 @@ export function useIndicatorDrag({
         isPointerDownRef.current = true
         pointerDownIdRef.current = e.pointerId
         startXRef.current = e.clientX
-        setPressedIndex(indexFromClientX(e.clientX))
+        const pressedIndex = indexFromClientX(e.clientX)
+        pressedIndexRef.current = pressedIndex
+        if (pressedIndex != null && pressedIndex !== activeIndex) {
+            springTo(clipPathAt(pressedIndex))
+        }
         // Не начинаем drag сразу — ждём порога движения
     }
 
@@ -91,7 +123,7 @@ export function useIndicatorDrag({
         )
             return
 
-        if (!isDragging) {
+        if (!isDraggingRef.current) {
             if (!isPointerDownRef.current) return
             const dx = Math.abs(e.clientX - startXRef.current)
             if (dx >= DRAG_THRESHOLD_PX) {
@@ -102,7 +134,7 @@ export function useIndicatorDrag({
                 } catch {
                     // pointer capture is best-effort
                 }
-                setIsDragging(true)
+                isDraggingRef.current = true
                 updateDragFromClientX(e.clientX)
                 e.preventDefault()
             }
@@ -122,25 +154,18 @@ export function useIndicatorDrag({
 
     const finishDrag = (clientX) => {
         // Snap to nearest tab by current pointer/drag position
+        const dragLeftPercent = dragLeftPercentRef.current
         let nextIndex = indexFromClientX(clientX) ?? activeIndex
         if (typeof clientX !== "number" && dragLeftPercent != null) {
-            const seg = 100 / tabsLength
             nextIndex = clamp(
-                Math.round(dragLeftPercent / seg),
+                Math.round(dragLeftPercent / segmentPercent),
                 0,
                 tabsLength - 1
             )
         }
 
-        commitIndex(nextIndex)
         resetDrag()
-    }
-
-    const resetDrag = () => {
-        setIsDragging(false)
-        setDragLeftPercent(null)
-        setPressedIndex(null)
-        activePointerIdRef.current = null
+        commitIndex(nextIndex)
     }
 
     const isForeignPointer = (e) =>
@@ -153,9 +178,10 @@ export function useIndicatorDrag({
         isPointerDownRef.current = false
         pointerDownIdRef.current = null
 
-        if (!isDragging) {
+        if (!isDraggingRef.current) {
+            const pressedIndex = pressedIndexRef.current
+            pressedIndexRef.current = null
             if (pressedIndex != null) commitIndex(pressedIndex)
-            setPressedIndex(null)
             return
         }
         if (
@@ -173,28 +199,26 @@ export function useIndicatorDrag({
         e.preventDefault()
     }
 
-    const onPointerCancel = (e) => {
-        if (isForeignPointer(e)) return
+    const cancelPress = () => {
+        const moved = isDraggingRef.current || pressedIndexRef.current != null
+        resetDrag()
         isPointerDownRef.current = false
         pointerDownIdRef.current = null
-        resetDrag()
+        if (moved) settle()
+    }
+
+    const onPointerCancel = (e) => {
+        if (isForeignPointer(e)) return
+        cancelPress()
     }
 
     useEffect(() => {
-        const cancel = () => {
-            resetDrag()
-            isPointerDownRef.current = false
-            pointerDownIdRef.current = null
-        }
-        window.addEventListener("blur", cancel)
-        return () => window.removeEventListener("blur", cancel)
-    }, [])
+        window.addEventListener("blur", cancelPress)
+        return () => window.removeEventListener("blur", cancelPress)
+    })
 
     return {
         overlayRef,
-        isDragging,
-        animate: { clipPath: animateClipPath },
-        transition,
         handlers: {
             onPointerDown,
             onPointerMove,
