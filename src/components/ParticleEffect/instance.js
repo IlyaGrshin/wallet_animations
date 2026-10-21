@@ -47,6 +47,7 @@ export function createInstance({
         covered: false,
         active: false, // covering or mid-reveal: wants frames
         settle: false, // reduced motion: render one still frame, then idle
+        reduced: false,
         finished: false, // reveal done: next blit clears the canvas
         capture: false, // mask/layout must be (re)captured before drawing
         onscreen: false,
@@ -92,6 +93,7 @@ export function createInstance({
                 return
             }
             s.capture = s.active = true
+            s.settle = s.reduced
         },
 
         capture() {
@@ -200,7 +202,7 @@ export function createInstance({
 
         cover(reduced) {
             s.covered = s.active = s.capture = true
-            s.settle = reduced
+            s.settle = s.reduced = reduced
             s.finished = s.fadeOut = false
             s.fadeOutTime = 0
         },
@@ -227,7 +229,9 @@ export function createInstance({
         // The shared context was lost: GPU handles are dead, recapture later.
         lose() {
             s.buffer = s.texture = null
-            if (s.covered) s.capture = s.active = true
+            if (!s.covered) return
+            s.capture = s.active = true
+            s.settle = s.reduced
         },
 
         destroy(gl) {

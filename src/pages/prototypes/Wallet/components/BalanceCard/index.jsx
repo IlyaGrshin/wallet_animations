@@ -115,6 +115,7 @@ function BalanceCardContent({
                         >
                             <HiddenBalance>
                                 <Text
+                                    as="span"
                                     variant="subheadline2"
                                     apple={{ weight: "semibold" }}
                                     material={{ weight: "medium" }}

@@ -45,8 +45,8 @@ export default function HiddenBalance({ children, className }) {
             className={className}
             role="button"
             tabIndex={0}
-            aria-pressed={hidden}
-            aria-label={hidden ? "Hidden balance" : undefined}
+            aria-label={hidden ? "Show balances" : undefined}
+            aria-description={hidden ? undefined : "Hides balances"}
         >
             {children}
         </ParticleEffect>
