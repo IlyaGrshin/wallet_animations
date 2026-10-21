@@ -66,20 +66,32 @@ button.root {
         flex-direction: column;
         justify-content: center;
         flex-grow: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
         border-bottom: var(--cell-separator-height) solid
             var(--tg-theme-section-separator-color);
     }
 
+    // Keeps its width next to a long title, but a long value of its own is
+    // capped at half the cell and its text (Text roots carry [variant]) cut
+    // with an ellipsis; switches and chevrons aren't clipped.
     .end {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        flex-shrink: 0;
+        max-width: 50%;
         padding: 0 0 0 8px;
         padding-right: var(--side-padding);
         text-align: right;
         border-bottom: var(--cell-separator-height) solid
             var(--tg-theme-section-separator-color);
         white-space: nowrap;
+
+        [variant] {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         .caption::first-letter {
             text-transform: capitalize;

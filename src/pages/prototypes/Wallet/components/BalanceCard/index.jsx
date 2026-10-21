@@ -8,7 +8,10 @@ import cx from "clsx"
 import Train from "../../../../../components/Train"
 import Text from "../../../../../components/Text"
 import ParticleEffect from "../../../../../components/ParticleEffect"
-import { generateRandomBalance } from "../../../../../utils/number"
+import {
+    formatBalance,
+    generateRandomBalance,
+} from "../../../../../utils/number"
 
 import * as styles from "./BalanceCard.module.scss"
 
@@ -67,6 +70,8 @@ export default function BalanceCard({
         return () => clearInterval(interval)
     }, [hidden])
 
+    const formattedBalance = formatBalance(balance)
+
     const variantClass =
         variant === "overlay" ? styles.cardOverlay : styles.cardDefault
 
@@ -85,11 +90,12 @@ export default function BalanceCard({
                     className={styles.amount}
                     hidden={hidden}
                     color={variant === "overlay" ? "#fff" : undefined}
+                    style={{ "--balance-length": formattedBalance.length + 1 }}
                     onClick={() => setHidden((s) => !s)}
                 >
                     <span className={styles.prefix}>$</span>
                     <Calligraph variant="number" animation="smooth">
-                        {balance}
+                        {formattedBalance}
                     </Calligraph>
                 </ParticleEffect>
                 <Train
