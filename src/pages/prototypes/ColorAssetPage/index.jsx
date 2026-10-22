@@ -16,11 +16,16 @@ import ArrowDownCircleFill from "../../../icons/28/Arrow Down Circle Fill.svg?re
 import PlusCircleFill from "../../../icons/28/Plus Circle Fill.svg?react"
 import ArrowLeftAndRightCircleFill from "../../../icons/28/Arrow Left & Right Circle Fill.svg?react"
 
+import VirtualStack from "./VirtualStack"
+
 import * as styles from "./ColorAssetPage.module.scss"
 
 // Placeholder cards rendered while the fetch is in flight; each reveals on
 // its own once its data and accent color are ready.
 const SKELETON_COUNT = 3
+
+const ESTIMATED_SECTION = 290
+const SECTION_GAP = 8
 
 // Mock values give the skeleton bars realistic, varied widths while loading.
 const PLACEHOLDER = { name: "Ethereum", current_price: "3,180", symbol: "eth" }
@@ -191,11 +196,15 @@ function ColorAssetPage() {
         <>
             <BackButton />
             <Page>
-                <div className={styles.list}>
-                    {rows.map((asset, index) => (
-                        <AssetSection mode="trade" asset={asset} key={index} />
-                    ))}
-                </div>
+                <VirtualStack
+                    count={rows.length}
+                    estimateSize={ESTIMATED_SECTION}
+                    gap={SECTION_GAP}
+                >
+                    {(index) => (
+                        <AssetSection mode="trade" asset={rows[index]} />
+                    )}
+                </VirtualStack>
             </Page>
         </>
     )

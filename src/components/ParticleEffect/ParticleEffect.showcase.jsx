@@ -5,10 +5,16 @@ import { Calligraph } from "calligraph"
 import Page from "../Page"
 import SectionList from "../SectionList"
 import Text from "../Text"
+import HiddenBalance from "../HiddenBalance"
 import ParticleEffect from "."
 
 import { generateRandomBalance } from "../../utils/number"
 import { BackButton } from "../../lib/twa"
+
+import * as styles from "./ParticleEffect.showcase.module.scss"
+
+const STRESS_COUNT = 60
+const STRESS_CLASSES = [undefined, styles.gain, styles.loss, styles.accent]
 
 function Demo({ color, children }) {
     const [hidden, setHidden] = useState(true)
@@ -53,6 +59,29 @@ function LiveNumberDemo() {
     )
 }
 
+// One provider, dozens of balances: tapping any value hides / reveals all of
+// them. Starts hidden, like a "hide balances" setting on first entry.
+function StressDemo() {
+    return (
+        <HiddenBalance.Provider defaultHidden>
+            <div className={styles.grid}>
+                {Array.from({ length: STRESS_COUNT }, (_, i) => (
+                    <div
+                        key={i}
+                        className={STRESS_CLASSES[i % STRESS_CLASSES.length]}
+                    >
+                        <Text variant="body">
+                            <HiddenBalance>
+                                ${(i * 137.31).toFixed(2)}
+                            </HiddenBalance>
+                        </Text>
+                    </div>
+                ))}
+            </div>
+        </HiddenBalance.Provider>
+    )
+}
+
 const ParticleEffectShowcase = () => (
     <>
         <BackButton />
@@ -68,6 +97,16 @@ const ParticleEffectShowcase = () => (
 
                 <SectionList.Item header="Live number (Calligraph, like BalanceCard)">
                     <LiveNumberDemo />
+                </SectionList.Item>
+
+                <SectionList.Item header="Colored text (particles keep each color)">
+                    <Demo>
+                        <Text variant="title1" apple={{ weight: "bold" }}>
+                            <span className={styles.gain}>+12.40</span>{" "}
+                            <span className={styles.loss}>-3.15</span>{" "}
+                            <span className={styles.accent}>TON</span>
+                        </Text>
+                    </Demo>
                 </SectionList.Item>
 
                 <SectionList.Item header="Inline text">
@@ -95,6 +134,12 @@ const ParticleEffectShowcase = () => (
                             </Text>
                         </Demo>
                     </div>
+                </SectionList.Item>
+
+                <SectionList.Item
+                    header={`Stress: ${STRESS_COUNT} balances, tap any to toggle all`}
+                >
+                    <StressDemo />
                 </SectionList.Item>
             </SectionList>
         </Page>

@@ -1,6 +1,7 @@
 import {
     useCallback,
     useEffect,
+    useEffectEvent,
     useLayoutEffect,
     useRef,
     useState,
@@ -32,6 +33,13 @@ export function useAnchoredPosition({
     const [isPositioned, setIsPositioned] = useState(false)
     const contentSizeRef = useRef(null)
 
+    const reposition = useEffectEvent(() => {
+        if (!triggerRef.current || !contentSizeRef.current) return
+        const rect = triggerRef.current.getBoundingClientRect()
+        const next = calculate(rect, contentSizeRef.current)
+        setPosition((prev) => (equals(prev, next) ? prev : next))
+    })
+
     const resetPosition = useCallback(() => {
         setIsPositioned(false)
         contentSizeRef.current = null
@@ -61,16 +69,12 @@ export function useAnchoredPosition({
     useEffect(() => {
         if (!isOpen || !isPositioned) return
         let frame = null
-        const reposition = () => {
-            frame = null
-            if (!triggerRef.current || !contentSizeRef.current) return
-            const rect = triggerRef.current.getBoundingClientRect()
-            const next = calculate(rect, contentSizeRef.current)
-            setPosition((prev) => (equals(prev, next) ? prev : next))
-        }
         const schedule = () => {
             if (frame !== null) return
-            frame = requestAnimationFrame(reposition)
+            frame = requestAnimationFrame(() => {
+                frame = null
+                reposition()
+            })
         }
         window.addEventListener("scroll", schedule, true)
         window.addEventListener("resize", schedule)
@@ -79,7 +83,7 @@ export function useAnchoredPosition({
             window.removeEventListener("scroll", schedule, true)
             window.removeEventListener("resize", schedule)
         }
-    }, [isOpen, isPositioned, triggerRef, calculate, equals, ...deps])
+    }, [isOpen, isPositioned])
 
     return { position, isPositioned, resetPosition }
 }

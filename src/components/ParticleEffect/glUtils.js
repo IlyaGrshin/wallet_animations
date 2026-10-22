@@ -7,6 +7,17 @@ const FEEDBACK_VARYINGS = [
     "outTime",
     "outDuration",
     "outAlpha",
+    "outColor",
+]
+
+const STRIDE = 40 // 10 floats * 4 bytes
+const ATTRIBS = [
+    [0, 2, 0],
+    [1, 2, 8],
+    [2, 1, 16],
+    [3, 1, 20],
+    [4, 1, 24],
+    [5, 3, 28],
 ]
 
 function compile(gl, type, source) {
@@ -39,9 +50,19 @@ export function linkProgram(gl) {
     return program
 }
 
-// One-time GL setup: creates the mask texture (unit 0, mipmapped, clamped),
-// points the sampler at it, and configures alpha blending. Returns the texture.
+// One-time GL setup: points the sampler at unit 0 and configures blending.
+// Scissoring keeps every instance inside its own slot of the shared atlas.
 export function setupGl(gl, program, loc) {
+    gl.useProgram(program)
+    gl.uniform1i(loc.textTexture, 0)
+    gl.clearColor(0, 0, 0, 0)
+    gl.enable(gl.BLEND)
+    gl.enable(gl.SCISSOR_TEST)
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
+}
+
+// Per-instance glyph mask texture (unit 0, mipmapped, clamped).
+export function createMaskTexture(gl) {
     const texture = gl.createTexture()
     gl.activeTexture(gl.TEXTURE0)
     gl.bindTexture(gl.TEXTURE_2D, texture)
@@ -53,23 +74,21 @@ export function setupGl(gl, program, loc) {
     )
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-    gl.useProgram(program)
-    gl.uniform1i(loc.textTexture, 0)
-    gl.clearColor(0, 0, 0, 0)
-    gl.enable(gl.BLEND)
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
     return texture
 }
 
-// Resolves any CSS color (or the element's computed text color) to [r,g,b] 0..1.
-export function resolveColor(input, fallbackEl) {
-    const value =
-        input || (fallbackEl ? getComputedStyle(fallbackEl).color : "#fff")
-    const c = document.createElement("canvas")
-    c.width = c.height = 1
-    const ctx = c.getContext("2d")
-    ctx.fillStyle = value
-    ctx.fillRect(0, 0, 1, 1)
-    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
-    return [r / 255, g / 255, b / 255]
+export function createBuffers(gl, count) {
+    const buffers = [gl.createBuffer(), gl.createBuffer()]
+    for (const buffer of buffers) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+        gl.bufferData(gl.ARRAY_BUFFER, count * STRIDE, gl.DYNAMIC_DRAW)
+    }
+    return buffers
+}
+
+export function bindAttribs(gl) {
+    for (const [index, size, offset] of ATTRIBS) {
+        gl.vertexAttribPointer(index, size, gl.FLOAT, false, STRIDE, offset)
+        gl.enableVertexAttribArray(index)
+    }
 }

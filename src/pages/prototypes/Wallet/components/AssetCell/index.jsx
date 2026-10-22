@@ -2,6 +2,7 @@ import PropTypes from "prop-types"
 
 import * as styles from "./AssetCell.module.scss"
 import Cell from "../../../../../components/Cells"
+import HiddenBalance from "../../../../../components/HiddenBalance"
 import ImageAvatar from "../../../../../components/ImageAvatar"
 import InitialsAvatar from "../../../../../components/InitialsAvatar"
 import { getAssetIcon } from "../../../../../utils/AssetsMap"
@@ -24,8 +25,16 @@ export default function AssetCell({ asset }) {
             }
             end={
                 <Cell.Text
-                    title={formatUsd(asset.rate * asset.value)}
-                    description={`${formatAmount(asset.value)} ${asset.ticker}`}
+                    title={
+                        <HiddenBalance>
+                            {formatUsd(asset.rate * asset.value)}
+                        </HiddenBalance>
+                    }
+                    description={
+                        <HiddenBalance>
+                            {formatAmount(asset.value)} {asset.ticker}
+                        </HiddenBalance>
+                    }
                 />
             }
         >

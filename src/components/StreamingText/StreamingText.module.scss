@@ -9,6 +9,27 @@
 
 .token {
     display: inline-block;
+    animation: word-in 0.4s cubic-bezier(0.23, 1, 0.32, 1) both;
+    animation-delay: calc(var(--delay) + var(--index) * var(--stagger));
+}
+
+.reduced .token {
+    animation-name: word-fade;
+    animation-duration: 0.15s;
+    animation-timing-function: ease;
+}
+
+@keyframes word-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
+
+@keyframes word-fade {
+    from {
+        opacity: 0;
+    }
 }
 
 .typewriter {

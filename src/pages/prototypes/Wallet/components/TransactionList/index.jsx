@@ -4,6 +4,7 @@ import * as styles from "./TransactionList.module.scss"
 import SectionList from "../../../../../components/SectionList"
 import Cell from "../../../../../components/Cells"
 import { truncateMiddle } from "../../../../../utils/common"
+import HiddenBalance from "../../../../../components/HiddenBalance"
 import txHistory from "../../data/transactions.json"
 
 const STATUS_TONE = {
@@ -29,7 +30,12 @@ export default function TransactionList() {
                                 STATUS_TONE[tx.status]
                             )}
                         >
-                            <Cell.Text title={tx.value} description={tx.status} />
+                            <Cell.Text
+                                title={
+                                    <HiddenBalance>{tx.value}</HiddenBalance>
+                                }
+                                description={tx.status}
+                            />
                         </div>
                     }
                     key={`tx-${index}`}

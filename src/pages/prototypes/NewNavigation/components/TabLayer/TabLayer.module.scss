@@ -1,0 +1,28 @@
+.layer {
+    position: absolute;
+    inset: 0;
+    overflow-y: scroll;
+    pointer-events: none;
+
+    :global(body.apple) & {
+        padding-bottom: 80px;
+    }
+
+    :global(body.material) & {
+        padding-bottom: 88px;
+    }
+}
+
+.active {
+    z-index: 1;
+    pointer-events: auto;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.body {
+    position: relative;
+    min-height: 100%;
+}

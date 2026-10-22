@@ -1,5 +1,6 @@
 import { useRef } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 
 import { useParticles } from "./useParticles"
 
@@ -9,14 +10,16 @@ import * as styles from "./ParticleEffect.module.scss"
  * ParticleEffect - covers its children with an animated particle cloud, ported
  * from the WebGL2 transform-feedback system at github.com/dkaraush/particles.
  * Drop-in replacement for the previous `spoiled` <Spoiler />: same
- * hidden / onClick / className API.
+ * hidden / onClick / className API. All instances share one WebGL2 context
+ * and one render loop (see renderer.js), loaded lazily as a separate chunk.
  *
  * @param {React.ReactNode} children - Content to hide behind the particles
  * @param {boolean} hidden - When true, the content is covered by the cloud
  * @param {function} onClick - Click handler (typically toggles `hidden`)
  * @param {string} className - Extra classes for the wrapper
- * @param {string} color - Particle color (any CSS color). Defaults to the
- *   computed text color of the content, so the cloud reads as hidden text
+ * @param {string} color - Particle color (any CSS color) for the whole cloud.
+ *   By default each particle takes the color of the glyph it spawns on, so
+ *   colored or multi-colored text keeps its colors while hidden
  * @param {number} radius - Particle radius in CSS px (scaled by DPR)
  * @param {number} padding - CSS headroom around the content on every side.
  *   Particle motion scales with the canvas size, so more headroom lets the cloud
@@ -64,19 +67,15 @@ export default function ParticleEffect({
         onClick?.(event)
     }
 
-    const rootClassName = [
-        styles.root,
-        hidden && styles.hidden,
-        !supported && styles.fallback,
-        className,
-    ]
-        .filter(Boolean)
-        .join(" ")
-
     return (
         <span
             ref={wrapperRef}
-            className={rootClassName}
+            className={cx(
+                styles.root,
+                hidden && styles.hidden,
+                !supported && styles.fallback,
+                className
+            )}
             onClick={handleClick}
             {...rest}
         >

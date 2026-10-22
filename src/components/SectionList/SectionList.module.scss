@@ -67,6 +67,11 @@
             background-color: var(--tg-theme-section-bg-color);
             border-radius: 26px;
             overflow: hidden;
+
+            @supports (corner-shape: superellipse(1.5)) {
+                border-radius: 34px;
+                corner-shape: superellipse(1.5);
+            }
         }
 
         &.grouped {
@@ -86,6 +91,11 @@
             background-color: var(--tg-theme-section-bg-color);
             border-radius: 16px;
             overflow: hidden;
+
+            @supports (corner-shape: superellipse(1.5)) {
+                border-radius: 21px;
+                corner-shape: superellipse(1.5);
+            }
         }
 
         &.grouped {
