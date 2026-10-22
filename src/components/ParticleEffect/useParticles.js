@@ -1,15 +1,26 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
+
+import { clearStill, drawStill } from "./stillFrame"
 
 // The WebGL renderer (shaders included) is a separate chunk: nothing loads
 // until an effect is covered or the browser is idle, so it never weighs on
 // initial JS or on the first paint of a page.
 let loading = null
-const loadRenderer = () =>
-    (loading ??= import("./renderer").then((m) => m.getRenderer()))
+// Instances parked until idle; a cover anywhere starts the load, so they all
+// register right away instead of waiting out the idle timer (1s on iOS).
+const idleWaiters = new Set()
+
+const loadRenderer = () => {
+    loading ??= import("./renderer").then((m) => m.getRenderer())
+    for (const resolve of idleWaiters) resolve()
+    idleWaiters.clear()
+    return loading
+}
 
 const loadWhenIdle = () =>
     loading ??
     new Promise((resolve) => {
+        idleWaiters.add(resolve)
         if (window.requestIdleCallback) window.requestIdleCallback(resolve)
         else setTimeout(resolve, 1000)
     }).then(loadRenderer)
@@ -35,6 +46,19 @@ export function useParticles({
     const revealOriginRef = useRef(null)
     const handleRef = useRef(null)
     const hiddenRef = useRef(hidden)
+
+    // Until the renderer is registered, paint a still cloud before the browser
+    // paints the hidden state, so the value never leaves an empty gap.
+    useLayoutEffect(() => {
+        if (!hidden) clearStill(canvasRef.current)
+        if (!hidden || handleRef.current) return
+        drawStill(canvasRef.current, contentRef.current, {
+            color,
+            radius,
+            padding,
+            maskDilation,
+        })
+    }, [hidden, canvasRef, contentRef, color, radius, padding, maskDilation])
 
     // Declared before registration so hiddenRef is current when it runs.
     // reveal() before any cover() is a no-op, so the initial mount stays dormant.

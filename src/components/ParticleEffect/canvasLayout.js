@@ -27,7 +27,7 @@ export function measureCanvas(content, { padding, radius }) {
         cssH,
         w: Math.floor(cssW * dpr),
         h: Math.floor(cssH * dpr),
-        radius: (radius || 1.6) * dpr,
+        radius: (radius || 2) * dpr,
         count: Math.max(
             PARTICLE_MIN,
             Math.min(PARTICLE_MAX, Math.round(cssW * cssH * PARTICLE_DENSITY))

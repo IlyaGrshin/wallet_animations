@@ -26,6 +26,22 @@
     pointer-events: none;
 }
 
+// The cloud fades in as the text fades out, whether it is the still frame or
+// the live one. Revealing needs no counterpart: the shader scatters it.
+.root.hidden .canvas {
+    animation: cloud-in 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+
+    @media (prefers-reduced-motion: reduce) {
+        animation: none;
+    }
+}
+
+@keyframes cloud-in {
+    from {
+        opacity: 0;
+    }
+}
+
 // WebGL2 unavailable: blur the value instead of clouding it, and drop the canvas.
 .root.fallback .canvas {
     display: none;

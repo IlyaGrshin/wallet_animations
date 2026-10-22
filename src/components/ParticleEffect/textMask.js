@@ -1,4 +1,4 @@
-import { resolveColor, toCss } from "./glUtils"
+import { resolveColor, toCss } from "./color"
 
 // Rasterizes the content into a mask: glyphs painted in their own (opaque) text
 // color on a transparent background. The particle shader (text = 1) spawns

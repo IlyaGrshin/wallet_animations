@@ -1,14 +1,13 @@
-import {
-    bindAttribs,
-    createBuffers,
-    createMaskTexture,
-    resolveColor,
-} from "./glUtils"
+import { bindAttribs, createBuffers, createMaskTexture } from "./glUtils"
 import { applyLayout, measureCanvas } from "./canvasLayout"
+import { resolveColor } from "./color"
 import { renderTextMask } from "./textMask"
+import { takeStill } from "./stillFrame"
 
 const FADE_OUT_MS = 400
-// Reduced motion: pre-roll the simulation into one still frame, then stop.
+const STILL_FADE_MS = 600 // crossfade from the 2D still frame
+// Pre-roll ~1.5s in one frame (a reset cloud starts sparse): a still frame for
+// reduced motion, or a full-density start when taking over the 2D still.
 const SETTLE_STEPS = 45
 
 /**
@@ -44,6 +43,7 @@ export function createInstance({
         fadeOut: false,
         fadeOutTime: 0,
         fadeOutXY: [0, 0],
+        still: null,
         covered: false,
         active: false, // covering or mid-reveal: wants frames
         settle: false, // reduced motion: render one still frame, then idle
@@ -140,6 +140,8 @@ export function createInstance({
             s.layout = layout
             s.capture = false
             s.reset = true
+            s.still = takeStill(canvas) ?? s.still
+            s.stillFade = 0
         },
 
         step(gl, loc, slot, atlasH, dt) {
@@ -157,8 +159,10 @@ export function createInstance({
             gl.activeTexture(gl.TEXTURE0)
             gl.bindTexture(gl.TEXTURE_2D, s.texture)
 
-            const steps = s.settle ? SETTLE_STEPS : 1
-            const stepDt = s.settle ? 1 / 60 : dt
+            const preroll = s.settle || (s.still && s.stillFade === 0)
+            if (s.still) s.stillFade += (dt * 1000) / STILL_FADE_MS
+            const steps = preroll ? SETTLE_STEPS : 1
+            const stepDt = preroll ? 1 / 30 : dt
             for (let i = 0; i < steps; i++) {
                 s.time += stepDt
                 if (s.fadeOut) s.fadeOutTime += (stepDt * 1000) / FADE_OUT_MS
@@ -197,7 +201,14 @@ export function createInstance({
             const { w, h } = s.layout
             ctx.clearRect(0, 0, w, h)
             if (s.finished) return
+            if (s.still && s.stillFade >= 1) s.still = null
+            ctx.globalAlpha = s.still ? s.stillFade : 1
             ctx.drawImage(atlas, slot.x, slot.y, w, h, 0, 0, w, h)
+            if (s.still) {
+                ctx.globalAlpha = 1 - s.stillFade
+                ctx.drawImage(s.still, 0, 0, w, h)
+            }
+            ctx.globalAlpha = 1
         },
 
         cover(reduced) {
@@ -212,6 +223,7 @@ export function createInstance({
             if (!s.covered) return
             const drawn = !s.capture && !!s.buffer
             s.covered = s.capture = false
+            s.still = null
             // Nothing visible to animate: off-screen, never drawn, or reduced.
             if (reduced || !s.onscreen || !drawn) {
                 clear()

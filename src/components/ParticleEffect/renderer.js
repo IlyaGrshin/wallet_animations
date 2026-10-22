@@ -2,16 +2,17 @@ import { linkProgram, setupGl } from "./glUtils"
 import { createInstance } from "./instance"
 
 // Simulation tuning for the "text" (text = 1) mode of the dkaraush particle
-// system, matching the demo defaults at dkaraush.github.io/particles. Keys map
+// system, based on the demo defaults at dkaraush.github.io/particles but slowed
+// down (noiseSpeed, velocityMult, longevity) for a calmer drift. Keys map
 // 1:1 to float uniforms, shared by every instance, so they are set once.
 const SIM = {
     noiseScale: 22,
-    noiseSpeed: 0.6,
+    noiseSpeed: 0.4,
     forceMult: 0.6,
-    velocityMult: 1,
+    velocityMult: 0.7,
     dampingMult: 0.9999,
     maxVelocity: 6,
-    longevity: 1.4,
+    longevity: 1.8,
     noiseMovement: 4,
 }
 const UNIFORMS = [

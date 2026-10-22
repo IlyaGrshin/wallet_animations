@@ -1,4 +1,6 @@
 .wallet {
+    overflow-x: clip;
+
     .spacer {
         :global(body.material) & {
             height: 12px;
