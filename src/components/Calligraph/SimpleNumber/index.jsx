@@ -105,7 +105,14 @@ export default function SimpleNumber({
 
     useLayoutEffect(() => {
         const digits = digitsRef.current
-        if (!slide || !digits) return
+        if (!digits) return
+        if (!slide) {
+            digits.getAnimations().forEach((animation) => animation.cancel())
+            return
+        }
+
+        const host = digits.parentElement.parentElement
+        if (host && getComputedStyle(host).direction === "rtl") return
 
         const offset = slide.added
             ? -(digits.children[slide.added]?.offsetLeft ?? 0)

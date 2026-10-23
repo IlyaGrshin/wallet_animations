@@ -1,6 +1,9 @@
 export const isDigit = (char) => char >= "0" && char <= "9"
 const toNumber = (text) => parseFloat(text.replace(/[^0-9.-]/g, "")) || 0
 const isPrefix = (key) => key.startsWith("p")
+const now = () => performance.now()
+
+const INSTANT_BELOW = 200
 
 export const slots = (text) => {
     const chars = Array.from(text)
@@ -13,6 +16,7 @@ export const slots = (text) => {
 
 export const initialState = (text) => ({
     text,
+    at: -Infinity,
     gen: 0,
     changes: {},
     dropped: null,
@@ -20,6 +24,11 @@ export const initialState = (text) => ({
 })
 
 export const reconcile = (state, text) => {
+    const at = now()
+    if (at - state.at < INSTANT_BELOW) {
+        return { ...initialState(text), at, gen: state.gen }
+    }
+
     const direction = Math.sign(toNumber(text) - toNumber(state.text)) || 1
     const prevSlots = slots(state.text)
     const nextSlots = slots(text)
@@ -48,12 +57,13 @@ export const reconcile = (state, text) => {
     ).length
 
     if (!dropped.length && !added) {
-        return { ...state, text, gen, changes }
+        return { ...state, text, at, gen, changes }
     }
 
     gen += 1
     return {
         text,
+        at,
         gen,
         changes,
         dropped: dropped.length ? { gen, slots: dropped, direction } : null,

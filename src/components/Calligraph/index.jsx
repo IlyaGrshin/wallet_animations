@@ -22,7 +22,9 @@ const MOTION_PROPS = new Set([
  * (lists, tickers): no per-glyph motion components, no layout measuring, so
  * mounting, revealing and live updates stay cheap. Dropped columns roll out
  * and the rest slide over with one width read per length change, so it
- * assumes left-aligned text. It ignores the motion-only props
+ * assumes left-aligned text (RTL hosts skip the slide). Updates arriving
+ * within 200ms of the previous one swap instantly, so scrubbing a chart
+ * doesn't stack rolls. It ignores the motion-only props
  * (`animation`, `drift`, `trend`, `stagger`, `initial`, `onComplete`,
  * `autoSize`); DOM props, `as` and `ref` are forwarded.
  * @param {"text"|"number"|"slots"} [props.variant] Library variant.
