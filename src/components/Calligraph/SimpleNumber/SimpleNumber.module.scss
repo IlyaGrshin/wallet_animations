@@ -39,6 +39,11 @@ $spring-fallback: cubic-bezier(0.34, 1.3, 0.64, 1);
     position: relative;
 }
 
+.digits {
+    display: inline-flex;
+    position: relative;
+}
+
 .column {
     position: relative;
     display: inline-block;
@@ -46,7 +51,8 @@ $spring-fallback: cubic-bezier(0.34, 1.3, 0.64, 1);
 }
 
 .enter,
-.exit {
+.exit,
+.ghost {
     display: inline-block;
     animation-duration: 250ms, 280ms, 300ms;
     animation-timing-function: $spring-fallback, $spring-fallback, $fade;
@@ -63,8 +69,20 @@ $spring-fallback: cubic-bezier(0.34, 1.3, 0.64, 1);
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.exit,
+.ghost {
     animation-name: translate-out, scale-out, fade-out;
     pointer-events: none;
+}
+
+.dropped {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    display: inline-flex;
+    white-space: pre;
 }
 
 @keyframes translate-in {
