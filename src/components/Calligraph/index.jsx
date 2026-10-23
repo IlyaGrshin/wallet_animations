@@ -20,9 +20,9 @@ const MOTION_PROPS = new Set([
  * library; `simple` swaps the number variant for a CSS-only odometer with the
  * same per-digit roll, blur and scale. Use it where many numbers live at once
  * (lists, tickers): no per-glyph motion components, no layout measuring, so
- * mounting, revealing and live updates stay cheap. Dropped columns roll out
- * and the rest slide over with one width read per length change, so it
- * assumes left-aligned text (RTL hosts skip the slide). Updates arriving
+ * mounting, revealing and live updates stay cheap. Dropped columns roll out,
+ * and neighbors slide when glyph widths or the digit count change, using
+ * glyph widths measured once per instance; RTL hosts anchor right. Updates arriving
  * within 200ms of the previous one swap instantly, so scrubbing a chart
  * doesn't stack rolls. It ignores the motion-only props
  * (`animation`, `drift`, `trend`, `stagger`, `initial`, `onComplete`,

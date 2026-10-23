@@ -17,6 +17,7 @@ export const slots = (text) => {
 export const initialState = (text) => ({
     text,
     at: -Infinity,
+    from: null,
     gen: 0,
     changes: {},
     dropped: null,
@@ -57,13 +58,22 @@ export const reconcile = (state, text) => {
     ).length
 
     if (!dropped.length && !added) {
-        return { ...state, text, at, gen, changes }
+        return {
+            ...state,
+            text,
+            at,
+            from: state.text,
+            gen,
+            changes,
+            slide: null,
+        }
     }
 
     gen += 1
     return {
         text,
         at,
+        from: state.text,
         gen,
         changes,
         dropped: dropped.length ? { gen, slots: dropped, direction } : null,

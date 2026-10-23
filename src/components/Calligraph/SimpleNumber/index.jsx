@@ -1,14 +1,13 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import PropTypes from "prop-types"
 import cx from "clsx"
 
 import { initialState, isDigit, reconcile, slots } from "./reconcile"
+import useDigitShift from "./useDigitShift"
 import * as styles from "./SimpleNumber.module.scss"
 
 const DIGIT_SHIFT = 8
 const STAGGER = 0.02
-const SLIDE_DURATION = 250
-const SLIDE_EASING = "cubic-bezier(0.23, 1, 0.32, 1)"
 
 const shiftFor = (char, shift) => `${isDigit(char) ? shift : 0}px`
 
@@ -101,29 +100,8 @@ export default function SimpleNumber({
 
     const digitsRef = useRef(null)
     const droppedRef = useRef(null)
-    const { slide, dropped } = current
-
-    useLayoutEffect(() => {
-        const digits = digitsRef.current
-        if (!digits) return
-        if (!slide) {
-            digits.getAnimations().forEach((animation) => animation.cancel())
-            return
-        }
-
-        const host = digits.parentElement.parentElement
-        if (host && getComputedStyle(host).direction === "rtl") return
-
-        const offset = slide.added
-            ? -(digits.children[slide.added]?.offsetLeft ?? 0)
-            : (droppedRef.current?.offsetWidth ?? 0)
-        if (!offset) return
-
-        digits.animate(
-            [{ translate: `${offset}px 0` }, { translate: "0 0" }],
-            { duration: SLIDE_DURATION, easing: SLIDE_EASING }
-        )
-    }, [slide])
+    const { dropped } = current
+    useDigitShift(current, digitsRef, droppedRef)
 
     const all = slots(value)
     const prefixLength = all.findIndex(({ key }) => !key.startsWith("p"))
