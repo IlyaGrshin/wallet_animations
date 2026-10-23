@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import PropTypes from "prop-types"
-import { Calligraph } from "calligraph"
+import Calligraph from "../../../../../components/Calligraph"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import cx from "clsx"
