@@ -1,0 +1,37 @@
+.shade,
+.glare,
+.rim {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.shade {
+    z-index: -1;
+    box-shadow: inset 0 43px 22px -40px
+        rgb(
+            from var(--tg-theme-button-color) calc(r - 26) calc(g - 26)
+                calc(b - 26)
+        );
+}
+
+@supports (mix-blend-mode: plus-lighter) {
+    .glare {
+        mix-blend-mode: plus-lighter;
+        box-shadow:
+            inset 0 40px 10px -40px #282828,
+            inset 0 -40px 10px -40px #282828;
+    }
+
+    .rim {
+        box-shadow: inset 0 0 0 1px rgb(255 255 255);
+        filter: blur(0.5px);
+        mix-blend-mode: plus-lighter;
+        mask: linear-gradient(
+            rgb(0 0 0 / 40%),
+            rgb(0 0 0 / 0%) 50%,
+            rgb(0 0 0 / 40%)
+        );
+    }
+}
