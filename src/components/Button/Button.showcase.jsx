@@ -9,7 +9,9 @@ import { BackButton } from "../../lib/twa"
 import ArrowUpIcon from "../../icons/28/Arrow Up Circle Fill.svg?react"
 import PlusIcon from "../../icons/28/Plus Circle Fill.svg?react"
 
-// Each tap flips the state so the transition can be poked both ways.
+// Each tap flips the state so the transition can be poked both ways. A
+// loading button ignores taps and drops onClick, so the demo re-enables
+// pointer events and toggles on pointer up instead.
 const LoadingButton = () => {
     const [isLoading, setIsLoading] = useState(false)
 
@@ -18,8 +20,7 @@ const LoadingButton = () => {
             variant="filled"
             label="Tap to Load"
             isLoading={isLoading}
-            onClick={() => setIsLoading((value) => !value)}
-            // A loading button ignores taps; re-enable them for the demo only.
+            onPointerUp={() => setIsLoading((value) => !value)}
             style={{ pointerEvents: "auto" }}
         />
     )

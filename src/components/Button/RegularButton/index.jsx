@@ -23,8 +23,9 @@ import { useSkin } from "../../../hooks/DeviceProvider"
  * @param {boolean} [props.isFill] Stretch to fill the container width.
  * @param {boolean} [props.disabled] Drop press feedback and mark aria-disabled.
  * @param {boolean} [props.isLoading] Swap the label for a spinner and block
- * taps. Pass `false` (not omit) on buttons that toggle it, so the spinner is
- * mounted up front and can crossfade both ways.
+ * clicks (pointer, keyboard and assistive tech). Pass `false` (not omit) on
+ * buttons that toggle it, so the spinner is mounted up front and can
+ * crossfade both ways.
  * @example
  * <RegularButton variant="filled" label="Pay" onClick={onPay} isFill />
  */
@@ -35,6 +36,7 @@ export const RegularButton = ({
     isFill = false,
     disabled = false,
     isLoading,
+    onClick,
     ...props
 }) => {
     const { isApple } = useSkin()
@@ -48,7 +50,7 @@ export const RegularButton = ({
 
     const dynamicProps = {
         ...(isFill && { "data-fill": true }),
-        ...(disabled && { "aria-disabled": true }),
+        ...((disabled || loading) && { "aria-disabled": true }),
         ...(variant === "filled" &&
             isShine &&
             !skeleton && { "data-shine": true }),
@@ -71,7 +73,7 @@ export const RegularButton = ({
     // A disabled button keeps its <button> semantics (aria-disabled) but
     // loses the press feedback.
     const pressable = !skeleton && !disabled
-    const actionable = !skeleton && typeof props.onClick === "function"
+    const actionable = !skeleton && typeof onClick === "function"
     const isMotion = isApple || !pressable
     const MotionRoot = actionable ? m.button : m.div
     const Root = isMotion ? MotionRoot : Tappable
@@ -93,6 +95,9 @@ export const RegularButton = ({
             {...tapProps}
             {...dynamicProps}
             {...props}
+            // pointer-events only stops taps; Enter / Space and assistive-tech
+            // clicks still land here, so drop the handler while loading.
+            onClick={loading ? undefined : onClick}
         >
             {variant === "filled" && !skeleton && <GlassBorder />}
             {skeleton ? (
