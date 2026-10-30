@@ -50,6 +50,74 @@
         width: 100%;
     }
 
+    // The spinner rises from below and pushes the label out the top. Both
+    // move with the same distance and timing so they read as one strip; only
+    // the fade differs: the outgoing side fades out faster than the incoming
+    // one fades in, so the two never sit on top of each other at full strength.
+    // The label stays in the flow while hidden to keep the button's width.
+    --push-distance: 8px;
+    --push-ease: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --push-duration: 300ms;
+    --fade-in: 300ms;
+    --fade-out: 150ms;
+
+    // Each rule sets the transition for the state it moves *into*, so the
+    // fade timings apply in both directions. Durations follow the
+    // `transition` order: opacity, transform.
+    .label,
+    .loader {
+        transition:
+            opacity var(--fade-in) var(--push-ease),
+            transform var(--push-duration) var(--push-ease);
+    }
+
+    // A span (valid inside <button>), blockified so transform applies.
+    .label {
+        display: block;
+    }
+
+    .loader {
+        transition-duration: var(--fade-out), var(--push-duration);
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(var(--push-distance));
+        pointer-events: none;
+
+        // Spinner takes the button's text color instead of its own accent.
+        // Nested under .loader to outrank Spinner's own selectors. It keeps
+        // rotating while hidden so it doesn't freeze mid-exit.
+        .spinner {
+            color: currentcolor;
+        }
+    }
+
+    &[data-loading="true"] {
+        pointer-events: none;
+
+        .label {
+            transition-duration: var(--fade-out), var(--push-duration);
+            opacity: 0;
+            transform: translateY(calc(-1 * var(--push-distance)));
+        }
+
+        .loader {
+            transition-duration: var(--fade-in), var(--push-duration);
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .label,
+        .loader {
+            transition: none;
+        }
+    }
+
     // The blended, compositor-animated shine gets its own GPU surface, and
     // Blink/WebKit drop the rounded overflow clip for it — the gradient leaks
     // outside the pill (visible on dark backgrounds). clip-path re-applies

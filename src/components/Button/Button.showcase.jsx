@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import Page from "../Page"
 import SectionList from "../SectionList"
 import { RegularButton, MultilineButton } from "../Button"
@@ -6,6 +8,23 @@ import { BackButton } from "../../lib/twa"
 
 import ArrowUpIcon from "../../icons/28/Arrow Up Circle Fill.svg?react"
 import PlusIcon from "../../icons/28/Plus Circle Fill.svg?react"
+
+// Each tap flips the state so the transition can be poked both ways. A
+// loading button ignores taps and drops onClick, so the demo re-enables
+// pointer events and toggles on pointer up instead.
+const LoadingButton = () => {
+    const [isLoading, setIsLoading] = useState(false)
+
+    return (
+        <RegularButton
+            variant="filled"
+            label="Tap to Load"
+            isLoading={isLoading}
+            onPointerUp={() => setIsLoading((value) => !value)}
+            style={{ pointerEvents: "auto" }}
+        />
+    )
+}
 
 const ButtonShowcase = () => (
     <>
@@ -28,6 +47,12 @@ const ButtonShowcase = () => (
                             isShine
                         />
                         <RegularButton variant="outlined" label="Outlined" />
+                        <LoadingButton />
+                        <RegularButton
+                            variant="filled"
+                            label="Loading"
+                            isLoading
+                        />
                     </div>
                 </SectionList.Item>
 

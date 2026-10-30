@@ -5,6 +5,7 @@ import cx from "clsx"
 import { GlassBorder } from "../../GlassEffect"
 import Tappable from "../../Tappable"
 import Text from "../../Text"
+import Spinner from "../../Spinner"
 import Skeleton, {
     useSkeletonContext,
     useRedactionClassName,
@@ -21,6 +22,10 @@ import { useSkin } from "../../../hooks/DeviceProvider"
  * @param {boolean} [props.isShine] Sweep highlight; only affects `filled`.
  * @param {boolean} [props.isFill] Stretch to fill the container width.
  * @param {boolean} [props.disabled] Drop press feedback and mark aria-disabled.
+ * @param {boolean} [props.isLoading] Swap the label for a spinner and block
+ * clicks (pointer, keyboard and assistive tech). Pass `false` (not omit) on
+ * buttons that toggle it, so the spinner is mounted up front and can
+ * crossfade both ways.
  * @example
  * <RegularButton variant="filled" label="Pay" onClick={onPay} isFill />
  */
@@ -30,6 +35,8 @@ export const RegularButton = ({
     isShine = false,
     isFill = false,
     disabled = false,
+    isLoading,
+    onClick,
     ...props
 }) => {
     const { isApple } = useSkin()
@@ -38,28 +45,35 @@ export const RegularButton = ({
     const skeleton = Boolean(useSkeletonContext())
     const redactionClassName = useRedactionClassName(skeleton)
 
+    const hasLoader = isLoading !== undefined && !skeleton
+    const loading = hasLoader && isLoading
+
     const dynamicProps = {
         ...(isFill && { "data-fill": true }),
-        ...(disabled && { "aria-disabled": true }),
+        ...((disabled || loading) && { "aria-disabled": true }),
         ...(variant === "filled" &&
             isShine &&
             !skeleton && { "data-shine": true }),
+        ...(loading && { "data-loading": true, "aria-busy": true }),
     }
 
+    // The label stays in the flow while loading so the button keeps its width.
     const label_ = (
-        <Text
-            apple={{ variant: "body", weight: "semibold" }}
-            material={{ variant: "subheadline1", weight: "medium" }}
-        >
-            {label}
-        </Text>
+        <span className={styles.label}>
+            <Text
+                apple={{ variant: "body", weight: "semibold" }}
+                material={{ variant: "subheadline1", weight: "medium" }}
+            >
+                {label}
+            </Text>
+        </span>
     )
 
     // Press feedback matches the platform: an iOS scale, a Material ripple.
     // A disabled button keeps its <button> semantics (aria-disabled) but
     // loses the press feedback.
     const pressable = !skeleton && !disabled
-    const actionable = !skeleton && typeof props.onClick === "function"
+    const actionable = !skeleton && typeof onClick === "function"
     const isMotion = isApple || !pressable
     const MotionRoot = actionable ? m.button : m.div
     const Root = isMotion ? MotionRoot : Tappable
@@ -81,6 +95,9 @@ export const RegularButton = ({
             {...tapProps}
             {...dynamicProps}
             {...props}
+            // pointer-events only stops taps; Enter / Space and assistive-tech
+            // clicks still land here, so drop the handler while loading.
+            onClick={loading ? undefined : onClick}
         >
             {variant === "filled" && !skeleton && <GlassBorder />}
             {skeleton ? (
@@ -89,6 +106,11 @@ export const RegularButton = ({
                 <Skeleton active={false}>{label_}</Skeleton>
             ) : (
                 label_
+            )}
+            {hasLoader && (
+                <span className={styles.loader} aria-hidden={!loading}>
+                    <Spinner className={styles.spinner} isLinear />
+                </span>
             )}
         </Root>
     )
@@ -100,5 +122,6 @@ RegularButton.propTypes = {
     isShine: PropTypes.bool,
     isFill: PropTypes.bool,
     disabled: PropTypes.bool,
+    isLoading: PropTypes.bool,
     onClick: PropTypes.func,
 }

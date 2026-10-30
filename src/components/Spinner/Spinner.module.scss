@@ -11,7 +11,7 @@
     width: 24px;
     height: 24px;
 
-    :global(body.apple) & {
+    :global(body.apple) &:not(.linear) {
         animation-timing-function: steps(8);
 
         path {
@@ -19,7 +19,8 @@
         }
     }
 
-    :global(body.material) & {
+    :global(body.material) &,
+    &.linear {
         color: var(--tg-theme-accent-text-color);
     }
 }
@@ -28,7 +29,7 @@
     .spinner {
         animation: rotate 10s linear infinite;
 
-        :global(body.apple) & {
+        :global(body.apple) &:not(.linear) {
             animation-timing-function: steps(8);
         }
     }
