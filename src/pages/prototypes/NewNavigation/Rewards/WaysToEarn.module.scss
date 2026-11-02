@@ -1,0 +1,61 @@
+// How to Earn
+
+// 28px 3D icon on a 15% tint of its own colour.
+.wayIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: color-mix(in srgb, var(--tint) 15%, transparent);
+
+    img {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+.wayTitle,
+.wayRate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wayRate {
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+.reward,
+.was {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 2px;
+    white-space: nowrap;
+
+    // Figma sets the 16px glyph in 14px bounds, 1px over each side.
+    svg {
+        margin-inline: -1px;
+    }
+}
+
+// The rate gives way first on narrow screens: one line, then an ellipsis.
+.rateText {
+    min-width: 0;
+
+    > * {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.reward {
+    color: var(--tg-theme-accent-text-color);
+}
+
+.was {
+    text-decoration: line-through;
+}

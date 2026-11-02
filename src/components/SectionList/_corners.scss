@@ -1,0 +1,21 @@
+// SectionList's card corners for surfaces that sit beside its sections:
+// 26px (34px superellipse where supported) on iOS, 16px (21px) on Material.
+@mixin section-corners {
+    :global(body.apple) & {
+        border-radius: 26px;
+
+        @supports (corner-shape: superellipse(1.5)) {
+            border-radius: 34px;
+            corner-shape: superellipse(1.5);
+        }
+    }
+
+    :global(body.material) & {
+        border-radius: 16px;
+
+        @supports (corner-shape: superellipse(1.5)) {
+            border-radius: 21px;
+            corner-shape: superellipse(1.5);
+        }
+    }
+}

@@ -101,7 +101,13 @@ function NewNavigation() {
                             animateMount={key !== visited[0]}
                             onExited={() => markExited(key)}
                         >
-                            {prefix === "wallet" && <SearchHeader />}
+                            {prefix === "wallet" && (
+                                <SearchHeader
+                                    heroColor={
+                                        tabsConfig[prefix][index]?.heroColor
+                                    }
+                                />
+                            )}
                             {tabsConfig[prefix][index]?.view}
                         </TabLayer>
                     )

@@ -1,0 +1,51 @@
+@use "../mixins" as *;
+
+// Spend Your Points
+
+.gifts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.gift {
+    @include reset-button;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 16px;
+    background-color: var(--tg-theme-section-bg-color);
+    color: var(--tg-theme-text-color);
+    text-align: center;
+}
+
+// The box sits 12px down a 100px preview area.
+.giftImage {
+    width: 83px;
+    height: 83px;
+    margin: 12px 0 5px;
+}
+
+.giftBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px 12px;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 14px 4px 12px;
+    border-radius: 30px;
+    background-color: color-mix(
+        in srgb,
+        var(--tg-theme-accent-text-color) 10%,
+        transparent
+    );
+    color: var(--tg-theme-accent-text-color);
+}

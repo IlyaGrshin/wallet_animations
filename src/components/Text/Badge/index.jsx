@@ -7,6 +7,7 @@ const Badge = ({
     variant = "filled",
     circled = false,
     squared = false,
+    compact = false,
     style,
     className,
     apple,
@@ -17,6 +18,7 @@ const Badge = ({
     const dynamicProps = {
         ...(circled && { "data-circled": true }),
         ...(squared && { "data-squared": true }),
+        ...(compact && { "data-compact": true }),
     }
 
     const backgroundColor = style?.background || style?.backgroundColor || null
@@ -59,6 +61,8 @@ Badge.propTypes = {
     variant: PropTypes.oneOf(["filled", "tinted", "gray", "media", "outlined"]),
     circled: PropTypes.bool,
     squared: PropTypes.bool,
+    // Tight 16px caption tag: 2/4/1 padding, 6px corners.
+    compact: PropTypes.bool,
     apple: PropTypes.object,
     material: PropTypes.object,
     children: PropTypes.node,

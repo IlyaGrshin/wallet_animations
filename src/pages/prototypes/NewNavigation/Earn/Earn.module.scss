@@ -1,0 +1,125 @@
+@use "../mixins" as *;
+
+// Card surface beside the SectionList cards. No overflow clip: the ribbon's
+// ends fold past the edges, and Tappable rounds its own press layers.
+@mixin card {
+    @include reset-button;
+    @include section-corners;
+
+    position: relative;
+    background-color: var(--tg-theme-section-bg-color);
+    color: var(--tg-theme-text-color);
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 24px;
+}
+
+// Intro
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 28px 16px;
+    color: var(--tg-theme-text-color);
+    text-align: center;
+}
+
+// The drawing sits in a 100px sticker frame, 2px from its top.
+.sticker {
+    width: 67px;
+    height: 89px;
+    margin: 4px 0 17px;
+}
+
+.lead {
+    margin-top: 8px;
+}
+
+.link {
+    @include reset-button;
+
+    color: var(--tg-theme-link-color, var(--tg-theme-accent-text-color));
+}
+
+// Holdings
+
+.holdings {
+    @include card;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 16px;
+    padding: 14px 16px;
+    text-align: left;
+}
+
+.holdingsBody {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.total {
+    font-variant-numeric: tabular-nums;
+}
+
+.caption {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+// Green earnings pill: the confirm color over a 10% tint of itself.
+.earned {
+    padding: 1.5px 6px;
+    border-radius: 20px;
+    color: var(--text-confirm-color);
+    background-color: color-mix(in srgb, currentcolor 10%, transparent);
+}
+
+.period {
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+// The list chevron turned to point down: the card expands. Rotating keeps
+// the 7px-wide layout box under a 12px-wide glyph; the side margins widen the
+// box to match, so the glyph sits exactly 16px from the card edge.
+.expand {
+    flex-shrink: 0;
+    margin-inline: 2.5px;
+    transform: rotate(90deg);
+}
+
+// Products
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 16px;
+}
+
+.card {
+    @include card;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 16px;
+    text-align: center;
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}

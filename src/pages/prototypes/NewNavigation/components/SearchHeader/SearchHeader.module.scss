@@ -1,40 +1,17 @@
+// Layout-transparent: PanelHeader's own sticky pin has to sit in the tab
+// scroller's flow, and the hero variables below still cascade to it.
 .root {
-    position: sticky;
-    top: 0;
-    z-index: 20;
+    display: contents;
+}
 
-    &::before {
-        content: "";
-        position: absolute;
-        inset: 0 0 -16px;
-        z-index: -1;
+// Over a hero: a white glass search field and white glyphs. The pinned bar's
+// scroll fade takes the hero colour from the inline --page-background.
+.overHero {
+    --tertiary-fill-background: rgb(255 255 255 / 20%);
+    --tg-theme-text-color: #fff;
+    --tg-theme-subtitle-text-color: rgb(255 255 255 / 72%);
 
-        --fade-color: var(
-            --page-background,
-            var(--tg-theme-secondary-bg-color)
-        );
-
-        background: linear-gradient(
-            to bottom,
-            var(--fade-color),
-            rgb(from var(--fade-color) r g b / 0%)
-        );
-        opacity: 0;
-        transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-        pointer-events: none;
-    }
-
-    :global(body.material) &::before {
-        inset: 0;
-        background: rgb(from var(--fade-color) r g b / 80%);
-        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 8%);
-    }
-
-    &.scrolled::before {
-        opacity: 1;
-    }
-
-    :global(body.material) &.scrolled::before {
-        backdrop-filter: blur(10px);
+    input {
+        caret-color: #fff;
     }
 }

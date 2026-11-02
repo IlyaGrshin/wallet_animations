@@ -1,0 +1,97 @@
+@use "../mixins" as *;
+
+// Squad challenge card
+
+.qualify {
+    @include section-corners;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin: 0 16px;
+    padding: 16px 18px;
+    background-color: var(--tg-theme-section-bg-color);
+    color: var(--tg-theme-text-color);
+}
+
+.qualifyBody {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-self: stretch;
+}
+
+.endsIn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--tg-theme-accent-text-color);
+}
+
+.qualifyText {
+    display: block;
+}
+
+.inlineLink {
+    @include reset-button;
+
+    display: inline;
+    color: var(--tg-theme-link-color, var(--tg-theme-accent-text-color));
+}
+
+.progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    height: 30px;
+    padding-right: 10px;
+    border-radius: 100px;
+    background-color: rgb(116 116 128 / 8%);
+}
+
+.progressFill,
+.progressGoal {
+    display: flex;
+    align-items: center;
+}
+
+// The squad's points so far: a 56px minimum pill even at zero.
+.progressFill {
+    gap: 4px;
+    min-width: 56px;
+    height: 100%;
+    padding: 0 10px;
+    border-radius: 100px;
+    background-color: var(--tg-theme-accent-text-color);
+    color: #fff;
+}
+
+.progressGoal {
+    gap: 2px;
+    color: var(--tg-theme-section-header-text-color, #6d6d72);
+}
+
+.leaderboard {
+    @include reset-button;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+// Overlapping faces, each ringed in the card colour.
+.members {
+    display: flex;
+}
+
+.member {
+    box-sizing: border-box;
+    border: 1.5px solid var(--tg-theme-section-bg-color);
+
+    & + & {
+        margin-left: -4px;
+    }
+}

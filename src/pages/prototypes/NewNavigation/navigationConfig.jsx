@@ -3,6 +3,8 @@ import Wallet from "../Wallet"
 import TONWallet from "../TS"
 import Trading from "../Trading"
 import History from "./History"
+import Earn from "./Earn"
+import Rewards, { HERO_COLOR } from "./Rewards"
 
 import WalletIcon from "../../../icons/tabbar/Wallet.svg?react"
 import TradeIcon from "../../../icons/tabbar/Chartline.svg?react"
@@ -26,13 +28,15 @@ export const getTabsConfig = (onOpenTonWallet) => ({
         },
         {
             label: "Earn",
-            view: <Trading />,
+            view: <Earn />,
             lottieIcon: "bag",
             activeSegment: [0, 45],
         },
         {
             label: "Rewards",
-            view: <History />,
+            view: <Rewards />,
+            // Opens on a blue hero: the search bar starts in its overlay look.
+            heroColor: HERO_COLOR,
             lottieIcon: "reward",
             activeSegment: [0, 24],
         },
