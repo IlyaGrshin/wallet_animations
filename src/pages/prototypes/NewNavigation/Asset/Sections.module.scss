@@ -1,0 +1,141 @@
+@use "../mixins" as *;
+
+.up {
+    color: var(--text-confirm-color);
+}
+
+.down {
+    color: var(--tg-theme-destructive-text-color);
+}
+
+.hint {
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+// Portfolio / Balance
+
+.summary {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 14px 16px;
+    border-bottom: 0.33px solid var(--tg-theme-section-separator-color);
+    color: var(--tg-theme-text-color);
+
+    &:last-child {
+        border-bottom: 0;
+    }
+}
+
+.total {
+    font-variant-numeric: tabular-nums lining-nums;
+}
+
+.summaryChange {
+    min-height: 22px;
+}
+
+.titleRow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.apy {
+    display: inline-flex;
+}
+
+// 40pt circles behind white row glyphs.
+.glyph {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #fff;
+}
+
+.earnGlyph {
+    background-color: #2fb250;
+}
+
+.cardGlyph {
+    background: linear-gradient(to bottom, #0df, #0183ff);
+}
+
+.webGlyph {
+    background: linear-gradient(to bottom, #a8adb7, #8e939d);
+}
+
+.received {
+    --tg-theme-text-color: var(--text-confirm-color);
+    --tg-theme-subtitle-text-color: var(--text-confirm-color);
+}
+
+// About
+
+.about {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 0;
+    color: var(--tg-theme-text-color);
+}
+
+.aboutText {
+    position: relative;
+    padding: 6px 16px;
+    text-wrap: pretty;
+}
+
+// Four lines, the last one ending in a "More" link over a fade.
+.clamped > :first-child {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+}
+
+.more {
+    @include reset-button;
+
+    position: absolute;
+    right: 16px;
+    bottom: 6px;
+    padding: 0 0 0 48px;
+    color: var(--tg-theme-link-color, var(--tg-theme-accent-text-color));
+    background: linear-gradient(
+        to right,
+        rgb(from var(--tg-theme-section-bg-color) r g b / 0%),
+        var(--tg-theme-section-bg-color) 40px
+    );
+    cursor: pointer;
+}
+
+.bullet {
+    display: flex;
+    gap: 12px;
+    padding: 8px 16px;
+    text-wrap: pretty;
+}
+
+// 6px accent dot centred on the first line (20px line height).
+.dot {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    margin: 7px 3px 0;
+    border-radius: 50%;
+    background-color: var(--tg-theme-accent-text-color);
+}
+
+// Overview
+
+.figure {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums lining-nums;
+}

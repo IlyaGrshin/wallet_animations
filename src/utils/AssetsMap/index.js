@@ -10,6 +10,8 @@ import GramLogo from "../../icons/avatars/Gram.svg"
 import EthereumLogo from "../../icons/avatars/Ethereum.png"
 import DogsLogo from "../../icons/avatars/DOGS.svg"
 import TacLogo from "../../icons/avatars/TAC.png"
+import NvidiaLogo from "../../icons/avatars/Nvidia.svg"
+import XrpLogo from "../../icons/avatars/XRP.svg"
 
 const AssetsMap = {
     USDT: DollarsLogo,
@@ -24,6 +26,8 @@ const AssetsMap = {
     ETH: EthereumLogo,
     DOGS: DogsLogo,
     TAC: TacLogo,
+    NVDAX: NvidiaLogo,
+    XRP: XrpLogo,
 }
 
 // Not a React hook; rename to avoid rules-of-hooks false positives

@@ -1,0 +1,108 @@
+@use "../mixins" as *;
+
+// Deposit Dollars card
+
+.deposit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 0;
+    color: var(--tg-theme-text-color);
+}
+
+// 40pt marks overlapping by 4pt, each ringed in the card colour.
+.providers {
+    display: flex;
+
+    > * {
+        width: 40px;
+        height: 40px;
+        margin-right: -4px;
+        border: 2px solid var(--tg-theme-section-bg-color);
+        border-radius: 50%;
+        box-sizing: border-box;
+    }
+
+    > :first-child {
+        border: 0;
+    }
+
+    > :last-child {
+        margin-right: 0;
+    }
+}
+
+.cardProvider,
+.revolut {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardProvider {
+    color: #fff;
+    background-color: var(--tg-theme-button-color);
+
+    svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    svg path {
+        fill: currentcolor;
+    }
+}
+
+.provider {
+    object-fit: cover;
+}
+
+.revolut {
+    background-color: #fff;
+    border-color: var(--tg-theme-section-separator-color);
+
+    img {
+        width: 17px;
+        height: 21px;
+    }
+}
+
+.depositBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 28px;
+    text-align: center;
+    text-wrap: pretty;
+}
+
+.link {
+    @include reset-button;
+
+    color: var(--tg-theme-link-color, var(--tg-theme-accent-text-color));
+    cursor: pointer;
+}
+
+// What are Dollars?
+
+.facts {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    color: var(--tg-theme-text-color);
+}
+
+.fact {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 6px 20px;
+}
+
+.factIcon {
+    display: flex;
+    flex-shrink: 0;
+    color: var(--tg-theme-subtitle-text-color);
+}

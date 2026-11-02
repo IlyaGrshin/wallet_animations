@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import PropTypes from "prop-types"
+import cx from "clsx"
 import { createPortal } from "react-dom"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
@@ -13,13 +14,15 @@ import {
     useDropdownPosition,
 } from "./dropdownUtils"
 
-import MenuItem from "./MenuItem"
+import MenuItem, { itemShape } from "./MenuItem"
 import * as styles from "./DropdownMenu.module.scss"
 
 /**
  * Portal-rendered menu with keyboard nav (arrows / Enter / Esc) and edge-aware
  * placement. Without `trigger` it renders the selected item as the button.
- * @param {string[]} props.items Menu options (required, non-empty).
+ * @param {Array<string|{label: string, icon?: import("react").ReactNode, separator?: boolean}>} props.items
+ * Options to pick (strings) or actions with a trailing glyph (objects;
+ * `separator` opens a new group). Required, non-empty.
  * @param {import("react").ReactNode | ((ariaProps: object) => import("react").ReactNode)} [props.trigger]
  * Custom trigger; defaults to the selected item. Pass a function when the
  * trigger is itself a button — it gets the aria props and keeps the button
@@ -27,6 +30,7 @@ import * as styles from "./DropdownMenu.module.scss"
  * @param {(item: string) => void} [props.onChange] Fires with the picked item.
  * @example
  * <DropdownMenu items={["Newest", "Oldest", "Popular"]} trigger={<SortIcon />} />
+ * <DropdownMenu items={[{ label: "Withdraw", icon: <ArrowUp /> }]} trigger={more} />
  */
 const DropdownMenu = ({ items, trigger, onChange }) => {
     const { isApple } = useSkin()
@@ -140,6 +144,10 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
     }
 
     const isCustomTrigger = typeof trigger === "function"
+    const menuClassName = cx(
+        styles.root,
+        items.some((item) => item.icon) && styles.withIcons
+    )
     const triggerProps = {
         "aria-haspopup": "menu",
         "aria-expanded": isOpen,
@@ -156,14 +164,16 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                     ? {}
                     : { role: "button", tabIndex: 0, ...triggerProps })}
             >
-                {isCustomTrigger ? trigger(triggerProps) : trigger ?? selectedItem}
+                {isCustomTrigger
+                    ? trigger(triggerProps)
+                    : (trigger ?? selectedItem)}
             </div>
             {createPortal(
                 <>
                     {isOpen && !isPositioned && (
                         <div
                             ref={dropdownRef}
-                            className={styles.root}
+                            className={menuClassName}
                             style={{
                                 position: "fixed",
                                 top: position.top,
@@ -187,7 +197,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
                             <m.div
                                 ref={animatedDropdownRef}
                                 role="menu"
-                                className={styles.root}
+                                className={menuClassName}
                                 initial="hidden"
                                 animate="visible"
                                 exit="exit"
@@ -227,7 +237,7 @@ const DropdownMenu = ({ items, trigger, onChange }) => {
 }
 
 DropdownMenu.propTypes = {
-    items: PropTypes.arrayOf(PropTypes.string).isRequired,
+    items: PropTypes.arrayOf(itemShape).isRequired,
     trigger: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
     onChange: PropTypes.func,
 }

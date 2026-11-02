@@ -12,9 +12,10 @@ import {
     formatUsd,
 } from "../../../../../utils/number"
 
-export default function AssetCell({ asset }) {
+export default function AssetCell({ asset, onOpen }) {
     return (
         <Cell
+            onClick={onOpen ? () => onOpen(asset.ticker) : undefined}
             start={
                 <ImageAvatar
                     src={getAssetIcon(asset.ticker)}
@@ -59,4 +60,5 @@ AssetCell.propTypes = {
         value: PropTypes.string.isRequired,
         rate: PropTypes.string.isRequired,
     }).isRequired,
+    onOpen: PropTypes.func,
 }
