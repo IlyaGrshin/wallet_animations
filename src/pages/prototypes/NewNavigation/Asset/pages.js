@@ -121,26 +121,38 @@ export function overviewRows(stats) {
     return stats ? rows.filter((row) => row.value) : rows
 }
 
-const host = (url) => new URL(url).hostname.replace(/^www\./, "")
+// Only web links leave the page: a third-party profile could carry a
+// `javascript:` (or other) scheme that the link opener would run.
+export const safeWebUrl = (value) => {
+    try {
+        const url = new URL(value)
+        return url.protocol === "https:" || url.protocol === "http:"
+            ? url
+            : null
+    } catch {
+        return null
+    }
+}
 
 // Links from a CoinGecko profile: the Telegram channel, the site, X.
 export function profileLinks(page, profile) {
     if (!profile) return null
     const links = []
+    const homepage = profile.homepage && safeWebUrl(profile.homepage)
     if (profile.telegram) {
         links.push({
             title: `${page.name} in Telegram`,
             subtitle: `@${profile.telegram}`,
             icon: page.icon,
-            url: `https://t.me/${profile.telegram}`,
+            url: `https://t.me/${encodeURIComponent(profile.telegram)}`,
         })
     }
-    if (profile.homepage) {
+    if (homepage) {
         links.push({
-            title: host(profile.homepage),
+            title: homepage.hostname.replace(/^www\./, ""),
             subtitle: "website",
             glyph: "@",
-            url: profile.homepage,
+            url: homepage.href,
         })
     }
     if (profile.twitter) {
@@ -148,7 +160,7 @@ export function profileLinks(page, profile) {
             title: "X",
             subtitle: `@${profile.twitter}`,
             glyph: "X",
-            url: `https://x.com/${profile.twitter}`,
+            url: `https://x.com/${encodeURIComponent(profile.twitter)}`,
         })
     }
     return links.length ? links : null

@@ -9,6 +9,7 @@ import Text from "../../../../components/Text"
 import Tappable from "../../../../components/Tappable"
 import ImageAvatar from "../../../../components/ImageAvatar"
 import { Delta } from "./Badges"
+import { safeWebUrl } from "./pages"
 
 import * as styles from "./Sections.module.scss"
 
@@ -25,10 +26,12 @@ const explain = (title, message) => {
     }
 }
 
-const openLink = (url) => {
-    if (!isTelegram()) window.open(url, "_blank", "noopener")
-    else if (url.startsWith("https://t.me/")) WebApp.openTelegramLink(url)
-    else WebApp.openLink(url)
+const openLink = (value) => {
+    const url = safeWebUrl(value)
+    if (!url) return
+    if (!isTelegram()) window.open(url.href, "_blank", "noopener")
+    else if (url.hostname === "t.me") WebApp.openTelegramLink(url.href)
+    else WebApp.openLink(url.href)
 }
 
 export function About({ about }) {
