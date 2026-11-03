@@ -64,6 +64,34 @@ body.material {
     --toast-link: #85CAFF;
 }
 
+/* The light-theme toast fill sits at section level on dark backgrounds, so dark
+   themes lift it. Body-level rules: body.material outranks inherited :root vars. */
+@media (prefers-color-scheme: dark) {
+    body {
+        --toast-background: rgb(84 84 88 / 0.8);
+    }
+
+    body.material {
+        --toast-background: rgb(60 70 82 / 0.96);
+    }
+}
+
+body[data-color-scheme="light"] {
+    --toast-background: rgb(45 45 45 / 0.8);
+}
+
+body.material[data-color-scheme="light"] {
+    --toast-background: rgb(40 48 57 / 0.92);
+}
+
+body[data-color-scheme="dark"] {
+    --toast-background: rgb(84 84 88 / 0.8);
+}
+
+body.material[data-color-scheme="dark"] {
+    --toast-background: rgb(60 70 82 / 0.96);
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --tg-theme-bg-color: #000000;
