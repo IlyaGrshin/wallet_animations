@@ -8,9 +8,8 @@
     border-radius: inherit;
     pointer-events: none;
     background: var(--glass-tint-background);
-    backdrop-filter: blur(8px);
+    backdrop-filter: var(--glass-surface-filter);
     z-index: 0;
-    will-change: transform;
     transform: translateZ(0);
     backface-visibility: hidden;
 
@@ -26,7 +25,5 @@
     border-radius: inherit;
     pointer-events: none;
     z-index: 1;
-    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
-    will-change: transform;
-    transform: translateZ(0);
+    box-shadow: var(--glass-surface-shadow), var(--glass-surface-contour);
 }
