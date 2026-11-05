@@ -74,10 +74,13 @@ const Tappable = ({
         >
             {children}
             {isApple && !isOpacity && (
-                <div className={cx(styles.fade, ...tappedClassNames)} />
+                <div
+                    data-tap-feedback=""
+                    className={cx(styles.fade, ...tappedClassNames)}
+                />
             )}
             {isMaterial && (
-                <div className={styles.ripples}>
+                <div data-tap-feedback="" className={styles.ripples}>
                     {Object.entries(ripples).map(([id, value]) => (
                         <span
                             key={id}

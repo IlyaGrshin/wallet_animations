@@ -8,7 +8,10 @@ import { Image } from "../Image"
 import * as styles from "./ImageAvatar.module.scss"
 
 const ImageAvatar = forwardRef(
-    ({ size, className, style, src, shape = "circle", fallback }, ref) => {
+    (
+        { size, className, style, src, shape = "circle", fallback, ...props },
+        ref
+    ) => {
         const { isMaterial } = useSkin()
         const redacted = Boolean(useSkeletonContext())
         const redactionClassName = useRedactionClassName(redacted)
@@ -19,6 +22,7 @@ const ImageAvatar = forwardRef(
 
         return (
             <div
+                {...props}
                 ref={(node) => {
                     if (redacted) waveRef(node)
                     if (typeof ref === "function") {

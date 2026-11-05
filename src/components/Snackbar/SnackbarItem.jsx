@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { useReducedMotion } from "motion/react"
-import WebApp from "../../lib/twa"
 import { SPRING } from "../../utils/animations"
 import Snackbar, { triggerShape } from "./Snackbar"
 import * as styles from "./Snackbar.module.scss"
@@ -11,15 +10,6 @@ const DEFAULT_DURATION = 4000
 const SWIPE_OFFSET_THRESHOLD = 100
 const SWIPE_VELOCITY_THRESHOLD = 500
 const TYPES = ["success", "error", "warning"]
-
-export const triggerHaptic = (type) => {
-    if (!type) return
-    try {
-        WebApp.HapticFeedback?.notificationOccurred(type)
-    } catch {
-        // older clients may not support HapticFeedback
-    }
-}
 
 const SnackbarItem = ({ item, onDismiss }) => {
     const {

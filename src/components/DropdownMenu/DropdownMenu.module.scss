@@ -35,6 +35,36 @@
                 background-color: var(--highlight-default);
             }
         }
+
+        &.withIcon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        &.destructive {
+            color: var(--tg-theme-destructive-text-color);
+        }
+
+        // Under the finger during a context menu's drag-to-select.
+        &[data-highlighted] {
+            background-color: var(--highlight-default);
+        }
+    }
+
+    .itemIcon {
+        display: flex;
+        flex-shrink: 0;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        path[fill] {
+            fill: currentcolor;
+        }
     }
 
     :global(body.material) & {
@@ -63,6 +93,18 @@
         @supports (-apple-visual-effect: -apple-system-glass-material) {
             -apple-visual-effect: -apple-system-glass-material;
             backdrop-filter: none;
+        }
+
+        // Over a dim overlay the glass greys out; a near-opaque tint keeps
+        // the menu light. Declared after the glass rule so it wins.
+        &.opaque {
+            background: color-mix(
+                in srgb,
+                var(--tg-theme-section-bg-color) 92%,
+                transparent
+            );
+            backdrop-filter: blur(12px);
+            -apple-visual-effect: none;
         }
 
         .item {
