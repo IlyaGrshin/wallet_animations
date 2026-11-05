@@ -1,0 +1,158 @@
+@use "../mixins" as *;
+
+// Figma "Card / Body": full-bleed section surface under the Telegram header,
+// 20px gutters; the vertical rhythm follows the frame's absolute offsets.
+.root {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 20px 16px;
+    background-color: var(--tg-theme-section-bg-color);
+    color: var(--tg-theme-text-color);
+}
+
+.top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.name {
+    margin-top: 8px;
+}
+
+.caption {
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+.price {
+    margin-top: 1px;
+    font-variant-numeric: tabular-nums lining-nums;
+}
+
+.change {
+    min-height: 24px;
+    margin-top: 3px;
+}
+
+.up {
+    color: var(--text-confirm-color);
+}
+
+.down {
+    color: var(--tg-theme-destructive-text-color);
+}
+
+.chart {
+    margin-top: 14px;
+}
+
+// Figures of a series that is being replaced: greyed until the next lands.
+.readout {
+    display: flex;
+    flex-direction: column;
+    transition: color 0.2s ease;
+
+    .up,
+    .down {
+        transition: color 0.2s ease;
+    }
+}
+
+.pending {
+    color: var(--tg-theme-hint-color);
+
+    .up,
+    .down {
+        color: var(--tg-theme-hint-color);
+    }
+}
+
+// Periods and the candles toggle: 36pt tall, 8pt apart.
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.periods {
+    flex: 1;
+    min-width: 0;
+}
+
+// The segmented control's track with a single thumb: on, the white knob
+// carries the colour candles; off, they sit grey on the bare track.
+.candlesToggle {
+    @include reset-button;
+
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--quaternary-fill-background);
+    cursor: pointer;
+}
+
+.knob {
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background-color: var(--segmented_control_active_background);
+    box-shadow: 0 2px 20px 0 rgb(0 0 0 / 6%);
+    opacity: 0;
+    transform: scale(0.8);
+    transition:
+        opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+        transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+
+    @media (prefers-reduced-motion: reduce) {
+        transform: none;
+    }
+}
+
+.candlesIcon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+
+    path {
+        fill: var(--tg-theme-hint-color);
+        transition: fill 0.2s ease;
+    }
+}
+
+.on {
+    .knob {
+        opacity: 1;
+        transform: none;
+    }
+
+    .candlesIcon :global(.up) {
+        fill: var(--text-confirm-color);
+    }
+
+    .candlesIcon :global(.down) {
+        fill: var(--tg-theme-destructive-text-color);
+    }
+}
+
+// "This asset is a tokenized stock ›" under the range picker.
+.note {
+    @include reset-button;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25em;
+    margin: 16px -20px -2px;
+    color: var(--tg-theme-subtitle-text-color);
+}
+
+.link {
+    color: var(--tg-theme-link-color, var(--tg-theme-accent-text-color));
+}

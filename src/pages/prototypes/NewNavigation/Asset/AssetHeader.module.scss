@@ -1,0 +1,31 @@
+// Layout-transparent: PanelHeader's sticky pin has to sit in the page
+// scroller's flow, while the variables below still cascade to it.
+.root {
+    display: contents;
+}
+
+// Hero pages are card-coloured up top: the pinned fade matches the card.
+.overCard {
+    --page-background: var(--tg-theme-section-bg-color);
+}
+
+// The name slides up into place as the hero's own title leaves.
+.title {
+    display: block;
+    color: var(--tg-theme-text-color);
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+        opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1),
+        transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+
+    &.shown {
+        opacity: 1;
+        transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transform: none;
+        transition: opacity 0.2s ease;
+    }
+}

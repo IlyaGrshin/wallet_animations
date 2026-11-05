@@ -59,6 +59,15 @@
         border: 0.5px solid var(--tg-theme-section-separator-color);
     }
 
+    // Compact — tight 16px caption tag, on both platforms
+    &[data-compact="true"] {
+        :global(body.apple) &,
+        :global(body.material) & {
+            padding: 2px 4px 1px;
+            border-radius: 6px;
+        }
+    }
+
     // Circled — переопределяет padding и border-radius
     &[data-circled="true"] {
         :global(body.apple) & {

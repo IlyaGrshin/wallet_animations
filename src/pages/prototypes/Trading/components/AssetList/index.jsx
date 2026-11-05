@@ -62,8 +62,13 @@ Delta.propTypes = {
 // skeleton reveals in place when data lands), so on a rank reorder the same
 // row hosts another coin — remount the digits instead of morphing one
 // coin's price into another's.
-const AssetRow = ({ asset }) => (
+const AssetRow = ({ asset, onOpen }) => (
     <Cell
+        onClick={
+            onOpen && asset.quoteSymbol
+                ? () => onOpen(asset.symbol.toUpperCase())
+                : undefined
+        }
         start={<ImageAvatar src={assetIcon(asset)} />}
         end={
             <Cell.Text
@@ -100,10 +105,12 @@ AssetRow.propTypes = {
         current_price: PropTypes.number,
         price_change_percentage_24h: PropTypes.number,
         pct: PropTypes.number,
+        quoteSymbol: PropTypes.string,
     }).isRequired,
+    onOpen: PropTypes.func,
 }
 
-const AssetList = () => {
+const AssetList = ({ onOpen }) => {
     const { assets, error } = useAssets()
     const loading = !assets && !error
     const rows = assets ?? PLACEHOLDER_ASSETS
@@ -141,13 +148,21 @@ const AssetList = () => {
                                 transform: `translateY(${item.start - listOffset}px)`,
                             }}
                         >
-                            <AssetRow asset={rows[item.index]} />
+                            <AssetRow
+                                asset={rows[item.index]}
+                                onOpen={onOpen}
+                            />
                         </div>
                     ))}
                 </div>
             </Skeleton>
         </SectionList.Item>
     )
+}
+
+AssetList.propTypes = {
+    // Opens a live row's asset page by ticker.
+    onOpen: PropTypes.func,
 }
 
 export default AssetList

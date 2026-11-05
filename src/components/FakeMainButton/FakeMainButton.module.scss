@@ -1,0 +1,88 @@
+// Figma "Fake Main Button": 8px 26px body, 10px between buttons, a 21px home
+// indicator strip and a scroll-edge fade that starts 16px above the bar.
+.root {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    margin-top: auto;
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 21px);
+    isolation: isolate;
+}
+
+.edge {
+    position: absolute;
+    inset: -16px 0 0;
+    z-index: -1;
+    background: linear-gradient(
+        to bottom,
+        rgb(
+            from var(--page-background, var(--tg-theme-secondary-bg-color)) r g
+                b / 0%
+        ),
+        var(--page-background, var(--tg-theme-secondary-bg-color)) 45%
+    );
+    pointer-events: none;
+}
+
+.body {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 26px;
+
+    :global(body.material) & {
+        padding: 8px 16px;
+    }
+}
+
+.actions {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    min-width: 0;
+
+    > * {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+// 50pt glass circle, the height of the buttons beside it. Glass sits on the
+// pressed element itself so Safari keeps the blur through the tap scale.
+.more {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    color: var(--tg-theme-text-color);
+    background: var(--glass-tint-background);
+    box-shadow: 0 0 5px 0 rgb(0 0 0 / 10%);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    @supports (-apple-visual-effect: -apple-system-glass-material) {
+        -apple-visual-effect: -apple-system-glass-material;
+        backdrop-filter: none;
+    }
+
+    svg path {
+        fill: currentcolor;
+    }
+
+    :global(body.material) & {
+        width: 48px;
+        height: 48px;
+        color: var(--tg-theme-accent-text-color);
+        background: var(--secondary-button-color);
+        box-shadow: none;
+        backdrop-filter: none;
+    }
+}
