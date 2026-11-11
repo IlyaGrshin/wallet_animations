@@ -12,6 +12,7 @@ $swap-duration: 0.2s;
     padding: 0;
     border: 0;
     border-radius: 22px;
+    background: none;
     font: inherit;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
@@ -24,35 +25,26 @@ $swap-duration: 0.2s;
     :global(body.material) & {
         background: none;
         box-shadow: none;
-        backdrop-filter: none;
-        -apple-visual-effect: none;
     }
 }
 
-// Glass lives on the element itself (see HeaderButton.js) so the tap scale
-// doesn't drop the backdrop-filter in Safari.
 .regular {
-    background: var(--glass-tint-background);
-    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
-    color: var(--tg-theme-text-color);
-    backdrop-filter: blur(8px);
+    --glass-tint-background: var(--glass-tint-raised);
 
-    @supports (-apple-visual-effect: -apple-system-glass-material) {
-        -apple-visual-effect: -apple-system-glass-material;
-        backdrop-filter: none;
-    }
+    color: var(--tg-theme-text-color);
 
     :global(body.material) & {
         color: var(--tg-theme-subtitle-text-color);
     }
 }
 
-// Translucent glass for sitting over content; white glyph.
+// Over content: the button forces the dark palette on itself (HeaderButton.js)
+// rather than picking a colour of its own.
 .overlay {
-    background: rgb(from var(--tg-theme-section-bg-color) r g b / 10%);
-    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+    --glass-surface-filter: blur(20px);
+    --glass-glare-color: transparent;
+
     color: var(--tg-theme-button-text-color);
-    backdrop-filter: blur(20px);
 }
 
 .secondary {

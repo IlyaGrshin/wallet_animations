@@ -123,6 +123,7 @@ const Tabs = ({
         return (
             <div
                 className={cx(styles.glassRoot, hug && styles.hug, className)}
+                data-glass-isolated=""
                 {...props}
             >
                 <GlassContainer />

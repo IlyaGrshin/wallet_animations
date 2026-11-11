@@ -184,9 +184,11 @@ const PanelHeader = ({
             </>
         )
 
+    // The pinned z-index forms a stacking context that isolates glass blends.
     const pinnedBar = (
         <div
             ref={stickyRef}
+            data-glass-isolated=""
             className={cx(
                 pinStyles[pin],
                 pinStyles[edge],
