@@ -263,7 +263,8 @@ const config = [
                 component: lazyWithPreload(
                     () => import("./prototypes/NewNavigation")
                 ),
-                routeSuffix: "/:rest*?",
+                // Any depth: asset pages live at /asset/:id.
+                routeSuffix: "/*?",
             },
             {
                 title: "Color Asset Page",

@@ -1,0 +1,30 @@
+// An 81.5x20 band rotated 45deg inside a 72px box hanging 17px off the right
+// edge and 16px above the top (Figma Walt 2030).
+.root {
+    position: absolute;
+    top: -16px;
+    right: -17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    pointer-events: none;
+
+    img,
+    .label {
+        position: absolute;
+        transform: rotate(45deg);
+    }
+
+    img {
+        width: 76px;
+        height: 20px;
+    }
+}
+
+// Color on the wrapper: Text's [variant] rule would beat a class on Text.
+.label {
+    color: #fff;
+    letter-spacing: 0.5px;
+}

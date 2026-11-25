@@ -12,6 +12,7 @@ import {
 import useAssets from "../../../../../hooks/useAssets"
 
 import { squarify } from "./treemap"
+import labelEm from "./labelEm"
 
 import * as styles from "./AssetHeatmap.module.scss"
 
@@ -38,24 +39,6 @@ const LINE_EM = 1.1 // pinned in the stylesheet
 const GAP_EM = 0.2 // the 2px labels gap, at typical tile type size
 const CHANGE_SCALE = 0.85 // percent line, relative to the ticker (see SCSS)
 const SOLO_AREA_K = 0.34
-
-// Canvas-measured glyph widths in em, cached per unique label — exact with
-// zero layout involvement. 600 covers both skins: material's medium only
-// renders narrower.
-const measureCtx = document.createElement("canvas").getContext("2d")
-const emWidths = new Map()
-const EM_WIDTHS_LIMIT = 500
-const labelEm = (text, weight) => {
-    const key = `${weight} ${text}`
-    let em = emWidths.get(key)
-    if (em === undefined) {
-        if (emWidths.size >= EM_WIDTHS_LIMIT) emWidths.clear()
-        measureCtx.font = `${weight} 100px system-ui, -apple-system, sans-serif`
-        em = measureCtx.measureText(text).width / 100
-        emWidths.set(key, em)
-    }
-    return em
-}
 
 // Stables sit at ~0% yet dominate turnover (USDT is the biggest volume) —
 // meaningless near-flat tiles; the screener already tags them.
@@ -118,7 +101,7 @@ const toneClass = (change) => {
 // Scalar props: the store publishes a fresh snapshot every flush, so object
 // props would defeat the React Compiler cache — with scalars only tiles
 // whose change actually moved re-render.
-const HeatmapTile = ({ symbol, change, x, y, w, h }) => {
+const HeatmapTile = ({ symbol, change, x, y, w, h, onOpen }) => {
     const showChange = h >= MIN_CHANGE_HEIGHT && w >= MIN_CHANGE_WIDTH
     const label = formatChange(change)
     const hCq = h / MAP_ASPECT // height % -> cqw units
@@ -135,6 +118,7 @@ const HeatmapTile = ({ symbol, change, x, y, w, h }) => {
 
     return (
         <Tappable
+            onClick={onOpen ? () => onOpen(symbol) : undefined}
             className={cx(styles.tile, toneClass(change))}
             style={{
                 position: "absolute",
@@ -174,6 +158,7 @@ HeatmapTile.propTypes = {
     y: PropTypes.number.isRequired,
     w: PropTypes.number.isRequired,
     h: PropTypes.number.isRequired,
+    onOpen: PropTypes.func,
 }
 
 const SkeletonTile = ({ x, y, w, h }) => {
@@ -200,7 +185,7 @@ SkeletonTile.propTypes = {
     h: PropTypes.number.isRequired,
 }
 
-const AssetHeatmap = () => {
+const AssetHeatmap = ({ onOpen }) => {
     const { assets, updatedAt, error } = useAssets()
     const loading = !assets && !error
 
@@ -235,6 +220,7 @@ const AssetHeatmap = () => {
                                 y={rects[index].y}
                                 w={rects[index].w}
                                 h={rects[index].h}
+                                onOpen={onOpen}
                             />
                         )
                     )}
@@ -242,6 +228,11 @@ const AssetHeatmap = () => {
             </div>
         </SectionList.Item>
     )
+}
+
+AssetHeatmap.propTypes = {
+    // Opens a tile's asset page by ticker.
+    onOpen: PropTypes.func,
 }
 
 export default AssetHeatmap

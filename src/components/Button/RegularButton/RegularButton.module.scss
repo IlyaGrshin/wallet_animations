@@ -35,6 +35,13 @@
         color: var(--text-disabled-color);
     }
 
+    // An action that exists but can't run right now ("Trading is
+    // unavailable"): the card surface with a hint-coloured label.
+    &.muted {
+        background-color: var(--tg-theme-section-bg-color);
+        color: var(--tg-theme-hint-color);
+    }
+
     // Skeleton pill: drop the button's own fill and hide the label so only the
     // redaction shimmer (::after, clipped by the button's overflow + radius)
     // shows. Full-height coverage via inset-bottom 0.

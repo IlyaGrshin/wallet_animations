@@ -25,7 +25,7 @@ function Spacer() {
     return <div className={styles.spacer}></div>
 }
 
-function Wallet({ onOpenTonWallet, balancesHidden = false }) {
+function Wallet({ onOpenTonWallet, onOpenAsset, balancesHidden = false }) {
     return (
         <Page>
             <HiddenBalance.Provider defaultHidden={balancesHidden}>
@@ -34,7 +34,7 @@ function Wallet({ onOpenTonWallet, balancesHidden = false }) {
                     <ActionButtons />
                     <Spacer />
                     <SectionList>
-                        <Assets />
+                        <Assets onOpen={onOpenAsset} />
                         {onOpenTonWallet && (
                             <SectionList.Item>
                                 <Cell
@@ -61,6 +61,8 @@ function Wallet({ onOpenTonWallet, balancesHidden = false }) {
 
 Wallet.propTypes = {
     onOpenTonWallet: PropTypes.func,
+    // Opens an asset's page by ticker; rows stay static without it.
+    onOpenAsset: PropTypes.func,
     // Start with every balance hidden (e.g. a "hide balances" user setting).
     balancesHidden: PropTypes.bool,
 }

@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react"
+import { Route, Switch, useLocation } from "wouter"
 import WebApp, { BackButton, lockVerticalSwipes } from "../../../lib/twa"
+import { useFrozenLocation } from "../../../components/PageTransition/context"
+import useRetainedState from "../../../hooks/useRetainedState"
 import Page from "../../../components/Page"
 
 import { useSegmentNavigation } from "./hooks/useSegmentNavigation"
@@ -10,11 +13,14 @@ import TabLayer from "./components/TabLayer"
 import TabBar from "../../../components/TabBar"
 import { useSkin } from "../../../hooks/DeviceProvider"
 import { getTabsConfig } from "./navigationConfig"
+import Asset from "./Asset"
+import { ASSET_PATH, assetPath } from "./Asset/constants"
 
 import * as styles from "./NewNavigation.module.scss"
 
-function NewNavigation() {
+function Tabs() {
     const { isApple } = useSkin()
+    const [, navigate] = useLocation()
     const { activeSegment, handleSegmentChange } = useSegmentNavigation()
     const currentPrefix = activeSegment === 0 ? "wallet" : "ton"
     const [prevPrefix, setPrevPrefix] = useState(currentPrefix)
@@ -44,11 +50,15 @@ function NewNavigation() {
         return () => window.removeEventListener("popstate", returnToWallet)
     }, [activeSegment, handleSegmentChange])
 
-    const tabsConfig = getTabsConfig(openTonWallet)
+    const openAsset = (id) => navigate(assetPath(id))
+    const tabsConfig = getTabsConfig(openTonWallet, openAsset)
 
-    // Tab State
-    const [tabIndices, setTabIndices] = useState({ wallet: 0, ton: 0 })
-    const [prevIndices, setPrevIndices] = useState({ wallet: 0, ton: 0 })
+    // Tab state outlives a trip to an asset page and back.
+    const [tabIndices, setTabIndices] = useRetainedState("tabs", {
+        wallet: 0,
+        ton: 0,
+    })
+    const [prevIndices, setPrevIndices] = useState(tabIndices)
 
     const activeTabs = activeSegment === 0 ? tabsConfig.wallet : tabsConfig.ton
     const activeIndex = activeSegment === 0 ? tabIndices.wallet : tabIndices.ton
@@ -96,12 +106,19 @@ function NewNavigation() {
                     return (
                         <TabLayer
                             key={key}
+                            retainKey={key}
                             status={statusOf(key)}
                             custom={animationCustom}
                             animateMount={key !== visited[0]}
                             onExited={() => markExited(key)}
                         >
-                            {prefix === "wallet" && <SearchHeader />}
+                            {prefix === "wallet" && (
+                                <SearchHeader
+                                    heroColor={
+                                        tabsConfig[prefix][index]?.heroColor
+                                    }
+                                />
+                            )}
                             {tabsConfig[prefix][index]?.view}
                         </TabLayer>
                     )
@@ -118,6 +135,24 @@ function NewNavigation() {
                 </div>
             </div>
         </Page>
+    )
+}
+
+// Tabs, or an asset page pushed over them. Routes match the location this
+// screen was mounted for, so an exiting screen keeps its content mid-fade.
+function NewNavigation() {
+    const [liveLocation] = useLocation()
+    const location = useFrozenLocation() ?? liveLocation
+
+    return (
+        <Switch location={location}>
+            <Route path={ASSET_PATH}>
+                {(params) => <Asset id={params.id} />}
+            </Route>
+            <Route>
+                <Tabs />
+            </Route>
+        </Switch>
     )
 }
 

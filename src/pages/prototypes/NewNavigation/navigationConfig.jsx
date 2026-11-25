@@ -3,36 +3,52 @@ import Wallet from "../Wallet"
 import TONWallet from "../TS"
 import Trading from "../Trading"
 import History from "./History"
+import Earn from "./Earn"
+import Rewards, { HERO_COLOR } from "./Rewards"
+import StockList from "./Asset/StockList"
 
 import WalletIcon from "../../../icons/tabbar/Wallet.svg?react"
 import TradeIcon from "../../../icons/tabbar/Chartline.svg?react"
 import HistoryIcon from "../../../icons/tabbar/Clock.svg?react"
 
-export const getTabsConfig = (onOpenTonWallet) => ({
+// `onOpenAsset(ticker)` pushes that asset's page over the tabs: Walt opens
+// what the user holds, Trade the catalog.
+export const getTabsConfig = (onOpenTonWallet, onOpenAsset) => ({
     wallet: [
         {
             label: "Walt",
             icon: <WalletIcon />,
-            view: <Wallet onOpenTonWallet={onOpenTonWallet} />,
+            view: (
+                <Wallet
+                    onOpenTonWallet={onOpenTonWallet}
+                    onOpenAsset={onOpenAsset}
+                />
+            ),
             lottieIcon: "wallet",
             activeSegment: [0, 50],
         },
         {
             label: "Trade",
             icon: <TradeIcon />,
-            view: <Trading />,
+            view: (
+                <Trading onOpenAsset={onOpenAsset}>
+                    <StockList onOpen={onOpenAsset} />
+                </Trading>
+            ),
             lottieIcon: "chartline",
             activeSegment: [0, 50],
         },
         {
             label: "Earn",
-            view: <Trading />,
+            view: <Earn />,
             lottieIcon: "bag",
             activeSegment: [0, 45],
         },
         {
             label: "Rewards",
-            view: <History />,
+            view: <Rewards />,
+            // Opens on a blue hero: the search bar starts in its overlay look.
+            heroColor: HERO_COLOR,
             lottieIcon: "reward",
             activeSegment: [0, 24],
         },

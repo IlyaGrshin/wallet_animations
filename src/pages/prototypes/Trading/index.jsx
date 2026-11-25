@@ -1,3 +1,5 @@
+import PropTypes from "prop-types"
+
 import Text from "../../../components/Text"
 import Page from "../../../components/Page"
 import SectionList from "../../../components/SectionList"
@@ -9,7 +11,7 @@ import useAssets from "../../../hooks/useAssets"
 
 import * as styles from "./Trading.module.scss"
 
-function Trading() {
+function Trading({ onOpenAsset, children }) {
     const { error } = useAssets()
 
     if (error) {
@@ -25,11 +27,19 @@ function Trading() {
     return (
         <Page>
             <SectionList>
-                <AssetHeatmap />
-                <AssetList />
+                <AssetHeatmap onOpen={onOpenAsset} />
+                {children}
+                <AssetList onOpen={onOpenAsset} />
             </SectionList>
         </Page>
     )
+}
+
+Trading.propTypes = {
+    // Opens an asset's page by ticker; listings stay static without it.
+    onOpenAsset: PropTypes.func,
+    // Extra listings between the heatmap and the coin list.
+    children: PropTypes.node,
 }
 
 export default Trading

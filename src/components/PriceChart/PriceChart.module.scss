@@ -1,0 +1,142 @@
+// Figma "Chart Line Container": plot + an 8px gap + the price column, 172px.
+.root {
+    --chart-height: 172px;
+    --plot-inset-top: 6px;
+    --plot-inset-bottom: 7px;
+
+    display: flex;
+    gap: 8px;
+    height: var(--chart-height);
+}
+
+.plotArea {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--plot-inset-top) 0 var(--plot-inset-bottom);
+}
+
+.gridLine {
+    height: 0.33px;
+    background-color: var(--tg-theme-section-separator-color);
+}
+
+// The plot spans exactly grid line to grid line.
+.plot {
+    position: absolute;
+    inset: var(--plot-inset-top) 0 var(--plot-inset-bottom);
+}
+
+// Latest value: an 8px dot centred on the plot's right edge, raised to the
+// price by transform so following ticks move it on the compositor.
+.dot {
+    --dot-color: var(--text-confirm-color);
+
+    position: absolute;
+    top: var(--plot-inset-top);
+    right: 0;
+    width: 8px;
+    height: 8px;
+    margin: -4px -4px 0 0;
+    border-radius: 50%;
+    background-color: var(--dot-color);
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background-color: inherit;
+        opacity: 0.4;
+        animation: pulse 2s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+    }
+
+    &.down {
+        --dot-color: var(--tg-theme-destructive-text-color);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+
+        &::after {
+            animation: none;
+            opacity: 0;
+        }
+    }
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+.scale {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: var(--tg-theme-hint-color);
+    font-variant-numeric: tabular-nums lining-nums;
+    white-space: nowrap;
+}
+
+// Stale bars while the next range loads: dimmed in place, never emptied.
+.plotArea,
+.scale {
+    transition: opacity 0.2s ease;
+}
+
+.pending {
+    .plotArea,
+    .scale {
+        opacity: 0.4;
+    }
+}
+
+// Candles (Figma "Candle Chart"): 4pt dashes for the grid, history fading
+// out at the left edge as it pans away.
+.candles {
+    .gridLine {
+        background: repeating-linear-gradient(
+            to right,
+            var(--tg-theme-section-separator-color) 0 4px,
+            transparent 4px 8px
+        );
+    }
+
+    .plot {
+        mask-image: linear-gradient(to right, transparent, #000 16px);
+    }
+}
+
+// A scale label under the price badge gives way to it.
+.covered {
+    opacity: 0;
+}
+
+// The live price, level with the price line.
+.priceBadge {
+    position: absolute;
+    top: var(--plot-inset-top);
+    right: 0;
+    display: flex;
+    margin-top: -8px;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
+}

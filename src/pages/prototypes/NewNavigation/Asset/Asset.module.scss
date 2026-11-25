@@ -1,0 +1,95 @@
+// Fills the scroller so the Fake Main Button can sink to the bottom of a
+// short page (it pins with margin-top: auto + sticky).
+.root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+// Hero pages: the pinned bar sits on the card colour, continuing the hero
+// up to the Telegram header.
+.cardTop {
+    background: linear-gradient(
+        to bottom,
+        var(--tg-theme-section-bg-color) 0 200px,
+        transparent 200px
+    );
+}
+
+// 16pt between the hero card and the first section header.
+.sections {
+    padding-top: 16px;
+}
+
+// Dollars page: two section lists around the earn banner, 16pt apart like
+// the sections themselves (each list ends on 20pt of padding).
+.dollars {
+    padding-top: 8px;
+
+    > section + section {
+        margin-top: -4px;
+    }
+
+    :global(body.material) & > section + section {
+        margin-top: 0;
+    }
+}
+
+// Restricted asset notice over the hero (Figma "Banner", 353 wide).
+.notice {
+    padding: 0 20px;
+    background-color: var(--tg-theme-section-bg-color);
+
+    > * {
+        padding: 8px 14px;
+        border-radius: 16px;
+        color: var(--tg-theme-subtitle-text-color);
+        background-color: var(--quaternary-fill-background);
+        text-wrap: pretty;
+    }
+}
+
+// Status chip: 28pt pill, an 18pt glyph and the label.
+.chip {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 4px;
+    height: 28px;
+    padding: 0 10px 0 6px;
+    border-radius: 14px;
+    color: var(--tg-theme-text-color);
+    background-color: rgb(from var(--chip-tone) r g b / 12%);
+    white-space: nowrap;
+}
+
+.chipIcon {
+    display: flex;
+    color: var(--chip-tone);
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+.chipEarn {
+    --chip-tone: #2fb250;
+}
+
+.chipExtended {
+    --chip-tone: #ff9500;
+}
+
+.chipClosed {
+    --chip-tone: #8e8e93;
+}
+
+.changeBadge {
+    font-variant-numeric: tabular-nums lining-nums;
+
+    :global(body.apple) & {
+        padding: 2px 6px;
+        border-radius: 7px;
+    }
+}

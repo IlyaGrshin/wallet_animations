@@ -1,13 +1,15 @@
-import { Activity, useLayoutEffect, useRef, useState } from "react"
+import { Activity, useRef, useState } from "react"
 import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import cx from "clsx"
 
 import { pageVariants } from "../../navigationConfig"
+import useScrollRestoration from "../../../../../hooks/useScrollRestoration"
 
 import * as styles from "./TabLayer.module.scss"
 
 export default function TabLayer({
+    retainKey,
     status,
     custom,
     animateMount,
@@ -15,7 +17,11 @@ export default function TabLayer({
     children,
 }) {
     const ref = useRef(null)
-    const scrollTopRef = useRef(0)
+    // Saved while active, restored on becoming active again — including a
+    // remount after a pushed screen (an asset page) — where it was left.
+    useScrollRestoration(ref, `scroll-${retainKey}`, {
+        enabled: status === "active",
+    })
     const target = status === "active" ? "animate" : "exit"
     const [settled, setSettled] = useState({ target, status, custom })
 
@@ -28,12 +34,6 @@ export default function TabLayer({
         setSettled({ ...settled, status })
     }
 
-    useLayoutEffect(() => {
-        if (status === "active" && scrollTopRef.current > 0) {
-            ref.current.scrollTop = scrollTopRef.current
-        }
-    }, [status])
-
     return (
         <m.div
             ref={ref}
@@ -41,11 +41,6 @@ export default function TabLayer({
             custom={settled.custom}
             initial={animateMount ? "initial" : false}
             animate={target}
-            onScroll={(event) => {
-                if (status === "active") {
-                    scrollTopRef.current = event.currentTarget.scrollTop
-                }
-            }}
             onAnimationComplete={(definition) => {
                 if (definition === "exit") onExited()
             }}
@@ -63,6 +58,8 @@ export default function TabLayer({
 }
 
 TabLayer.propTypes = {
+    // Names the layer's saved scroll offset across remounts.
+    retainKey: PropTypes.string.isRequired,
     status: PropTypes.oneOf(["active", "exiting", "hidden"]).isRequired,
     custom: PropTypes.object.isRequired,
     animateMount: PropTypes.bool,

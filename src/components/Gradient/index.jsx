@@ -1,7 +1,7 @@
 import { useEffect, useId } from "react"
 import PropTypes from "prop-types"
 
-import WebApp from "../../lib/twa"
+import { paintHeader as paintTelegramHeader } from "../../lib/twa"
 import { useSplitViewContext } from "../SplitView/context"
 import { radialStops, fadeStops } from "./gradientMath"
 
@@ -54,13 +54,7 @@ const Gradient = ({
     const { inDetailPane } = useSplitViewContext()
     useEffect(() => {
         if (!paintHeader || inDetailPane) return
-        if (WebApp.initData) {
-            WebApp.setHeaderColor(innerColor)
-        } else {
-            document
-                .querySelector('meta[name="theme-color"]')
-                ?.setAttribute("content", innerColor)
-        }
+        paintTelegramHeader(innerColor)
     }, [paintHeader, inDetailPane, innerColor])
 
     // r="1" base scaled to the two radii: an axis-aligned ellipse (rx, ry) at

@@ -1,4 +1,5 @@
 import { useState, useRef } from "react"
+import PropTypes from "prop-types"
 import * as m from "motion/react-m"
 import { AnimatePresence } from "motion/react"
 import WebApp from "../../../../../lib/twa"
@@ -12,7 +13,7 @@ import assets from "../../data/assets.json"
 
 const PRIORITY_TICKERS = ["USDT", "TON"]
 
-export default function Assets() {
+export default function Assets({ onOpen }) {
     const AssetsRef = useRef(null)
     const [showSmallAssets, setShowSmallAssets] = useState(false)
 
@@ -50,7 +51,7 @@ export default function Assets() {
                 </Cell>
             )}
             {largeAssets.map((asset) => (
-                <AssetCell asset={asset} key={asset.ticker} />
+                <AssetCell asset={asset} key={asset.ticker} onOpen={onOpen} />
             ))}
 
             {smallAssets.length > 0 && (
@@ -75,6 +76,7 @@ export default function Assets() {
                                     <AssetCell
                                         asset={asset}
                                         key={asset.ticker}
+                                        onOpen={onOpen}
                                     />
                                 ))}
                             </m.div>
@@ -93,4 +95,9 @@ export default function Assets() {
             )}
         </SectionList.Item>
     )
+}
+
+Assets.propTypes = {
+    // Opens an asset's page by ticker; rows stay static without it.
+    onOpen: PropTypes.func,
 }

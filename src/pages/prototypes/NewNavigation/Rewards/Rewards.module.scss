@@ -1,0 +1,98 @@
+@use "../mixins" as *;
+
+// Not positioned, so the Gradient anchors to the tab layer and runs up under
+// the search header; isolation keeps it beneath this tab's content.
+.root {
+    isolation: isolate;
+    padding-bottom: 24px;
+
+    > :first-child {
+        z-index: -1;
+    }
+}
+
+// Hero
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding-top: 46px;
+    color: #fff;
+}
+
+.points {
+    display: flex;
+    align-items: center;
+    font:
+        700 48px/56px ui-rounded,
+        -apple-system,
+        system-ui,
+        sans-serif;
+    font-variant-numeric: lining-nums tabular-nums;
+    letter-spacing: 0.42px;
+
+    svg {
+        flex-shrink: 0;
+    }
+}
+
+.howItWorks {
+    @include reset-button;
+
+    color: rgb(255 255 255 / 72%);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 47px;
+}
+
+// Squad pill
+
+.squad {
+    @include reset-button;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 60px;
+    margin: 0 28px;
+    padding: 0 16px 0 10px;
+    border-radius: 100px;
+    background-color: rgb(255 255 255 / 16%);
+    color: #fff;
+    text-align: left;
+}
+
+.squadName {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.squadCaption {
+    color: rgb(255 255 255 / 64%);
+}
+
+.place {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    svg {
+        width: 8px;
+        height: 16px;
+        opacity: 0.64;
+        mix-blend-mode: plus-lighter;
+    }
+}
+
+.laurelEnd {
+    transform: scaleX(-1);
+}

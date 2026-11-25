@@ -1,0 +1,168 @@
+@use "../mixins" as *;
+
+// Earn banner (Figma "Banner", 361x92). Art coordinates are the frame's,
+// measured from the banner's top-left corner.
+
+// Sits between two section lists, whose 20pt bottom padding it pulls in.
+.bannerSlot {
+    padding: 0 16px;
+
+    :global(body.apple) & {
+        margin: -4px 0 16px;
+    }
+
+    :global(body.material) & {
+        margin-bottom: 12px;
+    }
+}
+
+// Same corners as the section cards around it.
+.banner {
+    @include section-corners;
+
+    position: relative;
+    height: 92px;
+    overflow: hidden;
+    color: #fff;
+    background:
+        radial-gradient(
+            circle at 0 100%,
+            rgb(121 199 52) 0%,
+            rgb(81 197 91 / 50%) 22%,
+            rgb(40 194 129 / 0%) 45%
+        ),
+        radial-gradient(
+            circle at 98% 5%,
+            rgb(148 244 64) 0%,
+            rgb(94 219 97 / 50%) 22%,
+            rgb(40 194 129 / 0%) 45%
+        ),
+        #28c281;
+}
+
+.art {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    img {
+        position: absolute;
+        display: block;
+    }
+}
+
+.star1 {
+    left: 251.9px;
+    top: 6.8px;
+    transform: rotate(105deg) scaleY(-1);
+}
+
+.star2 {
+    left: 238.7px;
+    top: 22.5px;
+    transform: rotate(135deg) scaleY(-1);
+}
+
+.star3 {
+    left: 255.7px;
+    top: 72.2px;
+    transform: rotate(30deg);
+}
+
+.star4 {
+    left: 348.2px;
+    top: 50.9px;
+    transform: rotate(30deg);
+}
+
+.lettering {
+    position: absolute;
+    left: 262.8px;
+    top: 15.1px;
+    width: 78.5px;
+    height: 63.3px;
+    transform: rotate(15deg);
+}
+
+.nine {
+    left: -5.2px;
+    top: -0.1px;
+}
+
+.apy {
+    left: 37.6px;
+    top: 34.8px;
+    transform: rotate(0.19deg) skewX(-5.08deg);
+}
+
+.percent {
+    left: 45.6px;
+    top: 10px;
+}
+
+.bannerContent {
+    position: absolute;
+    inset: 0 123px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px;
+    text-wrap: pretty;
+}
+
+.bannerAction {
+    opacity: 0.7;
+}
+
+.dismiss {
+    @include reset-button;
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: #fff;
+    background-color: rgb(255 255 255 / 32%);
+    backdrop-filter: blur(25px);
+    cursor: pointer;
+
+    svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    svg path {
+        fill: currentcolor;
+    }
+}
+
+// Page control of the banner carousel: the first dot stretched as active.
+.pages {
+    position: absolute;
+    bottom: 9px;
+    left: 50%;
+    display: flex;
+    gap: 5.8px;
+    transform: translateX(-50%);
+
+    > span {
+        width: 5.8px;
+        height: 5.8px;
+        border-radius: 2.9px;
+        background-color: rgb(255 255 255 / 30%);
+    }
+
+    > .pageActive {
+        width: 14.5px;
+        background: linear-gradient(
+            to right,
+            #fff 5.8px,
+            rgb(255 255 255 / 30%) 5.8px
+        );
+    }
+}
